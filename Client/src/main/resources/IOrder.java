@@ -1,12 +1,13 @@
-package logic.interfaces;
+package main.resources;
 
 /**
  * Created by Stefan on 31.03.2014.
  * @author  Stefan Bieliauskas
  * Schnittstelle für einzlene Aufträge, die der Spieler erledigen muss Implementierungen siehe:
  *
- * @see logic.OrderTerminatePlayer
- * @see logic.OrderTakeCountries
+ * @see main.java.logic.OrderTerminatePlayer
+ * @see main.OrderTakeCountries
+ * @version 1.0
  *
  * Hierbei wurde eine Schnittstelle verwendet, da die beiden Auftragsarten keine bzw.
  * sehr geringe Gemeinsamkeiten in der implementierung besitzten.
@@ -14,7 +15,7 @@ package logic.interfaces;
  */
 public interface IOrder {
     /**
-     * Gibt den Status des Auftrags zurück
+     *
      * @return Wenn die Order komplett ist => True
      */
     public boolean isCompleted();
