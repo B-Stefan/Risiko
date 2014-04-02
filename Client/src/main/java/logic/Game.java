@@ -26,7 +26,7 @@ public class Game implements IGameGUI{
     /**
      * Listet alle Spieler auf, die aktiv am Spiel teilnehmen.
      */
-    private ArrayList<Player> players = new ArrayList<Player>();
+    private final ArrayList<Player> players = new ArrayList<Player>();
 
     /**
      * Die Game-Klasse dient zur verwaltung des gesammten Spiels
@@ -40,7 +40,7 @@ public class Game implements IGameGUI{
      * @param  player - neuer Spieler
      *
      */
-    public void addPlayer(Player player ){
+    public void addPlayer(final Player player ){
         this.players.add(player);
     }
 
@@ -70,11 +70,11 @@ public class Game implements IGameGUI{
      * @param player - Player der gelöscht werden soll
      * @throws main.java.logic.exceptions.PlayerNotExsistInGameException
      */
-    public void onPlayerDelete(Player player ) throws PlayerNotExsistInGameException {
+    public void onPlayerDelete(final Player player ) throws PlayerNotExsistInGameException {
         try {
             this.players.remove(player);
         }
-        catch (Exception e){
+        catch (final Exception e){
             throw new PlayerNotExsistInGameException(player);
         }
     }
@@ -84,7 +84,7 @@ public class Game implements IGameGUI{
      * @param name - Der Name des neuen Spielers
      * @throws Exception
      */
-    public void onPlayerAdd(String name) throws Exception{
+    public void onPlayerAdd(final String name) throws Exception{
 
         Player newPlayer = new Player(name);
         this.addPlayer(newPlayer);
@@ -94,7 +94,7 @@ public class Game implements IGameGUI{
      * Die Karte, die fürs Spiel verwendet werden soll
      * @param map
      */
-    public void setMap(Map map) {
+    public void setMap(final Map map) {
         this.map = map;
     }
 

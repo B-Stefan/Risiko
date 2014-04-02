@@ -2,8 +2,10 @@ package main.java.gui;
 
 import main.java.logic.exceptions.*;
 import main.java.logic.*;
-import main.resources.IGameGUI;
+import main.resources.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.ArrayList;
 
 /**
  * Verwaltet die Benutzerschnittstelle
@@ -11,15 +13,17 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class GameCUI {
 
-    private IGameGUI game;
+    private final IGameGUI game;
+    private final IMapGUI map;
 
     /**
      * Verwaltet die Benutzerschnittstelle
      * @param game - Das spiel, das die GUI betrifft
      * @throws Exception
      */
-    public GameCUI(final IGameGUI game) throws Exception {
+    public GameCUI(final IGameGUI game, final IMapGUI map) throws Exception {
         this.game = game;
+        this.map = map;
 
     }
 
@@ -29,7 +33,7 @@ public class GameCUI {
      */
     public void init() throws Exception {
         IO.println("Willkommen bei Risiko mit dem command help erhalten Sie eine Übersicht über die Möglichkeiten");
-        String command = "";
+        String command = "";git
         while (true) {
             command = IO.readString();
             parseCommand(command);
@@ -41,9 +45,9 @@ public class GameCUI {
      * @param commands
      * @throws Exception
      */
-    public void parseCommand(String commands) throws Exception {
-        String action = commands.toUpperCase();
-        String params = commands;
+    public void parseCommand(final String commands) throws Exception {
+        final String action = commands.toUpperCase();
+        final String params = commands;
 
 
         if (action.contains("ADD PLAYER")) {
@@ -58,10 +62,10 @@ public class GameCUI {
             //Error Handling, wenn zu wenig/viele Spieler
             try {
                 game.onGameStart();
-            } catch (NotEnoughPlayerException e) {
+            } catch (final NotEnoughPlayerException e) {
                 IO.println(e.getMessage());
                 return;
-            } catch (TooManyPlayerException e) {
+            } catch (final TooManyPlayerException e) {
                 IO.println(e.getMessage());
                 return;
             }
@@ -73,6 +77,17 @@ public class GameCUI {
                 int index = (game.getPlayers().indexOf(player) + 1);
                 IO.println(index + ". Player: " + player.getName());
             }
+            this.printMap();
+        }
+        else if (action.contains("SHOW MAP")){
+            this.printMap();
+        }
+    }
+    private void printMap (){
+        ArrayList<Country> countries = map.getCountries();
+        IO.println("Aktueller Status der Karte");
+        for(Country country: countries){
+
         }
     }
 }

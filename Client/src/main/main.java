@@ -12,7 +12,7 @@ public class Main {
         //Erstellen des Spiels
         Game game = new Game();
         //Erstellen des UI
-        GameCUI ui = new GameCUI(game);
+        GameCUI ui = new GameCUI(game,game.getMap());
 
         //Startet das warten auf eine Eingbae
         ui.init();
