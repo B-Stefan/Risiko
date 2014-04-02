@@ -33,7 +33,7 @@ public class GameCUI {
      */
     public void init() throws Exception {
         IO.println("Willkommen bei Risiko mit dem command help erhalten Sie eine Übersicht über die Möglichkeiten");
-        String command = "";git
+        String command = "";
         while (true) {
             command = IO.readString();
             parseCommand(command);
