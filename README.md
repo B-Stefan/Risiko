@@ -3,14 +3,25 @@ Risiko
 
 A port of the popular board game "Risiko" in Java
 
-Klassen
+Classes
 ======
-Folgende Klassen müssen mit entsprechenden Methdoen umgesetzt werden
+The following paragraph list some todos for our project.
 
 ##Player
 
 * public Country getCountries
 * public void addCountires
+
+#Country
+
+* private Player Owner
+* public void setOwner (Player newOwner)
+* public Player getOwner ()
+
+#Dice
+* public compareTo(Object otherObject)
+- Method for comparison of 2 Dices
+
 
 #Turn
 * private Player currentPlayer ()
@@ -19,8 +30,10 @@ Folgende Klassen müssen mit entsprechenden Methdoen umgesetzt werden
 #Fight
 *public Fight (Country from, Country to)
 
+
+
 #Order
-Bei einem Auftrag müsste es 2 unterklassen geben die die Schnittstele IOrder implementieren
+Bei einem Auftrag müsste es 2 Unterklassen geben die die Schnittstele IOrder implementieren
 
 1. Auftrag einen anderen Spieler zu vernichten
 2. Auftrag 2 Kontinente zu besetzten
