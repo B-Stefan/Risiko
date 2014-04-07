@@ -14,6 +14,9 @@ public class Map implements IMapGUI {
         this.countries.add(new Country("Bali"));
         this.countries.add(new Country("Brasilien"));
         this.countries.add(new Country("Australien"));
+        this.countries.add(new Country("Niederlande"));
+        this.countries.add(new Country("Ukraine"));
+        this.countries.add(new Country("Russland"));
 
     }
 

@@ -14,7 +14,6 @@ public class Country {
 	private Player owner;
 
 	
-	
 	public Country(String n){
 		this.name = n;
 	}
@@ -26,9 +25,19 @@ public class Country {
 	public void setOwner(Player p){
 		this.owner = p;
 	}
+
+    /**
+     *
+     * @return Den Spieler, der dieses Land gerade besetzt hat
+     */
 	public Player getOwner(){
 		return this.owner;
 	}
+
+    /**
+     *
+     * @return Name des Lands
+     */
 	public String getName(){
 		return this.name;
 	}

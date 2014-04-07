@@ -81,7 +81,10 @@ public class Game implements IGameGUI{
     	c.addAll(allCountrys);
     	return c;
     }
-    
+
+    /**
+     * Verteilt die Länder beim Spielstart an alle angemeldeten Spieler.
+     */
     private void distributeCountries(){
         Stack<Country> c = countryListToStack();
         /**
