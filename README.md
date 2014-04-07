@@ -3,7 +3,25 @@ Risiko
 
 A port of the popular board game "Risiko" in Java
 
-Classes
+#Using Git
+
+1. Install Git Command line (http://git-scm.com/downloads)
+2. Open your Console/Terminal and navigate to your local project folder
+3. execute 'git pull'
+
+4. Start working on the game
+
+5. After your're done execute following commands
+    ```
+    git add .
+    git commit -m '<your comment>'
+    git push
+    ```
+
+
+
+
+Classes / TODOS
 ======
 The following paragraph list some todos for our project.
 
