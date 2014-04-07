@@ -1,5 +1,6 @@
 package main.java.logic;
 
+
 public class Country {
 	
 	/**
@@ -8,7 +9,7 @@ public class Country {
 	private String name;
 	
 	/**
-	 * Bestimmt den Spieler, der aktuell das Land besetzt hällt
+	 * Bestimmt den Spieler, der aktuell das Land besetzt hï¿½llt
 	 */
 	private Player owner;
 
@@ -31,4 +32,13 @@ public class Country {
 	public String getName(){
 		return this.name;
 	}
+
+    @Override
+    public String toString(){
+        String ownerString = " @ ";
+        if (this.owner != null){
+            ownerString += this.owner.ToString();
+        }
+        return this.getName() + ownerString;
+    }
 }

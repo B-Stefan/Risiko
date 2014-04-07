@@ -3,6 +3,7 @@ import  java.util.*;
 import main.java.logic.exceptions.PlayerNotExsistInGameException;
 import main.resources.IGameGUI;
 import main.java.logic.exceptions.*;
+import org.omg.CORBA.NO_IMPLEMENT;
 
 /**
  * Created by Stefan on 01.04.2014.
@@ -32,7 +33,7 @@ public class Game implements IGameGUI{
      * Die Game-Klasse dient zur verwaltung des gesammten Spiels
      */
     public Game (){
-
+    	this.map = new Map();
     }
 
     /**
@@ -54,14 +55,68 @@ public class Game implements IGameGUI{
 
     /**
      * Startet das Speil, sodass der Spielstatus und co aktualisiert werden
-     * @throws NotEnoughPlayerException
+     * @throws main.java.logic.exceptions.NotEnoughPlayerException
      */
-    public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException {
+    public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException {
         if(this.players.size() < Game.minCountPlayers){
             throw new NotEnoughPlayerException(Game.minCountPlayers);
         }
         else if (this.players.size() > Game.maxCountPlayers){
             throw new TooManyPlayerException(Game.maxCountPlayers);
+        }
+        else if (this.map.getCountries().size() < this.players.size()){
+            throw new NotEnoughCountriesException(this.map.getCountries().size());
+        }
+        distributeCountries();
+    }
+    /**
+     * Kopiert die Liste aller L�nder in einen Stack
+     * @return 
+     */
+    private Stack<Country> countryListToStack(){
+
+    	Stack<Country> c = new Stack<Country>();
+        ArrayList<Country> allCountrys = map.getCountries();
+        Collections.shuffle(allCountrys);
+    	c.addAll(allCountrys);
+    	return c;
+    }
+    
+    private void distributeCountries(){
+        Stack<Country> c = countryListToStack();
+        /**
+         * Größe des L�nder Stacks
+         */
+        int sizeC = c.size();
+        /**
+         * Größe der Spieler Liste
+         */
+        int sizeP = this.players.size();
+        /**
+         * Durchläuft die Schleife so lange, bis die Anzahl der L�nder, die noch zu verteilen sind,
+         * kleiner ist, als die Anzahl der Spieler
+         */
+        while(sizeC >= sizeP){
+        	/**
+        	 * Durchl�uft die Spieler Liste und f�gt jedes Mal jeweils einem Spieler ein Land zu
+        	 * Danach wird die Gr��e des Stacks neu berechnet -> f�r while Schleife
+        	 */
+        	for(Player p : players){
+        		p.addCountry(c.pop());
+        	}
+
+        	sizeC = c.size();
+        }
+        /**
+         * war die Anzahl der noch zu verteilenden L�nder kleiner als die Anzahl der Spieler:
+         * Wenn die Anzahl der L�nder gr��er als 0 ist wird in der for-Schleife so lange L�nder den Spieler zugeteilt, 
+         * bis keine mehr da sind
+         */
+        if(sizeC>0){
+        	for(int i = 0;i>sizeC; i++){
+        		Player p = players.get(i);
+        		p.addCountry(c.pop());
+        	}
         }
     }
 

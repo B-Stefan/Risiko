@@ -19,8 +19,6 @@ A port of the popular board game "Risiko" in Java
     ```
 
 
-
-
 Classes / TODOS
 ======
 The following paragraph list some todos for our project.

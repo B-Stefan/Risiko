@@ -1,11 +1,13 @@
 package main.java.logic;
-
+import java.util.*;
 /**
  * Created by Stefan on 01.04.2014.
  */
+
 public class Player {
 
     private String name;
+    private List<Country> countries = new ArrayList<Country>();
 
     public Player(String name) {
         this.name = name;
@@ -19,5 +21,17 @@ public class Player {
     public String ToString() {
         return getName();
     }
+    
+    public void addCountry(final Country c){
+        c.setOwner(this);
+    	countries.add(c);
+    }
+    public List<Country> getCountries(){
+    	return this.countries;    	
+    }
 
+    @Override
+    public String toString(){
+        return this.getName();
+    }
 }

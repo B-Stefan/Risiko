@@ -1,7 +1,9 @@
 package main;
 import main.java.logic.Game;
 import main.java.gui.GameCUI;
+import main.java.logic.Player;
 import java.lang.*;
+
 /**
  * Created by Stefan on 01.04.2014.
  */
@@ -14,6 +16,9 @@ public class Main {
         //Erstellen des UI
         GameCUI ui = new GameCUI(game,game.getMap());
 
+        game.addPlayer(new Player("Bon"));
+        game.addPlayer(new Player("Stefan"));
+        game.addPlayer(new Player("Linda"));
         //Startet das warten auf eine Eingbae
         ui.init();
     }

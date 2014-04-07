@@ -7,20 +7,24 @@ public class Continent{
 	/**
 	 * Name des Kontinents
 	 */
-	private String name;
-	
+	private final String name;
+
 	/**
-	 * Eine ArrayLsit mit den Ländern, die sich auf dem Kontinent befinden Länder
+	 * Eine ArrayLsit mit den Lï¿½ndern, die sich auf dem Kontinent befinden Lï¿½nder
+     * @return Gibt die Liste der LÃ¤nder zurÃ¼ck, die disem Kontinent zugeordnet wurden
 	 */
 	private List<Country> countryList = new ArrayList<Country>();
-	
-	
-	public Continent (String n){
+
+    /**
+     *
+     * @param n Name des Kontinents
+     */
+	public Continent (final String n){
 		this.name = n;
 	}
 	/**
 	 * 
-	 * @return Gibt den Namen des KOntinents zurück
+	 * @return Gibt den Namen des KOntinents zurï¿½ck
 	 */
 	public String getName(){
 		return this.name;
@@ -28,7 +32,7 @@ public class Continent{
 	
 	/**
 	 * 
-	 * @param p Der Spieler, der in die Liste hinzugefügt werden soll
+	 * @param p Der Spieler, der in die Liste hinzugefï¿½gt werden soll
 	 */
 	public void addPlayer(Country p){
 		countryList.add(p);

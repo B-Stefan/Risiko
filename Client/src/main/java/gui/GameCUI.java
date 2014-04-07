@@ -68,14 +68,17 @@ public class GameCUI {
             } catch (final TooManyPlayerException e) {
                 IO.println(e.getMessage());
                 return;
-            }
+            } catch (final NotEnoughCountriesException e) {
+
+            return;
+        }
 
             IO.println("Willkommen bei Risiko, nun gehts los");
             IO.println("Spielerliste");
 
             for (Player player : game.getPlayers()) {
                 int index = (game.getPlayers().indexOf(player) + 1);
-                IO.println(index + ". Player: " + player.getName());
+                IO.println(index + ". Player: " + player.toString());
             }
             this.printMap();
         }
@@ -87,6 +90,7 @@ public class GameCUI {
         ArrayList<Country> countries = map.getCountries();
         IO.println("Aktueller Status der Karte");
         for(Country country: countries){
+            IO.println(country.toString());
 
         }
     }
