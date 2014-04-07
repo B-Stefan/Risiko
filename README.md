@@ -12,35 +12,34 @@ The following paragraph list some todos for our project.
 * public Country getCountries
 * public void addCountires
 
-#Country
+##Country
 
 * private Player Owner
 * public void setOwner (Player newOwner)
 * public Player getOwner ()
 
-#Dice
+##Dice
 * public compareTo(Object otherObject)
 - Method for comparison of 2 Dices
 
 
-#Turn
+##Turn
 * private Player currentPlayer ()
 * private void nextPlayer ()
 
-#Fight
+##Fight
 *public Fight (Country from, Country to)
 
 
 
-#Order
+##Order
 Bei einem Auftrag müsste es 2 Unterklassen geben die die Schnittstele IOrder implementieren
 
 1. Auftrag einen anderen Spieler zu vernichten
 2. Auftrag 2 Kontinente zu besetzten
 
 
-Struktur
-======
+#Struktur
 Wir folgten bei der Strukturierung grundsätzlich den Richtlinien des Apache Marvens Project
 (http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html#
 
