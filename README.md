@@ -9,12 +9,12 @@ Folgende Klassen müssen mit entsprechenden Methdoen umgesetzt werden
 
 ##Player
 
-*public Country getCountries
-*public void addCountires
+* public Country getCountries
+* public void addCountires
 
 #Turn
-*private Player currentPlayer ()
-*private void nextPlayer ()
+* private Player currentPlayer ()
+* private void nextPlayer ()
 
 #Fight
 *public Fight (Country from, Country to)
