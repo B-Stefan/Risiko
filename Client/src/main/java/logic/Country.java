@@ -10,9 +10,9 @@ public class Country {
      */
     private final String name;
 
-    private final int id;
+    private final String id;
 
-    private final HashMap<Integer, Country> neighbors = new HashMap<Integer, Country>();
+    private final HashMap<String, Country> neighbors = new HashMap<String, Country>();
 
     /**
      * Bestimmt den Spieler, der aktuell das Land besetzt hï¿½llt
@@ -27,7 +27,7 @@ public class Country {
 
     public Country(final String n) {
         this.name = n;
-        this.id = Integer.parseInt(this.name);
+        this.id = UUID.randomUUID().toString();
     }
 
     /**
@@ -73,13 +73,13 @@ public class Country {
     /**
      * @return Die unique Id fÃ¼r das Land
      */
-    public int getId() {
+    public String getId() {
         return this.id;
     }
     
     /**
-     * Fügt die Armee a in die Liste der Armeen des Spielers hinzu
-     * @param a in die Liste der Armeen einzufügende Armee
+     * Fï¿½gt die Armee a in die Liste der Armeen des Spielers hinzu
+     * @param a in die Liste der Armeen einzufï¿½gende Armee
      */
     public void addArmy(Army a){
     	armyList.add(a);

@@ -10,6 +10,5 @@ public interface IGameGUI {
     public void onPlayerAdd(String name) throws Exception;
     public void onPlayerDelete(Player player) throws Exception;
     public void onGameStart() throws Exception;
-    public boolean isNextPlayer();
     public ArrayList<Player> getPlayers() throws Exception;
 }
