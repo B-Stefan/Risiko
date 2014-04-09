@@ -27,12 +27,6 @@ The following paragraph list some todos for our project.
 ##Country
 * public void setOwner (Army newOwner)
   - Beim setzten eines neuen Owners muss dieser auch eine Army mitbringen ansonsten geht dies nicht
-* public Player getOwner ()
-
-
-##Army
-* public void setCurrentPosition(Country c)
-* public Country getCurrentPosition ()
 
 
 ##Turn
