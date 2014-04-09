@@ -106,6 +106,7 @@ public class Game implements IGameGUI{
         	 */
         	for(Player p : players){
         		p.addCountry(c.pop());
+        		
         	}
 
         	sizeC = c.size();
@@ -121,6 +122,16 @@ public class Game implements IGameGUI{
         		p.addCountry(c.pop());
         	}
         }
+        setDefaultArmy();
+    }
+    
+    private void setDefaultArmy(){
+    	for(Player o : players){
+    		for (Country c : o.getCountries()){
+    			Army a = new Army(o, c);
+    			c.addArmy(a);
+    		}
+    	}
     }
 
     /**

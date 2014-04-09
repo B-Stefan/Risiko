@@ -1,6 +1,6 @@
 package main.java.logic;
 
-
+import java.util.*;
 import java.util.HashMap;
 
 public class Country {
@@ -18,6 +18,11 @@ public class Country {
      * Bestimmt den Spieler, der aktuell das Land besetzt hï¿½llt
      */
     private Player owner;
+    
+    /**
+     * Liste aller Armeen im Besitzt des jeweilligen Spielers
+     */
+    private List<Army> armyList = new ArrayList<Army>();
 
 
     public Country(final String n) {
@@ -70,6 +75,21 @@ public class Country {
      */
     public int getId() {
         return this.id;
+    }
+    
+    /**
+     * Fügt die Armee a in die Liste der Armeen des Spielers hinzu
+     * @param a in die Liste der Armeen einzufügende Armee
+     */
+    public void addArmy(Army a){
+    	armyList.add(a);
+    }
+    /**
+     * Getter ArmyList des Spielers
+     * @return armyList. Liste der Armeen des Spielers
+     */
+    public List<Army> getArmyList(){
+    	return this.armyList;
     }
 
     @Override
