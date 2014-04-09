@@ -81,10 +81,16 @@ public class GameCUI  {
                 IO.println(index + ". Player: " + player.toString());
             }
             this.printMap();
+            this.distributeArmys();
         }
         else if (action.contains("SHOW MAP")){
             this.printMap();
         }
+    }
+    private void distributeArmys() {
+        IO.println("Nachfolgend müssen alle Spieler Ihre Einheiten verteilen.");
+
+
     }
     private void printMap (){
         ArrayList<Country> countries = map.getCountries();

@@ -23,16 +23,8 @@ Classes / TODOS
 ======
 The following paragraph list some todos for our project.
 
-##Map
-* public isConnected (Country from, Country to)
-* public connect (Country from, Country to )
-
 
 ##Country
-
-* private Player Owner
-* public void setOwner (Player newOwner)
-    - Wird der initial gesetzt muss eine army erzeugt werden und auf diesem Land plaziert werden
 * public void setOwner (Army newOwner)
   - Beim setzten eines neuen Owners muss dieser auch eine Army mitbringen ansonsten geht dies nicht
 * public Player getOwner ()
