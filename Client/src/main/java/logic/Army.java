@@ -5,6 +5,11 @@ public class Army {
 	private Player owner;
 	private Country position;
 	
+	public Army(Player o, Country p){
+		this.owner = o;
+		this.position = p;
+	}
+	
 	/**
 	 * Setzt Spieler p als Besitzer des Landes
 	 * @param o der Spieler, der Besitzer der Armee wird
