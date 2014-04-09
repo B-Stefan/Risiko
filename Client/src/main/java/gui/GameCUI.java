@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Verwaltet die Benutzerschnittstelle
  * @author Stefan Bieliauskas
  */
-public class GameCUI {
+public class GameCUI  {
 
     private final IGameGUI game;
     private final IMapGUI map;
