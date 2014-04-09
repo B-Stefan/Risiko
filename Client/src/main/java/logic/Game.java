@@ -123,12 +123,18 @@ public class Game implements IGameGUI{
         }
         setDefaultArmy();
     }
-    
+
+    /**
+     * Wird beim Spielstart aufgerufen und setzt für alle Länder genau 1 Armee
+     */
     private void setDefaultArmy(){
     	for(Player o : players){
     		for (Country c : o.getCountries()){
-    			Army a = new Army(o, c);
-    			c.addArmy(a);
+                //Nur machen, wenn noch keine Armee auf dem Land sitzt
+                if (c.getArmyList().size() == 0) {
+                    Army a = new Army(o, c);
+                    c.addArmy(a);
+                }
     		}
     	}
     }
