@@ -116,7 +116,7 @@ public class Game implements IGameGUI{
          * bis keine mehr da sind
          */
         if(sizeC>0){
-        	for(int i = 0;i>sizeC; i++){
+        	for(int i = 0;i<sizeC; i++){
         		Player p = players.get(i);
         		p.addCountry(c.pop());
         	}
