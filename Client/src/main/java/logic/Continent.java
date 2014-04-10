@@ -1,6 +1,7 @@
 package main.java.logic;
 import java.util.*;
-	
+import java.util.Map;
+
 
 public class Continent{
 	
@@ -13,7 +14,7 @@ public class Continent{
 	 * Eine ArrayLsit mit den L�ndern, die sich auf dem Kontinent befinden L�nder
      * @return Gibt die Liste der Länder zurück, die disem Kontinent zugeordnet wurden
 	 */
-	private List<Country> countryList = new ArrayList<Country>();
+	private HashMap<String,Country> countrys = new HashMap<String, Country>();
 
     /**
      *
@@ -22,6 +23,7 @@ public class Continent{
 	public Continent (final String n){
 		this.name = n;
 	}
+
 	/**
 	 * 
 	 * @return Gibt den Namen des KOntinents zur�ck
@@ -29,14 +31,57 @@ public class Continent{
 	public String getName(){
 		return this.name;
 	}
-	
+
+
+    /**
+     * Ermittelt den aktuellen Besitzter des Kontinents, prüft ob alle Länder den gleichen Player als owner haben
+     * @return Gibt den Player zurück, der alle Länder auf diesem Kontinent besitzt, wenn der Kontinent geteilt wird wird null zurück gegeben.
+     */
+    public Player getCurrentOwner (){
+        boolean playerChange = false;
+        Player ruler = null;
+
+        for (Map.Entry<String,Country> entry : countrys.entrySet()){
+            Country currentCountry = entry.getValue();
+
+            if(ruler != null && ruler!= currentCountry.getOwner()){
+                playerChange = true;
+            }
+            else if(ruler == null ){
+                ruler = currentCountry.getOwner();
+            }
+
+        }
+        if(!playerChange){
+            return  ruler;
+        }
+        else {
+            return null;
+        }
+    }
 	/**
 	 * 
-	 * @param p Der Spieler, der in die Liste hinzugef�gt werden soll
+	 * @param p Der Land, der dem Kontinent hinzugefügt werden soll
 	 */
-	public void addPlayer(Country p){
-		countryList.add(p);
+	public void addCountry(Country p){
+		if(!countrys.containsKey(p.getId())){
+            countrys.put(p.getId(), p);
+        }
 	}
+
+    /**
+     *
+     * @param countryToDelete Land das gelöscht werden soll
+     * @return
+     */
+    public boolean removeCountry (Country countryToDelete){
+        if(countrys.containsKey(countryToDelete.getId())){
+            countrys.remove(countryToDelete);
+            return  true;
+        }
+        return  false;
+
+    }
 	
 	
 }
