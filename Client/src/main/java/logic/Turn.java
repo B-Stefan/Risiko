@@ -6,4 +6,8 @@ public class Turn {
 	public Turn(Player p){
 		this.player = p;
 	}
+    public Player getPlayer (){return this.player; }
+    public String toString(){
+        return "Turn: " + this.player.toString();
+    }
 }

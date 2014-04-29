@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Created by Stefan on 01.04.2014.
  */
-public class Map implements IMapGUI {
+public class Map  {
     private final ArrayList<Country> countries = new ArrayList<Country>();
 
     public Map() {

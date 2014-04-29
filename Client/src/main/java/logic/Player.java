@@ -7,7 +7,7 @@ import java.util.*;
 public class Player {
 
     private String name;
-    private List<Country> countries = new ArrayList<Country>();
+    private ArrayList<Country> countries = new ArrayList<Country>();
 
     public Player(String name) {
         this.name = name;
@@ -26,7 +26,7 @@ public class Player {
         c.setOwner(this);
     	countries.add(c);
     }
-    public List<Country> getCountries(){
+    public ArrayList<Country> getCountries(){
     	return this.countries;    	
     }
 

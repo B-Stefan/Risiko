@@ -14,12 +14,12 @@ public class main {
         //Erstellen des Spiels
         Game game = new Game();
         //Erstellen des UI
-        GameCUI ui = new GameCUI(game,game.getMap());
+        GameCUI ui = new GameCUI(game);
 
         game.addPlayer(new Player("Bon"));
         game.addPlayer(new Player("Stefan"));
         game.addPlayer(new Player("Linda"));
         //Startet das warten auf eine Eingbae
-        ui.init();
+        ui.listenConsole();
     }
 }

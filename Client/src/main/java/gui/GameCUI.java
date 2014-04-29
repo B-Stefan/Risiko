@@ -1,103 +1,115 @@
 package main.java.gui;
 
 import main.java.logic.exceptions.*;
-import main.java.logic.*;
-import main.resources.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import main.java.logic.Game;
+import main.java.logic.Player;
 
-import java.util.ArrayList;
 
 /**
  * Verwaltet die Benutzerschnittstelle
  * @author Stefan Bieliauskas
  */
-public class GameCUI  {
+public class GameCUI extends CUI {
 
-    private final IGameGUI game;
-    private final IMapGUI map;
+    private final Game game;
 
     /**
      * Verwaltet die Benutzerschnittstelle
      * @param game - Das spiel, das die GUI betrifft
      * @throws Exception
      */
-    public GameCUI(final IGameGUI game, final IMapGUI map) throws Exception {
+    public GameCUI(final Game game) {
+        super(game);
         this.game = game;
-        this.map = map;
-
     }
 
-    /**
-     * Initiiert das 'horchen'
-     * @throws Exception
-     */
-    public void init() throws Exception {
-        IO.println("Willkommen bei Risiko mit dem command help erhalten Sie eine Übersicht über die Möglichkeiten");
-        String command = "";
-        while (true) {
-            command = IO.readString();
-            parseCommand(command);
+
+    @Override
+    public void listenConsole() throws Exception {
+        if ( this.game.getCurrentGameState() == Game.gameStates.WAITING){
+            IO.println("Willkommen bei Risiko mit dem command help erhalten Sie eine Übersicht über die Möglichkeiten");
         }
+        super.listenConsole();
     }
 
     /**
-     * Überprüft das Command nach Aktionen und führt diese anschließend aus.
-     * @param commands
+     * Diese Mehtode beschreibt was passieren soll wenn der User eine Eben nach unten geht.
      * @throws Exception
      */
-    public void parseCommand(final String commands) throws Exception {
-        final String action = commands.toUpperCase();
-        final String params = commands;
+    protected void goIntoChildContext() throws Exception{
+        TurnCUI turn = new TurnCUI(game.getCurrentRound().getCurrentTurn(), this);
+        this.setChild(turn);
+        this.setCurrentState(states.SILENT);
+        this.getChild().listenConsole();
+    }
 
 
-        if (action.contains("ADD PLAYER")) {
-            String playerName = params.substring(params.indexOf("Player") + 7, params.length());
-            game.onPlayerAdd(playerName);
-        } else if (action.contains("REMOVE PLAYER")) {
-            //@todo Remove Player einbauen
-            throw new NotImplementedException();
 
-        } else if (action.contains("START GAME")) {
 
-            //Error Handling, wenn zu wenig/viele Spieler
-            try {
-                game.onGameStart();
-            } catch (final NotEnoughPlayerException e) {
-                IO.println(e.getMessage());
-                return;
-            } catch (final TooManyPlayerException e) {
-                IO.println(e.getMessage());
-                return;
-            } catch (final NotEnoughCountriesException e) {
 
+    protected void CUIAddPlayer (String[] args) {
+        if(args.length == 0){
+            IO.println("Bitte geben Sie einen Spielernamen ein folgendes Format: AddPlayer <Name> + [<Name>]");
+            return;
+        }
+        else if (args.length == 1 && args[0] == ""){
+            IO.println("Bitte geben Sie einen Spielernamen ein folgendes Format: AddPlayer  <Name> + [<Name>]");
             return;
         }
 
-            IO.println("Willkommen bei Risiko, nun gehts los");
-            IO.println("Spielerliste");
+        try {
+            for (String name : args){
+                    game.onPlayerAdd(name);
 
-            for (Player player : game.getPlayers()) {
-                int index = (game.getPlayers().indexOf(player) + 1);
-                IO.println(index + ". Player: " + player.toString());
             }
-            this.printMap();
-            this.distributeArmys();
         }
-        else if (action.contains("SHOW MAP")){
-            this.printMap();
+        catch (GameAllreadyStartedException e ){
+            IO.println(e.getMessage());
         }
-    }
-    private void distributeArmys() {
-        IO.println("Nachfolgend müssen alle Spieler Ihre Einheiten verteilen.");
-
 
     }
-    private void printMap (){
-        ArrayList<Country> countries = map.getCountries();
-        IO.println("Aktueller Status der Karte");
-        for(Country country: countries){
-            IO.println(country.toString());
 
+
+    protected void CUIStartGame (String[] args) throws Exception{
+
+        //Error Handling, wenn zu wenig/viele Spieler
+        try {
+            game.onGameStart();
+        } catch (final NotEnoughPlayerException e) {
+            IO.println(e.getMessage());
+            return;
+        } catch (final TooManyPlayerException e) {
+            IO.println(e.getMessage());
+            return;
+        } catch (final NotEnoughCountriesException e) {
+            IO.println(e.getMessage());
+            return;
+        }
+        catch (final GameAllreadyStartedException e ){
+            IO.println(e.getMessage());
+            return;
+        }
+
+        IO.println("Willkommen bei Risiko, nun gehts los");
+        IO.println("Spielerliste");
+
+        this.printPlayers();
+        this.goIntoChildContext();
+    }
+
+    protected void CUIShowPlayers(String[] args){
+        this.printPlayers();
+    }
+
+
+
+    private void printPlayers (){
+        for (Player player : game.getPlayers()) {
+            int index = (game.getPlayers().indexOf(player) + 1);
+            IO.println(index + ". Player: " + player.toString());
         }
     }
+
+
+
 }
