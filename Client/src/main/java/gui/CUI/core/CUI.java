@@ -76,8 +76,6 @@ public abstract class CUI {
                 cui.goIntoChildContext(args);
             }
 
-
-
         }
     }
     /**
@@ -159,7 +157,7 @@ public abstract class CUI {
             IO.print(this.toString()); //Print Context
             rawCommand = IO.readString();
             try {
-                this.parseCommand(rawCommand);
+                this.fireCommandEvent(rawCommand);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -215,20 +213,16 @@ public abstract class CUI {
      * @param args - Die Argumente als String Array
      * @throws Exception
      */
-    protected void parseCommand(final String command, final String[] args) throws Exception {
-
-        Class c = this.getClass();
-        Class noparams[] = {String[].class};
-
+    protected void fireCommandEvent(final String command, final String[] args)  {
 
         if (!commands.containsKey(command)) {
-            IO.println("Es konnte keine Aktion mit dem Namen '" + command + "' gefunden werden ");
+            IO.println("Es konnte keine Aktion mit dem Namen '" + command + "' gefunden werden verwende 'help' um eine Auswahl der Möglichkeiten zu erhalten.");
             return;
         }
 
-        CommandListener currentCommand = commands.get(command);
-        currentCommand.setArguments(args);
-        currentCommand.actionPerformed(new ActionEvent(this, new Integer(42), command));
+        CommandListener currentCommandListener = commands.get(command);
+        currentCommandListener.setArguments(args);
+        fireCommandEvent(currentCommandListener);
 
     }
 
@@ -237,12 +231,21 @@ public abstract class CUI {
      * @param rawInput - Unformtierter Input vom User
      * @throws Exception
      */
-    protected void parseCommand(String rawInput) throws Exception {
-        this.parseCommand(this.normalizeCommand(rawInput), this.normalizeArguments(rawInput));
+    protected void fireCommandEvent(String rawInput)  {
+        this.fireCommandEvent(this.normalizeCommand(rawInput), this.normalizeArguments(rawInput));
     }
 
     /**
-     * Für einen Befehls-Listener hinzu
+     * Versucht eine Eingabe eines Nutzers zu formatieren.
+     * @param listener - Unformtierter Input vom User
+     * @throws Exception
+     */
+    protected void fireCommandEvent(CommandListener listener)  {
+        listener.actionPerformed(new ActionEvent(this, new Integer(42), listener.getCommand()));
+    }
+
+    /**
+     * Führt einen Befehlt programmgesteuert aus.
      * @param c - Der neue Listener
      */
     protected void addCommandListener(CommandListener c) {

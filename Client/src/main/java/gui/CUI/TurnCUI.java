@@ -17,9 +17,9 @@ public class TurnCUI extends CUI {
 
     private  final  Turn turn;
 
-    public class showCountries extends CommandListener {
+    public class ShowCountriesCommandListener extends CommandListener {
 
-        public showCountries() {
+        public ShowCountriesCommandListener() {
             super("show", "Gibt die aktuelle Karte des Players aus");
         }
 
@@ -35,14 +35,23 @@ public class TurnCUI extends CUI {
     public TurnCUI(Turn turn, CUI parent){
         super(turn,parent);
         this.turn = turn;
+        this.addCommandListener(new ShowCountriesCommandListener());
     }
     protected void goIntoChildContext(){
-        throw new NotImplementedException();
+        IO.println("Bitte gebe einen land als Paramenter ein");
+        this.fireCommandEvent(new ShowCountriesCommandListener());
     }
     protected void goIntoChildContext(String[] args){
-
-        IO.println("changeCountrie " + args[0]);
-        found = this.turn.getPlayer().
+        String countryName = args[0];
+        IO.println("changeCountrie " + countryName);
+        Country found = this.turn.getPlayer().getCountry(countryName);
+        if(found == null){
+            IO.println("Ihr Land " + countryName + " konnte nicht gefunden werden.");
+        }
+        else {
+            CUI child = new CountryCUI(turn,found, this);
+            goIntoChildContext(child);
+        }
     }
 
 
