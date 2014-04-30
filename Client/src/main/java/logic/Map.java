@@ -89,6 +89,11 @@ public class Map  {
     	return bonus;
     }
     
+    /**
+     * Vergleicht die Namen der Länder mit übergebenem String
+     * @param n String (name des zu suchenden Landes)
+     * @return das zu suchende Land
+     */
     public Country getCountry(String n){
     	for (Country c : countries){
     		if(c.getName().equals(n)){

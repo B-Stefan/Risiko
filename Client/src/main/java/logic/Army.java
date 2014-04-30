@@ -41,4 +41,6 @@ public class Army {
 	public Country getPosition(){
 		return this.position;
 	}
+	
+
 }
