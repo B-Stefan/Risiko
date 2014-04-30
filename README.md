@@ -18,7 +18,6 @@ A port of the popular board game "Risiko" in Java
     git push
     ```
 
-
 Classes / TODOS
 ======
 The following paragraph list some todos for our project.
@@ -29,13 +28,9 @@ The following paragraph list some todos for our project.
   - Beim setzten eines neuen Owners muss dieser auch eine Army mitbringen ansonsten geht dies nicht
 
 
-##Turn
-* private Player currentPlayer ()
-* private void nextPlayer ()
 
 ##Fight
 *public Fight (Country from, Country to)
-
 
 
 ##Order

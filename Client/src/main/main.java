@@ -1,6 +1,7 @@
 package main;
 import main.java.logic.Game;
-import main.java.gui.GameCUI;
+import main.java.gui.CUI.GameCUI;
+
 import main.java.logic.Player;
 import java.lang.*;
 
