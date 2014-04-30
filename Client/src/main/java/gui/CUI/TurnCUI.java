@@ -1,8 +1,10 @@
-package main.java.gui;
+package main.java.gui.CUI;
 
 /**
  * Created by Stefan on 30.04.14.
  */
+import main.java.gui.CUI.CUI;
+import main.java.gui.CUI.IO;
 import main.java.logic.Country;
 import main.java.logic.Turn;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

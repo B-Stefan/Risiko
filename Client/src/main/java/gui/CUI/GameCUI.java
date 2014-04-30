@@ -1,5 +1,7 @@
-package main.java.gui;
+package main.java.gui.CUI;
 
+import main.java.gui.CUI.core.CUI;
+import main.java.gui.CUI.core.IO;
 import main.java.logic.exceptions.*;
 import main.java.logic.Game;
 import main.java.logic.Player;
@@ -75,7 +77,7 @@ public class GameCUI extends CUI {
         //Error Handling, wenn zu wenig/viele Spieler
         try {
             game.onGameStart();
-        } catch (final NotEnoughPlayerException e) {
+        } catch (final   NotEnoughPlayerException e) {
             IO.println(e.getMessage());
             return;
         } catch (final TooManyPlayerException e) {

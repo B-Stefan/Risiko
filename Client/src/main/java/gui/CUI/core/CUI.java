@@ -1,4 +1,6 @@
-package main.java.gui;
+package main.java.gui.CUI.core;
+
+import main.java.gui.CUI.IO;
 
 import java.util.Arrays;
 import java.lang.reflect.Method;
