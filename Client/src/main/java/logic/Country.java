@@ -13,6 +13,8 @@ public class Country {
     private final String id;
 
     private final HashMap<String, Country> neighbors = new HashMap<String, Country>();
+    
+    private final Continent position;
 
     /**
      * Bestimmt den Spieler, der aktuell das Land besetzt h�llt
@@ -25,9 +27,10 @@ public class Country {
     private List<Army> armyList = new ArrayList<Army>();
 
 
-    public Country(final String n) {
+    public Country(final String n, Continent c) {
         this.name = n;
         this.id = UUID.randomUUID().toString();
+        this.position = c;
     }
 
     /**

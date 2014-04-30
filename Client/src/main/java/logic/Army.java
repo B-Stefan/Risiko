@@ -9,6 +9,9 @@ public class Army {
 		this.owner = o;
 		this.position = p;
 	}
+	public Army(Player o){
+		this.owner = o;
+	}
 	
 	/**
 	 * Setzt Spieler p als Besitzer des Landes

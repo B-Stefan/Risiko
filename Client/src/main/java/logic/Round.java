@@ -32,7 +32,7 @@ public class Round {
 	}
 	public Turn setNextTurn(){
 		this.setCurrentPlayer();
-        this.currentTurn = new Turn(this.getCurrentPlayer());
+        this.currentTurn = new Turn(this.getCurrentPlayer(), this.map);
         return this.currentTurn;
 	}
     public Turn getCurrentTurn(){return this.currentTurn; }

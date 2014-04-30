@@ -16,21 +16,29 @@ public class Continent{
 	 */
 	private HashMap<String,Country> countrys = new HashMap<String, Country>();
 
+	/**
+	 * der Bonus, der die Kontrolle des jeweiligen Kontinents einbringt für die neuen Armeen
+	 */
+	private int bonus;
+	
     /**
      *
      * @param n Name des Kontinents
      */
-	public Continent (final String n){
+	public Continent (final String n, int b){
 		this.name = n;
+		this.bonus = b;
 	}
 
 	/**
 	 * 
 	 * @return Gibt den Namen des KOntinents zurï¿½ck
 	 */
+	
 	public String getName(){
 		return this.name;
 	}
+	
 
 
     /**
@@ -59,6 +67,7 @@ public class Continent{
             return null;
         }
     }
+    
 	/**
 	 * 
 	 * @param p Der Land, der dem Kontinent hinzugefÃ¼gt werden soll
@@ -83,5 +92,8 @@ public class Continent{
 
     }
 	
+    public int getBonus(){
+    	return this.bonus;
+    }
 	
 }
