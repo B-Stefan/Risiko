@@ -34,4 +34,12 @@ public class Player {
     public String toString(){
         return this.getName();
     }
+    public Country getCountry(String n){
+    	for (Country c : countries){
+    		if(c.getName().equals(n)){
+    			return c;
+    		}
+    	}
+    	return null;
+    }
 }
