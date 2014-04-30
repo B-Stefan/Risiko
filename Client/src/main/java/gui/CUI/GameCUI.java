@@ -137,10 +137,12 @@ public class GameCUI extends CUI {
         }
 
         TurnCUI turn = new TurnCUI(round.getCurrentTurn(), this);
-        this.setChild(turn);
-        this.setCurrentState(states.SILENT);
-        this.getChild().listenConsole();
+        super.goIntoChildContext(turn);
 
+
+    }
+    protected void goIntoChildContext(String[] args){
+        this.goIntoChildContext();
     }
 
 

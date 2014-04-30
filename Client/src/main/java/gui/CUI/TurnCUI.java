@@ -8,7 +8,6 @@ import main.java.gui.CUI.core.CommandListener;
 import main.java.gui.CUI.core.IO;
 import main.java.logic.Country;
 import main.java.logic.Turn;
-import main.java.logic.exceptions.GameAllreadyStartedException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.event.ActionEvent;
@@ -38,9 +37,14 @@ public class TurnCUI extends CUI {
         this.turn = turn;
     }
     protected void goIntoChildContext(){
-
         throw new NotImplementedException();
     }
+    protected void goIntoChildContext(String[] args){
+
+        IO.println("changeCountrie " + args[0]);
+        found = this.turn.getPlayer().
+    }
+
 
     protected void CUIShow (String[] args){
         IO.println("Nachfolgend die entsprechenden Ländern für" + this.turn.getPlayer().toString());

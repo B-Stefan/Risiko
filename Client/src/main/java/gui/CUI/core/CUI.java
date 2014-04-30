@@ -69,7 +69,14 @@ public abstract class CUI {
 
                 }
             }
-            cui.goIntoChildContext();
+            if(args[0] == null ){
+                cui.goIntoChildContext();
+            }
+            else{
+                cui.goIntoChildContext(args);
+            }
+
+
 
         }
     }
@@ -118,11 +125,18 @@ public abstract class CUI {
     protected abstract void goIntoChildContext();
 
     /**
+     * Dient zum wechseln in den untergeordneten Kontext
+     */
+    protected abstract void goIntoChildContext(String[] args);
+
+    /**
      * Dient zum wechseln in den untergeordneten Kontext und führt den wechsel auch tatsächlich durch.
      * @param context
      */
-    protected  void goIntoChildContext(Object context){
-
+    protected  void goIntoChildContext(CUI context){
+        this.setChild(context);
+        this.setCurrentState(states.SILENT);
+        this.getChild().listenConsole();
     }
 
     /**

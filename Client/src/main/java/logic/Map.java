@@ -13,7 +13,7 @@ public class Map  {
 
     public Map() {
     	this.continents.add(new Continent("Nord Amerika", 5));
-    	this.continents.add(new Continent("Süd Amerika", 2));
+    	this.continents.add(new Continent("Sï¿½d Amerika", 2));
     	this.continents.add(new Continent("Europa", 5));
     	this.continents.add(new Continent("Afrika", 3));
     	this.continents.add(new Continent("Asien", 7));
@@ -77,7 +77,7 @@ public class Map  {
     }
     
     /**
-     * Berechnet den Benous, den ein Spieler an Einheiten bekommt für die komplette Einnahme des jeweilligen Kontinents
+     * Berechnet den Benous, den ein Spieler an Einheiten bekommt fï¿½r die komplette Einnahme des jeweilligen Kontinents
      * @param p der aktuelle Spieler
      * @return die Anzahl der Bonus Einheiten
      */
