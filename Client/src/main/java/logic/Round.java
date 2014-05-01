@@ -30,10 +30,10 @@ public class Round {
 	public Player getCurrentPlayer(){
 		return this.currentPlayer;
 	}
-	public Turn setNextTurn(){
+	public void setNextTurn(){
 		this.setCurrentPlayer();
         this.currentTurn = new Turn(this.getCurrentPlayer(), this.map);
-        return this.currentTurn;
+
 	}
     public Turn getCurrentTurn(){return this.currentTurn; }
 }

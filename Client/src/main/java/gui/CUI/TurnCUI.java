@@ -31,11 +31,40 @@ public class TurnCUI extends CUI {
 
         }
     }
+    public class StateCommandListener extends CommandListener {
+
+        public StateCommandListener() {
+            super("state", "Gibt den aktuellen Status deines Zuges aus");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            Turn.steps currentStep = turn.getCurrentStep();
+            IO.println("Es ist " + turn.getPlayer() + "an der Reihe");
+            IO.println("Dein Zug befindet sich im status " + currentStep);
+            if(currentStep == Turn.steps.DISTRIBUTE){
+                IO.println("Du musst noch Einheiten auf deinen Ländern verteilen. Du darfst noch: "+ turn.getNewArmysSize() + " Einheiten verteilen");
+            }
+            else if(currentStep == Turn.steps.FIGHT){
+                IO.println("Du befindest dich im Kampfmodus, greife Länder an!");
+
+            }
+            else if(currentStep == Turn.steps.MOVE){
+                IO.println("Du darfst noch einheiten bewegen.");
+
+            }
+
+            IO.println("Dir stehen dazu folgende Komandos zur verfügung: ");
+            fireCommandEvent(new HelpListener());
+
+        }
+    }
 
     public TurnCUI(Turn turn, CUI parent){
         super(turn,parent);
         this.turn = turn;
         this.addCommandListener(new ShowCountriesCommandListener());
+        this.addCommandListener(new StateCommandListener());
     }
     protected void goIntoChildContext(){
         IO.println("Bitte gebe einen land als Paramenter ein");

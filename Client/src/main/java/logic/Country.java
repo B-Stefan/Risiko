@@ -52,6 +52,14 @@ public class Country {
     }
 
 
+    public Country getNeighbor (String name){
+        return neighbors.get(name);
+    }
+    public ArrayList<Country> getNeighbors (){
+        ArrayList<Country> list = new ArrayList<Country>();
+        list.addAll(this.neighbors.values());
+        return list;
+    }
     /**
      * setzt den aktuellen Besitzer des Lands
      *
@@ -62,7 +70,7 @@ public class Country {
     	this.owner = p;
     }
     /**
-     * ändert den Owner des Landes und entfehrnt gleichzeitig das Land aus der Liste des ursprünglichen Owners
+     * ï¿½ndert den Owner des Landes und entfehrnt gleichzeitig das Land aus der Liste des ursprï¿½nglichen Owners
      * @param newOwner
      * @throws CountryNotInListException
      */
@@ -108,6 +116,10 @@ public class Country {
             a.setPosition(null);
         }
     }
+    public int getNumberOfArmys (){
+        return this.armyList.size();
+    }
+
     /**
      * Getter ArmyList des Spielers
      * @return armyList. Liste der Armeen des Spielers
@@ -118,10 +130,16 @@ public class Country {
 
     @Override
     public String toString() {
-        String ownerString = " @ ";
+        String postFix = " Owner: ";
         if (this.owner != null) {
-            ownerString += this.owner.ToString();
+            postFix += this.owner.ToString();
         }
-        return this.getName() + ownerString;
+        postFix += " Armeen: " + this.getNumberOfArmys();
+        return this.getName() + postFix;
+    }
+
+
+    public boolean equals(Country otherCountry){
+        return otherCountry.getId() == this.getId();
     }
 }

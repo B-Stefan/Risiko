@@ -34,11 +34,11 @@ public class Army {
 	 * @param country �bergiebt die (neue) Position der Armee
 	 */
 	public void setPosition(Country country)  throws CountriesNotConnectedException{
-        //Löschen der aktuellen position
-        if(this.position != null){
-            this.position.removeArmy(this);
-        }
 
+        //Armee sitzt bereits auf der Position
+        if(country == this.position){
+            return;
+        }
         //Neue Posituon auf dem Spiefeld
         if(country != null && this.position != country) {
 
@@ -48,15 +48,18 @@ public class Army {
                 if(!this.position.isConnected(country)){
                     throw new CountriesNotConnectedException(this.position, country);
                 };
+                this.position.removeArmy(this);
             }
             this.position = country;
             country.addArmy(this);
         }
         //Einheit von Position entfernt
         else {
-            this.position = null;
+            if(this.position != null  ){
+                this.position.removeArmy(this);
+            }
+            this.position = country;
         }
-
 	}
 	/**
 	 * Getter f�r die Position

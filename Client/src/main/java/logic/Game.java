@@ -181,7 +181,12 @@ public class Game {
                 //Nur machen, wenn noch keine Armee auf dem Land sitzt
                 if (c.getArmyList().size() == 0) {
                     Army a = new Army(o, c);
-                    c.addArmy(a);
+                    try {
+                        c.addArmy(a);
+                    }catch (CountriesNotConnectedException e){
+                        //Kann nicht auftreten, da die diefalut-Armys zuerst keinem Land zugewiesen wurden.
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }

@@ -1,10 +1,10 @@
 package main.java.logic;
-import main.java.logic.exceptions.ArmyAlreadyMovedException;
-import main.java.logic.exceptions.CountriesNotConnectedException;
-import main.java.logic.exceptions.NotEnoughNewArmysException;
-import main.java.logic.exceptions.TurnNotInMoveStateException;
+import main.java.logic.exceptions.*;
+import sun.net.www.protocol.http.HttpURLConnection;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Turn {
 
@@ -14,25 +14,48 @@ public class Turn {
         MOVE
     }
 
+
 	private final Player player;
 	private final Map map;
 	private final Stack<Army> newArmies = new Stack<Army>();
 	private final ArrayList<Army> movedArmies = new ArrayList<Army>();
+    public  final Queue<steps> allowedSteps;
 
-    private steps currentStep = steps.DISTRIBUTE;
+    private steps currentStep;
 
-	public Turn(final Player p,final Map m){
-		this.player = p;
+
+    public Turn(final Player p,final Map m, Queue<steps> steps){
+        this.player = p;
         this.map = m;
-		createNewArmies(this.determineAmountOfNewArmies());
+
+        //Default werde nutzten
+        if(steps == null){
+            this.allowedSteps = new LinkedBlockingQueue<Turn.steps>();
+            this.allowedSteps.offer(Turn.steps.DISTRIBUTE);
+            this.allowedSteps.offer(Turn.steps.FIGHT);
+            this.allowedSteps.offer(Turn.steps.MOVE);
+
+        }
+        else {
+            if(steps.isEmpty()){
+                throw  new IllegalArgumentException("Sie müssten mindestens eine Queue mit einem step übergeben");
+            }
+            this.allowedSteps = steps;
+        }
+        this.currentStep = this.allowedSteps.poll();// Erstes element aus der Liste auf aktuellen status setzten
+        createNewArmies(this.determineAmountOfNewArmies());
+    }
+
+    public Turn(final Player p,final Map m){
+        this(p,m,null);
 	}
-	
+
     public Player getPlayer (){
     	return this.player; 
     }
     
     public String toString(){
-        return "Turn: " + this.player.toString();
+        return "Turn(" + this.getPlayer() + "):" + this.getCurrentStep();
     }
     
     /**
@@ -58,24 +81,12 @@ public class Turn {
     	}
     }
 
-    /**
-     * weist der jeweiligen Armee ein Land zu
-     * @param position Das Land, zu welchem die Armee zugewiesen werden soll
-     */
-    public void placeNewArmy(Country position) throws CountriesNotConnectedException, NotEnoughNewArmysException{
-        if(this.newArmies.size() > 0 ){
-            Army a = this.newArmies.pop();
-            a.setPosition(position);
-        }
-        else{
-            throw new NotEnoughNewArmysException(this);
-        }
-    }
+
     /**
      * f�gt der Liste der bereits verschobenen Einheiten die Armee hinzu
      * @param a bewegte Armee
      */
-    private void addArmyMoved(Army a){
+    private void addMovedArmy(Army a){
     	this.movedArmies.add(a);
     }
     /**
@@ -86,25 +97,118 @@ public class Turn {
     private boolean isArmyAlreadyMoved(Army a){
     	return movedArmies.contains(a);
     }
+
+
     /**
-     * �ndert die Position der Armee, falls sie noch nicht bewegt wurde und �ndert den Status der Armee in bereits bewegt
-     * @param country das Zielland
-     * @param army die zu bewegende Armee
-     * @return true wenn die Armee bewegt wurde kann, false wenn nicht
+     *
+     * @param stepToCheck
+     * @return
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
      */
-    public boolean moveArmy(Country country, Army army) throws CountriesNotConnectedException,TurnNotInMoveStateException, ArmyAlreadyMovedException {
-    	if (isArmyAlreadyMoved(army) != true && this.getCurrentStep() == steps.MOVE){
-    		army.setPosition(country);
-    		addArmyMoved(army);
-    		return true;    		
-    	}
-    	return false;
+    private boolean isStepAllowed(steps stepToCheck) throws TurnNotAllowedStepException, TurnNotInCorrectStepException{
+        if(allowedSteps.contains(stepToCheck)){
+            if(this.getNextStep() == stepToCheck){
+                return true;
+            }
+            else {
+                throw new TurnNotInCorrectStepException(stepToCheck,this);
+            }
+        }
+        else if(this.getCurrentStep() == stepToCheck){
+            return true;
+        }
+        else{
+            throw new TurnNotAllowedStepException(stepToCheck,this);
+        }
     }
+
+
+    /**
+     *
+     * @param position
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
+     * @throws NotEnoughNewArmysException
+     */
+    public void placeNewArmy(Country position) throws  TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException{
+
+        if(this.isStepAllowed(steps.DISTRIBUTE)){
+
+            //Einmal eine neue Armee plaziert ==> Statusänderung im Turn
+            this.setCurrentStep(steps.DISTRIBUTE);
+
+            if(this.newArmies.size() == 0 ){
+                throw new NotEnoughNewArmysException(this);
+            }
+            else {
+                Army a = this.newArmies.pop();
+                try {
+                    a.setPosition(position);
+                }catch (CountriesNotConnectedException e){
+                    //Nicht möglich, dass diese Exception auftritt.
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
+    }
+
+    /**
+     * Angreifen eines Landes mit einer definierten Anzahl von einheiten
+     * @param from - Von diesem Land wird angegriffen
+     * @param to - Dieses land soll angegrifffen werden
+     * @param numberOfArmys - Mit dieser Anzahl wird angegriffen
+     * @throws TurnNotAllowedStepException
+     */
+    public void fight (Country from, Country to, int numberOfArmys) throws TurnNotAllowedStepException, TurnNotInCorrectStepException{
+        if(this.isStepAllowed(steps.FIGHT)){
+            //Einmal ein Land angegriffen ändert den step des Turns
+            this.setCurrentStep(steps.FIGHT);
+            throw new  NotImplementedException();
+        }
+    }
+
+    /**
+     * Bewegt eine Armee auf die neue Position.
+     * Dise Methdoe bildet den 2. Step in einem Zug ab.
+     *
+     * @param country - neue position der Armee
+     * @param army - Die Armee, die bewegt werden soll
+     * @throws CountriesNotConnectedException
+     * @throws ArmyAlreadyMovedException
+     */
+    public void moveArmy(Country country, Army army) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException {
+
+        if(this.isStepAllowed(steps.MOVE)){
+
+            //Einmal eine Einheit bewegt, ändert den Step des Turns
+            this.setCurrentStep(steps.MOVE);
+
+            if (isArmyAlreadyMoved(army)){
+                throw new ArmyAlreadyMovedException(army);
+            }
+            army.setPosition(country);
+            addMovedArmy(army);
+        }
+    }
+
     public steps getCurrentStep() {
         return currentStep;
     }
+    public steps getNextStep (){
+        return this.allowedSteps.peek();
+    }
+    private void setCurrentStep(steps step) {
+        currentStep = step;
+    }
 
+    public int getNewArmysSize() {
+        return this.newArmies.size();
+    }
 
-
+    public Queue<steps>  getAllowedSteps() {
+        return  this.allowedSteps;
+    }
 
 }
