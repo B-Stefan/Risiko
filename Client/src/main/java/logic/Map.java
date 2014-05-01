@@ -12,56 +12,57 @@ public class Map  {
     private final ArrayList<Continent> continents = new ArrayList<Continent>();
 
     public Map() {
-    	this.continents.add(new Continent("Nord Amerika", 5));
-    	this.continents.add(new Continent("Sï¿½d Amerika", 2));
-    	this.continents.add(new Continent("Europa", 5));
-    	this.continents.add(new Continent("Afrika", 3));
-    	this.continents.add(new Continent("Asien", 7));
-    	this.continents.add(new Continent("Australien", 2));
+        Continent northAmerica  = new Continent("Nord Amerika", 5);
+        Continent southAmerica  = new Continent("SÃ¼d Amerika", 2);
+        Continent europe        = new Continent("Europa", 5);
+        Continent asia          = new Continent("Asien", 7);
+        Continent afrika        = new Continent("Afrika", 3);
+        Continent australia     = new Continent("Australien", 2);
+
     	
-        this.countries.add(new Country("Alaska", continents.get(0)));
-        this.countries.add(new Country("Nordwest-Territorium", continents.get(0)));
-        this.countries.add(new Country("Alberta", continents.get(0)));
-        this.countries.add(new Country("Ontario", continents.get(0)));
-        this.countries.add(new Country("Quebec", continents.get(0)));
-        this.countries.add(new Country("Weststaaten", continents.get(0)));
-        this.countries.add(new Country("Oststaaten", continents.get(0)));
-        this.countries.add(new Country("Mittelamerika", continents.get(0)));
-        this.countries.add(new Country("Venezuela", continents.get(1)));
-        this.countries.add(new Country("Brasilien", continents.get(1)));
-        this.countries.add(new Country("Peru", continents.get(1)));
-        this.countries.add(new Country("Argentinien", continents.get(1)));
-        this.countries.add(new Country("Grï¿½nland", continents.get(2)));
-        this.countries.add(new Country("Island", continents.get(2)));
-        this.countries.add(new Country("Grobritannien", continents.get(2)));
-        this.countries.add(new Country("Skandinavien", continents.get(2)));
-        this.countries.add(new Country("Mitteleuropa", continents.get(2)));
-        this.countries.add(new Country("Westeuropa", continents.get(2)));
-        this.countries.add(new Country("Sï¿½deuropa", continents.get(2)));
-        this.countries.add(new Country("Ukraine", continents.get(2)));
-        this.countries.add(new Country("Afghanistan", continents.get(4)));
-        this.countries.add(new Country("Ural", continents.get(4)));
-        this.countries.add(new Country("Sibirien", continents.get(4)));
-        this.countries.add(new Country("Irrutsk", continents.get(4)));
-        this.countries.add(new Country("Jakuten", continents.get(4)));
-        this.countries.add(new Country("Kamtschatka", continents.get(4)));
-        this.countries.add(new Country("Mongolei", continents.get(4)));
-        this.countries.add(new Country("Japan", continents.get(4)));
-        this.countries.add(new Country("China", continents.get(4)));
-        this.countries.add(new Country("Indien", continents.get(4)));
-        this.countries.add(new Country("Siam", continents.get(4)));
-        this.countries.add(new Country("Mittelerer-Osten", continents.get(4)));
-        this.countries.add(new Country("ï¿½gypten", continents.get(3)));
-        this.countries.add(new Country("Ostafrika", continents.get(3)));
-        this.countries.add(new Country("Nordwestafrika", continents.get(3)));
-        this.countries.add(new Country("Kongo", continents.get(3)));
-        this.countries.add(new Country("Sï¿½dafrika", continents.get(3)));
-        this.countries.add(new Country("Madagaskar", continents.get(3)));
-        this.countries.add(new Country("Kongo", continents.get(3)));
-        this.countries.add(new Country("Indonesien", continents.get(5)));
-        this.countries.add(new Country("Neu-Guinea", continents.get(5)));
-        this.countries.add(new Country("Ostaustralien", continents.get(5)));
-        this.countries.add(new Country("Westaustralien", continents.get(5)));
+        this.countries.add(new Country("Alaska", northAmerica));
+        this.countries.add(new Country("Nordwest-Territorium", northAmerica));
+        this.countries.add(new Country("Alberta", northAmerica));
+        this.countries.add(new Country("Ontario", northAmerica));
+        this.countries.add(new Country("Quebec", northAmerica));
+        this.countries.add(new Country("Weststaaten", northAmerica));
+        this.countries.add(new Country("Oststaaten", northAmerica));
+        this.countries.add(new Country("Mittelamerika", northAmerica));
+        this.countries.add(new Country("Venezuela", southAmerica));
+        this.countries.add(new Country("Brasilien", southAmerica));
+        this.countries.add(new Country("Peru", southAmerica));
+        this.countries.add(new Country("Argentinien", southAmerica));
+        this.countries.add(new Country("Grï¿½nland", europe));
+        this.countries.add(new Country("Island", europe));
+        this.countries.add(new Country("Grobritannien", europe));
+        this.countries.add(new Country("Skandinavien", europe));
+        this.countries.add(new Country("Mitteleuropa", europe));
+        this.countries.add(new Country("Westeuropa", europe));
+        this.countries.add(new Country("Sï¿½deuropa", europe));
+        this.countries.add(new Country("Ukraine", europe));
+        this.countries.add(new Country("Afghanistan", asia));
+        this.countries.add(new Country("Ural", asia));
+        this.countries.add(new Country("Sibirien", asia));
+        this.countries.add(new Country("Irrutsk", asia));
+        this.countries.add(new Country("Jakuten", asia));
+        this.countries.add(new Country("Kamtschatka", asia));
+        this.countries.add(new Country("Mongolei", asia));
+        this.countries.add(new Country("Japan", asia));
+        this.countries.add(new Country("China", asia));
+        this.countries.add(new Country("Indien", asia));
+        this.countries.add(new Country("Siam", asia));
+        this.countries.add(new Country("Mittelerer-Osten", asia));
+        this.countries.add(new Country("ï¿½gypten", afrika));
+        this.countries.add(new Country("Ostafrika", afrika));
+        this.countries.add(new Country("Nordwestafrika", afrika));
+        this.countries.add(new Country("Kongo", afrika));
+        this.countries.add(new Country("Sï¿½dafrika", afrika));
+        this.countries.add(new Country("Madagaskar", afrika));
+        this.countries.add(new Country("Kongo", afrika));
+        this.countries.add(new Country("Indonesien", australia));
+        this.countries.add(new Country("Neu-Guinea", australia));
+        this.countries.add(new Country("Ostaustralien", australia));
+        this.countries.add(new Country("Westaustralien", australia));
 
 
         //HinzufÃ¼gen der Verbindungen
@@ -90,7 +91,7 @@ public class Map  {
     }
     
     /**
-     * Vergleicht die Namen der Länder mit übergebenem String
+     * Vergleicht die Namen der Lï¿½nder mit ï¿½bergebenem String
      * @param n String (name des zu suchenden Landes)
      * @return das zu suchende Land
      */

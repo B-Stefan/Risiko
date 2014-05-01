@@ -25,18 +25,18 @@ public class CountryCUI extends CUI {
         @Override
         public void actionPerformed(final ActionEvent actionEvent) {
             final String[]  args = this.getArguments();
-            int count = 1 ;
+            int numberOfArmys = 1 ;
             if(args[0]!=null){
                 try {
-                    count = Integer.parseInt(args[0]);
+                    numberOfArmys = Integer.parseInt(args[0]);
                 } catch (NumberFormatException e ){
                     IO.println("Bitte geben Sie eine gültige Anzahl an Armeen ein");
                 }
             }
-            for (int i = 0; i < count; i++){
+            for (int i = 0; i < numberOfArmys; i++){
                 turn.setNewArmy(country);
             }
-            IO.println("Es wurden " + count + " Armeen auf " + country + " gesetzt");
+            IO.println("Es wurden " + numberOfArmys + " Armeen auf " + country + " gesetzt");
         }
     }
     public CountryCUI(Turn turn, Country context, CUI parent) {

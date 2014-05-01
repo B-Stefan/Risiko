@@ -90,13 +90,8 @@ public class GameCUI extends CUI {
 
 
             this.printPlayers();
-            try {
-                GameCUI.this.goIntoChildContext();
-            }
-            catch (Exception e){
-                IO.println(e.getMessage());
-                IO.println(e.getStackTrace().toString());
-            }
+            GameCUI.this.goIntoChildContext();
+
 
         }
     }

@@ -43,22 +43,15 @@ public class TurnCUI extends CUI {
     }
     protected void goIntoChildContext(String[] args){
         String countryName = args[0];
-        IO.println("changeCountrie " + countryName);
+
         Country found = this.turn.getPlayer().getCountry(countryName);
         if(found == null){
             IO.println("Ihr Land " + countryName + " konnte nicht gefunden werden.");
         }
         else {
             CUI child = new CountryCUI(turn,found, this);
-            goIntoChildContext(child);
+            super.goIntoChildContext(child);
         }
     }
 
-
-    protected void CUIShow (String[] args){
-        IO.println("Nachfolgend die entsprechenden Ländern für" + this.turn.getPlayer().toString());
-        for(Country c : this.turn.getPlayer().getCountries()){
-            IO.println(c.toString());
-        }
-    }
 }
