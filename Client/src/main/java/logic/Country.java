@@ -1,5 +1,7 @@
 package main.java.logic;
 
+import main.java.logic.exceptions.CountriesNotConnectedException;
+
 import java.util.*;
 import java.util.HashMap;
 
@@ -84,8 +86,17 @@ public class Country {
      * F�gt die Armee a in die Liste der Armeen des Spielers hinzu
      * @param a in die Liste der Armeen einzuf�gende Armee
      */
-    public void addArmy(Army a){
-    	armyList.add(a);
+    public void addArmy(Army a) throws CountriesNotConnectedException{
+        if(!armyList.contains(a)){
+            armyList.add(a);
+            a.setPosition(this);
+        }
+    }
+    public void removeArmy(Army a) throws CountriesNotConnectedException{
+        if(armyList.contains(a)){
+            armyList.remove(a);
+            a.setPosition(null);
+        }
     }
     /**
      * Getter ArmyList des Spielers

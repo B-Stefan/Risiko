@@ -1,5 +1,7 @@
 package main.java.logic;
 
+import main.java.logic.exceptions.CountriesNotConnectedException;
+
 public class Army {
 
 	private Player owner;
@@ -28,14 +30,36 @@ public class Army {
 		return this.owner;
 	}
 	/**
-	 * Setter für die Position
-	 * @param p übergiebt die (neue) Position der Armee
+	 * Setter fï¿½r die Position
+	 * @param country ï¿½bergiebt die (neue) Position der Armee
 	 */
-	public void setPosition(Country p){
-		this.position = p;
+	public void setPosition(Country country)  throws CountriesNotConnectedException{
+        //LÃ¶schen der aktuellen position
+        if(this.position != null){
+            this.position.removeArmy(this);
+        }
+
+        //Neue Posituon auf dem Spiefeld
+        if(country != null && this.position != country) {
+
+            //Positionswechsel auf der Karte
+            if(this.position != null ){
+                //PrÃ¼fen, ob LÃ¤nder verbunden sind
+                if(!this.position.isConnected(country)){
+                    throw new CountriesNotConnectedException(this.position, country);
+                };
+            }
+            this.position = country;
+            country.addArmy(this);
+        }
+        //Einheit von Position entfernt
+        else {
+            this.position = null;
+        }
+
 	}
 	/**
-	 * Getter für die Position
+	 * Getter fï¿½r die Position
 	 * @return position
 	 */
 	public Country getPosition(){

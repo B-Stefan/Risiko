@@ -1,15 +1,30 @@
 package main.java.logic;
+import main.java.logic.exceptions.ArmyAlreadyMovedException;
+import main.java.logic.exceptions.CountriesNotConnectedException;
+import main.java.logic.exceptions.NotEnoughNewArmysException;
+import main.java.logic.exceptions.TurnNotInMoveStateException;
+
 import java.util.*;
 
 public class Turn {
-	private Player player;
-	private Map map;
-	private Stack<Army> newArmies = new Stack<Army>();
-	private ArrayList<Army> movedArmies = new ArrayList<Army>();
-	
-	public Turn(Player p, Map m){
+
+    public  static enum steps {
+        DISTRIBUTE,
+        FIGHT,
+        MOVE
+    }
+
+	private final Player player;
+	private final Map map;
+	private final Stack<Army> newArmies = new Stack<Army>();
+	private final ArrayList<Army> movedArmies = new ArrayList<Army>();
+
+    private steps currentStep = steps.DISTRIBUTE;
+
+	public Turn(final Player p,final Map m){
 		this.player = p;
-		createNewArmies();
+        this.map = m;
+		createNewArmies(this.determineAmountOfNewArmies());
 	}
 	
     public Player getPlayer (){
@@ -32,64 +47,64 @@ public class Turn {
     	}
     	return amountNewArmies;
     }
+
     /**
-     * erstelle eine Liste mit den neuen Armeen     
+     * erstelle eine Liste mit den neuen Armeen
+     *
      */
-    private void createNewArmies(){
-    	for (int i = 0; i<determineAmountOfNewArmies(); i++){
+    private void createNewArmies(int numberOfArmysToCreate){
+    	for (int i = 0; i<numberOfArmysToCreate; i++){
     		this.newArmies.add(new Army(this.player));
     	}
     }
-    /**
-     * getter für die Liste der neuen Armeen
-     * @return Stack der neuen Armeen
-     */
-    
-    public Stack<Army> getNewArmies(){
-    	return this.newArmies;
-    }
-    
+
     /**
      * weist der jeweiligen Armee ein Land zu
      * @param position Das Land, zu welchem die Armee zugewiesen werden soll
      */
-    public void setNewArmy(Country position){
-    	Army a = this.newArmies.pop();	
-    	a.setPosition(position);
-    	position.addArmy(a);
-    	//@todo Exeption
+    public void placeNewArmy(Country position) throws CountriesNotConnectedException, NotEnoughNewArmysException{
+        if(this.newArmies.size() > 0 ){
+            Army a = this.newArmies.pop();
+            a.setPosition(position);
+        }
+        else{
+            throw new NotEnoughNewArmysException(this);
+        }
     }
     /**
-     * fügt der Liste der bereits verschobenen Einheiten die Armee hinzu
+     * fï¿½gt der Liste der bereits verschobenen Einheiten die Armee hinzu
      * @param a bewegte Armee
      */
-    public void armyMoved(Army a){
+    private void addArmyMoved(Army a){
     	this.movedArmies.add(a);
     }
     /**
-     * prüft ob die Armee bereits verschoben wurde in diesem Zug
-     * @param a Armee, die überprüft werden soll
+     * prï¿½ft ob die Armee bereits verschoben wurde in diesem Zug
+     * @param a Armee, die ï¿½berprï¿½ft werden soll
      * @return boolean -> true wenn die Armee bereits verschoben wurde, false, wenn sie nioch nicht verschoben wurde
      */
-    public boolean isArmyAlreadyMoved(Army a){
+    private boolean isArmyAlreadyMoved(Army a){
     	return movedArmies.contains(a);
     }
     /**
-     * Ändert die Position der Armee, falls sie noch nicht bewegt wurde und ändert den Status der Armee in bereits bewegt
-     * @param c das Zielland
-     * @param a die zu bewegende Armee
+     * ï¿½ndert die Position der Armee, falls sie noch nicht bewegt wurde und ï¿½ndert den Status der Armee in bereits bewegt
+     * @param country das Zielland
+     * @param army die zu bewegende Armee
      * @return true wenn die Armee bewegt wurde kann, false wenn nicht
      */
-    public boolean moveArmy(Country c, Army a){
-    	if (isArmyAlreadyMoved(a) != true){
-    		a.setPosition(c);
-    		c.addArmy(a);
-    		armyMoved(a);
+    public boolean moveArmy(Country country, Army army) throws CountriesNotConnectedException,TurnNotInMoveStateException, ArmyAlreadyMovedException {
+    	if (isArmyAlreadyMoved(army) != true && this.getCurrentStep() == steps.MOVE){
+    		army.setPosition(country);
+    		addArmyMoved(army);
     		return true;    		
     	}
     	return false;
     }
-    
+    public steps getCurrentStep() {
+        return currentStep;
+    }
 
-    
+
+
+
 }

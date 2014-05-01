@@ -30,6 +30,7 @@ public class Player {
     	return this.countries;    	
     }
 
+
     @Override
     public String toString(){
         return this.getName();
