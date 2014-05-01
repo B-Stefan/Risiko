@@ -4,6 +4,9 @@ public class Dice implements Comparable<Dice>  {
 	
 	private int dicenumber;
 	
+	public Dice(){
+		this.throwDice();
+	}
 	/**
 	 *  throw the dice 
 	 */
@@ -29,4 +32,12 @@ public class Dice implements Comparable<Dice>  {
         }
     }
 	
+    public boolean higherDice(Dice otherDice){
+    	if(this.compareTo(otherDice)==1){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
 }

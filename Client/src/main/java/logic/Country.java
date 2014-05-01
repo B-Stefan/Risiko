@@ -26,7 +26,7 @@ public class Country {
     /**
      * Liste aller Armeen im Besitzt des jeweilligen Spielers
      */
-    private List<Army> armyList = new ArrayList<Army>();
+    private ArrayList<Army> armyList = new ArrayList<Army>();
 
 
     public Country(final String n, Continent c) {
@@ -124,7 +124,7 @@ public class Country {
      * Getter ArmyList des Spielers
      * @return armyList. Liste der Armeen des Spielers
      */
-    public List<Army> getArmyList(){
+    public ArrayList<Army> getArmyList(){
     	return this.armyList;
     }
 

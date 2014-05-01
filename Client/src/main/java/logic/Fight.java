@@ -1,9 +1,8 @@
 package main.java.logic;
 import java.util.*;
 
-import main.java.logic.exceptions.CountriesNotConnectedException;
-import main.java.logic.exceptions.CountryNotInListException;
-import main.java.logic.exceptions.NotEnoughArmiesToAttackException;
+import main.java.logic.exceptions.*;
+
 
 public class Fight {
 	private Player agressor;
@@ -13,55 +12,124 @@ public class Fight {
 	private Country toBeConquertedCountry;
 	private Country originCountry;
 	
-	private Fight(Player agg, Player def, Country from, Country to, Stack<Army> aggArmies, Stack<Army> defArmies){
-		this.agressor = agg;
-		this.defender = def;
+	public Fight(Country from, Country to, Stack<Army> aggArmies, Stack<Army> defArmies){
+		this.agressor = from.getOwner();
+		this.defender = to.getOwner();
 		this.agressorsArmies = aggArmies;
 		this.defendersArmies = defArmies;
 		this.toBeConquertedCountry = to;
 		this.originCountry = from;
 	}
 	
-	public boolean enoughArmiesToAttack(){
+	public Fight(Country from, Country to, List<Army> aggArmies, List<Army> defArmies){
+		this.agressor = from.getOwner();
+		this.defender = to.getOwner();
+		this.agressorsArmies = listToStack(aggArmies);
+		this.defendersArmies = listToStack(defArmies);
+		this.toBeConquertedCountry = to;
+		this.originCountry = from;
+	}
+	
+	private Stack<Army> listToStack(List<Army> aL){
+		Stack<Army> stack = new Stack<Army>();
+		stack.addAll(aL);
+		return stack;
+	}
+	
+	private boolean enoughArmiesToAttack(){
 		if(this.agressorsArmies.isEmpty()){
 			return false;
 		}
 		return true;
 	}
 	
-	public boolean enoughArmiesToDefend(){
+	private boolean enoughArmiesToDefend(){
 		if(this.defendersArmies.isEmpty()){
 			return false;
 		}
 		return true;
 	}
 	
-	public void armyVsArmy() throws NotEnoughArmiesToAttackException, CountriesNotConnectedException, CountryNotInListException{
+	private void battle(Player loser)throws InvalidPlayerException, CountriesNotConnectedException{
+		if(loser==this.agressor){
+			Army destroyedArmy = this.agressorsArmies.pop();
+			this.originCountry.removeArmy(destroyedArmy);
+		}else if (loser==this.defender){
+			Army destroyedArmy = this.defendersArmies.pop();
+			this.toBeConquertedCountry.removeArmy(destroyedArmy);
+		}else{
+			throw new InvalidPlayerException();
+		}
+	}
+	
+	private Stack<Dice> defendersDiceList() throws InvalidAmountOfArmiesException{
+		int size = this.defendersArmies.size();
+		if(size>=2){
+			Stack<Dice> dD = new Stack<Dice>();
+			dD.add(new Dice());
+			dD.add(new Dice());
+			Collections.sort(dD);
+			Collections.reverse(dD);
+			return dD;
+		}else if (size==1){
+			Stack<Dice> dD = new Stack<Dice>();
+			dD.add(new Dice());
+			return dD;
+		}else{
+			throw new InvalidAmountOfArmiesException(size);
+		}
+	}
+	
+	private Stack<Dice> agressorsDiceList() throws InvalidAmountOfArmiesException{
+		int size = this.agressorsArmies.size();
+		if(size>=3){
+			Stack<Dice> aD = new Stack<Dice>();
+			aD.add(new Dice());
+			aD.add(new Dice());
+			aD.add(new Dice());
+			Collections.sort(aD);
+			Collections.reverse(aD);
+			return aD;
+		}else if(size==2){
+			Stack<Dice> aD = new Stack<Dice>();
+			aD.add(new Dice());
+			aD.add(new Dice());
+			Collections.sort(aD);
+			Collections.reverse(aD);
+			return aD;
+		}else if (size==1){
+			Stack<Dice> aD = new Stack<Dice>();
+			aD.add(new Dice());
+			return aD;
+		}else{
+			throw new InvalidAmountOfArmiesException(size);
+		}
+	}
+	
+	private void takeOver() throws CountriesNotConnectedException{
+		for(Army a : this.agressorsArmies){
+			a.setPosition(this.toBeConquertedCountry);
+		}
+	}
+	
+	public void armyVsArmy() throws NotEnoughArmiesToAttackException, NotEnoughArmiesToDefendException, InvalidAmountOfArmiesException, InvalidPlayerException, CountriesNotConnectedException{
 		if(!enoughArmiesToAttack()){
 			throw new NotEnoughArmiesToAttackException();
 		}else if (!enoughArmiesToDefend()){
-			this.toBeConquertedCountry.changeOwner(this.agressor);
-			Army toBeMovedArmy = this.agressorsArmies.pop();
-			
+			throw new NotEnoughArmiesToDefendException();
 		}else{
-			Dice dice1 = new Dice();
-			Dice dice2 = new Dice();
-			dice1.throwDice();
-			dice2.throwDice();
-			if(dice1.getDiceNumber()>dice2.getDiceNumber()){
-				Army destroyedArmy = this.defendersArmies.pop();
-				this.toBeConquertedCountry.removeArmy(destroyedArmy);
-				destroyedArmy = null;
-				if(!enoughArmiesToDefend()){
-					this.toBeConquertedCountry.setOwner(agressor);
+			Stack<Dice> agressorsDice = agressorsDiceList();
+			Stack<Dice> defendersDice = defendersDiceList();
+			while(!defendersDice.isEmpty()){
+				if(agressorsDice.pop().higherDice(defendersDice.pop())){
+					battle(this.defender);
+					if(!enoughArmiesToDefend()){
+						takeOver();
+					}
+				}else if(!agressorsDice.get(0).higherDice(defendersDice.pop())){
+					battle(this.agressor);
 				}
-			}else if(dice2.getDiceNumber()>=dice1.getDiceNumber()){
-				Army destroyedArmy = this.agressorsArmies.pop();
-				destroyedArmy = null;
 			}
 		}
-		
-	}
-	
-	
+	}	
 }
