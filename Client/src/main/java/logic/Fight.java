@@ -62,48 +62,21 @@ public class Fight {
 		}
 	}
 	
-	private Stack<Dice> defendersDiceList() throws InvalidAmountOfArmiesException{
-		int size = this.defendersArmies.size();
-		if(size>=2){
-			Stack<Dice> dD = new Stack<Dice>();
-			dD.add(new Dice());
-			dD.add(new Dice());
-			Collections.sort(dD);
-			Collections.reverse(dD);
-			return dD;
-		}else if (size==1){
-			Stack<Dice> dD = new Stack<Dice>();
-			dD.add(new Dice());
-			return dD;
-		}else{
+	private Stack<Dice> dice(int amountOfDice, Stack<Army> dicer) throws InvalidAmountOfArmiesException{
+		int size = dicer.size();
+		if(size==0){
 			throw new InvalidAmountOfArmiesException(size);
+		}else if(size>amountOfDice){
+			size = amountOfDice;
 		}
-	}
-	
-	private Stack<Dice> agressorsDiceList() throws InvalidAmountOfArmiesException{
-		int size = this.agressorsArmies.size();
-		if(size>=3){
-			Stack<Dice> aD = new Stack<Dice>();
-			aD.add(new Dice());
-			aD.add(new Dice());
-			aD.add(new Dice());
-			Collections.sort(aD);
-			Collections.reverse(aD);
-			return aD;
-		}else if(size==2){
-			Stack<Dice> aD = new Stack<Dice>();
-			aD.add(new Dice());
-			aD.add(new Dice());
-			Collections.sort(aD);
-			Collections.reverse(aD);
-			return aD;
-		}else if (size==1){
-			Stack<Dice> aD = new Stack<Dice>();
-			aD.add(new Dice());
-			return aD;
-		}else{
-			throw new InvalidAmountOfArmiesException(size);
+		Stack<Dice> dD = new Stack<Dice>();
+		while(size>0){
+			dD.add(new Dice());
+			size--;
 		}
+		Collections.sort(dD);
+		Collections.reverse(dD);
+		return dD;
 	}
 	
 	private void takeOver() throws CountriesNotConnectedException{
@@ -118,8 +91,8 @@ public class Fight {
 		}else if (!enoughArmiesToDefend()){
 			throw new NotEnoughArmiesToDefendException();
 		}else{
-			Stack<Dice> agressorsDice = agressorsDiceList();
-			Stack<Dice> defendersDice = defendersDiceList();
+			Stack<Dice> agressorsDice = dice(3, this.agressorsArmies);
+			Stack<Dice> defendersDice = dice(2, this.defendersArmies);
 			while(!defendersDice.isEmpty()){
 				if(agressorsDice.pop().higherDice(defendersDice.pop())){
 					battle(this.defender);
