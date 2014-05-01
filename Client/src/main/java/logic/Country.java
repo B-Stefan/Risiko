@@ -1,9 +1,9 @@
 package main.java.logic;
 
 import main.java.logic.exceptions.CountriesNotConnectedException;
+import main.java.logic.exceptions.CountryNotInListException;
 
 import java.util.*;
-import java.util.HashMap;
 
 public class Country {
 
@@ -58,7 +58,17 @@ public class Country {
      * @param p Spieler, der als Owener gesetzt werden soll
      */
     public void setOwner(Player p) {
-        this.owner = p;
+
+    	this.owner = p;
+    }
+    /**
+     * ändert den Owner des Landes und entfehrnt gleichzeitig das Land aus der Liste des ursprünglichen Owners
+     * @param newOwner
+     * @throws CountryNotInListException
+     */
+    public void changeOwner(Player newOwner) throws CountryNotInListException{
+       	this.owner.removeCountry(this);
+        this.owner = newOwner;
     }
 
     /**

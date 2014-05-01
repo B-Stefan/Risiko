@@ -1,5 +1,6 @@
 package main.java.logic;
 import java.util.*;
+import main.java.logic.exceptions.*;
 /**
  * Created by Stefan on 01.04.2014.
  */
@@ -43,4 +44,12 @@ public class Player {
     	}
     	return null;
     }
+    public void removeCountry(Country c) throws CountryNotInListException{
+    	if (countries.contains(c)){
+    		this.countries.remove(c);
+    	}else{
+    		throw new CountryNotInListException();
+    	}
+    }
+    
 }
