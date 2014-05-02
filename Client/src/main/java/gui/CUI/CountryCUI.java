@@ -2,13 +2,15 @@ package main.java.gui.CUI;
 
 import main.java.gui.CUI.core.CUI;
 import main.java.gui.CUI.core.CommandListener;
+import main.java.gui.CUI.core.CommandListenerArgument;
 import main.java.gui.CUI.core.IO;
+import main.java.gui.CUI.core.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.Country;
 import main.java.logic.Turn;
 import main.java.logic.exceptions.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.event.ActionEvent;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Stefan on 30.04.14.
@@ -25,7 +27,6 @@ public class CountryCUI extends CUI {
 
         @Override
         public void actionPerformed(final ActionEvent actionEvent) {
-            final String[]  args = this.getArguments();
             IO.println("Das Land gehört " + country.getOwner() + " und ist mit: " + country.getNumberOfArmys() + " Armeen besetzt");
             IO.println("Nachfolgend die Nachbarn des Landes");
             for(Country c : country.getNeighbors()){
@@ -37,20 +38,19 @@ public class CountryCUI extends CUI {
 
         public PlaceArmyListener() {
             super("place", "Setzt n Armeen auf das angegebene Land, default 1 ");
+            this.addArgument(new CommandListenerArgument("numberOfArmys"));
         }
 
         @Override
         public void actionPerformed(final ActionEvent actionEvent) {
-            final String[]  args = this.getArguments();
-            int numberOfArmys = 1 ;
-            if(args[0]!=null){
-                try {
-                    numberOfArmys = Integer.parseInt(args[0]);
-                } catch (NumberFormatException e ){
-                    IO.println("Bitte geben Sie eine gültige Anzahl an Armeen ein");
-
-                }
+            final int numberOfArmys;
+            try {
+                numberOfArmys = this.getArgument("numberOfArmys").toInt() ;
+            }catch (InvalidCommandListernArgumentException e ){
+                IO.println(e.getMessage());
+                return;
             }
+
             for (int i = 0; i < numberOfArmys; i++){
                 try {
                     turn.placeNewArmy(country);
@@ -74,37 +74,25 @@ public class CountryCUI extends CUI {
 
         public FightListener() {
             super("fight", "Angriff auf ein Land");
+            this.addArgument(new CommandListenerArgument("country", "Bitte geben Sie ein Gültiges Land ein"));
+            this.addArgument(new CommandListenerArgument("numberOfArmys", "Bitte geben Sie eine gülte Anzhal an Armeen ein"));
         }
 
         @Override
-        public void actionPerformed(final ActionEvent actionEvent) {
-            final String[]  args = this.getArguments();
-            final String target = args[0];
-            int numberOfArmys = 1;
+        public void actionPerformed(final ActionEvent actionEvent){
+            final String target;
+            final int numberOfArmys;
+            try {
+                target = this.getArgument("country").toStr();
+                numberOfArmys = this.getArgument("numberOfArmys").toInt();
 
-
-            if(target == null){
-                IO.println("Bitte geben Sie ein Land an ");
+            }catch (InvalidCommandListernArgumentException e){
+                IO.println(e.getMessage());
                 return;
             }
-            else if (target == "") {
-                IO.println("Bitte geben Sie ein gültiges Land ein");
-            }
 
-            if(args[1] == null){
-                IO.println("Bitte geben Sie die Anzahl an mit der Sie angfreifen möchten");
-                return;
-            }
-            else {
-                try {
-                    numberOfArmys = Integer.parseInt(args[1]);
-                } catch (NumberFormatException e ){
-                    IO.println("Bitte geben Sie eine gültige Anzahl an Armeen ein");
-                    return;
-                }
-            }
 
-            Country found = country.getNeighbor(target);
+            Country found = country.getNeighborByName(target);
             if (found == null){
                 IO.println("Leider konnte Ihr Land " + target + " nicht gefunden werden");
             } else {
@@ -120,6 +108,8 @@ public class CountryCUI extends CUI {
                     IO.println(e.getMessage());
                 }catch (InvalidAmountOfArmiesException e){
                     IO.println(e.getMessage());
+                }catch (ToManyNewArmysException e){
+                    IO.println("Bitte verteile zunächst alle Armeen auf den Ländern. Anschließend kannst du erst kämpfen");
                 }catch (Exception e){
                     throw  new RuntimeException(e);
                 }
@@ -135,13 +125,10 @@ public class CountryCUI extends CUI {
         this.addCommandListener(new FightListener());
     }
 
-    @Override
-    protected void goIntoChildContext() {
 
-    }
 
     @Override
-    protected void goIntoChildContext(String[] args) {
+    protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args) {
 
     }
 }

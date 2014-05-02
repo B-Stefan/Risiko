@@ -5,12 +5,16 @@ package main.java.gui.CUI;
  */
 import main.java.gui.CUI.core.CUI;
 import main.java.gui.CUI.core.CommandListener;
+import main.java.gui.CUI.core.CommandListenerArgument;
 import main.java.gui.CUI.core.IO;
+import main.java.gui.CUI.core.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.Country;
 import main.java.logic.Turn;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import main.java.logic.exceptions.ToManyNewArmysException;
+import main.java.logic.exceptions.TurnCompleteException;
 
 import java.awt.event.ActionEvent;
+import java.util.LinkedHashMap;
 
 public class TurnCUI extends CUI {
 
@@ -29,6 +33,25 @@ public class TurnCUI extends CUI {
                 IO.println(c.toString());
             }
 
+        }
+    }
+    public class NextStepCommandListener extends CommandListener {
+
+        public NextStepCommandListener() {
+            super("next", "Hiermit kannst du in den nächsten Step wechseln");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            try {
+                turn.setNextStep();
+            }catch (TurnCompleteException e){
+                IO.println("Dein Zug scheint beendet zu sein");
+                IO.println("Es wird autmatisch in die Runde gewechselt und mit dem Befehl next kannst du an den nächsten Spieler weitergeben.");
+                goIntoParentContext();
+            }catch (ToManyNewArmysException e){
+                IO.println("Sie müssen noch " + turn.getNewArmysSize() + " Einheiten verteilen bevor sie in den nächsten step wechseln können ");
+            }
         }
     }
     public class StateCommandListener extends CommandListener {
@@ -64,14 +87,21 @@ public class TurnCUI extends CUI {
         super(turn,parent);
         this.turn = turn;
         this.addCommandListener(new ShowCountriesCommandListener());
+        this.addCommandListener(new NextStepCommandListener());
         this.addCommandListener(new StateCommandListener());
     }
     protected void goIntoChildContext(){
         IO.println("Bitte gebe einen land als Paramenter ein");
         this.fireCommandEvent(new ShowCountriesCommandListener());
     }
-    protected void goIntoChildContext(String[] args){
-        String countryName = args[0];
+    protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args){
+        final String countryName;
+        try {
+            countryName = args.get("parent").toStr();
+        }catch (InvalidCommandListernArgumentException e){
+            IO.println(e.getMessage());
+            return;
+        }
 
         Country found = this.turn.getPlayer().getCountry(countryName);
         if(found == null){

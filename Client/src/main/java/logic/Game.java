@@ -84,7 +84,9 @@ public class Game {
         }
         distributeCountries();
         this.currentGameState = gameStates.RUNNING;
-        this.setCurrentRound(new Round(players,map));
+        this.setCurrentRound(new Round(players,map, Turn.getDefaultStepsFirstRound()));
+
+
     }
 
     /**
@@ -94,6 +96,15 @@ public class Game {
     public void setCurrentRound(Round r) {
 
         this.currentRound = r;
+    }
+
+    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException{
+        if(this.currentRound != null){
+            if(!this.currentRound.isComplete()){
+                throw new RoundNotCompleteException();
+            }
+        }
+        this.currentRound = new Round(this.players,this.map);
     }
 
     /**

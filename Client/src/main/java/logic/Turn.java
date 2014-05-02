@@ -1,7 +1,5 @@
 package main.java.logic;
 import main.java.logic.exceptions.*;
-import sun.net.www.protocol.http.HttpURLConnection;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,9 +11,24 @@ public class Turn {
         FIGHT,
         MOVE
     }
+    public static Queue<steps> getDefaultSteps (){
+        Queue<steps> s = new LinkedBlockingQueue<steps>(3) {
+        };
+        s.add(steps.DISTRIBUTE);
+        s.add(steps.FIGHT);
+        s.add(steps.MOVE);
+        return s;
+    }
+    public static Queue<steps> getDefaultStepsFirstRound (){
+        Queue<steps> s = new LinkedBlockingQueue<steps>(1) {
+        };
+        s.add(steps.DISTRIBUTE);
+        return s;
+    }
 
 
-	private final Player player;
+
+    private final Player player;
 	private final Map map;
 	private final Stack<Army> newArmies = new Stack<Army>();
 	private final ArrayList<Army> movedArmies = new ArrayList<Army>();
@@ -28,27 +41,16 @@ public class Turn {
         this.player = p;
         this.map = m;
 
-        //Default werde nutzten
-        if(steps == null){
-            this.allowedSteps = new LinkedBlockingQueue<Turn.steps>();
-            this.allowedSteps.offer(Turn.steps.DISTRIBUTE);
-            this.allowedSteps.offer(Turn.steps.FIGHT);
-            this.allowedSteps.offer(Turn.steps.MOVE);
+        if(steps.isEmpty()){
+            throw  new IllegalArgumentException("Sie müssten mindestens eine Queue mit einem step übergeben");
+        }
+        LinkedBlockingQueue<steps> s = new LinkedBlockingQueue<steps>();
+        s.addAll(steps);
+        this.allowedSteps = s;
 
-        }
-        else {
-            if(steps.isEmpty()){
-                throw  new IllegalArgumentException("Sie müssten mindestens eine Queue mit einem step übergeben");
-            }
-            this.allowedSteps = steps;
-        }
         this.currentStep = this.allowedSteps.poll();// Erstes element aus der Liste auf aktuellen status setzten
         createNewArmies(this.determineAmountOfNewArmies());
     }
-
-    public Turn(final Player p,final Map m){
-        this(p,m,null);
-	}
 
     public Player getPlayer (){
     	return this.player; 
@@ -164,10 +166,12 @@ public class Turn {
      * @throws InvalidPlayerException 
      * @throws InvalidAmountOfArmiesException 
      * @throws NotEnoughArmiesToDefendException 
-     * @throws NotEnoughArmiesToAttackException 
+     * @throws NotEnoughArmiesToAttackException
+     * @throws ToManyNewArmysException
      */
-    public void fight (Country from, Country to, int numberOfArmys) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmiesToAttackException, NotEnoughArmiesToDefendException, InvalidAmountOfArmiesException, InvalidPlayerException, CountriesNotConnectedException{
+    public void fight (Country from, Country to, int numberOfArmys) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, ToManyNewArmysException,NotEnoughArmiesToAttackException, NotEnoughArmiesToDefendException, InvalidAmountOfArmiesException, InvalidPlayerException, CountriesNotConnectedException{
         if(this.isStepAllowed(steps.FIGHT)){
+            this.isComplete();
             //Einmal ein Land angegriffen ändert den step des Turns
             this.setCurrentStep(steps.FIGHT);
             List<Army> agressorsArmies = from.getArmyList().subList(0, numberOfArmys -1);
@@ -195,17 +199,34 @@ public class Turn {
 
             if (isArmyAlreadyMoved(army)){
                 throw new ArmyAlreadyMovedException(army);
+
             }
             army.setPosition(country);
             addMovedArmy(army);
         }
     }
-
+    public boolean isComplete() throws ToManyNewArmysException{
+        if(this.getNextStep() == null){
+            if(this.getCurrentStep() == steps.DISTRIBUTE && this.newArmies.size() > 0) {
+                throw new ToManyNewArmysException(this);
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     public steps getCurrentStep() {
         return currentStep;
     }
     public steps getNextStep (){
         return this.allowedSteps.peek();
+    }
+    public void setNextStep() throws TurnCompleteException, ToManyNewArmysException {
+        if(this.isComplete()){
+            throw new TurnCompleteException();
+        }
+        this.currentStep = this.allowedSteps.poll();
     }
     private void setCurrentStep(steps step) {
         currentStep = step;

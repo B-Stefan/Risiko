@@ -4,6 +4,7 @@ import main.java.logic.exceptions.CountriesNotConnectedException;
 import main.java.logic.exceptions.CountryNotInListException;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class Country {
 
@@ -48,12 +49,20 @@ public class Country {
     }
 
     public boolean isConnected(Country countryToCheck) {
-        return neighbors.containsKey(countryToCheck);
+        return neighbors.containsValue(countryToCheck);
     }
 
 
     public Country getNeighbor (String name){
         return neighbors.get(name);
+    }
+    public Country getNeighborByName (String searchName){
+        for (Entry<String, Country> entry : this.neighbors.entrySet()){
+            if(entry.getValue().getName().equals(searchName)){
+                return entry.getValue();
+            }
+        }
+        return null;
     }
     public ArrayList<Country> getNeighbors (){
         ArrayList<Country> list = new ArrayList<Country>();

@@ -44,7 +44,7 @@ public class Map  {
         this.countries.add(new Country("Ural", asia));
         this.countries.add(new Country("Sibirien", asia));
         this.countries.add(new Country("Irrutsk", asia));
-        this.countries.add(new Country("Jakuten", asia));
+        this.countries.add(new Country("Jakutsk", asia));
         this.countries.add(new Country("Kamtschatka", asia));
         this.countries.add(new Country("Mongolei", asia));
         this.countries.add(new Country("Japan", asia));
@@ -65,7 +65,39 @@ public class Map  {
         this.countries.add(new Country("Westaustralien", australia));
 
 
+
         //Hinzufügen der Verbindungen
+
+        //Australien
+        Country ostaustralien  = this.getCountry("Ostaustralien");
+        ostaustralien.connectTo(this.getCountry("Westaustralien"));
+        ostaustralien.connectTo(this.getCountry("Neu-Guinea"));
+
+        Country indonesien  = this.getCountry("Indonesien");
+        indonesien.connectTo(this.getCountry("Siam"));
+        indonesien.connectTo(this.getCountry("Westaustralien"));
+
+
+        //Asien
+        Country China  = this.getCountry("China");
+        China.connectTo(this.getCountry("Siam"));
+        China.connectTo(this.getCountry("Indien"));
+        China.connectTo(this.getCountry("Mongolei"));
+        China.connectTo(this.getCountry("Afghanistan"));
+
+        Country mongolei  = this.getCountry("Mongolei");
+        mongolei.connectTo(this.getCountry("Japan"));
+        mongolei.connectTo(this.getCountry("Irrutsk"));
+        mongolei.connectTo(this.getCountry("Sibirien"));
+
+        Country jakutsk  = this.getCountry("Jakutsk");
+        jakutsk.connectTo(this.getCountry("Kamtschatka"));
+        jakutsk.connectTo(this.getCountry("Sibirien"));
+        jakutsk.connectTo(this.getCountry("Irrutsk"));
+
+
+
+
 
     }
 
@@ -76,7 +108,7 @@ public class Map  {
     public ArrayList<Country> getCountries() {
         return this.countries;
     }
-    
+
     /**
      * Berechnet den Benous, den ein Spieler an Einheiten bekommt f�r die komplette Einnahme des jeweilligen Kontinents
      * @param p der aktuelle Spieler
@@ -86,7 +118,7 @@ public class Map  {
     	int bonus = 0;
     	for (Continent c : this.continents){
     		if(c.getCurrentOwner()==p){bonus += c.getBonus();}
-    	}    	
+    	}
     	return bonus;
     }
     

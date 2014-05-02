@@ -1,5 +1,6 @@
 package main.java.gui.CUI.core;
 
+import main.java.gui.CUI.core.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.Map;
 
 import java.awt.event.ActionEvent;
@@ -55,26 +56,29 @@ public abstract class CUI {
     public class ChangeDirListener extends CommandListener {
         public ChangeDirListener() {
             super("cd");
+            this.addArgument(new CommandListenerArgument("parent"));
         }
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            String[] args = this.getArguments();
+            String gotParentArg = "";
+            try {
+                gotParentArg = this.getArgument("parent").toStr();
+            }catch (InvalidCommandListernArgumentException e){
+                //Ignor exception weil auch ein leer String gültig ist
+            }
             CUI cui = CUI.this;
-            if (args[0] != null) {
-                if (args[0].equals(new String(".."))) {
 
-                    cui.goIntoParentContext();
-                    return;
+            if (gotParentArg.equals(new String(".."))) {
+                cui.goIntoParentContext();
+                return;
 
-                }
             }
-            if(args[0] == null ){
-                cui.goIntoChildContext();
+            else {
+               cui.goIntoChildContext(this.getArguments());
             }
-            else{
-                cui.goIntoChildContext(args);
-            }
+
+
 
         }
     }
@@ -117,15 +121,11 @@ public abstract class CUI {
         this.parent = parent;
     }
 
-    /**
-     * Dient zum wechseln in den untergeordneten Kontext
-     */
-    protected abstract void goIntoChildContext();
 
     /**
      * Dient zum wechseln in den untergeordneten Kontext
      */
-    protected abstract void goIntoChildContext(String[] args);
+    protected abstract void goIntoChildContext(LinkedHashMap<String,CommandListenerArgument> args);
 
     /**
      * Dient zum wechseln in den untergeordneten Kontext und führt den wechsel auch tatsächlich durch.
@@ -135,6 +135,12 @@ public abstract class CUI {
         this.setChild(context);
         this.setCurrentState(states.SILENT);
         this.getChild().listenConsole();
+    }
+    /**
+     * Dient zum wechseln in den untergeordneten Kontext und führt den wechsel auch tatsächlich durch.
+     */
+    protected  void goIntoChildContext(){
+       this.goIntoChildContext(new LinkedHashMap<String, CommandListenerArgument>());
     }
 
     /**
@@ -221,7 +227,22 @@ public abstract class CUI {
         }
 
         CommandListener currentCommandListener = commands.get(command);
-        currentCommandListener.setArguments(args);
+
+        //Set Arguments
+        Iterator requiredArgumentsInterator = currentCommandListener.getArguments().entrySet().iterator();
+        for (int i = 0;  requiredArgumentsInterator.hasNext(); i++){
+            java.util.Map.Entry<String, CommandListenerArgument> requiredCommandEntry = (java.util.Map.Entry<String,CommandListenerArgument>) requiredArgumentsInterator.next();
+            CommandListenerArgument requiredCommand  = requiredCommandEntry.getValue();
+            //Wenn keine Argumete mehr vorhanden sind
+            if(args.length == i ){
+                break;
+            }
+            //Wenn argumente für den CommandListenerArgument vorhanden sind value setzten
+            else{
+                requiredCommand.setValue(args[i]);
+            }
+        }
+
         fireCommandEvent(currentCommandListener);
 
     }

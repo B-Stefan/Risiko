@@ -1,5 +1,6 @@
 package main.java.gui.CUI;
 import java.awt.event.ActionEvent;
+import java.util.LinkedHashMap;
 
 import main.java.logic.*;
 import main.java.gui.CUI.core.*;
@@ -10,7 +11,7 @@ public class FightCUI extends CUI {
 	public class continueFightingCommandListener extends CommandListener{
 		
 		public continueFightingCommandListener(){
-			super("fight" , "Führt einen(weiteren) Angriff aus");
+			super("fight" , "Fï¿½hrt einen(weiteren) Angriff aus");
 		}
 
 		@Override
@@ -40,16 +41,9 @@ public class FightCUI extends CUI {
 		this.addCommandListener(new stopFightingCommandListener());
 	}
 
-	@Override
-	protected void goIntoChildContext() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args) {
 
-	@Override
-	protected void goIntoChildContext(String[] args) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 	
 }

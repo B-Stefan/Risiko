@@ -2,13 +2,16 @@ package main.java.gui.CUI;
 
 import main.java.gui.CUI.core.CUI;
 import main.java.gui.CUI.core.CommandListener;
+import main.java.gui.CUI.core.CommandListenerArgument;
 import main.java.gui.CUI.core.IO;
+import main.java.gui.CUI.core.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.exceptions.*;
 import main.java.logic.Game;
 import main.java.logic.Player;
 import main.java.logic.Round;
 
 import java.awt.event.ActionEvent;
+import java.util.LinkedHashMap;
 
 
 /**
@@ -24,31 +27,47 @@ public class GameCUI extends CUI {
 
         public addPlayerCommand() {
             super("addPlayer");
+            this.addArgument(new CommandListenerArgument("playerName"));
         }
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            String[] args = this.getArguments();
-            if(args.length == 0){
-                IO.println("Bitte geben Sie einen Spielernamen ein folgendes Format: AddPlayer <Name> + [<Name>]");
-                return;
-            }
-            else if (args.length == 1 && args[0] == ""){
-                IO.println("Bitte geben Sie einen Spielernamen ein folgendes Format: AddPlayer  <Name> + [<Name>]");
+            final String name;
+            try {
+                name = this.getArgument("playerName").toStr();
+            }catch (InvalidCommandListernArgumentException e){
+                IO.println(e.getMessage());
                 return;
             }
 
             try {
-                for (String name : args){
-                    GameCUI.this.game.onPlayerAdd(name);
-
-                }
+                GameCUI.this.game.onPlayerAdd(name);
             }
             catch (GameAllreadyStartedException e ){
                 IO.println(e.getMessage());
             }
 
         }
+
+    }
+    public class NextRoundCommandListener extends CommandListener {
+
+        public NextRoundCommandListener() {
+            super("next");
+            this.addArgument(new CommandListenerArgument("playerName"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+           try {
+               game.setNextRound();
+           }catch (RoundNotCompleteException e){
+               IO.println(e.getMessage());
+           }catch (ToManyNewArmysException e){
+               IO.println(e.getMessage());
+           }
+        }
+
     }
 
 
@@ -107,6 +126,7 @@ public class GameCUI extends CUI {
         this.game = game;
         this.addCommandListener(new addPlayerCommand());
         this.addCommandListener(new startGameCommand());
+        this.addCommandListener(new NextRoundCommandListener());
     }
 
     @Override
@@ -117,11 +137,9 @@ public class GameCUI extends CUI {
         super.listenConsole();
     }
 
-    /**
-     * Diese Mehtode beschreibt was passieren soll wenn der User eine Eben nach unten geht.
-     * @throws Exception
-     */
-    protected void goIntoChildContext(){
+
+    @Override
+    protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args) {
         final Round round;
         try {
             round = game.getCurrentRound();
@@ -131,13 +149,9 @@ public class GameCUI extends CUI {
             throw  new RuntimeException(e);
         }
 
-        TurnCUI turn = new TurnCUI(round.getCurrentTurn(), this);
-        super.goIntoChildContext(turn);
+        RoundCUI roundCUI = new RoundCUI(round, this);
+        super.goIntoChildContext(roundCUI);
 
-
-    }
-    protected void goIntoChildContext(String[] args){
-        this.goIntoChildContext();
     }
 
 
