@@ -62,14 +62,14 @@ public class Fight {
 		}
 	}
 	
-	private Stack<Dice> dice(int amountOfDice, Stack<Army> dicer) throws InvalidAmountOfArmiesException{
+	private ArrayList<Dice> dice(int amountOfDice, Stack<Army> dicer) throws InvalidAmountOfArmiesException{
 		int size = dicer.size();
 		if(size==0){
 			throw new InvalidAmountOfArmiesException(size);
 		}else if(size>amountOfDice){
 			size = amountOfDice;
 		}
-		Stack<Dice> dD = new Stack<Dice>();
+		ArrayList<Dice> dD = new ArrayList<Dice>();
 		while(size>0){
 			dD.add(new Dice());
 			size--;
@@ -91,16 +91,20 @@ public class Fight {
 		}else if (!enoughArmiesToDefend()){
 			throw new NotEnoughArmiesToDefendException();
 		}else{
-			Stack<Dice> agressorsDice = dice(3, this.agressorsArmies);
-			Stack<Dice> defendersDice = dice(2, this.defendersArmies);
+			ArrayList<Dice> agressorsDice = dice(3, this.agressorsArmies);
+			ArrayList<Dice> defendersDice = dice(2, this.defendersArmies);
 			while(!defendersDice.isEmpty()){
-				if(agressorsDice.pop().higherDice(defendersDice.pop())){
+				if(agressorsDice.get(0).higherDice(defendersDice.get(0))){
 					battle(this.defender);
 					if(!enoughArmiesToDefend()){
 						takeOver();
+						agressorsDice.remove(0);
+						defendersDice.remove(0);
 					}
-				}else if(!agressorsDice.get(0).higherDice(defendersDice.pop())){
+				}else if(!agressorsDice.get(0).higherDice(defendersDice.get(0))){
 					battle(this.agressor);
+					agressorsDice.remove(0);
+					defendersDice.remove(0);
 				}
 			}
 		}
