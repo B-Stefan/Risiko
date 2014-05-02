@@ -5,9 +5,7 @@ import main.java.gui.CUI.core.CommandListener;
 import main.java.gui.CUI.core.IO;
 import main.java.logic.Country;
 import main.java.logic.Turn;
-import main.java.logic.exceptions.NotEnoughNewArmysException;
-import main.java.logic.exceptions.TurnNotAllowedStepException;
-import main.java.logic.exceptions.TurnNotInCorrectStepException;
+import main.java.logic.exceptions.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.event.ActionEvent;
@@ -116,6 +114,14 @@ public class CountryCUI extends CUI {
                     IO.println(e.getMessage());
                 }catch (TurnNotInCorrectStepException e){
                     IO.println(e.getMessage());
+                }catch (NotEnoughArmiesToAttackException e){
+                    IO.println(e.getMessage());
+                }catch (NotEnoughArmiesToDefendException e){
+                    IO.println(e.getMessage());
+                }catch (InvalidAmountOfArmiesException e){
+                    IO.println(e.getMessage());
+                }catch (Exception e){
+                    throw  new RuntimeException(e);
                 }
             }
         }
