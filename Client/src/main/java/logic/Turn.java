@@ -242,7 +242,7 @@ public class Turn {
             this.isComplete();
             //Einmal ein Land angegriffen ändert den step des Turns
             this.setCurrentStep(steps.FIGHT);
-            List<Army> agressorsArmies = from.getArmyList().subList(0, numberOfArmys -1);
+            List<Army> agressorsArmies = from.getArmyList();
             List<Army> defendersArmies = to.getArmyList();
             Fight newFight = new Fight(from, to, agressorsArmies , defendersArmies);
             newFight.armyVsArmy();
