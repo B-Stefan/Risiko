@@ -4,7 +4,6 @@ import main.resources.IOrder;
 import main.resources.IPlayer;
 
 /**
- * Created by Stefan on 31.03.2014.
  * @author Stefan Bieliauskas
  * Diese Klasse ist für die Erfassung der Aufträge ausgelegt,
  * die darauf abzielen einen anderen Spieler zu vernichten.
