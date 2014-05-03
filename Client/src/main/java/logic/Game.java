@@ -44,6 +44,7 @@ public class Game {
      * Contains the current round , default null
      */
     private Round currentRound;
+
     /**
      * Die Game-Klasse dient zur verwaltung des gesammten Spiels
      */
@@ -79,18 +80,19 @@ public class Game {
             throw new TooManyPlayerException(Game.maxCountPlayers);
         } else if (this.map.getCountries().size() < this.players.size()) {
             throw new NotEnoughCountriesException(this.map.getCountries().size());
-        } else if (this.currentGameState != gameStates.WAITING){
+        } else if (this.currentGameState != gameStates.WAITING) {
             throw new GameAllreadyStartedException();
         }
         distributeCountries();
         this.currentGameState = gameStates.RUNNING;
-        this.setCurrentRound(new Round(players,map, Turn.getDefaultStepsFirstRound()));
+        this.setCurrentRound(new Round(players, map, Turn.getDefaultStepsFirstRound()));
 
 
     }
 
     /**
      * Setzt die aktuelle Runde
+     *
      * @param r
      */
     public void setCurrentRound(Round r) {
@@ -98,20 +100,21 @@ public class Game {
         this.currentRound = r;
     }
 
-    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException{
-        if(this.currentRound != null){
-            if(!this.currentRound.isComplete()){
+    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException {
+        if (this.currentRound != null) {
+            if (!this.currentRound.isComplete()) {
                 throw new RoundNotCompleteException();
             }
         }
-        this.currentRound = new Round(this.players,this.map);
+        this.currentRound = new Round(this.players, this.map);
     }
 
     /**
      * Gibt die aktuelle Runde des Spiels zurück
+     *
      * @return
      */
-    public Round getCurrentRound() throws GameNotStartedException{
+    public Round getCurrentRound() throws GameNotStartedException {
         if (this.getCurrentGameState() == gameStates.WAITING) {
             throw new GameNotStartedException();
         }
@@ -120,6 +123,7 @@ public class Game {
 
     /**
      * Gibt den aktuellen status des Games zurück
+     *
      * @return
      */
     public gameStates getCurrentGameState() {
@@ -194,7 +198,7 @@ public class Game {
                     Army a = new Army(o, c);
                     try {
                         c.addArmy(a);
-                    }catch (CountriesNotConnectedException e){
+                    } catch (CountriesNotConnectedException e) {
                         //Kann nicht auftreten, da die diefalut-Armys zuerst keinem Land zugewiesen wurden.
                         throw new RuntimeException(e);
                     }
@@ -207,6 +211,7 @@ public class Game {
      * Wird ausgelöst, wenn durch die GUI ein Spieler das Spiel verlässt
      *
      * @param player - Player der gelöscht werden soll
+     *
      * @throws main.java.logic.exceptions.PlayerNotExsistInGameException
      */
     public void onPlayerDelete(final Player player) throws PlayerNotExsistInGameException {
@@ -220,20 +225,20 @@ public class Game {
     /**
      * Wird ausgeführt sobald der näcshte Spieler an der Reihe ist
      */
-    public void onNextPlayer(){
+    public void onNextPlayer() {
 
     }
+
     /**
      * Wird ausgelöst, sobald über die GUI ein neuer Spieler hinzugefügt wird.
      *
      * @param name - Der Name des neuen Spielers
      */
-    public void onPlayerAdd(final String name) throws GameAllreadyStartedException{
+    public void onPlayerAdd(final String name) throws GameAllreadyStartedException {
 
-        if (this.getCurrentGameState() != gameStates.WAITING){
-            throw  new GameAllreadyStartedException();
-        }
-        else {
+        if (this.getCurrentGameState() != gameStates.WAITING) {
+            throw new GameAllreadyStartedException();
+        } else {
             Player newPlayer = new Player(name);
             this.addPlayer(newPlayer);
         }
@@ -256,6 +261,7 @@ public class Game {
     public Map getMap() {
         return map;
     }
+
     public String toString() {
         return "Game";
     }
