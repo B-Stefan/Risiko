@@ -30,14 +30,18 @@ public class RoundCUI extends CUI {
                 round.setNextTurn();
             }catch (TurnNotCompleteException e){
                 IO.println(e.getMessage());
+                return;
             }catch (ToManyNewArmysException e){
                 IO.println(e.getMessage());
                 IO.println("Wechseln Sie dazu in den Turn mit cd und plazieren Sie auf Ihren Ländern Einheiten. ");
+                return;
             }catch (RoundCompleteException e){
                 IO.println(e.getMessage());
                 IO.println("Bitte geben Sie next ein um die nächste Runde zu starten");
                 goIntoParentContext();
+                return;
             }
+            goIntoChildContext();
         }
     }
 
