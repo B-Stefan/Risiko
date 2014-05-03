@@ -6,10 +6,16 @@ import main.java.logic.Player;
 import java.lang.*;
 
 /**
- * Created by Stefan on 01.04.2014.
+ * Hauptklasse, die zum starten des Spiels verwendet wird.
+ *
  */
 public class main {
 
+    /**
+     * Main Anweiseung
+     * @param args - Keine
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception{
 
         //Erstellen des Spiels
@@ -17,9 +23,10 @@ public class main {
         //Erstellen des UI
         GameCUI ui = new GameCUI(game);
 
-        game.addPlayer(new Player("Bon"));
+        game.addPlayer(new Player("Bob"));
         game.addPlayer(new Player("Stefan"));
         game.addPlayer(new Player("Linda"));
+
         //Startet das warten auf eine Eingbae
         ui.listenConsole();
     }
