@@ -13,6 +13,7 @@ A port of the popular board game "Risiko" in Java
 
 5. After your're done execute following commands
     ```
+    git pull
     git add .
     git commit -m '<your comment>'
     git push
@@ -23,21 +24,37 @@ Classes / TODOS
 The following paragraph list some todos for our project.
 
 
-##Country
-* public void setOwner (Army newOwner)
-  - Beim setzten eines neuen Owners muss dieser auch eine Army mitbringen ansonsten geht dies nicht
+##Version 1.0
+Diese Version muss bis Mittwoch stehen.
+
+###Fight
+*Testen der Funktionen
+*Constructor vereinfachen - Wenn klar ist das von Country from zu to angegriffen wird sind die Armeen, die daran beteiligt sind auch klar.
+
+
+###FightCUI
+*fight - Aktion mit leben füllen
+*stop - Fight beenden und zum parentContext zurückkehren
 
 
 
-##Fight
-*public Fight (Country from, Country to)
+###OderManger
+Verteilen der Aufträge auf die einzelnen Spieler
 
-
-##Order
+###Order
 Bei einem Auftrag müsste es 2 Unterklassen geben die die Schnittstele IOrder implementieren
 
 1. Auftrag einen anderen Spieler zu vernichten
 2. Auftrag 2 Kontinente zu besetzten
+
+##Versio 1.2  (Server, GUI)
+Dieser Version beinhaltet den Server und die GUI und muss in ca. 2 Wochen stehen.
+
+###GameManager
+ Verwaltet eine Anzahl von Spielen
+###PlayerManager
+ Verwaltet eine Anzahl von Spielern (Login usw, )
+
 
 
 #Struktur
