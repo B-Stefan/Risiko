@@ -29,7 +29,7 @@ public class RoundCUI extends CUI {
             try {
                 round.setNextTurn();
             }catch (TurnNotCompleteException e){
-                IO.println("Der Zug ist nicht nicht abgeschlossen wechsel mit cd in den Turn und gebe dir mit state den status aus");
+                IO.println(e.getMessage());
             }catch (ToManyNewArmysException e){
                 IO.println(e.getMessage());
                 IO.println("Wechseln Sie dazu in den Turn mit cd und plazieren Sie auf Ihren Ländern Einheiten. ");

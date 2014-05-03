@@ -4,13 +4,26 @@ import main.java.logic.exceptions.*;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * Der Turn bildet einen einzelnen Zug eines Spielers ab.
+ * Dabei druchläuft ein Turn verschiende Schritte (steps) Der Turn wird durch die Runde (Round) erstellt.
+ *
+ */
 public class Turn {
 
+    /**
+     * Die Steps bilden die möglichen Schritte eines Turns ab
+      */
     public  static enum steps {
         DISTRIBUTE,
         FIGHT,
         MOVE
     }
+
+    /**
+     * Gibt die Standardschritte zurück, die ein Turn normalerweise druchläuft
+     * @return - Standard Schritte
+     */
     public static Queue<steps> getDefaultSteps (){
         Queue<steps> s = new LinkedBlockingQueue<steps>(3) {
         };
@@ -19,6 +32,11 @@ public class Turn {
         s.add(steps.MOVE);
         return s;
     }
+
+    /**
+     * Gibt die Schritte zurück, die alle Spieler in der ersten Runde druchlaufen müssen
+     * @return - Schritte für die erste Runde
+     */
     public static Queue<steps> getDefaultStepsFirstRound (){
         Queue<steps> s = new LinkedBlockingQueue<steps>(1) {
         };
@@ -27,41 +45,88 @@ public class Turn {
     }
 
 
-
+    /**
+     * Bildet den Spieler ab, dir diesen Turn durchführen musss
+     */
     private final Player player;
+    /**
+     * Bildet die Karte ab auf dem der Spieler diesen Zug durchführt
+     */
 	private final Map map;
+    /**
+     * Bildet ein Stack mit neuen Armeen ab, die der Spieler auf dem Spielfeld verteilen muss
+     */
 	private final Stack<Army> newArmies = new Stack<Army>();
+
+    /**
+     * Bildet die Liste der Armeen ab, die in diesem Zug bereits bewegt wurden
+     */
 	private final ArrayList<Army> movedArmies = new ArrayList<Army>();
+
+    /**
+     * Bildet die Warteschlange der Steps ab, die der Spieler noch durchlaufen muss.
+     * Dabei befindet sich der current step nicht mehr in der Liste.
+     * @see #currentStep
+     * @see java.util.concurrent.LinkedBlockingQueue
+     */
     public  final Queue<steps> allowedSteps;
 
+    /**
+     * Bildet die aktuelle Stufe des Zuges ab.
+     * Diese Varriable kann nie den Wert null haben
+     * @see #Turn(Player, Map, java.util.Queue)
+     */
     private steps currentStep;
 
 
+    /**
+     * Constructor für den Turn, der einen Turn inizialisiert
+     * @param p - Player, der den Turn druchführen muss
+     * @param m - Karte auf dem der Spieler sich bewegt
+     * @param steps - Die geforderten Steps, die der Turn druchlaufen soll
+     */
     public Turn(final Player p,final Map m, Queue<steps> steps){
         this.player = p;
         this.map = m;
 
+        //Argumentprüfung
         if(steps.isEmpty()){
             throw  new IllegalArgumentException("Sie müssten mindestens eine Queue mit einem step übergeben");
         }
+
+        //Kopieren der übergebenen Queue, da die die Queue im Turn verändert wird und diese Veränderung keinen Auswirkungen auf andere Programmteile haben dürfen.
         LinkedBlockingQueue<steps> s = new LinkedBlockingQueue<steps>();
         s.addAll(steps);
         this.allowedSteps = s;
 
-        this.currentStep = this.allowedSteps.poll();// Erstes element aus der Liste auf aktuellen status setzten
-        createNewArmies(this.determineAmountOfNewArmies());
+        //Wenn der Step "Verteilen" erlaubt ist werden die neuen Armeen, die zu verteilen sind erzeugt
+        if(this.getAllowedSteps().contains(Turn.steps.DISTRIBUTE)  ){
+            createNewArmies(this.determineAmountOfNewArmies());
+        }
+
+        //Aktuellen status auf den ersten Eintrag in der Queue setzten
+        this.setCurrentStep(this.allowedSteps.poll());// Erstes element aus der Liste auf aktuellen status setzten
+
     }
 
+    /**
+     *
+     * @return - Aktueller Spieler, der diesen Zug durchführen muss
+     */
     public Player getPlayer (){
     	return this.player; 
     }
-    
+
+    /**
+     * Gibt den Turn in einem zusammengefassten String zurück
+     * @return - Zusammenfassung des Turns
+     */
     public String toString(){
         return "Turn(" + this.getPlayer() + "):" + this.getCurrentStep();
     }
     
     /**
-     * berechnet die Anzahl der Armeen, die der jewilige Spieler am Anfang seines Zuges neu hinzubekommt. 
+     * Berechnet die Anzahl der Armeen, die der jewilige Spieler am Anfang seines Zuges neu hinzubekommt.
      * @return Anzahl, der neuen Armeen des jeweiligen Spielers
      */
     private int determineAmountOfNewArmies(){
@@ -74,8 +139,8 @@ public class Turn {
     }
 
     /**
-     * erstelle eine Liste mit den neuen Armeen
-     *
+     * Füllt die Liste der neuen Armeen
+     * @param numberOfArmysToCreate - Anzahl wie viele Armeen erstellt werden sollen
      */
     private void createNewArmies(int numberOfArmysToCreate){
     	for (int i = 0; i<numberOfArmysToCreate; i++){
@@ -85,15 +150,16 @@ public class Turn {
 
 
     /**
-     * f�gt der Liste der bereits verschobenen Einheiten die Armee hinzu
+     * Fügt der Liste der bereits verschobenen Einheiten die Armee hinzu
      * @param a bewegte Armee
      */
+
     private void addMovedArmy(Army a){
     	this.movedArmies.add(a);
     }
     /**
-     * pr�ft ob die Armee bereits verschoben wurde in diesem Zug
-     * @param a Armee, die �berpr�ft werden soll
+     * Prüft ob die Armee bereits verschoben wurde in diesem Zug
+     * @param a Armee, die Überprüft werden soll
      * @return boolean -> true wenn die Armee bereits verschoben wurde, false, wenn sie nioch nicht verschoben wurde
      */
     private boolean isArmyAlreadyMoved(Army a){
@@ -102,9 +168,9 @@ public class Turn {
 
 
     /**
-     *
-     * @param stepToCheck
-     * @return
+     * Diese Methode dient der Überprüfung, ob der übergebene step im Moment erlaubt wäre druchführen.
+     * @param stepToCheck Der Step, der überprüft werden soll
+     * @return Wenn der Step erlaubt ist True, False tritt nicht auf es werden Exceptions für False ausgelöst.
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
      */
@@ -127,8 +193,10 @@ public class Turn {
 
 
     /**
-     *
-     * @param position
+     * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
+     * @see main.java.logic.Turn.steps
+     * @see Turn#getDefaultSteps()
+     * @param position - Das Land auf welches die neue Armee plaziert werden soll
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughNewArmysException
@@ -205,6 +273,12 @@ public class Turn {
             addMovedArmy(army);
         }
     }
+
+    /**
+     * Überprüft, ob der Turn abgeschlossen wurde.
+     * @return True wenn der Turn abgeschlossen wurde, false wenn nicht
+     * @throws ToManyNewArmysException
+     */
     public boolean isComplete() throws ToManyNewArmysException{
         if(this.getNextStep() == null){
             if(this.getCurrentStep() == steps.DISTRIBUTE && this.newArmies.size() > 0) {
@@ -216,26 +290,58 @@ public class Turn {
             return false;
         }
     }
+
+    /**
+     * Gibt den aktuellen Step zurück
+     * @return
+     */
     public steps getCurrentStep() {
         return currentStep;
     }
+
+    /**
+     * Gibt den folgenden step zurück. Ändert jedoch keine Eigenschaften des Turns
+     * Dient dazu rauszufinden welcher step als nächstes dran wäre. Dabei kann null zurückgegeben werden, sobald kein nächster Step mehr da ist.
+     * @return - Nächster Step der dran wäre
+     */
     public steps getNextStep (){
         return this.allowedSteps.peek();
     }
+
+    /**
+     * Versetzt den Turn in die nächste Stufe.
+     *
+     * @throws TurnCompleteException
+     * @throws ToManyNewArmysException
+     */
     public void setNextStep() throws TurnCompleteException, ToManyNewArmysException {
         if(this.isComplete()){
             throw new TurnCompleteException();
         }
         this.currentStep = this.allowedSteps.poll();
     }
+
+    /**
+     * Setzt den currentStep
+     * @param step - Step der gesetz werden soll
+     */
     private void setCurrentStep(steps step) {
         currentStep = step;
     }
 
+    /**
+     * Gibt die Anzahl der noch zu verteilenden Armeen zurück
+     * @see #placeNewArmy(Country)
+     * @return - Anzahl der noch zu verteilenden Armeen
+     */
     public int getNewArmysSize() {
         return this.newArmies.size();
     }
 
+    /**
+     * Gibt die in diesem Turn erlaubten steps zurück.
+     * @return - In diesem Turn erlaubte steps
+     */
     public Queue<steps>  getAllowedSteps() {
         return  this.allowedSteps;
     }
