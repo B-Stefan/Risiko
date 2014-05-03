@@ -2,6 +2,6 @@ package main.java.logic.exceptions;
 
 public class InvalidPlayerException extends Exception{
 	public InvalidPlayerException(){
-		super("Der ausgewählte Spieler ist ungültig");
+		super("Der ausgewÃ¤hlte Spieler ist ungï¿½ltig");
 	}
 }

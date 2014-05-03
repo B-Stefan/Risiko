@@ -11,13 +11,13 @@ public class Continent{
 	private final String name;
 
 	/**
-	 * Eine ArrayLsit mit den L�ndern, die sich auf dem Kontinent befinden L�nder
+	 * Eine ArrayLsit mit den L�ndern, die sich auf dem Kontinent befinden Länder
      * @return Gibt die Liste der Länder zurück, die disem Kontinent zugeordnet wurden
 	 */
 	private HashMap<String,Country> countrys = new HashMap<String, Country>();
 
 	/**
-	 * der Bonus, der die Kontrolle des jeweiligen Kontinents einbringt f�r die neuen Armeen
+	 * der Bonus, der die Kontrolle des jeweiligen Kontinents einbringt für die neuen Armeen
 	 */
 	private int bonus;
 	

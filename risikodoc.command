@@ -1,0 +1,1 @@
+javadoc -private -splitindex -encoding UTF-8 -charset UTF-8 -docencoding UTF-8 @/private/var/folders/68/hw2zspsn15n79zg7lgv4zdt80000gn/T/javadoc1418392605045488488args.txt -classpath /Users/Stefan/Downloads/junit-4.11.jar -d ./gh-pages/javadoc
