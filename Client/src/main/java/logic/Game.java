@@ -100,11 +100,14 @@ public class Game {
         this.currentRound = r;
     }
 
-    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException {
+    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException,GameNotStartedException {
         if (this.currentRound != null) {
             if (!this.currentRound.isComplete()) {
                 throw new RoundNotCompleteException();
             }
+        }
+        if (this.getCurrentGameState() == gameStates.WAITING){
+            throw  new GameNotStartedException();
         }
         this.currentRound = new Round(this.players, this.map);
     }
