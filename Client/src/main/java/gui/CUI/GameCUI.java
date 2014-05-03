@@ -45,6 +45,7 @@ public class GameCUI extends CUI {
             }
             catch (GameAllreadyStartedException e ){
                 IO.println(e.getMessage());
+                return;
             }
 
         }
@@ -63,9 +64,15 @@ public class GameCUI extends CUI {
                game.setNextRound();
            }catch (RoundNotCompleteException e){
                IO.println(e.getMessage());
+               return;
            }catch (ToManyNewArmysException e){
                IO.println(e.getMessage());
+               return;
+           }catch (GameNotStartedException e){
+               IO.println(e.getMessage());
+               return;
            }
+           goIntoChildContext();
         }
 
     }
@@ -145,8 +152,9 @@ public class GameCUI extends CUI {
             round = game.getCurrentRound();
 
         }
-        catch (Exception e ){
-            throw  new RuntimeException(e);
+        catch (GameNotStartedException e ){
+            IO.println(e.getMessage());
+            return;
         }
 
         RoundCUI roundCUI = new RoundCUI(round, this);
