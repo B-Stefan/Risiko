@@ -11,7 +11,7 @@ public class FightCUI extends CUI {
 	public class continueFightingCommandListener extends CommandListener{
 		
 		public continueFightingCommandListener(){
-			super("fight" , "F�hrt einen(weiteren) Angriff aus");
+			super("fight" , "Führt einen(weiteren) Angriff aus");
 		}
 
 		@Override
