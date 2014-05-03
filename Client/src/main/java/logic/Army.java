@@ -30,7 +30,7 @@ public class Army {
 		return this.owner;
 	}
 	/**
-	 * Setter f�r die Position
+	 * Setter für die Position
 	 * @param country �bergiebt die (neue) Position der Armee
 	 */
 	public void setPosition(Country country)  throws CountriesNotConnectedException{
