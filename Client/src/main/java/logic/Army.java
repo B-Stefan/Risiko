@@ -2,37 +2,45 @@ package main.java.logic;
 
 import main.java.logic.exceptions.CountriesNotConnectedException;
 
+/**
+ * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
+ *
+ * Diese Klasse bildet eine einzelne Armee im Spiel ab
+ */
 public class Army {
 
-	private Player owner;
+    /**
+     * Der Owner beschreibt wem diese Armee im Spiel zugeordnet wird.
+     */
+	private final Player owner;
+
+
+    /**
+     * Die Position spiegelt dabei immer die aktuelle Position dieser Armee da
+     */
 	private Country position;
-	
-	public Army(Player o, Country p){
-		this.owner = o;
-		this.position = p;
+
+
+    /**
+     * Erstellt eine Armee für das Spiel, der Besitzer kann nachträglich nicht geändert werden
+     * @param player Besitzer dieser Armee
+     */
+	public Army(final Player player){
+		this.owner = player;
 	}
-	public Army(Player o){
-		this.owner = o;
-	}
-	
+
+
 	/**
-	 * Setzt Spieler p als Besitzer des Landes
-	 * @param o der Spieler, der Besitzer der Armee wird
-	 */
-	public void setOwner(Player o){
-		this.owner = o;
-	}
-	/**
-	 * Gibt den Besitzer der Armee wieder
-	 * @return owner: besitzer der Armee 
-	 */
-	public Player getOwner(){
-		return this.owner;
-	}
-	/**
-	 * Setter für die Position
-	 * @param country �bergiebt die (neue) Position der Armee
-	 */
+	 * Setzt die Armee auf die neue Position.
+     * Dabei wird gleichzeigt der die 1:1 Zuordnung zum Country beachtet, sodass eine Armee immer nur auf einem Country steht.
+     * Auf der anderen Seite sind auch alle Armeen, die einem Country zugewiesen wurden auf dieser Position gesetzt.
+     * Dies erhöht die Datenintegrität
+     *
+     *
+	 * @param country Übergiebt die (neue) Position der Armee
+	 *
+     * @see Country#addArmy(Army)
+     */
 	public void setPosition(Country country)  throws CountriesNotConnectedException{
 
         //Armee sitzt bereits auf der Position
@@ -61,9 +69,19 @@ public class Army {
             this.position = country;
         }
 	}
-	/**
-	 * Getter f�r die Position
-	 * @return position
+
+    /**
+     * Gibt den Besitzer der Armee wieder
+     * @return  Besitzer der Armee
+     */
+    public Player getOwner(){
+        return this.owner;
+    }
+
+
+    /**
+	 * Getter für die Position
+	 * @return position Aktuelle Position der Armee, kann null zurückgeben.
 	 */
 	public Country getPosition(){
 		return this.position;

@@ -5,13 +5,29 @@ import main.resources.*;
 import java.util.*;
 
 /**
- * Created by Stefan on 01.04.2014.
+ * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
+ *
+ * Dient zur Verwaltung der Karte für ein Spiel
  */
 public class Map  {
+
+
+    /**
+     * Beinhaltet alle Länder, für die Karte
+     */
     private final ArrayList<Country> countries = new ArrayList<Country>();
+
+    /**
+     * Beinhaltet alle Kontinente für die Karte
+     */
     private final ArrayList<Continent> continents = new ArrayList<Continent>();
 
+    /**
+     * Erstellt eine neue Standard-Karte
+     */
     public Map() {
+
+        //Kontinente erzeugen
         Continent northAmerica  = new Continent("Nord Amerika", 5);
         Continent southAmerica  = new Continent("Süd Amerika", 2);
         Continent europe        = new Continent("Europa", 5);
@@ -19,7 +35,8 @@ public class Map  {
         Continent afrika        = new Continent("Afrika", 3);
         Continent australia     = new Continent("Australien", 2);
 
-    	
+
+        //Länder zuweisen
         this.countries.add(new Country("Alaska", northAmerica));
         this.countries.add(new Country("Nordwest-Territorium", northAmerica));
         this.countries.add(new Country("Alberta", northAmerica));
@@ -101,9 +118,6 @@ public class Map  {
 
     }
 
-    public Map(final ArrayList<Country> countries) {
-        this.countries.addAll(countries);
-    }
 
     public ArrayList<Country> getCountries() {
         return this.countries;

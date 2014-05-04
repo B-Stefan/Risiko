@@ -1,13 +1,10 @@
 package main.java.gui.CUI;
 
-import main.java.gui.CUI.core.CUI;
-import main.java.gui.CUI.core.CommandListener;
-import main.java.gui.CUI.core.CommandListenerArgument;
-import main.java.gui.CUI.core.IO;
-import main.java.gui.CUI.core.exceptions.InvalidCommandListernArgumentException;
-import main.java.logic.Fight;
+import main.java.gui.CUI.utils.CUI;
+import main.java.gui.CUI.utils.CommandListener;
+import main.java.gui.CUI.utils.CommandListenerArgument;
+import main.java.gui.CUI.utils.IO;
 import main.java.logic.Round;
-import main.java.logic.exceptions.GameAllreadyStartedException;
 import main.java.logic.exceptions.RoundCompleteException;
 import main.java.logic.exceptions.ToManyNewArmysException;
 import main.java.logic.exceptions.TurnNotCompleteException;

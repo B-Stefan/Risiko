@@ -3,15 +3,20 @@ import java.util.*;
 import java.util.Map;
 
 
+/**
+ * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
+ *
+ * Dise Klasse bildet ein einzelnes Kontinent ab
+ */
 public class Continent{
-	
+
 	/**
 	 * Name des Kontinents
 	 */
 	private final String name;
 
 	/**
-	 * Eine ArrayLsit mit den L�ndern, die sich auf dem Kontinent befinden Länder
+	 * Eine ArrayLsit mit den Ländern, die sich auf dem Kontinent befinden Länder
      * @return Gibt die Liste der Länder zurück, die disem Kontinent zugeordnet wurden
 	 */
 	private HashMap<String,Country> countrys = new HashMap<String, Country>();
@@ -20,25 +25,25 @@ public class Continent{
 	 * der Bonus, der die Kontrolle des jeweiligen Kontinents einbringt für die neuen Armeen
 	 */
 	private int bonus;
-	
+
     /**
-     *
-     * @param n Name des Kontinents
+     * Erstellt ein Kontinent
+     * @param name Name des Kontinents
+     * @param bonus Bonus, der der Owner pro Runde an Armeen erhält
      */
-	public Continent (final String n, int b){
-		this.name = n;
-		this.bonus = b;
+	public Continent (final String name, int bonus){
+		this.name = name;
+		this.bonus = bonus;
 	}
 
 	/**
-	 * 
-	 * @return Gibt den Namen des KOntinents zur�ck
+	 * Gibt den namen des Kontinents zurück
+	 * @return Gibt den Namen des KOntinents zurück
 	 */
-	
+
 	public String getName(){
 		return this.name;
 	}
-	
 
 
     /**
@@ -67,19 +72,19 @@ public class Continent{
             return null;
         }
     }
-    
+
 	/**
-	 * 
-	 * @param p Der Land, der dem Kontinent hinzugefügt werden soll
+	 * Fügt dem Kontinent ein Land hinzu
+	 * @param player Der Land, der dem Kontinent hinzugefügt werden soll
 	 */
-	public void addCountry(Country p){
-		if(!countrys.containsKey(p.getId())){
-            countrys.put(p.getId(), p);
+	public void addCountry(Country player){
+		if(!countrys.containsKey(player.getId())){
+            countrys.put(player.getId(), player);
         }
 	}
 
     /**
-     *
+     * Löscht aus dem Kontinent ein Land
      * @param countryToDelete Land das gelöscht werden soll
      * @return
      */
@@ -91,9 +96,9 @@ public class Continent{
         return  false;
 
     }
-	
+
     public int getBonus(){
     	return this.bonus;
     }
-	
+
 }

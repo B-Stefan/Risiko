@@ -1,12 +1,24 @@
-package main.java.logic;
+package main.java.logic.utils;
 
+
+
+/**
+ * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
+ *
+ * Diese Klasse dient zum Würfeln
+ */
 public class Dice implements Comparable<Dice>  {
 	
 	private int dicenumber;
-	
+
+    /**
+     * Erstellt und wirft den Würfel
+     */
 	public Dice(){
 		this.throwDice();
 	}
+
+
 	/**
 	 *  throw the dice 
 	 */
@@ -19,6 +31,11 @@ public class Dice implements Comparable<Dice>  {
 		return dicenumber;
 	}
 
+    /**
+     * Stellt die Funktion zum vergleichen von 2 Würfeln zur Verfügung
+     * @param otherDice - der andere Würfel der vergleichen werden soll
+     * @return - 0 => equals; 1=> greater; -1 => smaller
+     */
     @Override
     public int compareTo(Dice otherDice){
         if(this.dicenumber == otherDice.getDiceNumber()){
@@ -31,8 +48,13 @@ public class Dice implements Comparable<Dice>  {
             return -1; //kleiner
         }
     }
-	
-    public boolean higherDice(Dice otherDice){
+
+    /**
+     * Pürft ob der otherDice größer ist
+     * @param otherDice Zu prüfender Würfel
+     * @return True, wenn aktueller würfel größer is
+     */
+    public boolean isDiceHigher(Dice otherDice){
     	if(this.compareTo(otherDice)==1){
     		return true;
     	}else{

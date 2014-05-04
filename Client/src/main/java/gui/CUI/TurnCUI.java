@@ -3,11 +3,11 @@ package main.java.gui.CUI;
 /**
  * Created by Stefan on 30.04.14.
  */
-import main.java.gui.CUI.core.CUI;
-import main.java.gui.CUI.core.CommandListener;
-import main.java.gui.CUI.core.CommandListenerArgument;
-import main.java.gui.CUI.core.IO;
-import main.java.gui.CUI.core.exceptions.InvalidCommandListernArgumentException;
+import main.java.gui.CUI.utils.CUI;
+import main.java.gui.CUI.utils.CommandListener;
+import main.java.gui.CUI.utils.CommandListenerArgument;
+import main.java.gui.CUI.utils.IO;
+import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.Country;
 import main.java.logic.Turn;
 import main.java.logic.exceptions.ToManyNewArmysException;

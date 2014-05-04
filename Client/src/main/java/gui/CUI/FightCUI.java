@@ -3,7 +3,7 @@ import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
 
 import main.java.logic.*;
-import main.java.gui.CUI.core.*;
+import main.java.gui.CUI.utils.*;
 
 public class FightCUI extends CUI {
 	private final Fight fight;

@@ -2,6 +2,7 @@ package main.java.logic;
 import java.util.*;
 
 import main.java.logic.exceptions.*;
+import main.java.logic.utils.Dice;
 
 
 public class Fight {

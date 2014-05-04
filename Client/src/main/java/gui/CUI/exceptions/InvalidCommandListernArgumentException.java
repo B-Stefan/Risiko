@@ -1,8 +1,6 @@
-package main.java.gui.CUI.core.exceptions;
+package main.java.gui.CUI.exceptions;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import main.java.gui.CUI.core.CommandListenerArgument;
-import org.omg.CORBA.DynAnyPackage.Invalid;
+import main.java.gui.CUI.utils.CommandListenerArgument;
 
 import java.io.IOException;
 

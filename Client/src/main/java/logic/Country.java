@@ -4,8 +4,13 @@ import main.java.logic.exceptions.CountriesNotConnectedException;
 import main.java.logic.exceptions.CountryNotInListException;
 
 import java.util.*;
-import java.util.Map.Entry;
+import java.util.Map.Entry; 
 
+/**
+ * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
+ *
+ * Diese Klasse bildet ein einzelnes Land des Spiels ab
+ */
 public class Country {
 
     /**
@@ -13,14 +18,21 @@ public class Country {
      */
     private final String name;
 
-    private final String id;
+    /**
+     * Uniqu ID für das Spiel
+     */
+    private final UUID id;
 
-    private final HashMap<String, Country> neighbors = new HashMap<String, Country>();
+    /**
+     * Bildet die relation der Nachbarländer ab
+     * Der Key ist dabei die ID des Landes
+     */
+    private final HashMap<UUID, Country> neighbors = new HashMap<UUID, Country>();
     
     private final Continent position;
 
     /**
-     * Bestimmt den Spieler, der aktuell das Land besetzt h�llt
+     * Bestimmt den Spieler, der aktuell das Land besetzt hällt
      */
     private Player owner;
     
@@ -30,10 +42,15 @@ public class Country {
     private ArrayList<Army> armyList = new ArrayList<Army>();
 
 
-    public Country(final String n, Continent c) {
-        this.name = n;
-        this.id = UUID.randomUUID().toString();
-        this.position = c;
+    /**
+     * Erstellt ein Land
+     * @param name Name des Landes
+     * @param continent Kontinent des Landes
+     */
+    public Country(final String name, Continent continent) {
+        this.name = name;
+        this.id = UUID.randomUUID();
+        this.position = continent;
     }
 
     /**
@@ -48,29 +65,52 @@ public class Country {
         }
     }
 
+    /**
+     * Prüft, ob das Land mit dem aktuellen Land verbunden ist
+     * @param countryToCheck Land das geprüft werden soll
+     * @return True wenn das Land verbunden ist
+     */
     public boolean isConnected(Country countryToCheck) {
         return neighbors.containsValue(countryToCheck);
     }
 
 
-    public Country getNeighbor (String name){
-        return neighbors.get(name);
+    /**
+     * Gibt den das Land mit der entsprechenden UUID zurück
+     * @param id UUID des Landes was benötigt wird
+     * @return Land das gesucht wurde, oder null
+     */
+    public Country getNeighbor (UUID id){
+        return neighbors.get(id);
     }
-    public Country getNeighborByName (String searchName){
-        for (Entry<String, Country> entry : this.neighbors.entrySet()){
+
+    /**
+     * Gibt das Land anhand seines Namens zurück. Dabei wird das erste Land, dass diesem Namen entsprecht zurückgegeben.
+     * @param searchName - Name nach dem gesucht werden soll
+     * @return Land das gesucht wurde oder null wenn nicht gefunden
+     */
+    public Country getNeighbor (String searchName){
+        for (Entry<UUID, Country> entry : this.neighbors.entrySet()){
             if(entry.getValue().getName().equals(searchName)){
                 return entry.getValue();
             }
         }
         return null;
     }
+
+    /**
+     * Gibt alle Nachbarn des Landes zurück
+     * @return Nachbarn des Landes
+     */
     public ArrayList<Country> getNeighbors (){
         ArrayList<Country> list = new ArrayList<Country>();
         list.addAll(this.neighbors.values());
         return list;
     }
+
+
     /**
-     * setzt den aktuellen Besitzer des Lands
+     * Setzt den aktuellen Besitzer des Lands
      *
      * @param p Spieler, der als Owener gesetzt werden soll
      */
@@ -78,8 +118,10 @@ public class Country {
 
     	this.owner = p;
     }
+
+
     /**
-     * �ndert den Owner des Landes und entfehrnt gleichzeitig das Land aus der Liste des urspr�nglichen Owners
+     * Ändert den Owner des Landes und entfehrnt gleichzeitig das Land aus der Liste des urspr�nglichen Owners
      * @param newOwner
      * @throws CountryNotInListException
      */
@@ -88,6 +130,37 @@ public class Country {
         this.owner = newOwner;
     }
 
+
+    /**
+     * F�gt die Armee a in die Liste der Armeen des Spielers hinzu
+     * @param a in die Liste der Armeen einzuf�gende Armee
+     */
+    public void addArmy(Army a) throws CountriesNotConnectedException{
+        if(!armyList.contains(a)){
+            armyList.add(a);
+            a.setPosition(this);
+        }
+    }
+
+    /**
+     * Löscht die Armee auf dem Land
+     * @param army Armee, die Gelöscht werden soll
+     * @throws CountriesNotConnectedException
+     */
+    public void removeArmy(Army army) throws CountriesNotConnectedException{
+        if(armyList.contains(army)){
+            armyList.remove(army);
+            army.setPosition(null);
+        }
+    }
+
+    /**
+     *
+     * @return Anzahl der Armeen auf dem Land
+     */
+    public int getNumberOfArmys (){
+        return this.armyList.size();
+    }
     /**
      * @return Den Spieler, der dieses Land gerade besetzt hat
      */
@@ -105,28 +178,8 @@ public class Country {
     /**
      * @return Die unique Id für das Land
      */
-    public String getId() {
+    public UUID getId() {
         return this.id;
-    }
-    
-    /**
-     * F�gt die Armee a in die Liste der Armeen des Spielers hinzu
-     * @param a in die Liste der Armeen einzuf�gende Armee
-     */
-    public void addArmy(Army a) throws CountriesNotConnectedException{
-        if(!armyList.contains(a)){
-            armyList.add(a);
-            a.setPosition(this);
-        }
-    }
-    public void removeArmy(Army a) throws CountriesNotConnectedException{
-        if(armyList.contains(a)){
-            armyList.remove(a);
-            a.setPosition(null);
-        }
-    }
-    public int getNumberOfArmys (){
-        return this.armyList.size();
     }
 
     /**
@@ -137,6 +190,10 @@ public class Country {
     	return this.armyList;
     }
 
+    /**
+     * Gibt das Land als String zurück, Name Owner und Armeestärke
+     * @return
+     */
     @Override
     public String toString() {
         String postFix = " Owner: ";
@@ -148,7 +205,17 @@ public class Country {
     }
 
 
-    public boolean equals(Country otherCountry){
-        return otherCountry.getId() == this.getId();
+    /**
+     * Überschreibt die Vergleichsmethode, Vorbereitung auf Persistence
+     * @param otherCountry
+     * @return
+     */
+    @Override
+    public boolean equals(Object otherCountry){
+        if(otherCountry instanceof  Country){
+            Country country = (Country) otherCountry;
+            return country.getId() == this.getId();
+        }
+        return false;
     }
 }
