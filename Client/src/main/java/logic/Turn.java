@@ -236,16 +236,17 @@ public class Turn {
      * @throws NotEnoughArmiesToAttackException
      * @throws ToManyNewArmysException
      */
-    public void fight (Country from, Country to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException{
+    public Fight fight (Country from, Country to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException{
         if(this.isStepAllowed(steps.FIGHT)){
             this.isComplete();
             //Einmal ein Land angegriffen ändert den step des Turns
             this.setCurrentStep(steps.FIGHT);
             List<Army> agressorsArmies = from.getArmyList();
             List<Army> defendersArmies = to.getArmyList();
-            Fight newFight = new Fight(from, to, agressorsArmies , defendersArmies);
+            return  new Fight(from, to, agressorsArmies , defendersArmies);
 
         }
+        return null;
     }
 
     /**

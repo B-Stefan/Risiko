@@ -84,15 +84,19 @@ public class Fight {
 		for(Army a : this.agressorsArmies){
 			a.setPosition(this.toBeConquertedCountry);
 		}
+        this.toBeConquertedCountry.setOwner(agressor);
 	}
 	
-	public void armyVsArmy(int numerOfAttacArmys) throws NotEnoughArmiesToAttackException, NotEnoughArmiesToDefendException, InvalidAmountOfArmiesException, InvalidPlayerException, CountriesNotConnectedException{
+	public void armyVsArmy(int numerOfAttacArmys) throws NotEnoughArmiesToAttackException, NotEnoughArmiesToDefendException,ToManyArmiesToAttackException, InvalidAmountOfArmiesException, InvalidPlayerException, CountriesNotConnectedException{
 		if(!enoughArmiesToAttack()){
 			throw new NotEnoughArmiesToAttackException();
-		}else if (!enoughArmiesToDefend()){
-			throw new NotEnoughArmiesToDefendException();
+		}else if (!enoughArmiesToDefend()) {
+            throw new NotEnoughArmiesToDefendException();
+
+        }else if (numerOfAttacArmys > 3 ){
+            throw new ToManyArmiesToAttackException();
 		}else{
-			ArrayList<Dice> agressorsDice = dice(3, this.agressorsArmies);
+			ArrayList<Dice> agressorsDice = dice(numerOfAttacArmys, this.agressorsArmies);
 			ArrayList<Dice> defendersDice = dice(2, this.defendersArmies);
 			while(!defendersDice.isEmpty()){
 				if(agressorsDice.get(0).isDiceHigher(defendersDice.get(0))){
@@ -109,5 +113,8 @@ public class Fight {
 				}
 			}
 		}
-	}	
+	}
+    public String toString (){
+        return "Fight";
+    }
 }

@@ -21,7 +21,7 @@ public class FightCUI extends CUI {
 		public void actionPerformed(ActionEvent arg0) {
             final int numberOfArmies;
             try {
-                numberOfArmies = this.getArgument("country").toInt();
+                numberOfArmies = this.getArgument("numberOfArmys").toInt();
 
             }catch (InvalidCommandListernArgumentException e){
                 IO.println(e.getMessage());
@@ -31,14 +31,22 @@ public class FightCUI extends CUI {
                 fight.armyVsArmy(numberOfArmies);
             }catch (NotEnoughArmiesToAttackException e){
                 IO.println(e.getMessage());
+                return;
             }catch (NotEnoughArmiesToDefendException e){
                 IO.println(e.getMessage());
+                return;
             }catch (InvalidAmountOfArmiesException e){
                 IO.println(e.getMessage());
+                return;
             }catch (InvalidPlayerException e){
                 IO.println(e.getMessage());
+                return;
             }catch (CountriesNotConnectedException e){
                 IO.println(e.getMessage());
+                return;
+            }catch (ToManyArmiesToAttackException e ){
+                IO.println(e.getMessage());
+                return;
             }
 		}
 	}

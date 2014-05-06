@@ -92,6 +92,7 @@ public abstract class CUI {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
+            IO.printHeadline("Hilfe");
             IO.println("Nachfolgend die Hilfe für " + CUI.this.context.toString());
             for (java.util.Map.Entry<String, CommandListener>  c : CUI.this.commands.entrySet()){
                 IO.println(" - " + c.getKey() + ": " + c.getValue().getHelpText());

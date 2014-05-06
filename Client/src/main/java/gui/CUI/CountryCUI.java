@@ -6,6 +6,7 @@ import main.java.gui.CUI.utils.CommandListenerArgument;
 import main.java.gui.CUI.utils.IO;
 import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.Country;
+import main.java.logic.Fight;
 import main.java.logic.Turn;
 import main.java.logic.exceptions.*;
 
@@ -81,6 +82,7 @@ public class CountryCUI extends CUI {
         @Override
         public void actionPerformed(final ActionEvent actionEvent){
             final String target;
+
             try {
                 target = this.getArgument("country").toStr();
 
@@ -89,22 +91,26 @@ public class CountryCUI extends CUI {
                 return;
             }
 
-
+            Fight fight = null;
             Country found = country.getNeighbor(target);
             if (found == null){
                 IO.println("Leider konnte Ihr Land " + target + " nicht gefunden werden");
             } else {
                 try {
-                    turn.fight(country,found);
+                    fight = turn.fight(country,found);
                 }catch (TurnNotAllowedStepException e){
                     IO.println(e.getMessage());
+                    return;
                 }catch (TurnNotInCorrectStepException e){
                     IO.println(e.getMessage());
-                    IO.println(e.getMessage());
+                    return;
                 }catch (ToManyNewArmysException e) {
                     IO.println(e.getMessage());
+                    return;
                 }
             }
+            CUI fightCUI = new FightCUI(fight, CountryCUI.this);
+            goIntoChildContext(fightCUI);
         }
     }
     public CountryCUI(Turn turn, Country context, CUI parent) {
@@ -121,5 +127,7 @@ public class CountryCUI extends CUI {
     @Override
     protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args) {
 
+        IO.println("In dieser Ebene ist cd nicht verfügbar");
+        fireCommandEvent(new HelpListener());
     }
 }

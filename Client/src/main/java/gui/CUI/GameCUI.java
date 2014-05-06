@@ -35,7 +35,7 @@ public class GameCUI extends CUI {
          * Konstruktor, der Name und Argumente des Befehls festlegen
          */
         public addPlayerCommand() {
-            super("addPlayer");
+            super("addPlayer","Fügt einen Spieler dem Spiel hinzu");
             this.addArgument(new CommandListenerArgument("playerName"));
         }
 
@@ -74,7 +74,7 @@ public class GameCUI extends CUI {
          * Gibt den Befehl an und legt die Argumente fest
          */
         public NextRoundCommandListener() {
-            super("next");
+            super("next", "Startet die nächste Runde");
             this.addArgument(new CommandListenerArgument("playerName"));
         }
 
@@ -108,6 +108,7 @@ public class GameCUI extends CUI {
                IO.printHeadline("");
                IO.printHeadline(game.getWinner().toString());
                IO.printHeadline("");
+               return;
            }
            goIntoChildContext();
         }
@@ -124,7 +125,7 @@ public class GameCUI extends CUI {
          * Legt den Befehl fest, der zum starten des Spiels verwendet wird
          */
         public startGameCommand() {
-            super("startGame");
+            super("startGame", "Started das Spiel");
 
         }
 
