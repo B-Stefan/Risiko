@@ -1,7 +1,10 @@
 main
 main.java.gui.CUI
-main.java.gui.CUI.core
-main.java.gui.CUI.core.exceptions
+main.java.gui.CUI.exceptions
+main.java.gui.CUI.utils
 main.java.logic
 main.java.logic.exceptions
-main.resources
+main.java.logic.orders
+main.java.logic.utils
+main.java.persistence
+main.java.persistence.objects
