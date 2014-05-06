@@ -228,7 +228,6 @@ public class Turn {
      * Angreifen eines Landes mit einer definierten Anzahl von einheiten
      * @param from - Von diesem Land wird angegriffen
      * @param to - Dieses land soll angegrifffen werden
-     * @param numberOfArmys - Mit dieser Anzahl wird angegriffen
      * @throws TurnNotAllowedStepException
      * @throws CountriesNotConnectedException 
      * @throws InvalidPlayerException 
@@ -237,7 +236,7 @@ public class Turn {
      * @throws NotEnoughArmiesToAttackException
      * @throws ToManyNewArmysException
      */
-    public void fight (Country from, Country to, int numberOfArmys) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, ToManyNewArmysException,NotEnoughArmiesToAttackException, NotEnoughArmiesToDefendException, InvalidAmountOfArmiesException, InvalidPlayerException, CountriesNotConnectedException{
+    public void fight (Country from, Country to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException{
         if(this.isStepAllowed(steps.FIGHT)){
             this.isComplete();
             //Einmal ein Land angegriffen ändert den step des Turns
@@ -245,7 +244,7 @@ public class Turn {
             List<Army> agressorsArmies = from.getArmyList();
             List<Army> defendersArmies = to.getArmyList();
             Fight newFight = new Fight(from, to, agressorsArmies , defendersArmies);
-            newFight.armyVsArmy();
+
         }
     }
 

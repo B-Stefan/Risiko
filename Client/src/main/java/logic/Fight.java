@@ -38,7 +38,7 @@ public class Fight {
 	}
 	
 	private boolean enoughArmiesToAttack(){
-		if(this.agressorsArmies.isEmpty()){
+		if(this.agressorsArmies.size() == 1){
 			return false;
 		}
 		return true;
@@ -86,7 +86,7 @@ public class Fight {
 		}
 	}
 	
-	public void armyVsArmy() throws NotEnoughArmiesToAttackException, NotEnoughArmiesToDefendException, InvalidAmountOfArmiesException, InvalidPlayerException, CountriesNotConnectedException{
+	public void armyVsArmy(int numerOfAttacArmys) throws NotEnoughArmiesToAttackException, NotEnoughArmiesToDefendException, InvalidAmountOfArmiesException, InvalidPlayerException, CountriesNotConnectedException{
 		if(!enoughArmiesToAttack()){
 			throw new NotEnoughArmiesToAttackException();
 		}else if (!enoughArmiesToDefend()){

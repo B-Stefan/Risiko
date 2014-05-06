@@ -40,7 +40,7 @@ public class TurnCUI extends CUI {
     public class NextStepCommandListener extends CommandListener {
 
         public NextStepCommandListener() {
-            super("next", "Hiermit kannst du in den nächsten Step wechseln");
+            super("next", "Hiermit kannst du deinen Zug in den nächsten Status bringen");
         }
 
         @Override
@@ -67,11 +67,16 @@ public class TurnCUI extends CUI {
             Turn.steps currentStep = turn.getCurrentStep();
 
             IO.printHeadline("Status des Zugs");
-            IO.println("Es ist " + turn.getPlayer() + "an der Reihe");
+            IO.println("Es ist " + turn.getPlayer() + " an der Reihe");
             IO.println("Dein Zug befindet sich im status " + currentStep);
 
             if(currentStep == Turn.steps.DISTRIBUTE){
-                IO.println("Du musst noch Einheiten auf deinen Ländern verteilen. Du darfst noch: "+ turn.getNewArmysSize() + " Einheiten verteilen");
+                if(turn.getNewArmysSize() > 0 ){
+                    IO.println("Du musst noch Einheiten auf deinen Ländern verteilen. Du darfst noch: "+ turn.getNewArmysSize() + " Einheiten verteilen");
+                }
+                else {
+                    IO.println("Du hast keine Einheiten mehr zu verteilen wechsel mit next in die nächste Stufe ");
+                }
             }
             else if(currentStep == Turn.steps.FIGHT){
                 IO.println("Du befindest dich im Kampfmodus, greife Länder an!");

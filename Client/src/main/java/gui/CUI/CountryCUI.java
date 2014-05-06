@@ -81,10 +81,8 @@ public class CountryCUI extends CUI {
         @Override
         public void actionPerformed(final ActionEvent actionEvent){
             final String target;
-            final int numberOfArmys;
             try {
                 target = this.getArgument("country").toStr();
-                numberOfArmys = this.getArgument("numberOfArmys").toInt();
 
             }catch (InvalidCommandListernArgumentException e){
                 IO.println(e.getMessage());
@@ -97,21 +95,14 @@ public class CountryCUI extends CUI {
                 IO.println("Leider konnte Ihr Land " + target + " nicht gefunden werden");
             } else {
                 try {
-                    turn.fight(country,found,numberOfArmys);
+                    turn.fight(country,found);
                 }catch (TurnNotAllowedStepException e){
                     IO.println(e.getMessage());
                 }catch (TurnNotInCorrectStepException e){
                     IO.println(e.getMessage());
-                }catch (NotEnoughArmiesToAttackException e){
                     IO.println(e.getMessage());
-                }catch (NotEnoughArmiesToDefendException e){
+                }catch (ToManyNewArmysException e) {
                     IO.println(e.getMessage());
-                }catch (InvalidAmountOfArmiesException e){
-                    IO.println(e.getMessage());
-                }catch (ToManyNewArmysException e){
-                    IO.println("Bitte verteile zunächst alle Armeen auf den Ländern. Anschließend kannst du erst kämpfen");
-                }catch (Exception e){
-                    throw  new RuntimeException(e);
                 }
             }
         }

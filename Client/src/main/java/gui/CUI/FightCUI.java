@@ -2,8 +2,10 @@ package main.java.gui.CUI;
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
 
+import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.*;
 import main.java.gui.CUI.utils.*;
+import main.java.logic.exceptions.*;
 
 public class FightCUI extends CUI {
 	private final Fight fight;
@@ -12,12 +14,32 @@ public class FightCUI extends CUI {
 		
 		public continueFightingCommandListener(){
 			super("fight" , "Führt einen(weiteren) Angriff aus");
+            this.addArgument(new CommandListenerArgument("numberOfArmys"));
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			
+            final int numberOfArmies;
+            try {
+                numberOfArmies = this.getArgument("country").toInt();
+
+            }catch (InvalidCommandListernArgumentException e){
+                IO.println(e.getMessage());
+                return;
+            }
+            try {
+                fight.armyVsArmy(numberOfArmies);
+            }catch (NotEnoughArmiesToAttackException e){
+                IO.println(e.getMessage());
+            }catch (NotEnoughArmiesToDefendException e){
+                IO.println(e.getMessage());
+            }catch (InvalidAmountOfArmiesException e){
+                IO.println(e.getMessage());
+            }catch (InvalidPlayerException e){
+                IO.println(e.getMessage());
+            }catch (CountriesNotConnectedException e){
+                IO.println(e.getMessage());
+            }
 		}
 	}
 
@@ -28,7 +50,8 @@ public class FightCUI extends CUI {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
+			IO.println("Du hast den Kampf beendet");
+            goIntoParentContext();
 			
 		}
 		
