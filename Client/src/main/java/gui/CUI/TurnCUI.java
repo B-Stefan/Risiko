@@ -18,17 +18,34 @@ import main.java.logic.orders.IOrder;
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
 
+/**
+ * Diese Klasse dient ist zur Steuerung eines einzlenen Zuges über die Konsole gedacht
+ */
 public class TurnCUI extends CUI {
 
 
+    /**
+     * Zug der betreutt werden soll
+     */
     private  final  Turn turn;
 
+    /**
+     * Event-Listener für das darstellen der Spielerkarte
+     */
     public class ShowCountriesCommandListener extends CommandListener {
 
+        /**
+         * Setzt Befehl und Hilfetext
+         */
         public ShowCountriesCommandListener() {
             super("show", "Gibt die aktuelle Karte des Players aus");
         }
 
+
+        /**
+         * Beschreibt die Aktion, die beim auslösen ausgeführt wird
+         * @param actionEvent Quelle des Events
+         */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             for(Country c : turn.getPlayer().getCountries()){
@@ -37,12 +54,24 @@ public class TurnCUI extends CUI {
 
         }
     }
+
+
+    /**
+     * Event-Listener für das wechseln in die nächste Stufe
+     */
     public class NextStepCommandListener extends CommandListener {
 
+        /**
+         * Legt den Befehl und Hilfetext fest
+         */
         public NextStepCommandListener() {
             super("next", "Hiermit kannst du deinen Zug in den nächsten Status bringen");
         }
 
+        /**
+         * Legt die Aktion fest, die beim aufruf des Komandos next passieren soll
+         * @param actionEvent Quelle des Events
+         */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             try {
@@ -56,12 +85,23 @@ public class TurnCUI extends CUI {
             }
         }
     }
+
+    /**
+     * Event-Listener für das darstellen des Zug-Status
+     */
     public class StateCommandListener extends CommandListener {
 
+        /**
+         * Legt Befehl und Hilfetext fest
+         */
         public StateCommandListener() {
             super("state", "Gibt den aktuellen Status deines Zuges aus");
         }
 
+        /**
+         * Gibt an was bei der Eingabe state passieren soll
+         * @param actionEvent
+         */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             Turn.steps currentStep = turn.getCurrentStep();
@@ -98,19 +138,33 @@ public class TurnCUI extends CUI {
         }
     }
 
+    /**
+     * Klasse zur grafischen Verwaltung eines Zuges
+     * @param turn Der Zug der verwaltet werden soll
+     * @param parent Die übergeordnete CUI Instanz
+     */
+
     public TurnCUI(Turn turn, CUI parent){
         super(turn,parent);
         this.turn = turn;
+
+        //Hinzufügen der Listener
         this.addCommandListener(new ShowCountriesCommandListener());
         this.addCommandListener(new NextStepCommandListener());
         this.addCommandListener(new StateCommandListener());
     }
-    protected void goIntoChildContext(){
-        IO.println("Bitte gebe einen land als Paramenter ein");
-        this.fireCommandEvent(new ShowCountriesCommandListener());
-    }
+
+
+    /**
+     * Gibt an was passieren soll wenn das Komando cd eingeben werden soll
+     * Dies ist ähnlich zu verstehen wie ein Ordnerwechsel in Linux
+     * @param args Argument, die dem cd befehl übergeben wurden
+     *             Für den CD-Befehl gibt es standardmäßig ein Argument.
+     *             Diese kann mit args.get("parent") aus der HashMap geholet werden.
+     */
     protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args){
         final String countryName;
+        //Versuch einen namen des Landes als Argument zu holen
         try {
             countryName = args.get("parent").toStr();
         }catch (InvalidCommandListernArgumentException e){
@@ -118,11 +172,13 @@ public class TurnCUI extends CUI {
             return;
         }
 
+        //Versuch das Land zu finden
         Country found = this.turn.getPlayer().getCountry(countryName);
         if(found == null){
             IO.println("Ihr Land " + countryName + " konnte nicht gefunden werden.");
         }
         else {
+            //Erzeugen des Child
             CUI child = new CountryCUI(turn,found, this);
             super.goIntoChildContext(child);
         }

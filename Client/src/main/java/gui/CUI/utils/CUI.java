@@ -286,18 +286,34 @@ public abstract class CUI {
         return prefix + context.toString() + " > ";
     }
 
+    /**
+     * Gibt den Aktuellen status der CUI zurück
+     * @return
+     */
     public states getCurrentState() {
         return currentState;
     }
 
+    /**
+     * Setzt den status der CUI
+     * @param currentState Status der gesetzt werden soll
+     */
     public void setCurrentState(states currentState) {
         this.currentState = currentState;
     }
 
+    /**
+     * Gib die untergeordnete CUI zurück
+     * @return Untergeordnete CUI,  null wenn nicht vorhanden
+     */
     protected CUI getChild() {
         return child;
     }
 
+    /**
+     * Setzt die untergeornete CUI auf den param child
+     * @param child Neue untergeordnete CUI
+     */
     protected void setChild(CUI child) {
 
         this.child = child;

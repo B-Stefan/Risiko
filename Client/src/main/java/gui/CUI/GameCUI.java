@@ -15,21 +15,34 @@ import java.util.LinkedHashMap;
 
 
 /**
- * Verwaltet die Benutzerschnittstelle
+ * Verwaltet die Benutzerschnittstelle für ein Spiel
  * @author Stefan Bieliauskas
  */
 public class GameCUI extends CUI {
 
+    /**
+     * Bildet das Spiel ab für die die CUI erstellt wird
+     */
     private final Game game;
 
 
+    /**
+     * Klasse für Event-Listener zum hinzufügen eines Spielers
+     */
     public class addPlayerCommand extends CommandListener {
 
+        /**
+         * Konstruktor, der Name und Argumente des Befehls festlegen
+         */
         public addPlayerCommand() {
             super("addPlayer");
             this.addArgument(new CommandListenerArgument("playerName"));
         }
 
+        /**
+         * Wird ausgeführt, wenn der Befehel eingeben wurde
+         * @param actionEvent Das Event, das diese Action ausgelöst hat.
+         */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             final String name;
@@ -51,13 +64,24 @@ public class GameCUI extends CUI {
         }
 
     }
+
+    /**
+     * Klasse für Event-Listener zum wechseln in die nächste Runde
+     */
     public class NextRoundCommandListener extends CommandListener {
 
+        /**
+         * Gibt den Befehl an und legt die Argumente fest
+         */
         public NextRoundCommandListener() {
             super("next");
             this.addArgument(new CommandListenerArgument("playerName"));
         }
 
+        /**
+         * Beschreibt was beim auslösen dieses Events passieren soll
+         * @param actionEvent Eventquelle
+         */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
            try {
@@ -78,12 +102,22 @@ public class GameCUI extends CUI {
     }
 
 
+    /**
+     * Klasse für Event-Listenerz zum Starten des Spiels
+     */
     public class startGameCommand extends CommandListener {
+
+        /**
+         * Legt den Befehl fest, der zum starten des Spiels verwendet wird
+         */
         public startGameCommand() {
             super("startGame");
 
         }
 
+        /**
+         * Gibt alle Player auf der Konsole aus
+         */
         private void printPlayers (){
             for (Player player : GameCUI.this.game.getPlayers()) {
                 int index = (GameCUI.this.game.getPlayers().indexOf(player) + 1);
@@ -91,9 +125,13 @@ public class GameCUI extends CUI {
             }
         }
 
+        /**
+         * Gibt an was beim Auslösen des startGame Event-Listeners passieren soll.
+         * @param actionEvent - Quelle des Events
+         */
         @Override
         public void actionPerformed(ActionEvent actionEvent){
-            //Error Handling, wenn zu wenig/viele Spieler
+            //Error Handling
             try {
                 game.onGameStart();
             } catch (final   NotEnoughPlayerException e) {
@@ -114,12 +152,13 @@ public class GameCUI extends CUI {
                 return;
             }
 
+
             IO.println("Willkommen bei Risiko, nun gehts los");
             IO.println("Spielerliste");
 
 
-            this.printPlayers();
-            GameCUI.this.goIntoChildContext();
+            this.printPlayers(); //Gibt alle Spieler aus
+            GameCUI.this.goIntoChildContext(); //Bewegt die Konsole in den Untergeordneten Kontext
 
 
         }
@@ -134,11 +173,16 @@ public class GameCUI extends CUI {
     public GameCUI(final Game game) {
         super(game);
         this.game = game;
+
+        //Hinzufügen der Listener
         this.addCommandListener(new addPlayerCommand());
         this.addCommandListener(new startGameCommand());
         this.addCommandListener(new NextRoundCommandListener());
     }
 
+    /**
+     * Wird ausgeführt, wenn die Klasse auf eingaben aus der Konsole "horchen" soll
+     */
     @Override
     public void listenConsole()  {
         if ( this.game.getCurrentGameState() == Game.gameStates.WAITING){
@@ -148,6 +192,13 @@ public class GameCUI extends CUI {
     }
 
 
+    /**
+     * Gibt an was passieren soll wenn das Komando cd eingeben werden soll
+     * Dies ist ähnlich zu verstehen wie ein Ordnerwechsel in Linux
+     * @param args Argument, die dem cd befehl übergeben wurden
+     *             Für den CD-Befehl gibt es standardmäßig ein Argument.
+     *             Diese kann mit args.get("parent") aus der HashMap geholet werden.
+     */
     @Override
     protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args) {
         final Round round;
@@ -162,7 +213,6 @@ public class GameCUI extends CUI {
 
         RoundCUI roundCUI = new RoundCUI(round, this);
         super.goIntoChildContext(roundCUI);
-
     }
 
 
