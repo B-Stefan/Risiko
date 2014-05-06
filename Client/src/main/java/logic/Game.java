@@ -89,11 +89,14 @@ public class Game {
     }
 
 
-    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException,GameNotStartedException {
+    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException,GameNotStartedException, GameIsCompletedException{
         if (this.currentRound != null) {
             if (!this.currentRound.isComplete()) {
                 throw new RoundNotCompleteException();
             }
+        }
+        else if(this.isGameWon()){
+            throw  new GameIsCompletedException();
         }
         if (this.getCurrentGameState() == gameStates.WAITING){
             throw  new GameNotStartedException();
@@ -206,6 +209,33 @@ public class Game {
         }
     }
 
+    /**
+     * Pürft, ob das Spiel gewonnen wurde
+     * @return Wenn gewonnen true
+     */
+    private boolean isGameWon(){
+        for(Player player: players){
+            if(player.getOrder().isCompleted()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Gibt den Gewinner zurück, der das Spiel gewonnen hat
+     * Wenn keiner gewonnen hat gibt die Methode null zurück
+     * @return Sieger des Spiels
+     */
+    public Player getWinner (){
+        for(Player player : players){
+            if(player.getOrder().isCompleted()){
+                return player;
+            }
+        }
+        return null;
+    }
 
     /**
      * Setzt die aktuelle Runde

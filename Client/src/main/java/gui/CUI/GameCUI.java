@@ -95,6 +95,19 @@ public class GameCUI extends CUI {
            }catch (GameNotStartedException e){
                IO.println(e.getMessage());
                return;
+           }catch (GameIsCompletedException e){
+               IO.printHeadline("Spielende");
+
+               IO.println("Das Spiel wurde gewonnen, ein Spieler hat seinen Auftrag erfüllt");
+
+               IO.printHeadline("AND");
+               IO.printHeadline("The");
+               IO.printHeadline("Winner");
+               IO.printHeadline("IS");
+
+               IO.printHeadline("");
+               IO.printHeadline(game.getWinner().toString());
+               IO.printHeadline("");
            }
            goIntoChildContext();
         }

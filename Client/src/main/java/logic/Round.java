@@ -49,6 +49,8 @@ public class Round {
 		return this.currentPlayer;
 	}
 	public void setNextTurn() throws ToManyNewArmysException, TurnNotCompleteException, RoundCompleteException{
+
+
         if(this.getCurrentTurn() != null){
             if(!this.getCurrentTurn().isComplete()){
                 throw new TurnNotCompleteException(this.getCurrentTurn());
@@ -59,6 +61,8 @@ public class Round {
         this.currentTurn = new Turn(this.getCurrentPlayer(), this.map, this.turnSteps);
 
 	}
+
+
     public boolean isComplete() throws ToManyNewArmysException{
         if(this.getCurrentTurn() == null){
             return false;
