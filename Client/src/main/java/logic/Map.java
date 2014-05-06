@@ -1,6 +1,5 @@
 package main.java.logic;
 
-import main.resources.*;
 
 import java.util.*;
 
@@ -34,6 +33,12 @@ public class Map  {
         Continent asia          = new Continent("Asien", 7);
         Continent afrika        = new Continent("Afrika", 3);
         Continent australia     = new Continent("Australien", 2);
+
+        this.continents.add(northAmerica);
+        this.continents.add(southAmerica);
+        this.continents.add(asia);
+        this.continents.add(afrika);
+        this.continents.add(australia);
 
 
         //Länder zuweisen
@@ -149,5 +154,14 @@ public class Map  {
     	}
     	return null;
     }
+
+    /**
+     *
+     * @return Alle Kontinente dieser Karte
+     */
+    public ArrayList<Continent> getContinents() {
+        return continents;
+    }
+
 }
 

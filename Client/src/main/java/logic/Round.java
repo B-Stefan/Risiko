@@ -42,7 +42,7 @@ public class Round {
 		this.currentPlayer = players.poll();
 	}
 	/**
-	 * Getter f�r den aktuellen Spieler
+	 * Getter für den aktuellen Spieler
 	 * @return currentPayler: gibt aktuellen Spieler
 	 */
 	public Player getCurrentPlayer(){

@@ -54,7 +54,7 @@ public abstract class CUI {
      */
     public class ChangeDirListener extends CommandListener {
         public ChangeDirListener() {
-            super("cd");
+            super("cd", "Wechselt die Ebene");
             this.addArgument(new CommandListenerArgument("parent"));
         }
 
@@ -87,7 +87,7 @@ public abstract class CUI {
      */
     public class HelpListener extends CommandListener {
         public HelpListener() {
-            super("help");
+            super("help", "Gibt hilfe zu den Befehlen aus");
         }
 
         @Override

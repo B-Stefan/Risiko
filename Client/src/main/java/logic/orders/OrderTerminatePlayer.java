@@ -2,7 +2,6 @@ package main.java.logic.orders;
 
 import main.java.logic.Player;
 import main.java.logic.exceptions.PlayerAlreadyHasAnOrderException;
-import main.resources.IOrder;
 
 import java.util.*;
 
@@ -13,36 +12,19 @@ import java.util.*;
  * die darauf abzielen einen anderen Spieler zu vernichten.
  *
  *
- * @see main.resources.IOrder
+ * @see IOrder
  */
 public class OrderTerminatePlayer implements IOrder{
 	private Player victim;
 	private Player agent;
-	private ArrayList<Player> players = new ArrayList<Player>();
 	
-	 public OrderTerminatePlayer(ArrayList<Player> players, Player ag) throws PlayerAlreadyHasAnOrderException {
-		 this.players = players;
-		 shufflePlayersLists();
-		 setAgent(ag);
-		 findVictim();
+	 public OrderTerminatePlayer(Player victim, Player ag)  {
+         this.setVictim(victim);
+		 this.setAgent(ag);
 	 }
-	 
-	 public void findVictim() { 
-		 Player victim = this.players.get(0);
-		 if (victim == this.agent){
-			 victim = this.players.get(1);
-		 } 
-		 setVictim(victim);
-	 }
-	 
 
-	public void setAgent(Player ag) throws PlayerAlreadyHasAnOrderException {
-		if(ag.getOrder() == null){
-			this.agent = ag;
-			this.agent.setOrder(this);
-		}else{
-			throw new PlayerAlreadyHasAnOrderException(ag);
-		}		
+	public void setAgent(Player ag)  {
+		this.agent = ag;
 	}
 	
     @Override
@@ -62,12 +44,15 @@ public class OrderTerminatePlayer implements IOrder{
 	public void setVictim(Player victim) {
 		this.victim = victim;
 	}
-	
-	public void shufflePlayersLists(){
-		Collections.shuffle(this.players);
-	}
+
 
 	public Player getAgent() {
 		return this.agent;
 	}
+
+    @Override
+    public String toString(){
+        //@todo beschreibung verbessern!
+        return this.agent + " hat die Aufgabe den Spieler " + this.getVictim() + " zu vernichten"  ;
+    }
 }

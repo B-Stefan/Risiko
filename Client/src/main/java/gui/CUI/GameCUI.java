@@ -109,6 +109,9 @@ public class GameCUI extends CUI {
             catch (final GameAllreadyStartedException e ){
                 IO.println(e.getMessage());
                 return;
+            }catch (final PlayerAlreadyHasAnOrderException e){
+                IO.println(e.getMessage());
+                return;
             }
 
             IO.println("Willkommen bei Risiko, nun gehts los");

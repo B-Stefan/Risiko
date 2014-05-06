@@ -101,4 +101,9 @@ public class Continent{
     	return this.bonus;
     }
 
+    @Override
+    public String toString(){
+        return this.getName();
+    }
+
 }

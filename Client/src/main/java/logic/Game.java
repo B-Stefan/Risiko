@@ -4,6 +4,9 @@ import java.util.*;
 
 import main.java.logic.exceptions.PlayerNotExsistInGameException;
 import main.java.logic.exceptions.*;
+import main.java.logic.orders.OrderManager;
+import main.java.logic.orders.IOrder;
+
 /**
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
  *
@@ -61,7 +64,7 @@ public class Game {
      *
      * @throws main.java.logic.exceptions.NotEnoughPlayerException
      */
-    public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAllreadyStartedException {
+    public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAllreadyStartedException, PlayerAlreadyHasAnOrderException {
 
         //Exception-Handling
         if (this.players.size() < Game.minCountPlayers) {
@@ -77,6 +80,7 @@ public class Game {
         //Spielstart
         this.distributeCountries();
         this.setDefaultArmys();
+        OrderManager.createOrdersForPlayers(this.getPlayers(),this);
 
         this.currentGameState = gameStates.RUNNING;
         this.setCurrentRound(new Round(players, map, Turn.getDefaultStepsFirstRound()));

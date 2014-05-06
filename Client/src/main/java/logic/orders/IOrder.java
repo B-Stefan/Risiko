@@ -1,4 +1,4 @@
-package main.resources;
+package main.java.logic.orders;
 
 import main.java.logic.Player;
 import main.java.logic.exceptions.PlayerAlreadyHasAnOrderException;
@@ -25,5 +25,8 @@ public interface IOrder {
      *
      * @return - Aktueller Spieler, der den Auftrag erledigen muss
      */
-    public void setAgent(Player ag) throws PlayerAlreadyHasAnOrderException;
+    public void setAgent(Player ag);
+
+
+    public String toString();
 }

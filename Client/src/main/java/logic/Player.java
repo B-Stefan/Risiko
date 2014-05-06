@@ -2,7 +2,6 @@ package main.java.logic;
 import java.util.*;
 import main.java.logic.exceptions.*;
 import main.java.logic.orders.*;
-import main.resources.*;
 
 public class Player {
 

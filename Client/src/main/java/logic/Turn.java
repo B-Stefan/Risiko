@@ -85,7 +85,7 @@ public class Turn {
      * @param m - Karte auf dem der Spieler sich bewegt
      * @param steps - Die geforderten Steps, die der Turn druchlaufen soll
      */
-    public Turn(final Player p,final Map m, Queue<steps> steps){
+    public Turn(final Player p,final Map m,final  Queue<steps> steps){
         this.player = p;
         this.map = m;
 
@@ -280,15 +280,11 @@ public class Turn {
      * @throws ToManyNewArmysException
      */
     public boolean isComplete() throws ToManyNewArmysException{
-        if(this.getNextStep() == null){
-            if(this.getCurrentStep() == steps.DISTRIBUTE && this.newArmies.size() > 0) {
-                throw new ToManyNewArmysException(this);
-            }
-            return true;
+
+        if(this.getCurrentStep() == steps.DISTRIBUTE && this.newArmies.size() > 0) {
+            throw new ToManyNewArmysException(this);
         }
-        else {
-            return false;
-        }
+        return true;
     }
 
     /**

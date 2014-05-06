@@ -3,7 +3,6 @@ package main.java.logic.orders;
 import main.java.logic.Country;
 import main.java.logic.Player;
 import main.java.logic.exceptions.PlayerAlreadyHasAnOrderException;
-import main.resources.IOrder;
 
 public class OrderTakeOverCountries implements IOrder {
 	private boolean withTwoArmies;
@@ -34,12 +33,12 @@ public class OrderTakeOverCountries implements IOrder {
 	}
 
 	@Override
-	public void setAgent(Player ag) throws PlayerAlreadyHasAnOrderException {
-		if(ag.getOrder() == null){
+	public void setAgent(Player ag)  {
 			this.agent = ag;
-			this.agent.setOrder(this);
-		}else{
-			throw new PlayerAlreadyHasAnOrderException(ag);
-		}
 	}
+    @Override
+    public String toString(){
+        //@todo beschreibung verbessern!
+        return this.agent + " hat die Aufgabe andere Länder zu erobern" ;
+    }
 }

@@ -2,8 +2,7 @@ package main.java.logic.orders;
 import java.util.*;
 
 import main.java.logic.*;
-import main.java.logic.exceptions.PlayerAlreadyHasAnOrderException;
-import main.resources.*;
+
 
 public class OrderTakeOverContinents implements IOrder {
 	private Continent continentOne;
@@ -11,13 +10,13 @@ public class OrderTakeOverContinents implements IOrder {
 	private List<Continent> continents = new ArrayList<Continent>();
 	private Player agent;
 	
-	public OrderTakeOverContinents(Continent one, Continent two, Player pl, ArrayList<Continent> continents) throws PlayerAlreadyHasAnOrderException{
+	public OrderTakeOverContinents(Continent one, Continent two, Player pl, ArrayList<Continent> continents) {
 		this.continentOne = one;
 		this.continentTwo = two;
 		this.continents = continents;
 		setAgent(pl);
 	}
-	public OrderTakeOverContinents(Continent one, Continent two, Player pl) throws PlayerAlreadyHasAnOrderException{
+	public OrderTakeOverContinents(Continent one, Continent two, Player pl){
 		this.continentOne = one;
 		this.continentTwo = two;
 		this.continents = null;
@@ -49,13 +48,12 @@ public class OrderTakeOverContinents implements IOrder {
 		return false;
 	}
 
-	public void setAgent(Player ag) throws PlayerAlreadyHasAnOrderException {
-		if(ag.getOrder() == null){
+	public void setAgent(Player ag)  {
 			this.agent = ag;
-			this.agent.setOrder(this);
-		}else{
-			throw new PlayerAlreadyHasAnOrderException(ag);
-		}
-		
 	}
+
+    @Override
+    public String toString(){
+        return this.agent + " hat die Aufgabe " + continentOne + " und " + continentTwo + " zu erobern. ";
+    }
 }

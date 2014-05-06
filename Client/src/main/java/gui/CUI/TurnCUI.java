@@ -7,11 +7,13 @@ import main.java.gui.CUI.utils.CUI;
 import main.java.gui.CUI.utils.CommandListener;
 import main.java.gui.CUI.utils.CommandListenerArgument;
 import main.java.gui.CUI.utils.IO;
-import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
+
 import main.java.logic.Country;
 import main.java.logic.Turn;
 import main.java.logic.exceptions.ToManyNewArmysException;
 import main.java.logic.exceptions.TurnCompleteException;
+import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
+import main.java.logic.orders.IOrder;
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
@@ -63,8 +65,11 @@ public class TurnCUI extends CUI {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             Turn.steps currentStep = turn.getCurrentStep();
+
+            IO.printHeadline("Status des Zugs");
             IO.println("Es ist " + turn.getPlayer() + "an der Reihe");
             IO.println("Dein Zug befindet sich im status " + currentStep);
+
             if(currentStep == Turn.steps.DISTRIBUTE){
                 IO.println("Du musst noch Einheiten auf deinen Ländern verteilen. Du darfst noch: "+ turn.getNewArmysSize() + " Einheiten verteilen");
             }
@@ -77,6 +82,11 @@ public class TurnCUI extends CUI {
 
             }
 
+            IO.printHeadline("Aufgabe des Spielers");
+            IOrder playerOrder = turn.getPlayer().getOrder();
+            IO.println(playerOrder.toString());
+
+            IO.printHeadline("Befehle des Turns");
             IO.println("Dir stehen dazu folgende Komandos zur verfügung: ");
             fireCommandEvent(new HelpListener());
 
