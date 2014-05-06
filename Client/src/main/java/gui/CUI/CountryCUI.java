@@ -92,7 +92,7 @@ public class CountryCUI extends CUI {
             }
 
 
-            Country found = country.getNeighborByName(target);
+            Country found = country.getNeighbor(target);
             if (found == null){
                 IO.println("Leider konnte Ihr Land " + target + " nicht gefunden werden");
             } else {

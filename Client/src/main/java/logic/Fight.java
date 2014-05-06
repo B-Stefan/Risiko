@@ -95,14 +95,14 @@ public class Fight {
 			ArrayList<Dice> agressorsDice = dice(3, this.agressorsArmies);
 			ArrayList<Dice> defendersDice = dice(2, this.defendersArmies);
 			while(!defendersDice.isEmpty()){
-				if(agressorsDice.get(0).higherDice(defendersDice.get(0))){
+				if(agressorsDice.get(0).isDiceHigher(defendersDice.get(0))){
 					battle(this.defender);
 					if(!enoughArmiesToDefend()){
 						takeOver();
 						agressorsDice.remove(0);
 						defendersDice.remove(0);
 					}
-				}else if(!agressorsDice.get(0).higherDice(defendersDice.get(0))){
+				}else if(!agressorsDice.get(0).isDiceHigher(defendersDice.get(0))){
 					battle(this.agressor);
 					agressorsDice.remove(0);
 					defendersDice.remove(0);

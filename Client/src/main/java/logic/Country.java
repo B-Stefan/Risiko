@@ -4,7 +4,7 @@ import main.java.logic.exceptions.CountriesNotConnectedException;
 import main.java.logic.exceptions.CountryNotInListException;
 
 import java.util.*;
-import java.util.Map.Entry; 
+import java.util.Map.Entry;
 
 /**
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
@@ -29,7 +29,7 @@ public class Country {
      */
     private final HashMap<UUID, Country> neighbors = new HashMap<UUID, Country>();
     
-    private final Continent position;
+    private final Continent continent;
 
     /**
      * Bestimmt den Spieler, der aktuell das Land besetzt hällt
@@ -50,7 +50,8 @@ public class Country {
     public Country(final String name, Continent continent) {
         this.name = name;
         this.id = UUID.randomUUID();
-        this.position = continent;
+        this.continent = continent;
+        this.continent.addCountry(this);
     }
 
     /**

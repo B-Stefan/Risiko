@@ -19,7 +19,7 @@ public class Continent{
 	 * Eine ArrayLsit mit den Ländern, die sich auf dem Kontinent befinden Länder
      * @return Gibt die Liste der Länder zurück, die disem Kontinent zugeordnet wurden
 	 */
-	private HashMap<String,Country> countrys = new HashMap<String, Country>();
+	private HashMap<UUID,Country> countrys = new HashMap<UUID, Country>();
 
 	/**
 	 * der Bonus, der die Kontrolle des jeweiligen Kontinents einbringt für die neuen Armeen
@@ -54,7 +54,7 @@ public class Continent{
         boolean playerChange = false;
         Player ruler = null;
 
-        for (Map.Entry<String,Country> entry : countrys.entrySet()){
+        for (Map.Entry<UUID,Country> entry : countrys.entrySet()){
             Country currentCountry = entry.getValue();
 
             if(ruler != null && ruler!= currentCountry.getOwner()){

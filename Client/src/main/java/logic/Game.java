@@ -138,8 +138,12 @@ public class Game {
         while (!countriesStack.empty()) {
 
             for (Player p : players) {
-                p.addCountry(countriesStack.pop());
-
+                if(!countriesStack.empty()){
+                    p.addCountry(countriesStack.pop());
+                }
+                else {
+                    break;
+                }
             }
         }
     }

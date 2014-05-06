@@ -1,12 +1,14 @@
 package main.resources;
 
+import main.java.logic.Player;
+import main.java.logic.exceptions.PlayerAlreadyHasAnOrderException;
+
 /**
- * Created by Stefan on 31.03.2014.
- * @author  Stefan Bieliauskas
- * Schnittstelle für einzlene Aufträge, die der Spieler erledigen muss Implementierungen siehe:
  *
- * @see main.java.logic.OrderTerminatePlayer
- * @see main.OrderTakeCountries
+ * @author  Stefan Bieliauskas
+ * Schnittstelle für einzlene AuftrÃ¤ge, die der Spieler erledigen muss Implementierungen siehe:
+ *
+ * @see main.java.logic.orders
  * @version 1.0
  *
  * Hierbei wurde eine Schnittstelle verwendet, da die beiden Auftragsarten keine bzw.
@@ -23,11 +25,5 @@ public interface IOrder {
      *
      * @return - Aktueller Spieler, der den Auftrag erledigen muss
      */
-    public IPlayer getPlayer();
-
-    /**
-     *
-     * @param player - Spieler der den Auftrag erledigen muss
-     */
-    public void setPlayer(IPlayer player);
+    public void setAgent(Player ag) throws PlayerAlreadyHasAnOrderException;
 }

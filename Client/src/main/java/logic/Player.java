@@ -1,14 +1,14 @@
 package main.java.logic;
 import java.util.*;
 import main.java.logic.exceptions.*;
-/**
- * Created by Stefan on 01.04.2014.
- */
+import main.java.logic.orders.*;
+import main.resources.*;
 
 public class Player {
 
     private String name;
     private ArrayList<Country> countries = new ArrayList<Country>();
+    private IOrder order;
 
     public Player(String name) {
         this.name = name;
@@ -30,7 +30,14 @@ public class Player {
     public ArrayList<Country> getCountries(){
     	return this.countries;    	
     }
+    
+    public void setOrder(IOrder order){
+    	this.order = order;
+    }
 
+    public IOrder getOrder(){
+    	return this.order;
+    }
 
     @Override
     public String toString(){
