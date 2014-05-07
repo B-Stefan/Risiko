@@ -6,7 +6,7 @@ import main.java.logic.Player;
 import java.lang.*;
 
 /**
- * Hauptklasse, die zum starten des Spiels verwendet wird.
+ * Hauptklasse, die zum Starten des Spiels verwendet wird.
  *
  */
 public class main {
