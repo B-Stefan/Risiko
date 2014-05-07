@@ -95,11 +95,11 @@ public class Game {
                 throw new RoundNotCompleteException();
             }
         }
-        else if(this.isGameWon()){
-            throw  new GameIsCompletedException();
-        }
         if (this.getCurrentGameState() == gameStates.WAITING){
             throw  new GameNotStartedException();
+        }
+        else if(this.isGameWon()){
+            throw  new GameIsCompletedException();
         }
         this.currentRound = new Round(this.players, this.map);
     }
@@ -213,7 +213,10 @@ public class Game {
      * Pürft, ob das Spiel gewonnen wurde
      * @return Wenn gewonnen true
      */
-    private boolean isGameWon(){
+    private boolean isGameWon() throws GameNotStartedException{
+        if(this.getCurrentGameState() == gameStates.WAITING){
+            throw new GameNotStartedException();
+        }
         for(Player player: players){
             if(player.getOrder().isCompleted()){
                 return true;
