@@ -28,6 +28,10 @@ Um die JavaDoc zu erstellen bitte folgenden Command verwenden:
  ```
     javadoc -private -splitindex -encoding UTF-8 -charset UTF-8 -docencoding UTF-8  -d ./gh-pages/javadoc -sourcepath ./client/src -subpackages main
  ```
+
+ Javadoc ist auch zu finden unter: https://b-stefan.github.io/Risiko/javadoc/
+
+
 #Struktur
 Wir folgten bei der Strukturierung grundsätzlich den Richtlinien des Apache Marvens Project
 (http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html#
