@@ -19,44 +19,15 @@ A port of the popular board game "Risiko" in Java
     git push
     ```
 
-Classes / TODOS
-======
-The following paragraph list some todos for our project.
+#Todos
 
+Verschoben nach: https://github.com/B-Stefan/Risiko/issues
 
-##Version 1.0
-Diese Version muss bis Mittwoch stehen.
-
-###Fight
-*Testen der Funktionen
-*Constructor vereinfachen - Wenn klar ist das von Country from zu to angegriffen wird sind die Armeen, die daran beteiligt sind auch klar.
-
-
-###FightCUI
-*fight - Aktion mit leben füllen
-*stop - Fight beenden und zum parentContext zurückkehren
-
-
-
-###OderManger
-Verteilen der Aufträge auf die einzelnen Spieler
-
-###Order
-Bei einem Auftrag müsste es 2 Unterklassen geben die die Schnittstele IOrder implementieren
-
-1. Auftrag einen anderen Spieler zu vernichten
-2. Auftrag 2 Kontinente zu besetzten
-
-##Versio 1.2  (Server, GUI)
-Dieser Version beinhaltet den Server und die GUI und muss in ca. 2 Wochen stehen.
-
-###GameManager
- Verwaltet eine Anzahl von Spielen
-###PlayerManager
- Verwaltet eine Anzahl von Spielern (Login usw, )
-
-
-
+#JavaDoc
+Um die JavaDoc zu erstellen bitte folgenden Command verwenden:
+ ```
+    javadoc -private -splitindex -encoding UTF-8 -charset UTF-8 -docencoding UTF-8  -d ./gh-pages/javadoc -sourcepath ./client/src -subpackages main
+ ```
 #Struktur
 Wir folgten bei der Strukturierung grundsätzlich den Richtlinien des Apache Marvens Project
 (http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html#
