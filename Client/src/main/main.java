@@ -3,6 +3,10 @@ import main.java.logic.Game;
 import main.java.gui.CUI.GameCUI;
 
 import main.java.logic.Player;
+import main.java.persistence.PersistenceManager;
+import main.java.persistence.dataendpoints.IPersistenceEndpoint;
+import main.java.persistence.objects.PersistenceGame;
+
 import java.lang.*;
 
 /**
@@ -26,6 +30,13 @@ public class main {
         game.addPlayer(new Player("Bob"));
         game.addPlayer(new Player("Stefan"));
         game.addPlayer(new Player("Linda"));
+
+
+        /**
+         * Testen der Persistenz
+         */
+        //IPersistenceEndpoint endpoint = new PersistenceManager().createHandler(game.getClass());
+        //endpoint.save(game);
 
         //Startet das warten auf eine Eingbae des Benutzers
         ui.listenConsole();

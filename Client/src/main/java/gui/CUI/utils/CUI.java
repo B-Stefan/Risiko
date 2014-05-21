@@ -162,11 +162,9 @@ public abstract class CUI {
         while (this.getCurrentState() == states.LISTEN) {
             IO.print(this.toString()); //Print Context
             rawCommand = IO.readString();
-            try {
+
                 this.fireCommandEvent(rawCommand);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+
         }
     }
 

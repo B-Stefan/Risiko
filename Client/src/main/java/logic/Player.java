@@ -2,15 +2,18 @@ package main.java.logic;
 import java.util.*;
 import main.java.logic.exceptions.*;
 import main.java.logic.orders.*;
+import java.util.UUID;
 
 public class Player {
 
     private String name;
     private ArrayList<Country> countries = new ArrayList<Country>();
     private IOrder order;
+    private UUID id;
 
     public Player(String name) {
         this.name = name;
+        this.id = UUID.randomUUID();
     }
 
     public String getName() {
@@ -56,6 +59,10 @@ public class Player {
     	}else{
     		throw new CountryNotInListException();
     	}
+    }
+
+    public UUID getId () {
+        return this.id;
     }
     
 }

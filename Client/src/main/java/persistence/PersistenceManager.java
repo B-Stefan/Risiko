@@ -4,8 +4,11 @@ package main.java.persistence;
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
  */
 
-import main.java.persistence.objects.PersistenceGame;
 import main.java.logic.Game;
+import main.java.persistence.dataendpoints.IPersistenceEndpoint;
+import main.java.persistence.dataendpoints.SerializableFileEndpoint;
+import main.java.persistence.objects.PersistenceGame;
+
 import java.io.File;
 
 /**
@@ -25,12 +28,12 @@ public class PersistenceManager {
     }
     public static String convertFileNameToPath(final String fileName){
 
-        return DEFAULT_PATH + fileName.replace("/","");
+        return DEFAULT_PATH + fileName.replace("/","");     //Falls file name mit "/filename" angegbeen wurde"
     }
-    public IPersistenceObject<?> createHandler (Class<?> type){
+    public IPersistenceEndpoint<?> createHandler (Class<?> type){
 
         if (type == Game.class){
-                return new PersistenceGame();
+                return new SerializableFileEndpoint<Game>(PersistenceGame.class);
         }
         //@todo add more types
         return null;

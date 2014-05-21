@@ -2,7 +2,7 @@ package main.java.logic;
 import main.java.logic.exceptions.RoundCompleteException;
 import main.java.logic.exceptions.ToManyNewArmysException;
 import main.java.logic.exceptions.TurnNotCompleteException;
-import sun.org.mozilla.javascript.internal.EcmaError;
+
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -24,7 +24,7 @@ public class Round {
         this.turnSteps = steps;
         try {
             this.setNextTurn();
-        }catch (Exception e){
+        }catch (ToManyNewArmysException|TurnNotCompleteException|RoundCompleteException e){
             throw  new RuntimeException(e);
         }
 
