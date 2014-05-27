@@ -54,8 +54,10 @@ public class Dice implements Comparable<Dice>  {
      * @param otherDice Zu prüfender Würfel
      * @return True, wenn aktueller würfel größer is
      */
-    public boolean isDiceHigher(Dice otherDice){
+    public boolean isDiceHigherOrEqual(Dice otherDice){
     	if(this.compareTo(otherDice)==1){
+    		return true;
+    	}else if(this.compareTo(otherDice)==0){
     		return true;
     	}else{
     		return false;
