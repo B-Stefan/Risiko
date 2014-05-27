@@ -50,12 +50,21 @@ public class Game {
      */
     private Round currentRound;
 
+
+    /**
+     * Die UUID für das Spiel
+     */
+    private UUID id;
+
     /**
      * Die Game-Klasse dient zur verwaltung des gesammten Spiels
      */
     public Game() {
         this.map = new Map();
+        this.id = UUID.randomUUID();
     }
+
+
 
 
 
@@ -272,6 +281,14 @@ public class Game {
      */
     public ArrayList<Player> getPlayers() {
         return this.players;
+    }
+
+    /**
+     * Getter für die ID
+     * @return UUID des Spiels
+     */
+    public UUID getId() {
+        return id;
     }
 
     /**

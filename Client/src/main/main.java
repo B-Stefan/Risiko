@@ -4,9 +4,7 @@ import main.java.gui.CUI.GameCUI;
 
 import main.java.logic.Player;
 import main.java.persistence.PersistenceManager;
-import main.java.persistence.dataendpoints.IPersistenceEndpoint;
-import main.java.persistence.objects.PersistenceGame;
-
+import main.java.persistence.dataendpoints.PersistenceEndpoint;
 import java.lang.*;
 
 /**
@@ -35,7 +33,7 @@ public class main {
         /**
          * Testen der Persistenz
          */
-        //IPersistenceEndpoint endpoint = new PersistenceManager().createHandler(game.getClass());
+        //PersistenceEndpoint endpoint = new PersistenceManager().createHandler(game.getClass());
         //endpoint.save(game);
 
         //Startet das warten auf eine Eingbae des Benutzers

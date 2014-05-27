@@ -243,7 +243,7 @@ public class Turn {
             this.setCurrentStep(steps.FIGHT);
             List<Army> agressorsArmies = from.getArmyList();
             List<Army> defendersArmies = to.getArmyList();
-            return  new Fight(from, to, agressorsArmies , defendersArmies);
+            //return  new Fight(from, to, agressorsArmies , defendersArmies);
 
         }
         return null;

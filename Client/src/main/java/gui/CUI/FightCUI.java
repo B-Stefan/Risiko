@@ -20,6 +20,7 @@ public class FightCUI extends CUI {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
             final int numberOfArmies;
+            /*
             try {
                 numberOfArmies = this.getArgument("numberOfArmys").toInt();
 
@@ -28,7 +29,7 @@ public class FightCUI extends CUI {
                 return;
             }
             try {
-                fight.armyVsArmy(numberOfArmies);
+                //fight.armyVsArmy(numberOfArmies);
             }catch (NotEnoughArmiesToAttackException e){
                 IO.println(e.getMessage());
                 return;
@@ -48,6 +49,7 @@ public class FightCUI extends CUI {
                 IO.println(e.getMessage());
                 return;
             }
+            */
 		}
 	}
 
