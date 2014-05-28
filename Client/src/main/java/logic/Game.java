@@ -2,9 +2,7 @@ package main.java.logic;
 
 import java.util.*;
 
-import main.java.logic.data.Army;
-import main.java.logic.data.Country;
-import main.java.logic.data.Player;
+import main.java.logic.data.*;
 import main.java.logic.exceptions.PlayerNotExsistInGameException;
 import main.java.logic.exceptions.*;
 import main.java.logic.data.orders.OrderManager;
@@ -35,7 +33,7 @@ public class Game {
     /**
      * Representiert die Karte des Spiels
      */
-    private Map map;
+    private main.java.logic.data.Map map;
 
     /**
      * Listet alle Spieler auf, die aktiv am Spiel teilnehmen.
@@ -62,7 +60,7 @@ public class Game {
      * Die Game-Klasse dient zur verwaltung des gesammten Spiels
      */
     public Game() {
-        this.map = new Map();
+        this.map = new main.java.logic.data.Map();
         this.id = UUID.randomUUID();
     }
 
@@ -263,7 +261,7 @@ public class Game {
      *
      * @return
      */
-    public Map getMap() {
+    public main.java.logic.data.Map getMap() {
         return map;
     }
 

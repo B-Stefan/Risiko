@@ -1,5 +1,5 @@
 package main.java.logic;
-import main.java.logic.data.Player;
+import main.java.logic.data.*;
 import main.java.logic.exceptions.RoundCompleteException;
 import main.java.logic.exceptions.ToManyNewArmysException;
 import main.java.logic.exceptions.TurnNotCompleteException;
@@ -13,13 +13,13 @@ public class Round {
 	 * Der Spieler, der am Zug ist
 	 */
 	private Player currentPlayer;
-    private Map map;
+    private main.java.logic.data.Map map;
 	private Queue<Player> players;
     private Queue<Turn.steps> turnSteps;
     private Turn currentTurn;
 	
 
-	public Round(final List<Player> p,final Map map, final Queue<Turn.steps> steps){
+	public Round(final List<Player> p,final main.java.logic.data.Map map, final Queue<Turn.steps> steps){
 		this.map = map;
         this.players = new LinkedBlockingQueue<Player>(p);
         this.turnSteps = steps;
@@ -30,7 +30,7 @@ public class Round {
         }
 
 	}
-    public Round(final List<Player> p,final Map map){
+    public Round(final List<Player> p,final main.java.logic.data.Map map){
         this(p,map, Turn.getDefaultSteps());
     }
 	/**

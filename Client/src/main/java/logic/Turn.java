@@ -1,7 +1,5 @@
 package main.java.logic;
-import main.java.logic.data.Army;
-import main.java.logic.data.Country;
-import main.java.logic.data.Player;
+import main.java.logic.data.*;
 import main.java.logic.exceptions.*;
 
 import java.util.*;
@@ -55,7 +53,7 @@ public class Turn {
     /**
      * Bildet die Karte ab auf dem der Spieler diesen Zug durchführt
      */
-	private final Map map;
+	private final main.java.logic.data.Map map;
     /**
      * Bildet ein Stack mit neuen Armeen ab, die der Spieler auf dem Spielfeld verteilen muss
      */
@@ -77,7 +75,7 @@ public class Turn {
     /**
      * Bildet die aktuelle Stufe des Zuges ab.
      * Diese Varriable kann nie den Wert null haben
-     * @see #Turn(Player, Map, java.util.Queue)
+     * @see #Turn(Player, main.java.logic.data.Map, java.util.Queue)
      */
     private steps currentStep;
 
@@ -88,7 +86,7 @@ public class Turn {
      * @param m - Karte auf dem der Spieler sich bewegt
      * @param steps - Die geforderten Steps, die der Turn druchlaufen soll
      */
-    public Turn(final Player p,final Map m,final  Queue<steps> steps){
+    public Turn(final Player p,final main.java.logic.data.Map m,final  Queue<steps> steps){
         this.player = p;
         this.map = m;
 
