@@ -1,7 +1,8 @@
-package main.java.logic.orders;
+package main.java.logic.data.orders;
 import java.util.*;
 
-import main.java.logic.*;
+import main.java.logic.data.Continent;
+import main.java.logic.data.Player;
 
 
 public class OrderTakeOverContinents implements IOrder {

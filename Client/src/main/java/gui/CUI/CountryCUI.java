@@ -5,7 +5,7 @@ import main.java.gui.CUI.utils.CommandListener;
 import main.java.gui.CUI.utils.CommandListenerArgument;
 import main.java.gui.CUI.utils.IO;
 import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
-import main.java.logic.Country;
+import main.java.logic.data.Country;
 import main.java.logic.Fight;
 import main.java.logic.Turn;
 import main.java.logic.exceptions.*;

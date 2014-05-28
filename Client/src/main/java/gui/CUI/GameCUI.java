@@ -7,7 +7,7 @@ import main.java.gui.CUI.utils.IO;
 import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.exceptions.*;
 import main.java.logic.Game;
-import main.java.logic.Player;
+import main.java.logic.data.Player;
 import main.java.logic.Round;
 
 import java.awt.event.ActionEvent;

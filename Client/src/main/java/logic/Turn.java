@@ -1,4 +1,7 @@
 package main.java.logic;
+import main.java.logic.data.Army;
+import main.java.logic.data.Country;
+import main.java.logic.data.Player;
 import main.java.logic.exceptions.*;
 
 import java.util.*;

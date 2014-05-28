@@ -1,6 +1,6 @@
 package main.java.logic.exceptions;
 
-import main.java.logic.Country;
+import main.java.logic.data.Country;
 
 /**
  * Created by Stefan on 01.05.14.

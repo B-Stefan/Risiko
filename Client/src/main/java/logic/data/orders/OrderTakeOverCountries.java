@@ -1,8 +1,7 @@
-package main.java.logic.orders;
+package main.java.logic.data.orders;
 
-import main.java.logic.Country;
-import main.java.logic.Player;
-import main.java.logic.exceptions.PlayerAlreadyHasAnOrderException;
+import main.java.logic.data.Country;
+import main.java.logic.data.Player;
 
 public class OrderTakeOverCountries implements IOrder {
 	/**

@@ -2,10 +2,12 @@ package main.java.logic;
 
 import java.util.*;
 
+import main.java.logic.data.Army;
+import main.java.logic.data.Country;
+import main.java.logic.data.Player;
 import main.java.logic.exceptions.PlayerNotExsistInGameException;
 import main.java.logic.exceptions.*;
-import main.java.logic.orders.OrderManager;
-import main.java.logic.orders.IOrder;
+import main.java.logic.data.orders.OrderManager;
 
 /**
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
@@ -226,10 +228,8 @@ public class Game {
         if(this.getCurrentGameState() == gameStates.WAITING){
             throw new GameNotStartedException();
         }
-        for(Player player: players){
-            if(player.getOrder().isCompleted()){
-                return true;
-            }
+        if(this.getWinner()!=null){
+            return true;
         }
         return false;
     }

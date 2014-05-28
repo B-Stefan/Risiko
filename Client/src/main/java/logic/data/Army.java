@@ -1,4 +1,4 @@
-package main.java.logic;
+package main.java.logic.data;
 
 import main.java.logic.exceptions.CountriesNotConnectedException;
 

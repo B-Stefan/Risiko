@@ -1,5 +1,5 @@
 package main.java.logic.exceptions;
-import main.java.logic.*;
+import main.java.logic.data.Player;
 
 /**
  * Created by Stefan on 01.04.2014.

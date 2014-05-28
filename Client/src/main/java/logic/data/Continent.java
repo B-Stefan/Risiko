@@ -1,4 +1,5 @@
-package main.java.logic;
+package main.java.logic.data;
+
 import java.util.*;
 import java.util.Map;
 

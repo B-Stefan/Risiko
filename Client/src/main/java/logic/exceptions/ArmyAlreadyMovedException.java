@@ -1,5 +1,5 @@
 package main.java.logic.exceptions;
-import main.java.logic.Army;
+import main.java.logic.data.Army;
 
 /**
  * Created by Stefan on 01.05.14.

@@ -1,9 +1,6 @@
-package main.java.logic.orders;
+package main.java.logic.data.orders;
 
-import main.java.logic.Player;
-import main.java.logic.exceptions.PlayerAlreadyHasAnOrderException;
-
-import java.util.*;
+import main.java.logic.data.Player;
 
 /**
  * Created by Stefan on 31.03.2014.

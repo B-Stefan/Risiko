@@ -1,7 +1,8 @@
-package main.java.logic;
+package main.java.logic.data;
 import java.util.*;
+
 import main.java.logic.exceptions.*;
-import main.java.logic.orders.*;
+import main.java.logic.data.orders.*;
 import java.util.UUID;
 
 public class Player {

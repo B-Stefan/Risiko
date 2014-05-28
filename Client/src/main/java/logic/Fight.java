@@ -1,6 +1,9 @@
 package main.java.logic;
 import java.util.*;
 
+import main.java.logic.data.Army;
+import main.java.logic.data.Country;
+import main.java.logic.data.Player;
 import main.java.logic.exceptions.CountriesNotConnectedException;
 import main.java.logic.exceptions.NotEnoughArmiesToAttackException;
 import main.java.logic.utils.*;

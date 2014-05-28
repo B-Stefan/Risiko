@@ -1,11 +1,11 @@
-package main.java.logic.orders;
+package main.java.logic.data.orders;
 
 import main.java.logic.*;
+import main.java.logic.data.Continent;
+import main.java.logic.data.Player;
 import main.java.logic.exceptions.PlayerAlreadyHasAnOrderException;
 
-import java.lang.reflect.Array;
 import java.util.List;
-import java.util.Observable;
 import java.util.Random;
 import java.util.ArrayList;
 

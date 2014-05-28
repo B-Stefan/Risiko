@@ -1,14 +1,13 @@
-package main.java.logic.orders;
+package main.java.logic.data.orders;
 
-import main.java.logic.Player;
-import main.java.logic.exceptions.PlayerAlreadyHasAnOrderException;
+import main.java.logic.data.Player;
 
 /**
  *
  * @author  Stefan Bieliauskas
  * Schnittstelle für einzlene AuftrÃ¤ge, die der Spieler erledigen muss Implementierungen siehe:
  *
- * @see main.java.logic.orders
+ * @see main.java.logic.data.orders
  * @version 1.0
  *
  * Hierbei wurde eine Schnittstelle verwendet, da die beiden Auftragsarten keine bzw.
