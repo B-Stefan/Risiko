@@ -64,4 +64,9 @@ public class Dice implements Comparable<Dice>  {
     	}
     }
     
+    public String toString(){
+    	String s = "" + this.dicenumber;
+    	return s;
+    }
+    
 }

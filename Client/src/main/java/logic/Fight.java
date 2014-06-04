@@ -5,6 +5,7 @@ import main.java.logic.data.Army;
 import main.java.logic.data.Country;
 import main.java.logic.data.Player;
 import main.java.logic.exceptions.CountriesNotConnectedException;
+import main.java.logic.exceptions.InvalidAmountOfArmiesException;
 import main.java.logic.exceptions.NotEnoughArmiesToAttackException;
 import main.java.logic.utils.*;
 import main.java.logic.exceptions.*;
@@ -40,8 +41,19 @@ public class Fight {
 	 */
 	private Stack<Dice> agressorsDice = new Stack<Dice>();
 	
+	/**
+	 * Zeile 1: Anzahl der verlorenen Einheiten des Angreifers
+	 * Zeile 2: Anzahl der verlorenen Einheiten des Verteidigers
+	 * Zeile 3: Wenn 0 -> this.to wurde nicht erobert, wenn 1 -> this.to wurde erobert
+	 */
+	private int[] result = new int[3];
 	
 	
+	/**
+	 * Konstruktor setzt Attribute
+	 * @param from
+	 * @param to
+	 */
 	public Fight(Country from, Country to){
 		this.to = to;
 		this.from = from;
@@ -60,13 +72,30 @@ public class Fight {
 	}
 	
 	/**
+	 * Attacking überschrieben für CUI
+	 * @param agressorsArmies
+	 * @throws NotEnoughArmiesToAttackException
+	 * @throws InvalidAmountOfArmiesException
+	 */
+	public void attacking(int agressorsArmies) throws NotEnoughArmiesToAttackException, InvalidAmountOfArmiesException{
+		Stack<Army> agArmies = new Stack<Army>();
+		for (int i = 0; i<agressorsArmies; i++){
+			if (this.from.getArmyList().isEmpty()){
+				throw new NotEnoughArmiesToAttackException();
+			}
+			agArmies.push(from.getArmyList().get(i));
+		}
+		attacking(agArmies);
+	}
+	
+	/**
 	 * Bestimmt die Würfel mit denen angegriffen werden soll (und setzt die Liste der Angreifer Armeen und der Angreifer Würfel)
 	 * @param agressorsArmies
 	 * @throws InvalidAmountOfArmiesException
 	 * @throws NotEnoughArmiesToAttackException 
 	 */
-	public void attacking(List<Army> agressorsArmies) throws InvalidAmountOfArmiesException, NotEnoughArmiesToAttackException{
-		this.agressorsArmies = listToStack(agressorsArmies);
+	public void attacking(Stack<Army> agressorsArmies) throws InvalidAmountOfArmiesException, NotEnoughArmiesToAttackException{
+		//this.agressorsArmies = listToStack(agressorsArmies);
 		//Der Angreifer muss mit mindestens mit einer und höchstens mit drei Armeen angreifen 
 		if(this.agressorsArmies.size() >3 || this.agressorsArmies.size()<1){
 			throw new InvalidAmountOfArmiesException(this.agressorsArmies.size(), "1 & 3");
@@ -85,13 +114,33 @@ public class Fight {
 		Collections.reverse(this.agressorsDice);
 	}
 	
+	
+	/**
+	 * Defending überschrieben für CUI
+	 * @param defendersArmies
+	 * @throws NotEnoughArmiesToAttackException
+	 * @throws InvalidAmountOfArmiesException
+	 * @throws CountriesNotConnectedException 
+	 */
+	public void defending(int defendersArmies) throws NotEnoughArmiesToDefendException, InvalidAmountOfArmiesException, CountriesNotConnectedException{
+		Stack<Army> defArmies = new Stack<Army>();
+		for (int i = 0; i<defendersArmies; i++){
+			if (this.to.getArmyList().isEmpty()){
+				throw new NotEnoughArmiesToDefendException();
+			}
+			defArmies.push(to.getArmyList().get(i));
+		}
+		defending(defArmies);
+	}
+	
 	/**
 	 * Bestimmt die Würfel mit denen verteidigt werden soll (und setzt die Liste der Verteidiger Armeen und der Verteidiger Würfel)
 	 * @param defendersArmies
 	 * @throws InvalidAmountOfArmiesException
+	 * @throws CountriesNotConnectedException 
 	 */
-	public void defending(List<Army> defendersArmies)throws InvalidAmountOfArmiesException{
-		this.defendersArmies = listToStack(defendersArmies);
+	public void defending(Stack<Army> defendersArmies)throws InvalidAmountOfArmiesException, CountriesNotConnectedException{
+		//this.defendersArmies = listToStack(defendersArmies);
 		//Der Verteidiger muss mindestens mit einer und höchstens mit zwei Armeen verteidigen
 		if(this.defendersArmies.size() >2 || this.defendersArmies.size()<1){
 			throw new InvalidAmountOfArmiesException(this.defendersArmies.size(), "1 & 2");
@@ -104,22 +153,25 @@ public class Fight {
 		//möglicherweise als Methode auslagern?
 		Collections.sort(this.defendersDice);
 		Collections.reverse(this.defendersDice);
+		result();
 	}
 	
 	/**
 	 * Vergleicht die Würfel des Verteidigers mit denen des Angreifers und ermittelt wer diesen Fight gewonnen hat
 	 * @throws CountriesNotConnectedException
 	 */
-	public void result() throws CountriesNotConnectedException{
+	private void result() throws CountriesNotConnectedException{
 		for(Dice di : this.defendersDice){
 			//Wenn der Würfel des Verteidigers höher oder gleich ist, dann wird eine Armee des Angreifers zerstört
 			if(di.isDiceHigherOrEqual(this.agressorsDice.get(0))){
 				this.from.removeArmy(this.agressorsArmies.pop());
 				this.agressorsDice.remove(0);
+				this.result[0] += 1;
 			//Wenn der Würfel niedriger ist, dann wird eine Armee des Verteidigers zerstört
 			}else if(!di.isDiceHigherOrEqual(this.agressorsDice.get(0))){
 				this.from.removeArmy(this.defendersArmies.pop());
 				this.agressorsDice.remove(0);
+				this.result[1] += 1;
 				//Wenn keine Armeen des Verteidigers mehr auf dem zu erobernden Land stehen, dann ziehen die Armeen des Angreifers rüber
 				//Möglicherweise eigene Methode?
 				if(this.to.getArmyList().isEmpty()){
@@ -127,9 +179,18 @@ public class Fight {
 					for(Army a : this.agressorsArmies){
 						a.setPosition(this.to);
 					}
+					this.result[2] = 1;
 				}
 			}
 		}
+	}
+	
+	/**
+	 * getter für das Result
+	 * @return
+	 */
+	public int[] getResult(){
+		return this.result;
 	}
 	
 	/**
@@ -162,6 +223,21 @@ public class Fight {
 	 */
 	public void setAgressorsArmies(Stack<Army> newArmies){
 		this.agressorsArmies = newArmies;
+	}
+	/**
+	 * Getter für das To Land
+	 * @return
+	 */
+	public Country getTo(){
+		return this.to;
+	}
+	
+	/**
+	 * Getter für das From Land
+	 * @return
+	 */
+	public Country getFrom(){
+		return this.from;
 	}
 	
 }
