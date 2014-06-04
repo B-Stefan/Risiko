@@ -184,8 +184,8 @@ public class GameCUI extends CUI {
      * @param game - Das spiel, das die GUI betrifft
      * @throws Exception
      */
-    public GameCUI(final Game game) {
-        super(game);
+    public GameCUI(final Game game,CUI parent) {
+        super(game,parent);
         this.game = game;
 
         //Hinzufügen der Listener

@@ -42,6 +42,8 @@ public class Turn {
         Queue<steps> s = new LinkedBlockingQueue<steps>(1) {
         };
         s.add(steps.DISTRIBUTE);
+        s.add(steps.FIGHT);
+        s.add(steps.MOVE);
         return s;
     }
 

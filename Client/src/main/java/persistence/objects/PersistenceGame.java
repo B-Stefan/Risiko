@@ -1,6 +1,7 @@
 package main.java.persistence.objects;
 import main.java.logic.Game;
 import main.java.logic.data.Player;
+import main.java.logic.exceptions.GameNotStartedException;
 import main.java.persistence.PersistenceManager;
 import main.java.persistence.dataendpoints.PersistenceEndpoint;
 import main.java.persistence.exceptions.PersistenceEndpointIOException;
@@ -14,9 +15,11 @@ public class PersistenceGame extends PersitenceObject<Game> {
 
     public final List<String> players = new ArrayList<String>();
     private final UUID id;
+    private final Game.gameStates gameState;
     public PersistenceGame(Game game){
         super(game);
         this.id =  game.getId();
+        this.gameState = game.getCurrentGameState();
         for(Player p : game.getPlayers()){
             this.players.add(p.getId().toString());
         }
@@ -36,6 +39,8 @@ public class PersistenceGame extends PersitenceObject<Game> {
         for(String uuid : this.players) {
             player.add(playerHandler.get(uuid));
         }
+        newGame.addPlayers(player);
+        newGame.setCurrentGameState(this.gameState);
         return newGame;
     }
 }

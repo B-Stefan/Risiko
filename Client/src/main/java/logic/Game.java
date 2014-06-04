@@ -38,7 +38,7 @@ public class Game {
     /**
      * Listet alle Spieler auf, die aktiv am Spiel teilnehmen.
      */
-    private final ArrayList<Player> players = new ArrayList<Player>();
+    private final List<Player> players = new ArrayList<Player>();
 
     /**
      * The current game state, default => WAITING
@@ -257,6 +257,24 @@ public class Game {
     }
 
     /**
+     * Setzt den aktuellen gameState
+     *
+     * @param s
+     */
+    public void setCurrentGameState(gameStates s) {
+        this.currentGameState = s;
+    }
+
+    /**
+     * Für alle Spieler der Spielerliste hinzu
+     *
+     * @param players
+     */
+    public void addPlayers(List<Player> players) {
+        this.players.addAll(players);
+    }
+
+    /**
      * Gibt die Karte des Spiels zurück
      *
      * @return
@@ -277,7 +295,7 @@ public class Game {
     /**
      * @return Liste der Spieler
      */
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return this.players;
     }
 

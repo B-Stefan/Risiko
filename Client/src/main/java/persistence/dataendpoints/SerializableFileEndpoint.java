@@ -56,6 +56,9 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
             //File ist leer
 
         }
+        catch (InvalidClassException e){
+
+        }
         catch (FileNotFoundException e){
             this.writeFile(); // File erstellen, wenn nicht vorhanden
         }
