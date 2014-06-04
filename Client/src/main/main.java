@@ -1,6 +1,6 @@
 package main;
-import main.java.logic.Game;
-import main.java.gui.CUI.GameCUI;
+import main.java.GameManager;
+import main.java.gui.CUI.GameManagerCUI;
 import main.java.persistence.PersistenceManager;
 import main.java.persistence.dataendpoints.PersistenceEndpoint;
 
@@ -21,23 +21,13 @@ public class main {
      */
     public static void main(String[] args) throws Exception{
 
+
+        PersistenceManager persistenceManager = new PersistenceManager();
         //Erstellen des Spiels
-        Game game = new Game();
+        GameManager  game = new GameManager(persistenceManager);
         //Erstellen des UI
-        GameCUI ui = new GameCUI(game);
+        GameManagerCUI ui = new GameManagerCUI(game);
 
-        game.addPlayer(new Player("Bob"));
-        game.addPlayer(new Player("Stefan"));
-        game.addPlayer(new Player("Linda"));
-
-
-        /**
-         * Testen der Persistenz
-         */
-        PersistenceEndpoint endpoint = new PersistenceManager().getGameHandler();
-        endpoint.save(game);
-
-        //Startet das warten auf eine Eingbae des Benutzers
         ui.listenConsole();
     }
 }
