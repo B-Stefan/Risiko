@@ -268,7 +268,6 @@ public class Turn {
 
             if (isArmyAlreadyMoved(army)){
                 throw new ArmyAlreadyMovedException(army);
-
             }
             army.setPosition(country);
             addMovedArmy(army);

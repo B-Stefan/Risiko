@@ -110,6 +110,8 @@ public class Fight {
 	 * @throws InvalidFightException 
 	 */
 	public void attacking(Stack<Army> agressorsArmies) throws InvalidAmountOfArmiesException, NotEnoughArmiesToAttackException, AlreadyDicedException, InvalidFightException{
+		this.agressorsArmies.clear();
+		this.agressorsArmies = agressorsArmies;
 		this.defendersDice.clear();
 		if (this.from.getOwner() == this.to.getOwner()){
 			throw new InvalidFightException();
@@ -117,14 +119,12 @@ public class Fight {
 		if (!this.agressorsDice.isEmpty()){
 			throw new AlreadyDicedException();
 		}
-		this.agressorsArmies.clear();
-		this.agressorsArmies = agressorsArmies;
 		//Der Angreifer muss mit mindestens mit einer und höchstens mit drei Armeen angreifen 
 		if(this.agressorsArmies.size() >3 || this.agressorsArmies.size()<1){
 			throw new InvalidAmountOfArmiesException(this.agressorsArmies.size(), "1 & 3");
 		}
 		//Es kann nur angegriffen werden, wenn sich mehr als eine Armee auf dem Ursprungsland befindet
-		if(this.from.getArmyList().size()<=1){
+		if(this.from.getArmyList().size()<=this.agressorsArmies.size()){
 			throw new NotEnoughArmiesToAttackException();
 		}
 		//füllt die Liste mit so vielen Würfeln, wie es Armeen gibt
