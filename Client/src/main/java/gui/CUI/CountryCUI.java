@@ -95,6 +95,7 @@ public class CountryCUI extends CUI {
             Country found = country.getNeighbor(target);
             if (found == null){
                 IO.println("Leider konnte Ihr Land " + target + " nicht gefunden werden");
+                return;
             } else {
                 try {
                     fight = turn.fight(country,found);

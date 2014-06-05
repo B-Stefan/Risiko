@@ -39,7 +39,7 @@ public class Turn {
      * @return - Schritte für die erste Runde
      */
     public static Queue<steps> getDefaultStepsFirstRound (){
-        Queue<steps> s = new LinkedBlockingQueue<steps>(1) {
+        Queue<steps> s = new LinkedBlockingQueue<steps>(3) {
         };
         s.add(steps.DISTRIBUTE);
         s.add(steps.FIGHT);
@@ -244,9 +244,7 @@ public class Turn {
             this.isComplete();
             //Einmal ein Land angegriffen ändert den step des Turns
             this.setCurrentStep(steps.FIGHT);
-            List<Army> agressorsArmies = from.getArmyList();
-            List<Army> defendersArmies = to.getArmyList();
-            //return  new Fight(from, to, agressorsArmies , defendersArmies);
+            return  new Fight(from, to, this);
 
         }
         return null;
@@ -263,10 +261,10 @@ public class Turn {
      */
     public void moveArmy(Country country, Army army) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException {
 
-        if(this.isStepAllowed(steps.MOVE)){
+        //if(this.isStepAllowed(steps.MOVE)){
 
             //Einmal eine Einheit bewegt, ändert den Step des Turns
-            this.setCurrentStep(steps.MOVE);
+            //this.setCurrentStep(steps.MOVE);
 
             if (isArmyAlreadyMoved(army)){
                 throw new ArmyAlreadyMovedException(army);
@@ -275,7 +273,7 @@ public class Turn {
             army.setPosition(country);
             addMovedArmy(army);
         }
-    }
+	//}
 
     /**
      * Überprüft, ob der Turn abgeschlossen wurde.

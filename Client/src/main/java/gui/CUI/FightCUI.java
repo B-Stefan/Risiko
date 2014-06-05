@@ -52,7 +52,14 @@ public class FightCUI extends CUI {
             }catch (InvalidAmountOfArmiesException e){
                 IO.println(e.getMessage());
                 return;
-            }
+            } catch (AlreadyDicedException e) {
+				IO.println(e.getMessage());
+				return;
+			} catch (InvalidFightException e) {
+				IO.println(e.getMessage());
+				return;
+			}
+			IO.println("");
 			IO.println("Angreifer Würfel:");
 			for(Dice d : fight.getAgressorsDice()){
 				IO.println(d.toString());
@@ -97,8 +104,23 @@ public class FightCUI extends CUI {
             }catch (CountriesNotConnectedException e){
             	IO.println(e.getMessage());
             	return;
-            }
-			
+            } catch (AlreadyDicedException e) {
+				IO.println(e.getMessage());
+				return;
+			} catch (TurnNotAllowedStepException e) {
+				IO.println(e.getMessage());
+				return;
+			} catch (TurnNotInCorrectStepException e) {
+				IO.println(e.getMessage());
+				return;
+			} catch (ArmyAlreadyMovedException e) {
+				IO.println(e.getMessage());
+				return;
+			} catch (InvalidFightException e) {
+				IO.println(e.getMessage());
+				return;
+			}
+			IO.println("");
 			IO.println("Verteidiger Würfel:");
 			for(Dice d : fight.getDefendersDice()){
 				IO.println(d.toString());
@@ -108,8 +130,10 @@ public class FightCUI extends CUI {
 			int[] result = fight.getResult();
 			IO.println("Der Angreifer hat " + result[0] + " verloren");
 			IO.println("Der Verteidiger hat " + result[1] + " verloren");
+			IO.println("");
 			if(result[2] == 1){
 				IO.println("Der Angreifer hat " + fight.getTo().getName() + " erobert");
+				IO.println("");
 			}
 		}
 		

@@ -6,6 +6,6 @@ import main.java.logic.Turn;
  */
 public class TurnNotAllowedStepException extends Exception {
     public TurnNotAllowedStepException(Turn.steps step, Turn turn){
-        super("Der step " + step + " ist beim Tunr " + turn + " nicht erlaubt.Sie dürfen noch " + turn.getAllowedSteps() + " und sind aktuell im Step" + turn.getCurrentStep() );
+        super("Der step " + step + " ist beim Turn " + turn + " nicht erlaubt. Sie dürfen noch " + turn.getAllowedSteps() + " und sind aktuell im Step" + turn.getCurrentStep() );
     }
 }
