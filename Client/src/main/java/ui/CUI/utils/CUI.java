@@ -1,6 +1,6 @@
-package main.java.gui.CUI.utils;
+package main.java.ui.CUI.utils;
 
-import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
+import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
 
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
@@ -50,7 +50,7 @@ public abstract class CUI {
 
     /**
      * Bietet die Funktion zum wechseln der Ebene
-     *@see main.java.gui.CUI.utils.CommandListener
+     *@see main.java.ui.CUI.utils.CommandListener
      */
     public class ChangeDirListener extends CommandListener {
         public ChangeDirListener() {
@@ -83,7 +83,7 @@ public abstract class CUI {
     }
     /**
      * Bietet die Funktion zum anzeigend er Hilfe
-     *@see main.java.gui.CUI.utils.CommandListener
+     *@see main.java.ui.CUI.utils.CommandListener
      */
     public class HelpListener extends CommandListener {
         public HelpListener() {

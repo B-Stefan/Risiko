@@ -1,4 +1,4 @@
-package main.java.gui.CUI.utils;
+package main.java.ui.CUI.utils;
 
 import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
@@ -56,7 +56,7 @@ public abstract class CommandListener implements ActionListener {
 
     /**
      * Gibt ein Argument anhand seines Namens zurück
-     * @see main.java.gui.CUI.utils.CommandListenerArgument
+     * @see main.java.ui.CUI.utils.CommandListenerArgument
      * @param name - Name, den das Argument innehält
      * @return Argument, das dem name entsprecht
      */

@@ -1,5 +1,5 @@
-package main.java.gui.CUI.utils;
-import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
+package main.java.ui.CUI.utils;
+import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
 
 
 /**
@@ -8,7 +8,7 @@ import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
 public class CommandListenerArgument  {
     /**
      * Der Name des Arguments, dieser wird beim späteren verarbeiten des Arguments zur Identifizierung verwendet
-     * @see main.java.gui.CUI.utils.CommandListener#getArgument(String)
+     * @see main.java.ui.CUI.utils.CommandListener#getArgument(String)
      */
     private final String argumentName;
 

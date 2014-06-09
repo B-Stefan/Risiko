@@ -1,6 +1,6 @@
-package main.java.gui.CUI.exceptions;
+package main.java.ui.CUI.exceptions;
 
-import main.java.gui.CUI.utils.CommandListenerArgument;
+import main.java.ui.CUI.utils.CommandListenerArgument;
 
 import java.io.IOException;
 

@@ -1,9 +1,9 @@
-package main.java.gui.CUI;
+package main.java.ui.CUI;
 
-import main.java.gui.CUI.utils.CUI;
-import main.java.gui.CUI.utils.CommandListener;
-import main.java.gui.CUI.utils.CommandListenerArgument;
-import main.java.gui.CUI.utils.IO;
+import main.java.ui.CUI.utils.CUI;
+import main.java.ui.CUI.utils.CommandListener;
+import main.java.ui.CUI.utils.CommandListenerArgument;
+import main.java.ui.CUI.utils.IO;
 import main.java.logic.Round;
 import main.java.logic.exceptions.RoundCompleteException;
 import main.java.logic.exceptions.ToManyNewArmysException;

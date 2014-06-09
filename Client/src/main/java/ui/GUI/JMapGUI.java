@@ -1,14 +1,11 @@
-package main.java.gui.GUI;
+package main.java.ui.GUI;
 
 import javax.swing.*;
 
-import main.java.gui.CUI.utils.IO;
+import main.java.ui.CUI.utils.IO;
 import main.java.logic.data.Country;
 import main.java.logic.data.Map;
-import main.java.logic.exceptions.CountryNotInListException;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;

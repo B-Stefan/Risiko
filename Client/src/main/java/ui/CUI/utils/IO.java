@@ -1,4 +1,4 @@
-package main.java.gui.CUI.utils; /**
+package main.java.ui.CUI.utils; /**
  * macht das Einlesen von Einfachen Daten einfacher 
  * durch Verdecken des Exception-Handlings
 */

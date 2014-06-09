@@ -1,11 +1,10 @@
-package main.java.gui.CUI;
+package main.java.ui.CUI;
 
-import main.java.GameManager;
-import main.java.gui.CUI.utils.CUI;
-import main.java.gui.CUI.utils.CommandListener;
-import main.java.gui.CUI.utils.CommandListenerArgument;
-import main.java.gui.CUI.utils.IO;
-import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
+import main.java.ui.CUI.utils.CUI;
+import main.java.ui.CUI.utils.CommandListener;
+import main.java.ui.CUI.utils.CommandListenerArgument;
+import main.java.ui.CUI.utils.IO;
+import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.exceptions.*;
 import main.java.logic.Game;
 import main.java.logic.data.Player;

@@ -1,13 +1,12 @@
-package main.java.gui.CUI;
+package main.java.ui.CUI;
 
-import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
-import main.java.gui.CUI.utils.CUI;
-import main.java.gui.CUI.utils.CommandListener;
-import main.java.gui.CUI.utils.CommandListenerArgument;
-import main.java.gui.CUI.utils.IO;
+import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
+import main.java.ui.CUI.utils.CUI;
+import main.java.ui.CUI.utils.CommandListener;
+import main.java.ui.CUI.utils.CommandListenerArgument;
+import main.java.ui.CUI.utils.IO;
 import main.java.GameManager;
 import main.java.logic.Game;
-import main.java.persistence.dataendpoints.PersistenceEndpoint;
 import main.java.persistence.exceptions.PersistenceEndpointIOException;
 
 import java.awt.event.ActionEvent;

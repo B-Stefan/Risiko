@@ -1,11 +1,8 @@
 package main;
 import main.java.GameManager;
-import main.java.gui.CUI.GameManagerCUI;
-import main.java.gui.GUI.GameGUI;
+import main.java.ui.GUI.JGameGUI;
 import main.java.persistence.PersistenceManager;
-import main.java.persistence.dataendpoints.PersistenceEndpoint;
 import main.java.logic.Game;
-import main.java.logic.data.Player;
 
 import java.lang.*;
 
@@ -30,7 +27,7 @@ public class main {
         // GameManagerCUI ui = new GameManagerCUI(game);
         Game game = new Game();
         
-        GameGUI gui = new GameGUI(game);
+        JGameGUI gui = new JGameGUI(game);
         
         //ui.listenConsole();
     }

@@ -1,18 +1,18 @@
-package main.java.gui.CUI;
+package main.java.ui.CUI;
 
 /**
  * Created by Stefan on 30.04.14.
  */
-import main.java.gui.CUI.utils.CUI;
-import main.java.gui.CUI.utils.CommandListener;
-import main.java.gui.CUI.utils.CommandListenerArgument;
-import main.java.gui.CUI.utils.IO;
+import main.java.ui.CUI.utils.CUI;
+import main.java.ui.CUI.utils.CommandListener;
+import main.java.ui.CUI.utils.CommandListenerArgument;
+import main.java.ui.CUI.utils.IO;
 
 import main.java.logic.data.Country;
 import main.java.logic.Turn;
 import main.java.logic.exceptions.ToManyNewArmysException;
 import main.java.logic.exceptions.TurnCompleteException;
-import main.java.gui.CUI.exceptions.InvalidCommandListernArgumentException;
+import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
 import main.java.logic.data.orders.IOrder;
 
 import java.awt.event.ActionEvent;
