@@ -37,7 +37,7 @@ public class GameGUI extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container pane = this.getContentPane();
         pane.setLayout(new BorderLayout());
-        pane.add(new JLabel("Hallo"), BorderLayout.CENTER);
+        pane.add(new JMapGUI(game.getMap()), BorderLayout.CENTER);
         pane.add(setSouthPanel(), BorderLayout.SOUTH);
 		// Fenster anzeigen
 		this.setVisible(true);
