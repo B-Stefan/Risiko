@@ -67,7 +67,7 @@ public class JMapGUI extends JPanel {
         Dimension dim = new Dimension(600,400);
 
         this.mapImage = (new ImageIcon(getClass().getResource("/resources/Map_Vg.png"))).getImage();
-        this.mapBgImg = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_INT_RGB);
+        this.mapBgImg = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_INT_ARGB);
         this.mapBgImg.getGraphics().drawImage(new ImageIcon(getClass().getResource("/resources/Map_Bg.png")).getImage(), 0, 0, dim.width, dim.height, this);
         this.addMouseListener(new OnCountryClickActionListener());
 
@@ -85,9 +85,23 @@ public class JMapGUI extends JPanel {
 
         super.paint(g);
 
+        //Hintergrund Karte
+        this.mapBgImg  = this.getScaledImage(this.mapBgImg,this.getWidth(),this.getHeight());
+
         //Paint Karte
         g.drawImage(mapImage, 0, 0, this.getWidth(), this.getHeight(), this);
 
+    }
+
+
+    private BufferedImage getScaledImage(BufferedImage image, int width, int height){
+        int type=0;
+        type = image.getType() == 0? BufferedImage.TYPE_INT_ARGB : image.getType();
+        BufferedImage resizedImage = new BufferedImage(width, height,type);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(image, 0, 0, width, height, null);
+        g.dispose();
+        return resizedImage;
     }
 
     public BufferedImage getMapBgImg(){
