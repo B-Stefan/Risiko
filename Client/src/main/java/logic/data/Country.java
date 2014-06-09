@@ -3,6 +3,7 @@ package main.java.logic.data;
 import main.java.logic.exceptions.CountriesNotConnectedException;
 import main.java.logic.exceptions.CountryNotInListException;
 
+import java.awt.Color;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -22,6 +23,12 @@ public class Country {
      * Uniqu ID für das Spiel
      */
     private final UUID id;
+
+
+    /**
+     * Farbe für die Hintergrundkarte
+     */
+    private final Color color;
 
     /**
      * Bildet die relation der Nachbarländer ab
@@ -46,12 +53,15 @@ public class Country {
      * Erstellt ein Land
      * @param name Name des Landes
      * @param continent Kontinent des Landes
+     *
      */
-    public Country(final String name, Continent continent) {
+    public Country(final String name, Continent continent, Color color) {
         this.name = name;
         this.id = UUID.randomUUID();
         this.continent = continent;
         this.continent.addCountry(this);
+        this.color = color;
+
     }
 
     /**
@@ -181,6 +191,13 @@ public class Country {
      */
     public UUID getId() {
         return this.id;
+    }
+
+    /**
+     * @return Die Farbe des Countrys
+     */
+    public Color getColor() {
+        return this.color;
     }
 
     /**
