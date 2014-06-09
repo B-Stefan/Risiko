@@ -1,9 +1,10 @@
 package main;
 import main.java.GameManager;
 import main.java.gui.CUI.GameManagerCUI;
+import main.java.gui.GUI.GameGUI;
 import main.java.persistence.PersistenceManager;
 import main.java.persistence.dataendpoints.PersistenceEndpoint;
-
+import main.java.logic.Game;
 import main.java.logic.data.Player;
 
 import java.lang.*;
@@ -24,10 +25,13 @@ public class main {
 
         PersistenceManager persistenceManager = new PersistenceManager();
         //Erstellen des Spiels
-        GameManager  game = new GameManager(persistenceManager);
+        GameManager  gameManager = new GameManager(persistenceManager);
         //Erstellen des UI
-        GameManagerCUI ui = new GameManagerCUI(game);
-
-        ui.listenConsole();
+        // GameManagerCUI ui = new GameManagerCUI(game);
+        Game game = new Game();
+        
+        GameGUI gui = new GameGUI(game);
+        
+        //ui.listenConsole();
     }
 }
