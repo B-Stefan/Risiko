@@ -14,7 +14,7 @@ import main.java.logic.exceptions.GameNotStartedException;
 public class JPLayerInfoGUI extends JFrame{
 	private final Game game;
 	private PlayerInfoManager tModel;
-	private JScrollPane southFirst;
+	private JScrollPane context;
 	
 	
 	public JPLayerInfoGUI(Game game) throws GameNotStartedException{
@@ -32,15 +32,15 @@ public class JPLayerInfoGUI extends JFrame{
         //Spieler Liste
         this.tModel = new PlayerInfoManager(this.game, spalten);
         JTable playersTable = new JTable(this.tModel);
-        this.southFirst = new JScrollPane(playersTable);
-        this.southFirst.setPreferredSize(new Dimension(150, 105));
+        this.context = new JScrollPane(playersTable);
+        this.context.setPreferredSize(new Dimension(150, 105));
 	}
 	
 	public PlayerInfoManager getTModel(){
 		return this.tModel;
 	}
 	
-	public JScrollPane getSouthFirst(){
-		return this.southFirst;
+	public JScrollPane getContext(){
+		return this.context;
 	}
 }

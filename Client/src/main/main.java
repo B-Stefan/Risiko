@@ -4,6 +4,7 @@ import main.java.ui.CUI.GameCUI;
 import main.java.ui.GUI.JGameGUI;
 import main.java.persistence.PersistenceManager;
 import main.java.logic.Game;
+import main.java.logic.data.Player;
 
 import java.lang.*;
 
@@ -28,7 +29,13 @@ public class main {
         // GameManagerCUI ui = new GameManagerCUI(game);
         Game game = new Game();
         
-        JGameGUI gui = new JGameGUI(game);
+		game.addPlayer(new Player("Bob"));
+		game.addPlayer(new Player("Raito"));
+		game.addPlayer(new Player("Daichi"));
+		game.addPlayer(new Player("Steve"));
+		game.addPlayer(new Player("Alice"));
+        
+        JGameGUI gui = new JGameGUI(game, game.getPlayers().get(0));
         GameCUI cui = new GameCUI(game, null);
         cui.listenConsole();
     }

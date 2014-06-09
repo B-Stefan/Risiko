@@ -27,15 +27,13 @@ public class JGameGUI extends JFrame {
 	private final Game game;
 	private Container pane;
 	private JButton update;
+	private final Player player;
 	
-	public JGameGUI(Game game) throws GameNotStartedException{
+	public JGameGUI(Game game, Player player) throws GameNotStartedException{
 		super("Risiko");
 		this.game = game;
-		this.game.addPlayer(new Player("Bob"));
-		this.game.addPlayer(new Player("Raito"));
-		this.game.addPlayer(new Player("Daichi"));
-		this.game.addPlayer(new Player("Steve"));
-		this.game.addPlayer(new Player("Alice"));
+		this.player = player;
+
 		initialize();
 	}
 	
@@ -62,13 +60,16 @@ public class JGameGUI extends JFrame {
         //JPlayerInfoGUI erzeugen
         final JPLayerInfoGUI playersInfo = new JPLayerInfoGUI(this.game);
         
+        //JOrderInfoGUI erzeugen
+        final JOrderInfoGUI orderInfo = new JOrderInfoGUI(this.game, this.player);
+        
         //Update Button
         this.update = new JButton("Update");
         
         //Panel
-        south.add(playersInfo.getSouthFirst());
+        south.add(playersInfo.getContext());
         south.add(this.update);
-        south.add(new JLabel("Risiko"));
+        south.add(orderInfo.getContext());
         south.add(new JLabel("Risiko"));
         
         south.setBorder(BorderFactory.createTitledBorder("Übersicht"));
@@ -77,6 +78,7 @@ public class JGameGUI extends JFrame {
 			public void actionPerformed(final ActionEvent ae){
 				try {
 					playersInfo.getTModel().update();;
+					orderInfo.update();
 				} catch (GameNotStartedException e) {
 					IO.println(e.getMessage());
 					return;
