@@ -22,14 +22,14 @@ public class JOrderInfoGUI extends JFrame {
 		this.game = game;
 	}
 	
-	private void setJLabel() throws GameNotStartedException{
+	private void setContext() throws GameNotStartedException{
 		if(this.game.getCurrentGameState() == Game.gameStates.RUNNING){
 			this.context.setText(this.player.getOrder().toString());
 		}
 	}
 	
 	public void update() throws GameNotStartedException{
-		setJLabel();
+		setContext();
 	}
 	
 	public JTextArea getContext(){

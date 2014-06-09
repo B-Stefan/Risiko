@@ -55,7 +55,7 @@ public class JGameGUI extends JFrame {
 	
 	private JPanel setSouthPanel() throws GameNotStartedException{
 		JPanel south = new JPanel();
-        south.setLayout(new GridLayout(1, 4));
+        south.setLayout(new GridLayout(1, 4, 10, 0));
         
         //JPlayerInfoGUI erzeugen
         final JPLayerInfoGUI playersInfo = new JPLayerInfoGUI(this.game);
@@ -63,22 +63,27 @@ public class JGameGUI extends JFrame {
         //JOrderInfoGUI erzeugen
         final JOrderInfoGUI orderInfo = new JOrderInfoGUI(this.game, this.player);
         
+        //JCurrentStateInfoGUI erzeugen
+        final JCurrentStateInfoGUI currentStateInfo = new JCurrentStateInfoGUI(this.game, this.player);
+        
         //Update Button
         this.update = new JButton("Update");
+
         
         //Panel
         south.add(playersInfo.getContext());
-        south.add(this.update);
+        south.add(currentStateInfo.getContext());
         south.add(orderInfo.getContext());
-        south.add(new JLabel("Risiko"));
+        south.add(this.update);
         
         south.setBorder(BorderFactory.createTitledBorder("Übersicht"));
         
         update.addActionListener(new ActionListener(){
 			public void actionPerformed(final ActionEvent ae){
 				try {
-					playersInfo.getTModel().update();;
+					playersInfo.update();
 					orderInfo.update();
+					currentStateInfo.update();
 				} catch (GameNotStartedException e) {
 					IO.println(e.getMessage());
 					return;

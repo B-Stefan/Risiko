@@ -32,9 +32,4 @@ public class PlayerInfoManager extends DefaultTableModel{
         }
         this.setDataVector(rows, columnIdentifiers);
 	}
-	
-	public void update() throws GameNotStartedException{
-		setDataVector(game.getPlayers());
-	}
-
 }

@@ -19,10 +19,10 @@ public class JPLayerInfoGUI extends JFrame{
 	
 	public JPLayerInfoGUI(Game game) throws GameNotStartedException{
 		this.game = game;
-		setScrollPane();
+		setContext();
 	}
 	
-	private void setScrollPane() throws GameNotStartedException{
+	private void setContext() throws GameNotStartedException{
         // ListModel als "Datencontainer" anlegen:
         final Vector<String> spalten = new Vector<String>();
         spalten.add("Spieler");
@@ -42,5 +42,8 @@ public class JPLayerInfoGUI extends JFrame{
 	
 	public JScrollPane getContext(){
 		return this.context;
+	}
+	public void update() throws GameNotStartedException{
+		this.tModel.setDataVector(game.getPlayers());
 	}
 }
