@@ -58,24 +58,15 @@ public class JGameGUI extends JFrame {
 	private JPanel setSouthPanel() throws GameNotStartedException{
 		JPanel south = new JPanel();
         south.setLayout(new GridLayout(1, 4));
-      
-        // ListModel als "Datencontainer" anlegen:
-        final Vector<String> spalten = new Vector<String>();
-        spalten.add("Spieler");
-        spalten.add("Länder");
-        spalten.add("Am Zug");
         
-        //Spieler Liste
-        final PlayerInfoGUI tModel = new PlayerInfoGUI(this.game, spalten);
-        JTable playersTable = new JTable(tModel);
-        final JScrollPane east = new JScrollPane(playersTable);
-        east.setPreferredSize(new Dimension(150, 105));
+        //JPlayerInfoGUI erzeugen
+        final JPLayerInfoGUI playersInfo = new JPLayerInfoGUI(this.game);
         
         //Update Button
         this.update = new JButton("Update");
         
         //Panel
-        south.add(east);
+        south.add(playersInfo.getSouthFirst());
         south.add(this.update);
         south.add(new JLabel("Risiko"));
         south.add(new JLabel("Risiko"));
@@ -85,7 +76,7 @@ public class JGameGUI extends JFrame {
         update.addActionListener(new ActionListener(){
 			public void actionPerformed(final ActionEvent ae){
 				try {
-					tModel.update();
+					playersInfo.getTModel().update();;
 				} catch (GameNotStartedException e) {
 					IO.println(e.getMessage());
 					return;

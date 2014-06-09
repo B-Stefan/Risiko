@@ -7,10 +7,10 @@ import main.java.logic.*;
 import main.java.logic.data.*;
 import main.java.logic.exceptions.GameNotStartedException;
 
-public class PlayerInfoGUI extends DefaultTableModel{
+public class PlayerInfoManager extends DefaultTableModel{
 	private Game game;
 	
-	public PlayerInfoGUI(final Game game, final Vector<String> columnNames) throws GameNotStartedException{
+	public PlayerInfoManager(final Game game, final Vector<String> columnNames) throws GameNotStartedException{
 		super();
 		this.game = game;
 		this.columnIdentifiers = columnNames;
