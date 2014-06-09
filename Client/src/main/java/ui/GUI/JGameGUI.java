@@ -2,6 +2,7 @@ package main.java.ui.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Vector;
 
@@ -26,12 +27,14 @@ public class JGameGUI extends JFrame {
 		this.game.addPlayer(new Player("Bob"));
 		this.game.addPlayer(new Player("C"));
 		this.game.addPlayer(new Player("D"));
+		this.game.addPlayer(new Player("Steve"));
+		this.game.addPlayer(new Player("Alice"));
 		initialize();
 	}
 	
 	private void initialize() throws GameNotStartedException{
-		this.setSize(600, 400);
-		this.setPreferredSize(this.getSize());
+		//this.setSize(600, 400);
+		//this.setPreferredSize(this.getSize());
 
         // Klick auf Kreuz (Fenster schließen) behandeln lassen:
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -51,12 +54,13 @@ public class JGameGUI extends JFrame {
         // ListModel als "Datencontainer" anlegen:
         final Vector<String> spalten = new Vector<String>();
         spalten.add("Spieler");
-        spalten.add("Anzahl Länder");
-        spalten.add("Aktueller Spieler");
+        spalten.add("Länder");
+        spalten.add("Am Zug");
         
         final PlayerInfoGUI tModel = new PlayerInfoGUI(this.game, spalten);
         JTable playersTable = new JTable(tModel);
         final JScrollPane east = new JScrollPane(playersTable);
+        east.setPreferredSize(new Dimension(150, 105));
 
         south.add(east);
         south.add(new JTextField());
