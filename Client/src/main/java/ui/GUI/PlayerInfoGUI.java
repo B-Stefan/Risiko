@@ -23,8 +23,11 @@ public class PlayerInfoGUI extends DefaultTableModel{
             final Vector<String> playerInVector = new Vector<String>();
             playerInVector.add("" + player.getName());
             playerInVector.add("" + player.getCountries().size());
-            playerInVector.add("");
-            //playerInVector.add(player == game.getCurrentRound().getCurrentPlayer()? "X" : "");
+            if (this.game.getCurrentGameState() == Game.gameStates.RUNNING){
+            	playerInVector.add(player == game.getCurrentRound().getCurrentPlayer()? "X" : "");
+            }else if (this.game.getCurrentGameState() == Game.gameStates.WAITING){
+            	playerInVector.add("");
+        	}
             rows.add(playerInVector);
         }
         this.setDataVector(rows, columnIdentifiers);
