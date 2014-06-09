@@ -1,5 +1,6 @@
 package main.java.gui.CUI;
 
+import main.java.GameManager;
 import main.java.gui.CUI.utils.CUI;
 import main.java.gui.CUI.utils.CommandListener;
 import main.java.gui.CUI.utils.CommandListenerArgument;
@@ -48,8 +49,14 @@ public class GameCUI extends CUI {
             final String name;
             try {
                 name = this.getArgument("playerName").toStr();
+
             }catch (InvalidCommandListernArgumentException e){
                 IO.println(e.getMessage());
+                return;
+            }
+
+            if(name.trim().length() == 0){
+                IO.println("Bitte geben Sie einen gültigen Namen ein");
                 return;
             }
 

@@ -15,6 +15,7 @@
 hs_err_pid*
 /bin
 /classes
+/data
 
 /gh-pages
 

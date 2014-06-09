@@ -85,6 +85,7 @@ public class GameManagerCUI extends CUI {
 
         public SaveGameCommandListener() {
             super("save","Speichert ein Spiel");
+            this.addArgument(new CommandListenerArgument("listNumberOfGameToSave"));
         }
 
         @Override
@@ -92,11 +93,13 @@ public class GameManagerCUI extends CUI {
 
             int index;
             try {
-                index = this.getArgument("indexOfGameToSave").toInt();
+                index = this.getArgument("listNumberOfGameToSave").toInt();
             }catch (InvalidCommandListernArgumentException e){
                 IO.println(e.getMessage());
                 return;
             }
+
+            index--;
 
             Game newGame;
             try {

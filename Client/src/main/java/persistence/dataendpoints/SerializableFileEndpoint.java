@@ -32,7 +32,7 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
     }
 
     private String fileName;
-    private HashMap<UUID, PersitenceObject> chachedObjects = new HashMap<UUID, PersitenceObject>();
+    private HashMap<UUID, PersitenceObject<T>> chachedObjects = new HashMap<UUID, PersitenceObject<T>>();
 
 
 
@@ -45,10 +45,10 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
 
     private void readFile (){
         SerializableFileEndpoint.createDir();
-        HashMap<UUID, PersitenceObject> fileData = null;
+        HashMap<UUID, PersitenceObject<T>> fileData = null;
         try {
             ObjectInputStream reader = new ObjectInputStream(new FileInputStream(SerializableFileEndpoint.convertFileNameToPath(this.fileName)));
-            chachedObjects = (HashMap<UUID, PersitenceObject>) reader.readObject();
+            chachedObjects = (HashMap<UUID, PersitenceObject<T>>) reader.readObject();
         }catch (ClassNotFoundException e){
             throw new RuntimeException(e);
         }
@@ -116,7 +116,7 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
     public List<T> getAll() throws PersistenceEndpointIOException{
         this.readFile();
         List<T> list = new ArrayList<T>();
-        for(Map.Entry<UUID,PersitenceObject> entry : this.chachedObjects.entrySet()){
+        for(Map.Entry<UUID,PersitenceObject<T>> entry : this.chachedObjects.entrySet()){
             T sourceInstance = this.convertToSourceType(entry.getValue());
             list.add(sourceInstance);
         }
@@ -124,7 +124,7 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
     }
 
 
-    private void putObjectToHashmap (PersitenceObject objectToStore){
+    private void putObjectToHashmap (PersitenceObject<T> objectToStore){
         /**
          * Aus Cache entfernen, wenn vorhanden
          */
@@ -134,15 +134,15 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
         this.chachedObjects.put(objectToStore.getID(),objectToStore);
     }
 
-    private PersitenceObject convertToSerializableInstance (T obj){
+    private PersitenceObject<T> convertToSerializableInstance (T obj){
         if(obj == null){
             return null;
         }
 
-        PersitenceObject instance = null;
+        PersitenceObject<T> instance = null;
         try {
             Constructor ctor = dataClass.getDeclaredConstructor(this.sourceClass);
-            instance = (PersitenceObject) ctor.newInstance(obj);
+            instance = (PersitenceObject<T>) ctor.newInstance(obj);
         }catch (InstantiationException | IllegalAccessException | InvocationTargetException | ClassCastException e){
             throw new RuntimeException(e);
         }
