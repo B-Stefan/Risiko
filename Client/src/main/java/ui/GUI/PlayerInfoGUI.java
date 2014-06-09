@@ -32,5 +32,9 @@ public class PlayerInfoGUI extends DefaultTableModel{
         }
         this.setDataVector(rows, columnIdentifiers);
 	}
+	
+	public void update() throws GameNotStartedException{
+		setDataVector(game.getPlayers());
+	}
 
 }
