@@ -4,8 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,18 +21,19 @@ import javax.swing.WindowConstants;
 import main.java.logic.*;
 import main.java.logic.data.Player;
 import main.java.logic.exceptions.GameNotStartedException;
+import main.java.ui.CUI.utils.IO;
 
 public class JGameGUI extends JFrame {
 	private final Game game;
+	private Container pane;
+	private JButton update;
+	private final Player player;
 	
-	public JGameGUI(Game game) throws GameNotStartedException{
+	public JGameGUI(Game game, Player player) throws GameNotStartedException{
 		super("Risiko");
 		this.game = game;
-		this.game.addPlayer(new Player("Bob"));
-		this.game.addPlayer(new Player("C"));
-		this.game.addPlayer(new Player("D"));
-		this.game.addPlayer(new Player("Steve"));
-		this.game.addPlayer(new Player("Alice"));
+		this.player = player;
+
 		initialize();
 	}
 	
@@ -38,34 +43,54 @@ public class JGameGUI extends JFrame {
 
         // Klick auf Kreuz (Fenster schließen) behandeln lassen:
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Container pane = this.getContentPane();
+        pane = this.getContentPane();
         pane.setLayout(new BorderLayout());
         pane.add(new JMapGUI(game), BorderLayout.CENTER);
         pane.add(setSouthPanel(), BorderLayout.SOUTH);
 		// Fenster anzeigen
 		this.setVisible(true);
 		this.pack();
+		
 	}
 	
 	private JPanel setSouthPanel() throws GameNotStartedException{
 		JPanel south = new JPanel();
-        south.setLayout(new GridLayout(1, 4));
-      
-        // ListModel als "Datencontainer" anlegen:
-        final Vector<String> spalten = new Vector<String>();
-        spalten.add("Spieler");
-        spalten.add("Länder");
-        spalten.add("Am Zug");
+        south.setLayout(new GridLayout(1, 4, 10, 0));
         
-        final PlayerInfoGUI tModel = new PlayerInfoGUI(this.game, spalten);
-        JTable playersTable = new JTable(tModel);
-        final JScrollPane east = new JScrollPane(playersTable);
-        east.setPreferredSize(new Dimension(150, 105));
+        //JPlayerInfoGUI erzeugen
+        final JPLayerInfoGUI playersInfo = new JPLayerInfoGUI(this.game);
+        
+        //JOrderInfoGUI erzeugen
+        final JOrderInfoGUI orderInfo = new JOrderInfoGUI(this.game, this.player);
+        
+        //JCurrentStateInfoGUI erzeugen
+        final JCurrentStateInfoGUI currentStateInfo = new JCurrentStateInfoGUI(this.game, this.player);
+        
+        //Update Button
+        this.update = new JButton("Update");
 
-        south.add(east);
-        south.add(new JTextField());
-        south.add(new JLabel("Risiko"));
-        south.add(new JLabel("Risiko"));
+        
+        //Panel
+        south.add(playersInfo.getContext());
+        south.add(currentStateInfo.getContext());
+        south.add(orderInfo.getContext());
+        south.add(this.update);
+        
+        south.setBorder(BorderFactory.createTitledBorder("Übersicht"));
+        
+        update.addActionListener(new ActionListener(){
+			public void actionPerformed(final ActionEvent ae){
+				try {
+					playersInfo.update();
+					orderInfo.update();
+					currentStateInfo.update();
+				} catch (GameNotStartedException e) {
+					IO.println(e.getMessage());
+					return;
+				}
+			}
+
+		});
         
         return south;
 	}
