@@ -250,29 +250,45 @@ public class Turn {
         return null;
     }
 
+    public void moveArmy(Country from,Country to, int numberOfArmies) throws NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException {
+
+        List<Army> armies = from.getArmyList();
+        for(int i = 1; i!= numberOfArmies; i++){
+            if (from.getNumberOfArmys() == 0) {
+                throw new NotEnoughArmysToMoveException(from);
+            }
+            Army army = armies.get(armies.size()-1);
+            moveArmy(from,to,army);
+        }
+    }
     /**
      * Bewegt eine Armee auf die neue Position.
      * Dise Methdoe bildet den 2. Step in einem Zug ab.
      *
-     * @param country - neue position der Armee
+     * @param from - Ausgangsland
+     * @param to - Neues Land
      * @param army - Die Armee, die bewegt werden soll
      * @throws CountriesNotConnectedException
      * @throws ArmyAlreadyMovedException
      */
-    public void moveArmy(Country country, Army army) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException {
+    public void moveArmy(Country from,Country to, Army army) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException {
 
-        //if(this.isStepAllowed(steps.MOVE)){
+        if(this.isStepAllowed(steps.MOVE)){
 
             //Einmal eine Einheit bewegt, ändert den Step des Turns
-            //this.setCurrentStep(steps.MOVE);
-
-            if (isArmyAlreadyMoved(army)){
+            this.setCurrentStep(steps.MOVE);
+            if(!from.isConnected(to)){
+                throw new CountriesNotConnectedException(from,to);
+            }
+            else if (isArmyAlreadyMoved(army)){
                 throw new ArmyAlreadyMovedException(army);
             }
-            army.setPosition(country);
-            addMovedArmy(army);
+            else {
+                army.setPosition(to);
+                addMovedArmy(army);
+            }
         }
-	//}
+	}
 
     /**
      * Überprüft, ob der Turn abgeschlossen wurde.

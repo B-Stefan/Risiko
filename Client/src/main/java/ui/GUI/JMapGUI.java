@@ -2,9 +2,13 @@ package main.java.ui.GUI;
 
 import javax.swing.*;
 
+import main.java.logic.exceptions.GameNotStartedException;
 import main.java.ui.CUI.utils.IO;
 import main.java.logic.data.Country;
 import main.java.logic.data.Map;
+import main.java.logic.Turn;
+import main.java.logic.Game;
+import main.java.ui.GUI.country.JCountryGUI;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,17 +30,17 @@ public class JMapGUI extends JPanel {
     private Image mapImage;
     private BufferedImage mapBgImg;
     private final Map map;
+    private final Game game;
     private final HashMap<Color,Country> countrys = new HashMap<Color,Country>();
 
 
-    public class OnCountryClickActionListener extends MouseAdapter {
+    public class OnCountryClickActionListener extends MouseAdapter  {
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-            int x = (int) e.getX();
-            int y = (int) e.getY();
+        public void mouseClicked(MouseEvent event) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
             Color col = new Color(getMapBgImg().getRGB(x, y));
-
             Country country = getCountry(col);
             if (country == null){
                 IO.println("Country nicht gefunden");
@@ -44,7 +48,17 @@ public class JMapGUI extends JPanel {
             }
             else
             {
-                IO.println(country.toString());
+                Turn currentTurn;
+                try {
+                   currentTurn =  game.getCurrentRound().getCurrentTurn();
+                }catch (GameNotStartedException e){
+                    //@todo Exception Handling
+                    IO.println(e.getMessage());
+                    return;
+                }
+                JCountryGUI countryGUI= new JCountryGUI(country, currentTurn);
+                countryGUI.show(event.getComponent(),x,y);
+
             }
 
 
@@ -53,10 +67,11 @@ public class JMapGUI extends JPanel {
 
 
 
-    public JMapGUI(Map map){
+    public JMapGUI(Game game){
         super();
         Dimension dim = new Dimension(643,180);
-        this.map = map;
+        this.game = game;
+        this.map = game.getMap();
         for(Country country : map.getCountries()){
             this.countrys.put(country.getColor(), country);
         }
@@ -86,7 +101,7 @@ public class JMapGUI extends JPanel {
         super.paint(g);
 
         //Hintergrund Karte
-        this.mapBgImg  = this.getScaledImage(this.mapBgImg,this.getWidth(),this.getHeight());
+        this.mapBgImg  = this.getScaledImage(this.mapBgImg, this.getWidth(), this.getHeight());
 
         //Paint Karte
         g.drawImage(mapImage, 0, 0, this.getWidth(), this.getHeight(), this);

@@ -27,7 +27,7 @@ public class main {
         //Erstellen des UI
         // GameManagerCUI ui = new GameManagerCUI(game);
         Game game = new Game();
-        
+
         JGameGUI gui = new JGameGUI(game);
         GameCUI cui = new GameCUI(game, null);
         cui.listenConsole();

@@ -221,7 +221,7 @@ public class Fight {
 				if(this.to.getArmyList().isEmpty()){
 					this.to.setOwner(this.agressor);
 					for(Army a : this.agressorsArmies){
-						this.currentTurn.moveArmy(this.to, a);
+						this.currentTurn.moveArmy(this.from,this.to, a);
 					}
 					res[2] = 1;
 				}
