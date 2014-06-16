@@ -26,20 +26,19 @@ public class main {
         //Erstellen des Spiels
         GameManager  gameManager = new GameManager(persistenceManager);
         //Erstellen des UI
-        // GameManagerCUI ui = new GameManagerCUI(game);
+        // GameManagerCUI ui = new GameManagerCUI(gamePanels);
         Game game = new Game();
 
-
-        JGameGUI gui = new JGameGUI(game);
 
 		game.addPlayer(new Player("Bob"));
 		game.addPlayer(new Player("Raito"));
 		game.addPlayer(new Player("Daichi"));
-		game.addPlayer(new Player("Steve"));
-		game.addPlayer(new Player("Alice"));
         
         JGameGUI gui = new JGameGUI(game, game.getPlayers().get(0));
         GameCUI cui = new GameCUI(game, null);
+
         cui.listenConsole();
+        ;
+
     }
 }

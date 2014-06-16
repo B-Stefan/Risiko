@@ -119,7 +119,6 @@ public class Country {
         return list;
     }
 
-
     /**
      * Setzt den aktuellen Besitzer des Lands
      *

@@ -71,18 +71,18 @@ public class Map  {
         this.countries.add(new Country("Mitteleuropa", europe,                  new Color(0,0,0)));
         this.countries.add(new Country("Westeuropa", europe,                    new Color(0,0,0)));
         this.countries.add(new Country("Südeuropa", europe,                     new Color(0,0,0)));
-        this.countries.add(new Country("Ukraine", europe,                       new Color(255,0,0)));
+        this.countries.add(new Country("Ukraine", europe,                       new Color(255,255,0)));
         this.countries.add(new Country("Svalbard", europe,                      new Color(0,0,0)));
         
-        this.countries.add(new Country("Afghanistan", asia,                     new Color(0,0,0)));
-        this.countries.add(new Country("Ural", asia,                            new Color(255,255,0)));
-        this.countries.add(new Country("Sibirien", asia,                        new Color(0,0,0)));
+        this.countries.add(new Country("Afghanistan", asia,                     new Color(255,200,0)));
+        this.countries.add(new Country("Ural", asia,                            new Color(255,150,0)));
+        this.countries.add(new Country("Sibirien", asia,                        new Color(255,100,0)));
         this.countries.add(new Country("Irrutsk", asia,                         new Color(0,0,0)));
         this.countries.add(new Country("Jakutsk", asia,                         new Color(0,0,0)));
         this.countries.add(new Country("Kamtschatka", asia,                     new Color(0,0,0)));
         this.countries.add(new Country("Mongolei", asia,                        new Color(0,0,0)));
         this.countries.add(new Country("Japan", asia,                           new Color(0,0,0)));
-        this.countries.add(new Country("China", asia,                           new Color(0,0,0)));
+        this.countries.add(new Country("China", asia,                           new Color(255,0,0)));
         this.countries.add(new Country("Indien", asia,                          new Color(0,0,0)));
         this.countries.add(new Country("Siam", asia,                            new Color(0,0,0)));
         this.countries.add(new Country("Mittlerer-Osten", asia,                 new Color(0,0,0)));
@@ -300,6 +300,19 @@ public class Map  {
     		}
     	}
     	return null;
+    }
+    /**
+     * Vergleicht die Farbe mit der übergebenen Farbe
+     * @param col Color (Farbe des zu suchenden Landes)
+     * @return das zu suchende Land
+     */
+    public Country getCountry(Color col){
+        for (Country c : countries){
+            if(c.getColor().equals(col)){
+                return c;
+            }
+        }
+        return null;
     }
 
     /**

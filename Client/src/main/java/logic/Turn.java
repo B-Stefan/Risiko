@@ -2,6 +2,7 @@ package main.java.logic;
 import main.java.logic.data.*;
 import main.java.logic.exceptions.*;
 
+import java.security.acl.NotOwnerException;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -182,9 +183,13 @@ public class Turn {
             if(this.getNextStep() == stepToCheck){
                 return true;
             }
+            else if (stepToCheck == steps.MOVE){
+                return true;
+            }
             else {
                 throw new TurnNotInCorrectStepException(stepToCheck,this);
             }
+
         }
         else if(this.getCurrentStep() == stepToCheck){
             return true;
@@ -200,14 +205,32 @@ public class Turn {
      * @see main.java.logic.Turn.steps
      * @see Turn#getDefaultSteps()
      * @param position - Das Land auf welches die neue Armee plaziert werden soll
+     * @param numberOfArmys - Wieviele Einheiten auf diesem Land plaziert werden sollen.
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(Country position) throws  TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException{
-
+    public void placeNewArmy(Country position, int numberOfArmys) throws  TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException {
+        for(int i = 0; i!= numberOfArmys; i++){
+            this.placeNewArmy(position);
+        }
+    }
+    /**
+     * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
+     * @see main.java.logic.Turn.steps
+     * @see Turn#getDefaultSteps()
+     * @param position - Das Land auf welches die neue Armee plaziert werden soll
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
+     * @throws NotTheOwnerException
+     * @throws NotEnoughNewArmysException
+     */
+    public void placeNewArmy(Country position) throws  TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException{
+        if (position.getOwner() != this.getPlayer())
+        {
+            throw  new NotTheOwnerException(this.getPlayer(), position);
+        }
         if(this.isStepAllowed(steps.DISTRIBUTE)){
-
             //Einmal eine neue Armee plaziert ==> Statusänderung im Turn
             this.setCurrentStep(steps.DISTRIBUTE);
 
@@ -237,9 +260,16 @@ public class Turn {
      * @throws InvalidAmountOfArmiesException 
      * @throws NotEnoughArmiesToDefendException 
      * @throws NotEnoughArmiesToAttackException
+     * @throws NotTheOwnerException
      * @throws ToManyNewArmysException
      */
-    public Fight fight (Country from, Country to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException{
+    public Fight fight (Country from, Country to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException{
+
+        if (from.getOwner() != this.getPlayer())
+        {
+            throw  new NotTheOwnerException(this.getPlayer(), from);
+        }
+
         if(this.isStepAllowed(steps.FIGHT)){
             this.isComplete();
             //Einmal ein Land angegriffen ändert den step des Turns
@@ -250,7 +280,20 @@ public class Turn {
         return null;
     }
 
-    public void moveArmy(Country from,Country to, int numberOfArmies) throws NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException {
+
+    /**
+     * Bewegt eine Einheit von einem Land in ein anderes Land.
+     * @param from Land von dem aus sich die Einheit bewegen soll
+     * @param to Zielland
+     * @param numberOfArmies Anzahl der Armeen
+     * @throws NotEnoughArmysToMoveException
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
+     * @throws CountriesNotConnectedException
+     * @throws ArmyAlreadyMovedException
+     * @throws NotTheOwnerException
+     */
+    public void moveArmy(Country from,Country to, int numberOfArmies) throws NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException {
 
         List<Army> armies = from.getArmyList();
         for(int i = 1; i!= numberOfArmies; i++){
@@ -271,7 +314,15 @@ public class Turn {
      * @throws CountriesNotConnectedException
      * @throws ArmyAlreadyMovedException
      */
-    public void moveArmy(Country from,Country to, Army army) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException {
+    public void moveArmy(Country from,Country to, Army army) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException {
+
+        if (from.getOwner() != this.getPlayer())
+        {
+            throw  new NotTheOwnerException(this.getPlayer(), from);
+        }
+        else if (to.getOwner() != this.getPlayer()){
+            throw  new NotTheOwnerException(this.getPlayer(), to);
+        }
 
         if(this.isStepAllowed(steps.MOVE)){
 

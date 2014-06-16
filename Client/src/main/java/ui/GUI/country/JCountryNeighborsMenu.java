@@ -15,9 +15,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Stefan on 09.06.14.
  */
-public
-
-class JCountryNeighborsMenu extends JMenu {
+public abstract class JCountryNeighborsMenu extends JMenu {
 
     private final Country country;
     private JCountryNeighborsMenuItem selectedNeighborsMenuItem = null;

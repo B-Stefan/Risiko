@@ -2,26 +2,25 @@ package main.java.ui.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import main.java.logic.*;
 import main.java.logic.data.Player;
 import main.java.logic.exceptions.GameNotStartedException;
 import main.java.ui.CUI.utils.IO;
+import main.java.ui.GUI.gamePanels.JCurrentStateInfoGUI;
+import main.java.ui.GUI.gamePanels.JMapGUI;
+import main.java.ui.GUI.gamePanels.JOrderInfoGUI;
+import main.java.ui.GUI.gamePanels.JPLayerInfoGUI;
+import main.java.ui.GUI.utils.JExceptionDialog;
 
 public class JGameGUI extends JFrame {
 	private final Game game;
@@ -78,19 +77,19 @@ public class JGameGUI extends JFrame {
         
         south.setBorder(BorderFactory.createTitledBorder("Übersicht"));
         
-        update.addActionListener(new ActionListener(){
-			public void actionPerformed(final ActionEvent ae){
-				try {
-					playersInfo.update();
-					orderInfo.update();
-					currentStateInfo.update();
-				} catch (GameNotStartedException e) {
-					IO.println(e.getMessage());
-					return;
-				}
-			}
+        update.addActionListener(new ActionListener() {
+            public void actionPerformed(final ActionEvent ae) {
+                try {
+                    playersInfo.update();
+                    orderInfo.update();
+                    currentStateInfo.update();
+                } catch (GameNotStartedException e) {
+                    new JExceptionDialog(JGameGUI.this,e);
+                    return;
+                }
+            }
 
-		});
+        });
         
         return south;
 	}

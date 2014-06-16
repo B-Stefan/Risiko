@@ -119,7 +119,10 @@ public class FightCUI extends CUI {
 			} catch (InvalidFightException e) {
 				IO.println(e.getMessage());
 				return;
-			}
+			}catch (NotTheOwnerException e) {
+                IO.println(e.getMessage());
+                return;
+            }
 			IO.println("");
 			IO.println("Verteidiger Würfel:");
 			for(Dice d : fight.getDefendersDice()){

@@ -26,7 +26,7 @@ public class Game {
 
     public static enum gameStates {
         WAITING, // Wait for start input
-        RUNNING, // The game passes through the rounds
+        RUNNING, // The gamePanels passes through the rounds
         FINISHED // One player finished his order
     }
 
@@ -41,7 +41,7 @@ public class Game {
     private final List<Player> players = new ArrayList<Player>();
 
     /**
-     * The current game state, default => WAITING
+     * The current gamePanels state, default => WAITING
      */
     private gameStates currentGameState = gameStates.WAITING;
 

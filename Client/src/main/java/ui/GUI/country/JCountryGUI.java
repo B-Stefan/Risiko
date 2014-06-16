@@ -28,6 +28,9 @@ public class JCountryGUI  extends JPopupMenu{
         this.add(new JMenuItem("Owner: " + this.country.getOwner().toString()));
 
         this.add(new Separator());
+
+        this.add(new JCountryPlaceMenuItem(country,turn));
+        this.add(new JCountryFightMenu(country,turn));
         this.add(new JCountryMoveMenu(country,turn));
     }
 }
