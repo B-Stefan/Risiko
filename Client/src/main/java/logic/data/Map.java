@@ -47,60 +47,59 @@ public class Map  {
 
 
         //Länder zuweisen
-        this.countries.add(new Country("Alaska", northAmerica,                  new Color(0,0,0)));
-        this.countries.add(new Country("Nordwest-Territorium", northAmerica,    new Color(0,0,0)));
-        this.countries.add(new Country("Alberta", northAmerica,                 new Color(0,0,0)));
-        this.countries.add(new Country("Ontario", northAmerica,                 new Color(0,0,0)));
-        this.countries.add(new Country("Quebec", northAmerica,                  new Color(0,0,0)));
-        this.countries.add(new Country("Weststaaten", northAmerica,             new Color(0,0,0)));
-        this.countries.add(new Country("Oststaaten", northAmerica,              new Color(0,0,0)));
-        this.countries.add(new Country("Mittelamerika", northAmerica,           new Color(0,0,0)));
-        this.countries.add(new Country("Hawaii", northAmerica,                  new Color(0,0,0)));
-        this.countries.add(new Country("Nunavut", northAmerica,                 new Color(0,0,0)));
+        this.countries.add(new Country("Alaska", northAmerica,                  new Color(255,55,0)));
+        this.countries.add(new Country("Nordwest-Territorium", northAmerica,    new Color(255,222,111)));
+        this.countries.add(new Country("Alberta", northAmerica,                 new Color(150,0,222)));
+        this.countries.add(new Country("Ontario", northAmerica,                 new Color(0,222,150)));
+        this.countries.add(new Country("Quebec", northAmerica,                  new Color(222,111,150)));
+        this.countries.add(new Country("Weststaaten", northAmerica,             new Color(222,0,222)));
+        this.countries.add(new Country("Oststaaten", northAmerica,              new Color(222,111,222)));
+        this.countries.add(new Country("Mittelamerika", northAmerica,           new Color(222,111,111)));
+        this.countries.add(new Country("Hawaii", northAmerica,                  new Color(255,222,22)));
+        this.countries.add(new Country("Nunavut", northAmerica,                 new Color(222,40,111)));
         
-        this.countries.add(new Country("Venezuela", southAmerica,               new Color(0,0,0)));
-        this.countries.add(new Country("Brasilien", southAmerica,               new Color(0,0,0)));
-        this.countries.add(new Country("Peru", southAmerica,                    new Color(0,0,0)));
-        this.countries.add(new Country("Falkland-Inseln", southAmerica,         new Color(0,0,0)));
-        this.countries.add(new Country("Argentinien", southAmerica,             new Color(0,0,0)));
+        this.countries.add(new Country("Venezuela", southAmerica,               new Color(111,111,222)));
+        this.countries.add(new Country("Brasilien", southAmerica,               new Color(50,150,50)));
+        this.countries.add(new Country("Peru", southAmerica,                    new Color(222,0,111)));
+        this.countries.add(new Country("Falkland-Inseln", southAmerica,         new Color(50,150,150)));
+        this.countries.add(new Country("Argentinien", southAmerica,             new Color(50,150,100)));
         
-        this.countries.add(new Country("Grönland", europe,                      new Color(0,0,0)));
-        this.countries.add(new Country("Island", europe,                        new Color(0,0,0)));
-        this.countries.add(new Country("Großbritannien", europe,                new Color(0,0,0)));
-        this.countries.add(new Country("Skandinavien", europe,                  new Color(0,0,0)));
-        this.countries.add(new Country("Mitteleuropa", europe,                  new Color(0,0,0)));
-        this.countries.add(new Country("Westeuropa", europe,                    new Color(0,0,0)));
+        this.countries.add(new Country("Grönland", europe,                      new Color(0,255,0)));
+        this.countries.add(new Country("Island", europe,                        new Color(22,255,123)));
+        this.countries.add(new Country("Großbritannien", europe,                new Color(22,111,222)));
+        this.countries.add(new Country("Skandinavien", europe,                  new Color(50,120,120)));
+        this.countries.add(new Country("Mitteleuropa", europe,                  new Color(255,111,137)));
+        this.countries.add(new Country("Westeuropa", europe,                    new Color(0,255,199)));
         this.countries.add(new Country("Südeuropa", europe,                     new Color(0,0,0)));
         this.countries.add(new Country("Ukraine", europe,                       new Color(255,255,0)));
-        this.countries.add(new Country("Svalbard", europe,                      new Color(0,0,0)));
+        this.countries.add(new Country("Svalbard", europe,                      new Color(50,60,120)));
         
         this.countries.add(new Country("Afghanistan", asia,                     new Color(255,200,0)));
-        this.countries.add(new Country("Ural", asia,                            new Color(255,150,0)));
-        this.countries.add(new Country("Sibirien", asia,                        new Color(255,100,0)));
-        this.countries.add(new Country("Irrutsk", asia,                         new Color(0,0,0)));
-        this.countries.add(new Country("Jakutsk", asia,                         new Color(0,0,0)));
-        this.countries.add(new Country("Kamtschatka", asia,                     new Color(0,0,0)));
-        this.countries.add(new Country("Mongolei", asia,                        new Color(0,0,0)));
-        this.countries.add(new Country("Japan", asia,                           new Color(0,0,0)));
+        this.countries.add(new Country("Ural", asia,                            new Color(105,8,90)));
+        this.countries.add(new Country("Sibirien", asia,                        new Color(100,0,0)));
+        this.countries.add(new Country("Irrutsk", asia,                         new Color(0,0,100)));
+        this.countries.add(new Country("Jakutsk", asia,                         new Color(0,100,0)));
+        this.countries.add(new Country("Kamtschatka", asia,                     new Color(0,158,224)));
+        this.countries.add(new Country("Mongolei", asia,                        new Color(234,105,160)));
+        this.countries.add(new Country("Japan", asia,                           new Color(226,0,122)));
         this.countries.add(new Country("China", asia,                           new Color(255,0,0)));
-        this.countries.add(new Country("Indien", asia,                          new Color(0,0,0)));
-        this.countries.add(new Country("Siam", asia,                            new Color(0,0,0)));
-        this.countries.add(new Country("Mittlerer-Osten", asia,                 new Color(0,0,0)));
+        this.countries.add(new Country("Indien", asia,                          new Color(171,140,188)));
+        this.countries.add(new Country("Siam", asia,                            new Color(151,191,13)));
+        this.countries.add(new Country("Mittlerer-Osten", asia,                 new Color(0,255,255)));
         
-        this.countries.add(new Country("Ägypten", afrika,                       new Color(0,0,0)));
-        this.countries.add(new Country("Ostafrika", afrika,                     new Color(0,0,0)));
-        this.countries.add(new Country("Nordwestafrika", afrika,                new Color(0,0,0)));
-        this.countries.add(new Country("Kongo", afrika,                         new Color(0,0,0)));
-        this.countries.add(new Country("Südafrika", afrika,                     new Color(0,0,0)));
-        this.countries.add(new Country("Madagaskar", afrika,                    new Color(0,0,0)));
-        this.countries.add(new Country("Kongo", afrika,                         new Color(0,0,0)));
+        this.countries.add(new Country("Ägypten", afrika,                       new Color(200,100,100)));
+        this.countries.add(new Country("Ostafrika", afrika,                     new Color(100,200,100)));
+        this.countries.add(new Country("Nordwestafrika", afrika,                new Color(50,150,200)));
+        this.countries.add(new Country("Südafrika", afrika,                     new Color(0,200,200)));
+        this.countries.add(new Country("Madagaskar", afrika,                    new Color(0,200,0)));
+        this.countries.add(new Country("Kongo", afrika,                         new Color(50,100,200)));
         
-        this.countries.add(new Country("Indonesien", australia,                 new Color(0,0,0)));
-        this.countries.add(new Country("Neu-Guinea", australia,                 new Color(0,0,0)));
-        this.countries.add(new Country("Ostaustralien", australia,              new Color(0,0,0)));
-        this.countries.add(new Country("Westaustralien", australia,             new Color(0,0,0)));
-        this.countries.add(new Country("Neuseeland", australia,                 new Color(0,0,0)));
-        this.countries.add(new Country("Philippinen", australia,                new Color(0,0,0)));
+        this.countries.add(new Country("Indonesien", australia,                 new Color(122,0,122)));
+        this.countries.add(new Country("Neu-Guinea", australia,                 new Color(100,0,200)));
+        this.countries.add(new Country("Ostaustralien", australia,              new Color(200,100,0)));
+        this.countries.add(new Country("Westaustralien", australia,             new Color(255,255,100)));
+        this.countries.add(new Country("Neuseeland", australia,                 new Color(200,0,100)));
+        this.countries.add(new Country("Philippinen", australia,                new Color(255,147,0)));
 
 
 
