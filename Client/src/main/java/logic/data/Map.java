@@ -70,7 +70,7 @@ public class Map  {
         this.countries.add(new Country("Skandinavien", europe,                  new Color(50,120,120)));
         this.countries.add(new Country("Mitteleuropa", europe,                  new Color(255,111,137)));
         this.countries.add(new Country("Westeuropa", europe,                    new Color(0,255,199)));
-        this.countries.add(new Country("Südeuropa", europe,                     new Color(0,0,0)));
+        this.countries.add(new Country("Südeuropa", europe,                     new Color(30,99,255)));
         this.countries.add(new Country("Ukraine", europe,                       new Color(255,255,0)));
         this.countries.add(new Country("Svalbard", europe,                      new Color(50,60,120)));
         
