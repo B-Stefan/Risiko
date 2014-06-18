@@ -42,6 +42,11 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
                     return;
                 }
 
+                if(numberOfArmyies == 0){
+                    JModalDialog.showInfoDialog(JCountryMoveMenu.this,"Nicht geügend Armeen", "Sie haben keine Armeen mehr zum plazieren");
+                }
+
+
                 try {
                     turn.moveArmy(from,to,numberOfArmyies);
                 }catch (NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException e ){
