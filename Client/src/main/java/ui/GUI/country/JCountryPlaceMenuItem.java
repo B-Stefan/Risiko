@@ -7,6 +7,7 @@ import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -56,6 +57,11 @@ public class JCountryPlaceMenuItem extends JMenuItem {
             }catch (TurnNotAllowedStepException | TurnNotInCorrectStepException | NotEnoughNewArmysException | NotTheOwnerException e ){
                 new JExceptionDialog(JCountryPlaceMenuItem.this,e);
                 return;
+            }
+            JPopupMenu menu = (JPopupMenu) JCountryPlaceMenuItem.this.getParent();
+            Component com = menu.getInvoker();
+            if(com != null){
+                com.repaint();
             }
         }
     }
