@@ -10,57 +10,69 @@ import java.awt.*;
  */
 public class JModalDialog extends JDialog {
 
-    public static int showAskIntegerModal (final Component com, final String title, String message, int min, final int max) throws UserCanceledException{
+    public static int showAskIntegerModal(final Component com, final String title, String message, int min, final int max) throws UserCanceledException {
 
-        Frame  frame = (Frame) SwingUtilities.getWindowAncestor(com);
-        if(min > max){
+        Frame frame = (Frame) SwingUtilities.getWindowAncestor(com);
+        if (min > max) {
             min = max;
         }
         boolean validInput = false;
         int number = 0;
         do {
-            String result = JOptionPane.showInputDialog(frame,message,title);
+            String result = JOptionPane.showInputDialog(frame, message, title);
             try {
                 number = Integer.parseInt(result);
-                if (number >= min && number <= max){
+                if (number >= min && number <= max) {
                     validInput = true;
+                } else {
+                    message = result + " ist keine gültige Anzahl, bitte geben Sie eine gültige Anzahl ein, die zwischen " + min + " und " + max + " liegt.";
                 }
-                else {
-                     message = result + " ist keine gültige Anzahl, bitte geben Sie eine gültige Anzahl ein, die zwischen " + min + " und " + max + " liegt.";
-                }
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 validInput = false;
-                message = result + " ist keine gültige Zahl, Bitte geben Sie eine Zahl zwischen "+ min + " und " + max  + " ein.";
+                message = result + " ist keine gültige Zahl, Bitte geben Sie eine Zahl zwischen " + min + " und " + max + " ein.";
                 //Benutzer Klick auf Abbrechen
-                if(result == null) {
+                if (result == null) {
                     break;
                 }
             }
 
-        }while (!validInput);
+        } while (!validInput);
 
-        if(validInput == false){
+        if (validInput == false) {
             throw new UserCanceledException();
         }
         return number;
 
     }
 
-    public static void showInfoDialog(final Component com, final String title, final String message){
-        Frame  frame = (Frame) SwingUtilities.getWindowAncestor(com);
+    public static void showInfoDialog(final Component com, final String title, final String message) {
+        Frame frame = (Frame) SwingUtilities.getWindowAncestor(com);
         JOptionPane.showMessageDialog(frame,
                 message,
                 title,
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static String showInputDialog(Frame frame,String message,String title ){
-        return JOptionPane.showInputDialog(frame,message,title);
+    public static String showInputDialog(Frame frame, String message, String title) {
+        return JOptionPane.showInputDialog(frame, message, title);
     }
-    public JModalDialog (JPanel panel,String title, ModalityType type){
-        super(SwingUtilities.getWindowAncestor(panel),title,type);
-        Dimension dim = new Dimension(300,300);
+
+    public JModalDialog(Component panel, String title, ModalityType type) {
+        super(SwingUtilities.getWindowAncestor(panel), title, type);
+        Dimension dim = new Dimension(300, 500);
         this.setMinimumSize(dim);
         this.setPreferredSize(dim);
+        this.centerModal(panel);
+
+    }
+    public void centerModal (Component parent){
+        Window root = SwingUtilities.getWindowAncestor(parent);
+        Dimension dim = this.getSize();
+        if(root != null){
+            //Center positions
+            int width = (int) (root.getWidth()/2-dim.getWidth()/2);
+            int height = (int) (root.getHeight()/2-dim.getHeight()/2);
+            this.setLocation(width,height);
+        }
     }
 }
