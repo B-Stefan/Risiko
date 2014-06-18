@@ -45,7 +45,8 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
                 }
 
                 if(numberOfArmyies == 1){
-                    JModalDialog.showInfoDialog(JCountryMoveMenu.this,"Nicht geügend Armeen", "Sie haben keine Armeen mehr zum plazieren");
+                    JModalDialog.showInfoDialog(JCountryMoveMenu.this,"Nicht geügend Armeen", "Sie haben keine Armeen mehr zum bewegen");
+                    return;
                 }
 
 
@@ -53,7 +54,7 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
                     turn.moveArmy(from,to,numberOfArmyies);
                 }catch (NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException e ){
                    new JExceptionDialog(JCountryMoveMenu.this,e);
-                    return;
+                   return;
                 }
 
                 //Repaint the whole map
