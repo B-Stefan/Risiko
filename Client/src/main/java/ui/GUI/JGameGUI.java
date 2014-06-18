@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -27,12 +28,13 @@ public class JGameGUI extends JFrame {
 	private Container pane;
 	private JButton update;
 	private final Player player;
+	private final JMapGUI map;
 	
 	public JGameGUI(Game game, Player player) throws GameNotStartedException{
 		super("Risiko");
 		this.game = game;
 		this.player = player;
-
+		this.map = new JMapGUI(game);
 		initialize();
 	}
 	
@@ -44,7 +46,7 @@ public class JGameGUI extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pane = this.getContentPane();
         pane.setLayout(new BorderLayout());
-        pane.add(new JMapGUI(game), BorderLayout.CENTER);
+        pane.add(this.map, BorderLayout.CENTER);
         pane.add(setSouthPanel(), BorderLayout.SOUTH);
 		// Fenster anzeigen
 		this.setVisible(true);
@@ -83,6 +85,7 @@ public class JGameGUI extends JFrame {
                     playersInfo.update();
                     orderInfo.update();
                     currentStateInfo.update();
+                    map.repaint();
                 } catch (GameNotStartedException e) {
                     new JExceptionDialog(JGameGUI.this,e);
                     return;

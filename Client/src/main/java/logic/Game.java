@@ -1,7 +1,7 @@
 package main.java.logic;
 
 import java.util.*;
-
+import java.awt.Color;
 import main.java.logic.data.*;
 import main.java.logic.exceptions.PlayerNotExsistInGameException;
 import main.java.logic.exceptions.*;
@@ -13,7 +13,8 @@ import main.java.logic.data.orders.OrderManager;
  * Klasse für ein eizelnes Spiel. Diese dient zur Spielverwaltung.
  */
 public class Game {
-
+	
+	private Stack<Color> color = new Stack<Color>();
     /**
      * Legt die mindestanzahl an Spielern fest, die für ein Spiel erforderlich sind
      */
@@ -62,6 +63,11 @@ public class Game {
     public Game() {
         this.map = new main.java.logic.data.Map();
         this.id = UUID.randomUUID();
+        this.color.add(Color.BLUE);
+        this.color.add(Color.GREEN);
+        this.color.add(Color.ORANGE);
+        this.color.add(Color.RED);
+        this.color.add(Color.MAGENTA);
     }
 
 
@@ -213,7 +219,7 @@ public class Game {
         if (this.getCurrentGameState() != gameStates.WAITING) {
             throw new GameAllreadyStartedException();
         } else {
-            Player newPlayer = new Player(name);
+            Player newPlayer = new Player(name, this.color.pop());
             this.addPlayer(newPlayer);
         }
     }

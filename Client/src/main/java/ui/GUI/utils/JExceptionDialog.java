@@ -1,7 +1,5 @@
 package main.java.ui.GUI.utils;
 
-import javafx.scene.layout.Pane;
-
 import javax.swing.*;
 import java.awt.*;
 
