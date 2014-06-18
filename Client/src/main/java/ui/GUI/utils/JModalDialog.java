@@ -46,6 +46,14 @@ public class JModalDialog extends JDialog {
 
     }
 
+    public static void showInfoDialog(final Component com, final String title, final String message){
+        Frame  frame = (Frame) SwingUtilities.getWindowAncestor(com);
+        JOptionPane.showMessageDialog(frame,
+                message,
+                title,
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public static String showInputDialog(Frame frame,String message,String title ){
         return JOptionPane.showInputDialog(frame,message,title);
     }
