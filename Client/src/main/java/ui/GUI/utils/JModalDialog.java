@@ -6,10 +6,26 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Stefan on 11.06.14.
+ *
+ * Klasse, die zur Darstellung eines modalen Dialogs gedacht ist
+ *
+ * @see javax.swing.JDialog
  */
 public class JModalDialog extends JDialog {
 
+    /**
+     *
+     * Fragt einen Nutzer nach einem Int Wert
+     * Dabei können Maximale und Minimale Werte vorgegbene werden und der Nutzer muss eine gültige Angabe zurück liefern
+     * @param com Kontext in dem das modale dialog angezeigt werden soll
+     *            Sozusagen das Parent Window
+     * @param title Titel für das Fenster
+     * @param message Nachricht, die dem Nutzer angezeigt werden soll
+     * @param min Minimaler Wert der als Eingabe erlaubt ist
+     * @param max Maximaler Wert, der als Eingabe erlaubt ist
+     * @return Eingabe des Benutzers
+     * @throws UserCanceledException Wenn der Nutzer die Aktion abbricht
+     */
     public static int showAskIntegerModal(final Component com, final String title, String message, int min, final int max) throws UserCanceledException {
 
         Frame frame = (Frame) SwingUtilities.getWindowAncestor(com);
@@ -18,6 +34,8 @@ public class JModalDialog extends JDialog {
         }
         boolean validInput = false;
         int number = 0;
+
+        //Solange eingabe verlange bis korrekt oder abgebrochen
         do {
             String result = JOptionPane.showInputDialog(frame, message, title);
             try {
@@ -44,6 +62,7 @@ public class JModalDialog extends JDialog {
         return number;
 
     }
+
 
     public static void showInfoDialog(final Component com, final String title, final String message) {
         Frame frame = (Frame) SwingUtilities.getWindowAncestor(com);
