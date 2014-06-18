@@ -26,7 +26,9 @@ public class JFightGUI extends JModalDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             Window root = JFightGUI.this.getOwner();
-            root.repaint(); // Repaint der gesamten Karte beim Schließen des Fights
+            if (root != null ){
+                root.repaint(); // Repaint der gesamten Karte beim Schließen des Fights
+            }
             JFightGUI.this.dispose();
         }
     }
