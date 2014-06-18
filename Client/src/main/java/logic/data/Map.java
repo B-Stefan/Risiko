@@ -47,7 +47,7 @@ public class Map  {
 
 
         //Länder zuweisen
-        this.countries.add(new Country("Alaska", northAmerica,                  new Color(255,55,0)));
+        this.countries.add(new Country("Alaska", northAmerica,                  new Color(222,55,0)));
         this.countries.add(new Country("Nordwest-Territorium", northAmerica,    new Color(255,222,111)));
         this.countries.add(new Country("Alberta", northAmerica,                 new Color(150,0,222)));
         this.countries.add(new Country("Ontario", northAmerica,                 new Color(0,222,150)));
@@ -79,7 +79,7 @@ public class Map  {
         this.countries.add(new Country("Sibirien", asia,                        new Color(100,0,0)));
         this.countries.add(new Country("Irrutsk", asia,                         new Color(0,0,100)));
         this.countries.add(new Country("Jakutsk", asia,                         new Color(0,100,0)));
-        this.countries.add(new Country("Kamtschatka", asia,                     new Color(0,158,224)));
+        this.countries.add(new Country("Kamtschatka", asia,                     new Color(0,158,225)));
         this.countries.add(new Country("Mongolei", asia,                        new Color(234,105,160)));
         this.countries.add(new Country("Japan", asia,                           new Color(226,0,122)));
         this.countries.add(new Country("China", asia,                           new Color(255,0,0)));

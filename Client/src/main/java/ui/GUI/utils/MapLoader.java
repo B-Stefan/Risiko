@@ -42,9 +42,9 @@ public class MapLoader {
         double xFactor = width / (double)img.getWidth()  ;
         double yFactor =  height / (double)img.getHeight();
         Color col = Color.BLACK;
-        for (int y=0; y!=img.getHeight(); y=y+4){
+        for (int y=0; y!=img.getHeight(); y=y+1){
             if (y < img.getHeight()){
-                for(int x=0; x!= img.getWidth(); x=x+4){
+                for(int x=0; x!= img.getWidth(); x=x+1){
                     if (x < img.getWidth()) {
                         Color newcol =  new Color(img.getRGB(x,y));
                         if(!newcol.equals(col)){
