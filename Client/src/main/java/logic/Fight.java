@@ -290,5 +290,12 @@ public class Fight {
 	public Country getFrom(){
 		return this.from;
 	}
+
+    public Player getAggressor (){
+        return  this.agressor;
+    }
+    public Player getDefender (){
+        return this.getTo().getOwner();
+    }
 	
 }
