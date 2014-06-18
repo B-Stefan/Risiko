@@ -44,15 +44,10 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
                     return;
                 }
 
-                if(numberOfArmyies == 1){
-                    JModalDialog.showInfoDialog(JCountryMoveMenu.this,"Nicht geügend Armeen", "Sie haben keine Armeen mehr zum bewegen");
-                    return;
-                }
-
 
                 try {
                     turn.moveArmy(from,to,numberOfArmyies);
-                }catch (NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException e ){
+                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException e ){
                    new JExceptionDialog(JCountryMoveMenu.this,e);
                    return;
                 }
