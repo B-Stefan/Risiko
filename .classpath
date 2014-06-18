@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="Client/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="Client/brownies-collections-0.9.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,6 +6,7 @@ import main.java.logic.data.Player;
 import main.java.persistence.PersistenceManager;
 import main.java.persistence.exceptions.PersistenceEndpointIOException;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -14,11 +15,13 @@ public class PersistencePlayer extends PersitenceObject<Player> {
     private transient Player player;
     private final UUID id;
     private final String name;
+    private final Color color;
     private final HashMap<UUID,Integer> countries = new HashMap<UUID,Integer>();
     public PersistencePlayer(Player player){
         super(player);
         this.player = player;
         this.name = player.getName();
+        this.color = player.getColor();
         this.id =  player.getId();
         for (Country c : player.getCountries()){
             countries.put(c.getId(),c.getNumberOfArmys());
@@ -33,7 +36,7 @@ public class PersistencePlayer extends PersitenceObject<Player> {
     @Override
     public Player convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
 
-        Player newInstance = new Player(this.name);
+        Player newInstance = new Player(this.name, this.color);
 
         return newInstance;
     }

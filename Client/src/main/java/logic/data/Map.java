@@ -81,7 +81,7 @@ public class Map  {
         this.countries.add(new Country("Jakutsk", asia,                         new Color(0,100,0)));
         this.countries.add(new Country("Kamtschatka", asia,                     new Color(0,158,225)));
         this.countries.add(new Country("Mongolei", asia,                        new Color(234,105,160)));
-        this.countries.add(new Country("Japan", asia,                           new Color(226,0,122)));
+        this.countries.add(new Country("Japan", asia,                           new Color(227,0,122)));
         this.countries.add(new Country("China", asia,                           new Color(255,0,0)));
         this.countries.add(new Country("Indien", asia,                          new Color(171,140,188)));
         this.countries.add(new Country("Siam", asia,                            new Color(151,191,13)));

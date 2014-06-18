@@ -1,8 +1,10 @@
 package main.java.logic.data;
+import java.awt.Color;
 import java.util.*;
 
 import main.java.logic.exceptions.*;
 import main.java.logic.data.orders.*;
+
 import java.util.UUID;
 
 public class Player {
@@ -11,10 +13,12 @@ public class Player {
     private ArrayList<Country> countries = new ArrayList<Country>();
     private IOrder order;
     private UUID id;
+    private final Color color;
 
-    public Player(String name) {
+    public Player(String name, Color color) {
         this.name = name;
         this.id = UUID.randomUUID();
+        this.color = color;
     }
 
     public String getName() {
@@ -64,6 +68,10 @@ public class Player {
 
     public UUID getId () {
         return this.id;
+    }
+    
+    public Color getColor(){
+    	return this.color;
     }
     
 }

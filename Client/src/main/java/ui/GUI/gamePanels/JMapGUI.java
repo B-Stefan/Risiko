@@ -8,6 +8,7 @@ import main.java.logic.data.Map;
 import main.java.logic.Turn;
 import main.java.logic.Game;
 import main.java.ui.GUI.country.JCountryGUI;
+import main.java.ui.GUI.country.JCountryInfo;
 import main.java.ui.GUI.utils.MapLoader;
 import main.java.ui.GUI.utils.JExceptionDialog;
 
@@ -87,7 +88,7 @@ public class JMapGUI extends JComponent {
         for(java.util.Map.Entry entry : postions.entrySet()){
             Country country = (Country) entry.getValue();
             Point point = (Point) entry.getKey();
-            JLabel info = new JLabel(country.getName());
+            JCountryInfo info = new JCountryInfo(country);
             info.setSize(new Dimension(50,50));
             info.setPreferredSize(new Dimension(50,50));
             info.setLocation(point.getLocation());
