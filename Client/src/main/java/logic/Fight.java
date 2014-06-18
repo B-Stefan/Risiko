@@ -150,7 +150,7 @@ public class Fight {
 	 * @throws TurnNotAllowedStepException 
 	 * @throws InvalidFightException 
 	 */
-	public void defending(int defendersArmies) throws NotEnoughArmiesToDefendException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
+	public void defending(int defendersArmies) throws NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
 		Stack<Army> defArmies = new Stack<Army>();
 		if (this.to.getArmyList().size()<defendersArmies){
 			throw new NotEnoughArmiesToDefendException();
@@ -172,7 +172,7 @@ public class Fight {
 	 * @throws TurnNotAllowedStepException 
 	 * @throws InvalidFightException 
 	 */
-	public void defending(Stack<Army> defendersArmies)throws InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
+	public void defending(Stack<Army> defendersArmies)throws InvalidAmountOfArmiesException, NotEnoughArmysToMoveException,CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
 		if (this.from.getOwner() == this.to.getOwner()){
 			throw new InvalidFightException();
 		}
@@ -203,7 +203,7 @@ public class Fight {
 	 * @throws TurnNotInCorrectStepException 
 	 * @throws TurnNotAllowedStepException 
 	 */
-	private int[] result() throws CountriesNotConnectedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException{
+	private int[] result() throws CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException{
 		int[] res = new int[3];
 		for(Dice di : this.defendersDice){
 			//Wenn der Würfel des Verteidigers höher oder gleich ist, dann wird eine Armee des Angreifers zerstört
@@ -240,7 +240,7 @@ public class Fight {
 		return this.result;
 	}
 	
-	public void setResult() throws CountriesNotConnectedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException{
+	public void setResult() throws CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException{
 		this.result = result();
 	}
 	

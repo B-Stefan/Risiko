@@ -295,11 +295,17 @@ public class Turn {
      */
     public void moveArmy(Country from,Country to, int numberOfArmies) throws NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException {
 
-        List<Army> armies = from.getArmyList();
-        for(int i = 1; i!= numberOfArmies; i++){
-            if (from.getNumberOfArmys() == 0) {
-                throw new NotEnoughArmysToMoveException(from);
+
+
+        List<Army> armies = (List<Army>) from.getArmyList().clone();
+        //Löschen aller Armeen, die bereits bewegt wurden, somit können nur die Armen versucht werden zu bwegen, die noch nicht bewegt wurde.
+        for(Army army : armies){
+            if(this.movedArmies.contains(army)){
+                armies.remove(army);
             }
+        }
+
+        for(int i = 0; i!= numberOfArmies; i++){
             Army army = armies.get(armies.size()-1);
             moveArmy(from,to,army);
         }
@@ -314,7 +320,7 @@ public class Turn {
      * @throws CountriesNotConnectedException
      * @throws ArmyAlreadyMovedException
      */
-    public void moveArmy(Country from,Country to, Army army) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException {
+    public void moveArmy(Country from,Country to, Army army) throws NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException {
 
         if (from.getOwner() != this.getPlayer())
         {
@@ -334,7 +340,11 @@ public class Turn {
             else if (isArmyAlreadyMoved(army)){
                 throw new ArmyAlreadyMovedException(army);
             }
+            else if(from.getNumberOfArmys() == 1){
+                throw new NotEnoughArmysToMoveException(from);
+            }
             else {
+                from.removeArmy(army);
                 army.setPosition(to);
                 addMovedArmy(army);
             }
