@@ -64,7 +64,7 @@ public class JFightSide extends Panel {
                     JFightSide.this.fight.attacking(numberOfArmies);
                 }
 
-            }catch (NotEnoughArmysToMoveException | NotEnoughArmiesToDefendException |InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException  | NotEnoughArmiesToAttackException| InvalidFightException | NotTheOwnerException e ){
+            }catch (NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException |InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException  | NotEnoughArmiesToAttackException| InvalidFightException | NotTheOwnerException e ){
                 new JExceptionDialog(frame,e);
                 return;
             }

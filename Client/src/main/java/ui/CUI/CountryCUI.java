@@ -63,7 +63,7 @@ public class CountryCUI extends CUI {
                     IO.println(e.getMessage());
                     return;
                 }
-                catch (TurnNotInCorrectStepException | NotTheOwnerException e ){
+                catch (ToManyNewArmysException | TurnNotInCorrectStepException | NotTheOwnerException e ){
                     IO.println(e.getMessage());
                     return;
                 }

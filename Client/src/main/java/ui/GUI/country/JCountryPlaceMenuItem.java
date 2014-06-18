@@ -54,7 +54,7 @@ public class JCountryPlaceMenuItem extends JMenuItem {
 
             try {
                 turn.placeNewArmy(to,numberOfArmyies);
-            }catch (TurnNotAllowedStepException | TurnNotInCorrectStepException | NotEnoughNewArmysException | NotTheOwnerException e ){
+            }catch (TurnNotAllowedStepException | ToManyNewArmysException | TurnNotInCorrectStepException | NotEnoughNewArmysException | NotTheOwnerException e ){
                 new JExceptionDialog(JCountryPlaceMenuItem.this,e);
                 return;
             }
