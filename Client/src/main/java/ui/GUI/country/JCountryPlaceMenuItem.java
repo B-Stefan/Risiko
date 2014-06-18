@@ -26,7 +26,7 @@ public class JCountryPlaceMenuItem extends JMenuItem {
         /**
          * Invoked when an action occurs.
          *
-         * @param e
+         * @param event
          */
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -42,10 +42,14 @@ public class JCountryPlaceMenuItem extends JMenuItem {
                 numberOfArmyies = JModalDialog.showAskIntegerModal(JCountryPlaceMenuItem.this, "Anzahl Armeen", message, min, max);
             }catch (UserCanceledException e){
                 //Benutzer hat abgebrochen, kein move durchführen
-                new JExceptionDialog(JCountryPlaceMenuItem.this,e);
+                JModalDialog.showInfoDialog(JCountryPlaceMenuItem.this,"Abbruch", "Sie haben die Aktion abgebrochen, es wurden keine Armeen plaziert");
                 return;
             }
 
+
+            if(numberOfArmyies == 0){
+                JModalDialog.showInfoDialog(JCountryPlaceMenuItem.this,"Nicht geügend Armeen", "Sie haben keine Armeen mehr zum plazieren");
+            }
 
             try {
                 turn.placeNewArmy(to,numberOfArmyies);

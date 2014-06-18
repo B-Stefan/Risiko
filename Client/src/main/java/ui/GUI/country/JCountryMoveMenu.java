@@ -38,11 +38,11 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
                     numberOfArmyies = JModalDialog.showAskIntegerModal(JCountryMoveMenu.this,"Anzahl Armeen",message,min,max);
                 }catch (UserCanceledException e){
                     //Benutzer hat abgebrochen, kein move durchführen
-                    new JExceptionDialog(JCountryMoveMenu.this,e);
+                    JModalDialog.showInfoDialog(JCountryMoveMenu.this,"Abbruch", "Sie haben die Aktion abgebrochen, es wurden keine Armeen bewegt");
                     return;
                 }
 
-                if(numberOfArmyies == 0){
+                if(numberOfArmyies == 1){
                     JModalDialog.showInfoDialog(JCountryMoveMenu.this,"Nicht geügend Armeen", "Sie haben keine Armeen mehr zum plazieren");
                 }
 

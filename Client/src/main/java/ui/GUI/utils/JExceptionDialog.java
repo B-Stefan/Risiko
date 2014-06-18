@@ -20,6 +20,7 @@ public class JExceptionDialog {
     public JExceptionDialog(Component com,String message){
         this.frame = (Frame) SwingUtilities.getWindowAncestor(com);
         this.e = new Exception(message);
+        this.openModal();
     }
 
     private void openModal (){
