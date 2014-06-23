@@ -18,13 +18,12 @@ import java.util.LinkedHashMap;
  * Verwaltet die Benutzerschnittstelle für ein Spiel
  * @author Stefan Bieliauskas
  */
-public class GameCUI extends CUI {
+public class GameCUI extends CUI implements Runnable {
 
     /**
      * Bildet das Spiel ab für die die CUI erstellt wird
      */
     private final Game game;
-
 
     /**
      * Klasse für Event-Listener zum hinzufügen eines Spielers
@@ -211,7 +210,18 @@ public class GameCUI extends CUI {
         super.listenConsole();
     }
 
-
+    /**
+     * When an object implementing interface <code>Runnable</code> is used to create a thread, starting the thread
+     * causes the object's <code>run</code> method to be called in that separately executing thread.
+     * <p>
+     * The general contract of the method <code>run</code> is that it may take any action whatsoever.
+     *
+     * @see Thread#run()
+     */
+    @Override
+    public void run() {
+        this.listenConsole();
+    }
     /**
      * Gibt an was passieren soll wenn das Komando cd eingeben werden soll
      * Dies ist ähnlich zu verstehen wie ein Ordnerwechsel in Linux
