@@ -18,12 +18,12 @@ public class JPLayerInfoGUI extends JFrame{
 	private JScrollPane context;
 	
 	
-	public JPLayerInfoGUI(Game game) throws GameNotStartedException{
+	public JPLayerInfoGUI(Game game){
 		this.game = game;
 		setContext();
 	}
 	
-	private void setContext() throws GameNotStartedException{
+	private void setContext(){
         // ListModel als "Datencontainer" anlegen:
         final Vector<String> spalten = new Vector<String>();
         spalten.add("Spieler");

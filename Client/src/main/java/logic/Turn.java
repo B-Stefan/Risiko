@@ -4,6 +4,7 @@ import main.java.logic.exceptions.*;
 
 import java.security.acl.NotOwnerException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -205,7 +206,7 @@ public class Turn {
         else{
             throw new TurnNotAllowedStepException(stepToCheck,this);
         }
-        return false;
+        return true;
     }
 
 
@@ -286,7 +287,7 @@ public class Turn {
             return  new Fight(from, to, this);
 
         }
-        return null;
+        throw new RuntimeException("Codeteile nicht erlaubt !");
     }
 
 

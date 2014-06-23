@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
+/**star
  * Created by Stefan on 18.06.14.
  */
 public class JFightGUI extends JModalDialog {
@@ -42,7 +42,7 @@ public class JFightGUI extends JModalDialog {
         centerPanel.add(new JFightSide(this.fight, JFightSide.sides.DEFENDER));
         centerPanel.add(new JFightSide(this.fight,JFightSide.sides.AGGRESSOR));
 
-        centerPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        centerPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         this.add(centerPanel,BorderLayout.CENTER);
 

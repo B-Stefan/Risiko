@@ -115,11 +115,17 @@ public class MapLoader {
      * @return Land das sich an diesen Koordinaten in Relation zur width und height befindet
      */
     public Country getCountry(int x, int y, int width, int height){
-        //Nur resize wenn größte sich veröndert hat
-        if (this.backgroundCountryBorderImg.getHeight() != height || this.backgroundCountryBorderImg.getWidth() != width){
-            this.backgroundCountryBorderImg = this.getScaledImage(this.backgroundCountryBorderImg, width,height);
-        }
-        Color col = new Color(this.backgroundCountryBorderImg.getRGB(x,y));
+
+        //Faktoren für Berechung der globalen x,y Koordinaten ermitteln
+        double xFactor = width / (double)this.backgroundCountryBorderImg.getWidth()  ;
+        double yFactor =  height / (double)this.backgroundCountryBorderImg.getHeight();
+
+        //Berechnen der lokalen Koordinaten
+        int xCalc = (int) Math.round(x/xFactor);
+        int yCalc = (int) Math.round(y/yFactor);
+
+        // Suchen der Farben auf basis der lokalen koordinaten
+        Color col = new Color(this.backgroundCountryBorderImg.getRGB(xCalc,yCalc));
         return this.map.getCountry(col);
     }
 
@@ -132,21 +138,5 @@ public class MapLoader {
     }
 
 
-    /**
-     * Sklaiert ein image auf die angebenen Breiten höhen
-     * @param image Bild das skaliert werden soll
-     * @param width Neue Breite
-     * @param height Neue Höhe
-     * @return Skaliertes Bild
-     */
-    private BufferedImage getScaledImage(BufferedImage image, int width, int height){
-        int type=0;
-        type = image.getType() == 0? BufferedImage.TYPE_INT_ARGB : image.getType();
-        BufferedImage resizedImage = new BufferedImage(width, height,type);
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(image, 0, 0, width, height, null);
-        g.dispose();
-        return resizedImage;
-    }
 }
 
