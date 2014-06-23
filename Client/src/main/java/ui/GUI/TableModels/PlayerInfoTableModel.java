@@ -1,8 +1,12 @@
 package main.java.ui.GUI.TableModels;
 
+import java.awt.Color;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.table.DefaultTableModel;
+
 import main.java.logic.*;
 import main.java.logic.data.*;
 import main.java.logic.exceptions.GameNotStartedException;
@@ -21,7 +25,8 @@ public class PlayerInfoTableModel extends DefaultTableModel{
         final Vector<Vector<String>> rows = new Vector<Vector<String>>();
         for (final Player player : players) {
             final Vector<String> playerInVector = new Vector<String>();
-            playerInVector.add("" + player.getName());
+            String n = (player.getName() + " (" + player.getColor().toString() +")");
+            playerInVector.add(n);
             playerInVector.add("" + player.getCountries().size());
             if (this.game.getCurrentGameState() == Game.gameStates.RUNNING){
             	playerInVector.add(player == game.getCurrentRound().getCurrentPlayer()? "X" : "");
