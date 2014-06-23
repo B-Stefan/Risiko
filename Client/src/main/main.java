@@ -5,6 +5,7 @@ import main.java.ui.GUI.JGameGUI;
 import main.java.persistence.PersistenceManager;
 import main.java.logic.Game;
 import main.java.logic.data.Player;
+import main.java.ui.GUI.JPlayerManager;
 
 import java.awt.Color;
 import java.lang.*;
@@ -28,18 +29,9 @@ public class main {
         GameManager  gameManager = new GameManager(persistenceManager);
         //Erstellen des UI
         // GameManagerCUI ui = new GameManagerCUI(gamePanels);
-        Game game = new Game();
 
 
-		game.addPlayer(new Player("Bob",Color.BLUE));
-		game.addPlayer(new Player("Raito", Color.ORANGE));
-		game.addPlayer(new Player("Daichi", Color.MAGENTA));
-        
-        JGameGUI gui = new JGameGUI(game, game.getPlayers().get(0));
-        GameCUI cui = new GameCUI(game, null);
-
-        cui.listenConsole();
-        ;
+        new JPlayerManager();
 
     }
 }
