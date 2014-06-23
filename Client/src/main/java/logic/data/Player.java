@@ -13,11 +13,15 @@ public class Player {
     private ArrayList<Country> countries = new ArrayList<Country>();
     private IOrder order;
     private UUID id;
-    private final Color color;
+    private Color color;
 
-    public Player(String name, Color color) {
+    public Player(String name) {
         this.name = name;
         this.id = UUID.randomUUID();
+
+    }
+    public Player(String name, Color color) {
+        this(name);
         this.color = color;
     }
 
@@ -73,5 +77,9 @@ public class Player {
     public Color getColor(){
     	return this.color;
     }
-    
+    public void setColor(Color col){
+        this.color = col;
+    }
+
+
 }

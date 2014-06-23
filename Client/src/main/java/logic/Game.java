@@ -68,6 +68,7 @@ public class Game {
         this.color.add(Color.ORANGE);
         this.color.add(Color.RED);
         this.color.add(Color.MAGENTA);
+
     }
 
 
@@ -295,6 +296,9 @@ public class Game {
      * @param player - neuer Spieler
      */
     public void addPlayer(final Player player) {
+        if (player.getColor() == null){
+            player.setColor(this.color.pop());
+        }
         this.players.add(player);
     }
 
