@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,13 +14,10 @@ import javax.swing.WindowConstants;
 
 import main.java.logic.*;
 import main.java.logic.data.Player;
-import main.java.logic.exceptions.GameNotStartedException;
-import main.java.ui.CUI.utils.IO;
 import main.java.ui.GUI.gamePanels.JCurrentStateInfoGUI;
 import main.java.ui.GUI.gamePanels.JMapGUI;
 import main.java.ui.GUI.gamePanels.JOrderInfoGUI;
 import main.java.ui.GUI.gamePanels.JPLayerInfoGUI;
-import main.java.ui.GUI.utils.JExceptionDialog;
 
 public class JGameGUI extends JFrame {
 	private final Game game;
@@ -30,7 +26,7 @@ public class JGameGUI extends JFrame {
 	private final Player player;
 	private final JMapGUI map;
 	
-	public JGameGUI(Game game, Player player) throws GameNotStartedException{
+	public JGameGUI(Game game, Player player){
 		super("Risiko");
 		this.game = game;
 		this.player = player;
@@ -38,7 +34,7 @@ public class JGameGUI extends JFrame {
 		initialize();
 	}
 	
-	private void initialize() throws GameNotStartedException{
+	private void initialize() {
 		//this.setSize(600, 400);
 		//this.setPreferredSize(this.getSize());
 
@@ -54,7 +50,7 @@ public class JGameGUI extends JFrame {
 		
 	}
 	
-	private JPanel setSouthPanel() throws GameNotStartedException{
+	private JPanel setSouthPanel() {
 		JPanel south = new JPanel();
         south.setLayout(new GridLayout(1, 4, 10, 0));
         
@@ -81,15 +77,12 @@ public class JGameGUI extends JFrame {
         
         update.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent ae) {
-                try {
-                    playersInfo.update();
-                    orderInfo.update();
-                    currentStateInfo.update();
-                    map.repaint();
-                } catch (GameNotStartedException e) {
-                    new JExceptionDialog(JGameGUI.this,e);
-                    return;
-                }
+
+                playersInfo.update();
+                orderInfo.update();
+                currentStateInfo.update();
+                map.repaint();
+
             }
 
         });

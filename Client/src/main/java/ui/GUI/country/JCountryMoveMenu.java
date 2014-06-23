@@ -6,6 +6,8 @@ import main.java.ui.CUI.utils.IO;
 import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,15 +40,23 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
                     numberOfArmyies = JModalDialog.showAskIntegerModal(JCountryMoveMenu.this,"Anzahl Armeen",message,min,max);
                 }catch (UserCanceledException e){
                     //Benutzer hat abgebrochen, kein move durchführen
-                    new JExceptionDialog(JCountryMoveMenu.this,e);
+                    JModalDialog.showInfoDialog(JCountryMoveMenu.this,"Abbruch", "Sie haben die Aktion abgebrochen, es wurden keine Armeen bewegt");
                     return;
                 }
 
+
                 try {
                     turn.moveArmy(from,to,numberOfArmyies);
-                }catch (NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException e ){
+                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException e ){
                    new JExceptionDialog(JCountryMoveMenu.this,e);
-                    return;
+                   return;
+                }
+
+                //Repaint the whole map
+                JPopupMenu menu = (JPopupMenu) JCountryMoveMenu.this.getParent();
+                Component com = menu.getInvoker();
+                if(com != null){
+                    com.repaint();
                 }
             }
         }

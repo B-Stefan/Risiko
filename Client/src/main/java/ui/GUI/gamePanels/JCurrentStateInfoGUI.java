@@ -13,7 +13,7 @@ public class JCurrentStateInfoGUI extends JFrame {
 	private JTextArea context;
 	
 	
-	public JCurrentStateInfoGUI(Game game, Player player) throws GameNotStartedException{
+	public JCurrentStateInfoGUI(Game game, Player player){
 		this.context = new JTextArea("");
 		this.context.setWrapStyleWord(true);
 		this.context.setLineWrap(true);
@@ -22,22 +22,27 @@ public class JCurrentStateInfoGUI extends JFrame {
 		setContext();
 	}
 	
-	private void setContext() throws GameNotStartedException{
+	private void setContext() {
 		if(this.game.getCurrentGameState() == Game.gameStates.WAITING){
 			this.context.setText("Das Spiel hat noch nicht gestartet");
 		}else if(this.game.getCurrentGameState() == Game.gameStates.RUNNING){
-			if(this.game.getCurrentRound().getCurrentTurn().getCurrentStep() == Turn.steps.DISTRIBUTE){
-				String n = String.format(this.game.getCurrentRound().getCurrentTurn().toString() + "%n%nDu musst noch "+ this.game.getCurrentRound().getCurrentTurn().getNewArmysSize() + " Armeen verteilen");
-				this.context.setText(n);
-			}else {
-				this.context.setText(this.game.getCurrentRound().getCurrentTurn().toString());
-			}
+            try {
+                if(this.game.getCurrentRound().getCurrentTurn().getCurrentStep() == Turn.steps.DISTRIBUTE){
+                    String n = String.format(this.game.getCurrentRound().getCurrentTurn().toString() + "%n%nDu musst noch "+ this.game.getCurrentRound().getCurrentTurn().getNewArmysSize() + " Armeen verteilen");
+                    this.context.setText(n);
+                }else {
+                    this.context.setText(this.game.getCurrentRound().getCurrentTurn().toString());
+                }
+            }catch (GameNotStartedException e){
+                this.context.setText("Spiel nicht gestartet");
+            }
+
 		}else if(this.game.getCurrentGameState() == Game.gameStates.FINISHED){
 			this.context.setText("Das Spiel wurde beendet");
 		}
 	}
 	
-	public void update() throws GameNotStartedException{
+	public void update() {
 		setContext();
 	}
 	

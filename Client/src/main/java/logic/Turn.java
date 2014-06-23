@@ -4,6 +4,7 @@ import main.java.logic.exceptions.*;
 
 import java.security.acl.NotOwnerException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -177,26 +178,35 @@ public class Turn {
      * @return Wenn der Step erlaubt ist True, False tritt nicht auf es werden Exceptions für False ausgelöst.
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
+     * @throws ToManyNewArmysException
      */
-    private boolean isStepAllowed(steps stepToCheck) throws TurnNotAllowedStepException, TurnNotInCorrectStepException{
-        if(allowedSteps.contains(stepToCheck)){
-            if(this.getNextStep() == stepToCheck){
-                return true;
-            }
-            else if (stepToCheck == steps.MOVE){
-                return true;
+    private boolean isStepAllowed(steps stepToCheck) throws ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException{
+
+        if(this.getCurrentStep() == stepToCheck){
+            return true;
+        }
+        else if(allowedSteps.contains(stepToCheck)){
+
+            if(this.getCurrentStep() == steps.DISTRIBUTE){
+                if(this.getNewArmysSize() > 0 ){
+                    throw new ToManyNewArmysException(this);
+                }
+
+            }else if (this.getCurrentStep() == steps.FIGHT){
+
+
+            }else if (this.getCurrentStep() == steps.MOVE){
+
             }
             else {
                 throw new TurnNotInCorrectStepException(stepToCheck,this);
             }
 
         }
-        else if(this.getCurrentStep() == stepToCheck){
-            return true;
-        }
         else{
             throw new TurnNotAllowedStepException(stepToCheck,this);
         }
+        return true;
     }
 
 
@@ -210,7 +220,7 @@ public class Turn {
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(Country position, int numberOfArmys) throws  TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException {
+    public void placeNewArmy(Country position, int numberOfArmys) throws ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException {
         for(int i = 0; i!= numberOfArmys; i++){
             this.placeNewArmy(position);
         }
@@ -225,7 +235,7 @@ public class Turn {
      * @throws NotTheOwnerException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(Country position) throws  TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException{
+    public void placeNewArmy(Country position) throws  ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException{
         if (position.getOwner() != this.getPlayer())
         {
             throw  new NotTheOwnerException(this.getPlayer(), position);
@@ -277,7 +287,7 @@ public class Turn {
             return  new Fight(from, to, this);
 
         }
-        return null;
+        throw new RuntimeException("Codeteile nicht erlaubt !");
     }
 
 
@@ -293,13 +303,19 @@ public class Turn {
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      */
-    public void moveArmy(Country from,Country to, int numberOfArmies) throws NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException {
+    public void moveArmy(Country from,Country to, int numberOfArmies) throws ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException {
 
-        List<Army> armies = from.getArmyList();
-        for(int i = 1; i!= numberOfArmies; i++){
-            if (from.getNumberOfArmys() == 0) {
-                throw new NotEnoughArmysToMoveException(from);
+
+
+        List<Army> armies = (List<Army>) from.getArmyList().clone();
+        //Löschen aller Armeen, die bereits bewegt wurden, somit können nur die Armen versucht werden zu bwegen, die noch nicht bewegt wurde.
+        for(Army army : armies){
+            if(this.movedArmies.contains(army)){
+                armies.remove(army);
             }
+        }
+
+        for(int i = 0; i!= numberOfArmies; i++){
             Army army = armies.get(armies.size()-1);
             moveArmy(from,to,army);
         }
@@ -314,7 +330,7 @@ public class Turn {
      * @throws CountriesNotConnectedException
      * @throws ArmyAlreadyMovedException
      */
-    public void moveArmy(Country from,Country to, Army army) throws TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException {
+    public void moveArmy(Country from,Country to, Army army) throws ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException {
 
         if (from.getOwner() != this.getPlayer())
         {
@@ -326,6 +342,7 @@ public class Turn {
 
         if(this.isStepAllowed(steps.MOVE)){
 
+            this.allowedSteps.clear(); // Alle steps löschen, da nach einmak move nichts anderes mehr erlaubt ist
             //Einmal eine Einheit bewegt, ändert den Step des Turns
             this.setCurrentStep(steps.MOVE);
             if(!from.isConnected(to)){
@@ -334,7 +351,11 @@ public class Turn {
             else if (isArmyAlreadyMoved(army)){
                 throw new ArmyAlreadyMovedException(army);
             }
+            else if(from.getNumberOfArmys() == 1){
+                throw new NotEnoughArmysToMoveException(from);
+            }
             else {
+                from.removeArmy(army);
                 army.setPosition(to);
                 addMovedArmy(army);
             }
@@ -389,6 +410,7 @@ public class Turn {
      * @param step - Step der gesetz werden soll
      */
     private void setCurrentStep(steps step) {
+        this.allowedSteps.remove(this.getCurrentStep());
         currentStep = step;
     }
 

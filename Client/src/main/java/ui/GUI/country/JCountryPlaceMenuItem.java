@@ -7,6 +7,7 @@ import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -26,7 +27,7 @@ public class JCountryPlaceMenuItem extends JMenuItem {
         /**
          * Invoked when an action occurs.
          *
-         * @param e
+         * @param event
          */
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -42,16 +43,25 @@ public class JCountryPlaceMenuItem extends JMenuItem {
                 numberOfArmyies = JModalDialog.showAskIntegerModal(JCountryPlaceMenuItem.this, "Anzahl Armeen", message, min, max);
             }catch (UserCanceledException e){
                 //Benutzer hat abgebrochen, kein move durchführen
-                new JExceptionDialog(JCountryPlaceMenuItem.this,e);
+                JModalDialog.showInfoDialog(JCountryPlaceMenuItem.this,"Abbruch", "Sie haben die Aktion abgebrochen, es wurden keine Armeen plaziert");
                 return;
             }
 
 
+            if(numberOfArmyies == 0){
+                JModalDialog.showInfoDialog(JCountryPlaceMenuItem.this,"Nicht geügend Armeen", "Sie haben keine Armeen mehr zum plazieren");
+            }
+
             try {
                 turn.placeNewArmy(to,numberOfArmyies);
-            }catch (TurnNotAllowedStepException | TurnNotInCorrectStepException | NotEnoughNewArmysException | NotTheOwnerException e ){
+            }catch (TurnNotAllowedStepException | ToManyNewArmysException | TurnNotInCorrectStepException | NotEnoughNewArmysException | NotTheOwnerException e ){
                 new JExceptionDialog(JCountryPlaceMenuItem.this,e);
                 return;
+            }
+            JPopupMenu menu = (JPopupMenu) JCountryPlaceMenuItem.this.getParent();
+            Component com = menu.getInvoker();
+            if(com != null){
+                com.repaint();
             }
         }
     }

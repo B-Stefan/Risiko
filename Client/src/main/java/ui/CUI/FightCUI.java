@@ -101,7 +101,11 @@ public class FightCUI extends CUI {
             }catch (InvalidAmountOfArmiesException e){
                 IO.println(e.getMessage());
                 return;
-            }catch (CountriesNotConnectedException e){
+            }catch (NotEnoughArmysToMoveException e){
+                IO.println(e.getMessage());
+                return;
+            }
+            catch (CountriesNotConnectedException e){
             	IO.println(e.getMessage());
             	return;
             } catch (AlreadyDicedException e) {
@@ -119,7 +123,7 @@ public class FightCUI extends CUI {
 			} catch (InvalidFightException e) {
 				IO.println(e.getMessage());
 				return;
-			}catch (NotTheOwnerException e) {
+			}catch (NotTheOwnerException | ToManyNewArmysException e) {
                 IO.println(e.getMessage());
                 return;
             }
