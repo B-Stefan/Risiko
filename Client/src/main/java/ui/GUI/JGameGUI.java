@@ -81,15 +81,12 @@ public class JGameGUI extends JFrame {
         
         update.addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent ae) {
-                try {
-                    playersInfo.update();
-                    orderInfo.update();
-                    currentStateInfo.update();
-                    map.repaint();
-                } catch (GameNotStartedException e) {
-                    new JExceptionDialog(JGameGUI.this,e);
-                    return;
-                }
+
+                playersInfo.update();
+                orderInfo.update();
+                currentStateInfo.update();
+                map.repaint();
+
             }
 
         });

@@ -42,7 +42,7 @@ public class JCurrentStateInfoGUI extends JFrame {
 		}
 	}
 	
-	public void update() throws GameNotStartedException{
+	public void update() {
 		setContext();
 	}
 	

@@ -44,7 +44,7 @@ public class JPLayerInfoGUI extends JFrame{
 	public JScrollPane getContext(){
 		return this.context;
 	}
-	public void update() throws GameNotStartedException{
+	public void update() {
 		this.tModel.setDataVector(game.getPlayers());
 	}
 }
