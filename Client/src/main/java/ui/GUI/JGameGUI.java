@@ -30,7 +30,7 @@ public class JGameGUI extends JFrame {
 	private final Player player;
 	private final JMapGUI map;
 	
-	public JGameGUI(Game game, Player player) throws GameNotStartedException{
+	public JGameGUI(Game game, Player player){
 		super("Risiko");
 		this.game = game;
 		this.player = player;
@@ -38,7 +38,7 @@ public class JGameGUI extends JFrame {
 		initialize();
 	}
 	
-	private void initialize() throws GameNotStartedException{
+	private void initialize() {
 		//this.setSize(600, 400);
 		//this.setPreferredSize(this.getSize());
 
@@ -54,7 +54,7 @@ public class JGameGUI extends JFrame {
 		
 	}
 	
-	private JPanel setSouthPanel() throws GameNotStartedException{
+	private JPanel setSouthPanel() {
 		JPanel south = new JPanel();
         south.setLayout(new GridLayout(1, 4, 10, 0));
         
