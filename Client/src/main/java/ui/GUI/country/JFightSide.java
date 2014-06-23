@@ -107,12 +107,17 @@ public class JFightSide extends Panel {
             root.repaint();//Neuzeichnen der gesamten karte, falls der Owner sich geändert hat oder die Anzahl der Armeen
         }
 
-        Stack<Dice> dices;
+        Stack<Dice> dices = new Stack<Dice>();
         if(this.side == sides.AGGRESSOR){
-            dices = this.fight.getAgressorsDice();
-        }
-        else{
-            dices = this.fight.getDefendersDice();
+            final Stack<Dice> ds = this.fight.getAgressorsDice();
+        	for(Dice d: ds){
+        		dices.push(d);
+        	}
+        }else{
+            final Stack<Dice> ds = this.fight.getDefendersDice();
+          	for(Dice d: ds){
+          		dices.push(d);
+          	}
         }
         String str = "";
         while (!dices.empty()){

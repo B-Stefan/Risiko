@@ -1,6 +1,6 @@
 package main.java.ui.GUI.country;
 
-import com.sun.codemodel.internal.JMod;
+//import com.sun.codemodel.internal.JMod;
 import main.java.logic.Fight;
 import main.java.logic.Turn;
 import main.java.logic.data.Country;
