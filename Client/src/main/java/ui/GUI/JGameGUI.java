@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,13 +14,10 @@ import javax.swing.WindowConstants;
 
 import main.java.logic.*;
 import main.java.logic.data.Player;
-import main.java.logic.exceptions.GameNotStartedException;
-import main.java.ui.CUI.utils.IO;
 import main.java.ui.GUI.gamePanels.JCurrentStateInfoGUI;
 import main.java.ui.GUI.gamePanels.JMapGUI;
 import main.java.ui.GUI.gamePanels.JOrderInfoGUI;
 import main.java.ui.GUI.gamePanels.JPLayerInfoGUI;
-import main.java.ui.GUI.utils.JExceptionDialog;
 
 public class JGameGUI extends JFrame {
 	private final Game game;
