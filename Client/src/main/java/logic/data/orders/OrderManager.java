@@ -23,7 +23,8 @@ public class OrderManager {
     public static final Class[] orderTypes = new Class[] {
             OrderTakeOverContinents.class,
             OrderTakeOverCountries.class,
-            OrderTerminatePlayer.class
+            OrderTerminatePlayer.class,
+            OrderTakeOverThreeContinents.class
     };
 
 
@@ -144,6 +145,11 @@ public class OrderManager {
         else if(randOrderType == OrderTerminatePlayer.class){
             Player playerToTerminate = getRandomPlayer(game.getPlayers(),agend);
             return new OrderTerminatePlayer(playerToTerminate,agend);
+        }else if(randOrderType == OrderTakeOverThreeContinents.class){
+        	Continent contigent1  = getRandomContinent(game.getMap().getContinents());
+            Continent contigent2  = getRandomContinent(game.getMap().getContinents(), contigent1);
+
+            return new OrderTakeOverThreeContinents(contigent1,contigent2,agend, game.getMap().getContinents());
         }
         return null;
 
