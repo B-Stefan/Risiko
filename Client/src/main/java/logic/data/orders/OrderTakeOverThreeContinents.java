@@ -74,5 +74,9 @@ public class OrderTakeOverThreeContinents implements IOrder{
 		}
 		return false;
 	}
+	@Override
+	public String toString(){
+		return this.agent + " hat die Aufgabe " + this.continentOne + " und " + this.continentTwo + " und einen weiteren Kontinent zu erobern.";
+	}
 	
 }
