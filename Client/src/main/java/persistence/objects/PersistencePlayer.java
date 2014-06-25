@@ -19,8 +19,8 @@ public class PersistencePlayer extends PersitenceObject<Player> {
     private final String name;
     private final Color color;
     private final HashMap<UUID,Integer> countries = new HashMap<UUID,Integer>();
-    public PersistencePlayer(Player player){
-        super(player);
+    public PersistencePlayer(Player player, PersistenceManager manager) throws PersistenceEndpointIOException{
+        super(player, manager);
         this.player = player;
         this.name = player.getName();
         this.color = player.getColor();
@@ -39,6 +39,9 @@ public class PersistencePlayer extends PersitenceObject<Player> {
     public Player convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
 
         Map defaultMap = manager.getMapHandler().get(Map.DEFAULT_MAP_UUID);
+        if(defaultMap == null){
+            throw new PersistenceEndpointIOException("Die Karte "+Map.DEFAULT_MAP_UUID+ " konnte nicht gefunden werden ");
+        }
 
         //Erstellen einer Liste aller Countries um einfach darin zu suchen, die Map hat bereits eine GetCountry(String) die auf dem Namen bassiert
         HashMap<UUID,Country> allCountries = new HashMap<UUID,Country>();
@@ -59,6 +62,7 @@ public class PersistencePlayer extends PersitenceObject<Player> {
             }
 
             mapCountry.setOwner(newInstance);
+            newInstance.addCountry(mapCountry);
 
             //Armeen erzeugen
             for(int i = 0; i!= entry.getValue(); i++){

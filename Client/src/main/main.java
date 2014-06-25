@@ -1,13 +1,9 @@
 package main;
 import main.java.GameManager;
-import main.java.ui.CUI.GameCUI;
-import main.java.ui.GUI.JGameGUI;
 import main.java.persistence.PersistenceManager;
-import main.java.logic.Game;
-import main.java.logic.data.Player;
-import main.java.ui.GUI.JPlayerManager;
+import main.java.ui.GUI.JGameManagerGUI;
 
-import java.awt.Color;
+import javax.swing.*;
 import java.lang.*;
 
 /**
@@ -23,15 +19,26 @@ public class main {
      */
     public static void main(String[] args) throws Exception{
 
+        try {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Risiko");
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch(ClassNotFoundException e) {
+            System.out.println("ClassNotFoundException: " + e.getMessage());
+        }
+        catch(InstantiationException e) {
+            System.out.println("InstantiationException: " + e.getMessage());
+        }
+        catch(IllegalAccessException e) {
+            System.out.println("IllegalAccessException: " + e.getMessage());
+        }
+        catch(UnsupportedLookAndFeelException e) {
+            System.out.println("UnsupportedLookAndFeelException: " + e.getMessage());
+        }
 
-        PersistenceManager persistenceManager = new PersistenceManager();
-        //Erstellen des Spiels
-        GameManager  gameManager = new GameManager(persistenceManager);
-        //Erstellen des UI
-        // GameManagerCUI ui = new GameManagerCUI(gamePanels);
-
-
-        new JPlayerManager();
+        GameManager manager = new GameManager(new PersistenceManager());
+        new JGameManagerGUI(manager);
 
     }
 }

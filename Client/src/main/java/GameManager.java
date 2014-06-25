@@ -38,7 +38,7 @@ public class GameManager {
      * @throws PersistenceEndpointIOException Fehler beim Einlesen der Datei oder Speichern
      */
     public Game addGame () throws PersistenceEndpointIOException{
-        Game newGame = new Game();
+        Game newGame = new Game(handler);
         this.saveGame(newGame);
         return newGame;
     }

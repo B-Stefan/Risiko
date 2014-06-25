@@ -64,6 +64,11 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
      */
     private HashMap<UUID, PersitenceObject<T>> chachedObjects = new HashMap<UUID, PersitenceObject<T>>();
 
+    /**
+     * Beinhaltet alle Objekte, die bereits einmal geladen wurden.
+     */
+    private HashMap<UUID, T> chachedSourceObjects = new HashMap<UUID,T>();
+
 
     /**
      * Erstellt einen Endpoint für eine bestimmte Logic-Klasse.
@@ -168,8 +173,11 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
      */
     @Override
     public T get(UUID id) throws PersistenceEndpointIOException{
-        this.readFile();
-        return this.convertToSourceType(this.chachedObjects.get(id));
+        PersitenceObject<T> result = this.chachedObjects.get(id);
+        if(result == null){
+            this.readFile();
+        }
+        return this.convertToSourceType(result!=null ? result : this.chachedObjects.get(id));
     }
 
     /**
@@ -225,8 +233,8 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
         }
         PersitenceObject<T> instance = null;
         try {
-            Constructor ctor = dataClass.getDeclaredConstructor(this.sourceClass);
-            instance = (PersitenceObject<T>) ctor.newInstance(obj);
+            Constructor ctor = dataClass.getDeclaredConstructor(this.sourceClass,PersistenceManager.class);
+            instance = (PersitenceObject<T>) ctor.newInstance(obj,manager);
         }catch (InstantiationException | IllegalAccessException | InvocationTargetException | ClassCastException e){
             throw new RuntimeException(e);
         }
@@ -247,7 +255,16 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
         if(obj == null){
             return null;
         }
-        return (T) obj.convertToSourceObject(this.manager);
+        T cacheResult = this.chachedSourceObjects.get(obj.getID());
+        if(cacheResult == null ){
+            T result = (T) obj.convertToSourceObject(this.manager);
+            this.chachedSourceObjects.put(obj.getID(),result);
+            return result;
+        }
+        else {
+            return cacheResult;
+        }
+
     }
 
 }

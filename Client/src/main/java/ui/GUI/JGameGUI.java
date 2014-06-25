@@ -1,38 +1,33 @@
 package main.java.ui.GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 import main.java.logic.*;
 import main.java.logic.data.Player;
-import main.java.ui.GUI.gamePanels.JCardInfo;
 import main.java.ui.GUI.gamePanels.JCurrentStateInfoGUI;
 import main.java.ui.GUI.gamePanels.JMapGUI;
 import main.java.ui.GUI.gamePanels.JOrderInfoGUI;
 import main.java.ui.GUI.gamePanels.JPLayerInfoGUI;
+import main.java.ui.GUI.menu.JGameMenu;
 
 public class JGameGUI extends JFrame {
 	private final Game game;
-	private Container pane;
-	private JButton update;
+	private final JButton update;
 	private final Player player;
 	private final JMapGUI map;
+    private final JMenuBar menuBar;
 	
 	public JGameGUI(Game game, Player player){
 		super("Risiko");
 		this.game = game;
 		this.player = player;
 		this.map = new JMapGUI(game);
+        this.update = new JButton("Update");
+        this.menuBar = new JMenuBar();
 		initialize();
 	}
 	
@@ -42,11 +37,13 @@ public class JGameGUI extends JFrame {
 
         // Klick auf Kreuz (Fenster schließen) behandeln lassen:
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        pane = this.getContentPane();
+        Container pane = this.getContentPane();
         pane.setLayout(new BorderLayout());
         pane.add(this.map, BorderLayout.CENTER);
         pane.add(setSouthPanel(), BorderLayout.SOUTH);
 		// Fenster anzeigen
+        this.menuBar.add(new JGameMenu(this.game));
+        this.setJMenuBar(menuBar);
 		this.setVisible(true);
 		this.pack();
 		
@@ -62,20 +59,17 @@ public class JGameGUI extends JFrame {
         //JOrderInfoGUI erzeugen
         final JOrderInfoGUI orderInfo = new JOrderInfoGUI(this.game, this.player);
         
-        //Update Button
-        this.update = new JButton("Update");
-        
         //JCurrentStateInfoGUI erzeugen
         final JCurrentStateInfoGUI currentStateInfo = new JCurrentStateInfoGUI(this.game, this.player, this.update);
       
         //JCardInfo erzeugen
-        final JCardInfo cardInfo = new JCardInfo(this.player);
+        //final JCardInfo cardInfo = new JCardInfo(this.player);
         
         //Panel
         south.add(playersInfo.getContext());
         south.add(currentStateInfo.getContext());
         south.add(orderInfo.getContext());
-        south.add(cardInfo.getContext());
+        //south.add(cardInfo.getContext());
         
         south.setBorder(BorderFactory.createTitledBorder("Übersicht"));
         
@@ -93,5 +87,12 @@ public class JGameGUI extends JFrame {
         
         return south;
 	}
-	
+
+    public Player getPlayer(){
+        return this.player;
+    }
+
+    public Game getGame(){
+        return this.game;
+    }
 }

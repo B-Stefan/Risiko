@@ -7,7 +7,7 @@ import main.java.logic.data.Country;
 import main.java.logic.data.Map;
 import main.java.logic.Turn;
 import main.java.logic.Game;
-import main.java.ui.GUI.country.JCountryGUI;
+import main.java.ui.GUI.country.JCountryPopupMenu;
 import main.java.ui.GUI.country.JCountryInfo;
 import main.java.ui.GUI.utils.MapLoader;
 import main.java.ui.GUI.utils.JExceptionDialog;
@@ -62,7 +62,7 @@ public class JMapGUI extends JComponent {
                     new JExceptionDialog(JMapGUI.this,e);
                     return;
                 }
-                JCountryGUI countryGUI= new JCountryGUI(country, currentTurn);
+                JCountryPopupMenu countryGUI= new JCountryPopupMenu(country, currentTurn);
                 countryGUI.show(event.getComponent(),x,y);
 
             }

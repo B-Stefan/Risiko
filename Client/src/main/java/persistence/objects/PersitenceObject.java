@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public abstract class PersitenceObject<T> implements Serializable {
 
-    PersitenceObject(T obj){}
+    PersitenceObject(T obj, PersistenceManager manager) throws PersistenceEndpointIOException{}
     public abstract UUID getID();
     public abstract T convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException;
 

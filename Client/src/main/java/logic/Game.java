@@ -2,10 +2,15 @@ package main.java.logic;
 
 import java.util.*;
 import java.awt.Color;
+
+import main.java.GameManager;
 import main.java.logic.data.*;
+import main.java.logic.data.Map;
 import main.java.logic.exceptions.PlayerNotExsistInGameException;
 import main.java.logic.exceptions.*;
 import main.java.logic.data.orders.OrderManager;
+import main.java.persistence.dataendpoints.PersistenceEndpoint;
+import main.java.persistence.exceptions.PersistenceEndpointIOException;
 
 /**
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
@@ -34,7 +39,7 @@ public class Game {
     /**
      * Representiert die Karte des Spiels
      */
-    private main.java.logic.data.Map map;
+    private final Map map;
 
     /**
      * Listet alle Spieler auf, die aktiv am Spiel teilnehmen.
@@ -44,36 +49,50 @@ public class Game {
     /**
      * The current gamePanels state, default => WAITING
      */
-    private gameStates currentGameState = gameStates.WAITING;
+    private  gameStates currentGameState = gameStates.WAITING;
 
     /**
      * Contains the current round , default null
      */
-    private Round currentRound;
+    private  Round currentRound;
 
+    /**
+     * Name für das SPiel, erstmal aktuelles Datum
+     */
+    private final String name = new Date().toString();;
 
     /**
      * Die UUID für das Spiel
      */
-    private UUID id;
+    private final UUID id;
 
     /**
-     * Die Game-Klasse dient zur verwaltung des gesammten Spiels
+     * Der GameManager, der für die Persistenz verwendet werden soll.
      */
-    public Game() {
-        this.map = new main.java.logic.data.Map();
-        this.id = UUID.randomUUID();
-        this.color.add(Color.BLUE);
-        this.color.add(Color.GREEN);
-        this.color.add(Color.ORANGE);
-        this.color.add(Color.RED);
-        this.color.add(Color.MAGENTA);
-
+    private final PersistenceEndpoint<Game> persistenceEndpoint;
+    /**
+     *
+     * @param persistenceEndpoint - Der Manager, der zur Speicherung des Spiels verwnedet werden soll
+     */
+    public Game(PersistenceEndpoint<Game> persistenceEndpoint) {
+        this(persistenceEndpoint,new Map());
     }
 
-
-
-
+    /**
+     * Konstruktor, wenn das Spiel mit einer bestimmten Karte erstellt werden soll
+     * @param persistenceEndpoint Endpunkt zum speichern des spiels
+     * @param map Karte die für das Spiel verwnedet werden soll
+     */
+    public Game(PersistenceEndpoint<Game> persistenceEndpoint, Map map){
+       this.map= map;
+       this.persistenceEndpoint = persistenceEndpoint;
+       this.id = UUID.randomUUID();
+       this.color.add(Color.BLUE);
+       this.color.add(Color.GREEN);
+       this.color.add(Color.ORANGE);
+       this.color.add(Color.RED);
+       this.color.add(Color.MAGENTA);
+    }
 
     /**
      * Startet das Speil, sodass der Spielstatus und co aktualisiert werden
@@ -323,7 +342,14 @@ public class Game {
      */
     @Override
     public String toString() {
-        return "Game";
+        return "Game" + this.name;
     }
 
+    /**
+     * Speicher das Spile ab
+     *
+     */
+    public boolean save () throws PersistenceEndpointIOException{
+        return this.persistenceEndpoint.save(this);
+    }
 }

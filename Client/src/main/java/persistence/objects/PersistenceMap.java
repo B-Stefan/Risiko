@@ -14,12 +14,13 @@ public class PersistenceMap extends PersitenceObject<Map> {
     public final List<String> players = new ArrayList<String>();
     private final UUID id;
     private final List<String> countries = new ArrayList<String>();
-    public PersistenceMap(Map map){
-        super(map);
+    public PersistenceMap(Map map, PersistenceManager manager) throws PersistenceEndpointIOException{
+        super(map,manager);
         this.id = map.getId();
         for (Country country: map.getCountries()){
             this.countries.add(country.getId().toString());
         }
+
     }
 
     @Override
