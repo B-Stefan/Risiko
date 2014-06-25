@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
 import main.java.logic.*;
@@ -60,18 +61,20 @@ public class JGameGUI extends JFrame {
         //JOrderInfoGUI erzeugen
         final JOrderInfoGUI orderInfo = new JOrderInfoGUI(this.game, this.player);
         
-        //JCurrentStateInfoGUI erzeugen
-        final JCurrentStateInfoGUI currentStateInfo = new JCurrentStateInfoGUI(this.game, this.player);
-        
         //Update Button
         this.update = new JButton("Update");
+        
+        //JCurrentStateInfoGUI erzeugen
+        final JCurrentStateInfoGUI currentStateInfo = new JCurrentStateInfoGUI(this.game, this.player, this.update);
+      
 
         
         //Panel
         south.add(playersInfo.getContext());
         south.add(currentStateInfo.getContext());
         south.add(orderInfo.getContext());
-        south.add(this.update);
+        JTextArea text = new JTextArea("hier würden die Karten stehen");
+        south.add(text);
         
         south.setBorder(BorderFactory.createTitledBorder("Übersicht"));
         

@@ -1,5 +1,6 @@
 package main.java.ui.GUI.gamePanels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Vector;
 
@@ -29,7 +30,7 @@ public class JPLayerInfoGUI extends JFrame{
         spalten.add("Spieler");
         spalten.add("Länder");
         spalten.add("Am Zug");
-        
+
         //Spieler Liste
         this.tModel = new PlayerInfoTableModel(this.game, spalten);
         JTable playersTable = new JTable(this.tModel);
