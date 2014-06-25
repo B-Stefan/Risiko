@@ -57,7 +57,7 @@ public class Country {
      */
     public Country(final String name, Continent continent, Color color) {
         this.name = name;
-        this.id = UUID.randomUUID();
+        this.id = UUID.fromString(name); // statische UUID bassierend auf dem Namen, da die Karte im Moment nicht dynamisch ist
         this.continent = continent;
         this.continent.addCountry(this);
         this.color = color;

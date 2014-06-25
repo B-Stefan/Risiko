@@ -27,6 +27,10 @@ public class Map  {
     private final ArrayList<Continent> continents = new ArrayList<Continent>();
 
     /**
+     * ID der Karte
+     */
+    private final UUID id = UUID.fromString("DEFAULT_MAP");
+    /**
      * Erstellt eine neue Standard-Karte
      */
     public Map() {
@@ -322,5 +326,11 @@ public class Map  {
         return continents;
     }
 
+    /**
+     * Getter für die ID
+     */
+    public UUID getId(){
+        return id;
+    }
 }
 
