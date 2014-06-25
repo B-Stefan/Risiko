@@ -1,7 +1,6 @@
 package main.java.persistence.objects;
 import main.java.logic.Game;
 import main.java.logic.data.Player;
-import main.java.logic.exceptions.GameNotStartedException;
 import main.java.persistence.PersistenceManager;
 import main.java.persistence.dataendpoints.PersistenceEndpoint;
 import main.java.persistence.exceptions.PersistenceEndpointIOException;
