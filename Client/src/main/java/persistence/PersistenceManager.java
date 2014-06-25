@@ -5,6 +5,7 @@ package main.java.persistence;
  */
 
 import main.java.logic.Game;
+import main.java.logic.data.Map;
 import main.java.logic.data.Player;
 import main.java.persistence.dataendpoints.PersistenceEndpoint;
 import main.java.persistence.dataendpoints.SerializableFileEndpoint;
@@ -27,6 +28,9 @@ public class PersistenceManager {
         else if (type == Player.class){
                 return new SerializableFileEndpoint<Player>(Player.class,PersistencePlayer.class, this);
         }
+        else if (type == Map.class){
+            return new SerializableFileEndpoint<Map>(Map.class,PersistenceMap.class, this);
+        }
         //@todo add more types
         return null;
     }
@@ -41,6 +45,9 @@ public class PersistenceManager {
     }
     public PersistenceEndpoint<Player> getPlayerHandler(){
         return (PersistenceEndpoint<Player>)this.getHandler(Player.class);
+    }
+    public PersistenceEndpoint<Map> getMapHandler(){
+        return (PersistenceEndpoint<Map>)this.getHandler(Map.class);
     }
 
 
