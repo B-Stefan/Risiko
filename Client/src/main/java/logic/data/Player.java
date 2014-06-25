@@ -27,14 +27,11 @@ public class Player {
     public Player(String name, Color color) {
         this(name);
         this.color = color;
-        this.ownDeck.add("");
     }
     
     public Player(String name, Color color, CardDeck deck) {
-        this(name);
-        this.color = color;
+        this(name,color);
         this.deck = deck;
-        this.ownDeck.add("");
     }
 
     public String getName() {
