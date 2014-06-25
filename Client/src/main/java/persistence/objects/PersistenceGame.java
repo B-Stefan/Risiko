@@ -33,13 +33,13 @@ public class PersistenceGame extends PersitenceObject<Game> {
     @Override
     public Game convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
         Game newGame = new Game();
-        List<Player> player= new ArrayList<Player>();
+        List<Player> players= new ArrayList<Player>();
         PersistenceEndpoint<Player> playerHandler =  manager.getPlayerHandler();
 
         for(String uuid : this.players) {
-            player.add(playerHandler.get(uuid));
+            players.add(playerHandler.get(uuid));
         }
-        newGame.addPlayers(player);
+        newGame.addPlayers(players);
         newGame.setCurrentGameState(this.gameState);
         return newGame;
     }
