@@ -15,7 +15,6 @@ import main.java.logic.exceptions.GameNotStartedException;
 
 public class JCurrentStateInfoGUI extends JFrame {
 	private final Game game;
-	private final Player player;
 	private JTextArea stepInfo = new JTextArea("");
 	private JPanel context;
 	private JButton nextStep;
@@ -28,7 +27,6 @@ public class JCurrentStateInfoGUI extends JFrame {
 		this.stepInfo.setWrapStyleWord(true);
 		this.stepInfo.setLineWrap(true);
 		this.game = game;
-		this.player = player;
 		this.nextStep = Update;
 		//this.nextStep = new JButton("nächster Zug");
 		setContext();

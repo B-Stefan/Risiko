@@ -15,6 +15,7 @@ import javax.swing.WindowConstants;
 
 import main.java.logic.*;
 import main.java.logic.data.Player;
+import main.java.ui.GUI.gamePanels.JCardInfo;
 import main.java.ui.GUI.gamePanels.JCurrentStateInfoGUI;
 import main.java.ui.GUI.gamePanels.JMapGUI;
 import main.java.ui.GUI.gamePanels.JOrderInfoGUI;
@@ -67,14 +68,14 @@ public class JGameGUI extends JFrame {
         //JCurrentStateInfoGUI erzeugen
         final JCurrentStateInfoGUI currentStateInfo = new JCurrentStateInfoGUI(this.game, this.player, this.update);
       
-
+        //JCardInfo erzeugen
+        final JCardInfo cardInfo = new JCardInfo(this.player);
         
         //Panel
         south.add(playersInfo.getContext());
         south.add(currentStateInfo.getContext());
         south.add(orderInfo.getContext());
-        JTextArea text = new JTextArea("hier würden die Karten stehen");
-        south.add(text);
+        south.add(cardInfo.getContext());
         
         south.setBorder(BorderFactory.createTitledBorder("Übersicht"));
         
