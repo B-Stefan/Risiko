@@ -9,13 +9,13 @@ import java.awt.*;
 /**
  * Created by Stefan on 09.06.14.
  */
-public class JCountryGUI  extends JPopupMenu{
+public class JCountryPopupMenu extends JPopupMenu{
 
 
     private final Country country;
     private final Turn turn;
 
-    public JCountryGUI (Country country, Turn turn){
+    public JCountryPopupMenu(Country country, Turn turn){
         super();
         this.country = country;
         this.turn = turn;
