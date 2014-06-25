@@ -38,7 +38,7 @@ public class PersistencePlayer extends PersitenceObject<Player> {
     @Override
     public Player convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
 
-        Map defaultMap = manager.getMapHandler().get("DEFAULT_MAP");
+        Map defaultMap = manager.getMapHandler().get(Map.DEFAULT_MAP_UUID);
 
         //Erstellen einer Liste aller Countries um einfach darin zu suchen, die Map hat bereits eine GetCountry(String) die auf dem Namen bassiert
         HashMap<UUID,Country> allCountries = new HashMap<UUID,Country>();

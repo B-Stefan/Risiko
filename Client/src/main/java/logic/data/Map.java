@@ -16,6 +16,7 @@ import java.util.*;
 public class Map  {
 
 
+    public static final String DEFAULT_MAP_UUID = "03c64c20-fc74-11e3-a3ac-0800200c9a66";
     /**
      * Beinhaltet alle Länder, für die Karte
      */
@@ -29,7 +30,7 @@ public class Map  {
     /**
      * ID der Karte
      */
-    private final UUID id = UUID.fromString("DEFAULT_MAP");
+    private final UUID id = UUID.fromString(Map.DEFAULT_MAP_UUID);
     /**
      * Erstellt eine neue Standard-Karte
      */

@@ -14,6 +14,12 @@ import main.java.persistence.objects.*;
 import java.util.HashMap;
 
 /**
+ * Der PeristenceManger dient zur Verwaltung aller Endpunkte, an denen Spielklassen, nachfolgend sourceClass bezeichnet, gespeichert werden können.
+ * Dabei kann der PersistenceManager mehrere dieser Endpunkte bereitstellen.
+ *
+ * Die Endpunkte bestimmen dann genau wie und wo die Daten gespeichert werden. Dies kann Dateibassiert geschehen oder aber in einer Datenbank, genauso wäre eine Aufspaltung zwischen teilweise Datenbank und teilweise Dateibassiert möglich.
+ *
+ * Die Klassen im Paket objects dienen zur Serialisierung der Spielklassen, sodass z.B. nicht alle Armeen als einzlene Klasse gespeichert werden sondern nur ein Spieler mit seinen Ländern und die Anzahl der Armeen auf diesem Land.
  *
  */
 public class PersistenceManager {
