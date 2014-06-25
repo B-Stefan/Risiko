@@ -19,7 +19,7 @@ public abstract class JCountryNeighborsMenu extends JMenu {
 
     private final Country country;
     private JCountryNeighborsMenuItem selectedNeighborsMenuItem = null;
-    public class NeighborsActionListener implements ActionListener {
+    private class NeighborsActionListener implements ActionListener {
         /**
          * Invoked when an action occurs.
          *
