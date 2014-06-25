@@ -34,7 +34,7 @@ public class FightCUI extends CUI {
 		 * Wird ausgeführt, wenn der Befehl eingegeben wurde
 		 * Printet das Würfelergebniss des Angreifers
 		 */
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent arg) {
 			final int noOfArmies;
 			
 			try {
@@ -83,7 +83,7 @@ public class FightCUI extends CUI {
 		 * Printet die Würfel des Verteidigers 
 		 * Printet das Ergebnis
 		 */
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent arg) {
 			final int noOfArmies;
 			
 			try {
