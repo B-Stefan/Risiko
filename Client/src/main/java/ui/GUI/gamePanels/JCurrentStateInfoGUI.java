@@ -3,6 +3,7 @@ package main.java.ui.GUI.gamePanels;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 import javax.swing.*;
 
@@ -25,11 +26,16 @@ public class JCurrentStateInfoGUI extends JPanel {
         /**
          * Invoked when an action occurs.
          *
-         * @param e
+         * @param event
          */
         @Override
-        public void actionPerformed(ActionEvent e) {
-            JCurrentStateInfoGUI.this.gameGUI.update();
+        public void actionPerformed(ActionEvent event) {
+            try {
+                JCurrentStateInfoGUI.this.gameGUI.update();
+            }catch (RemoteException e){
+                new JExceptionDialog(JCurrentStateInfoGUI.this,e);
+            }
+
         }
     }
 
@@ -42,16 +48,28 @@ public class JCurrentStateInfoGUI extends JPanel {
          */
         @Override
         public void actionPerformed(ActionEvent event) {
-            if(JCurrentStateInfoGUI.this.game.getCurrentGameState() != IGame.gameStates.WAITING){
+            IGame.gameStates currentGameState;
+            try{
+                currentGameState = JCurrentStateInfoGUI.this.game.getCurrentGameState();
+            }catch (RemoteException e){
+                new JExceptionDialog(JCurrentStateInfoGUI.this,e);
+                return;
+            }
+            if(currentGameState != IGame.gameStates.WAITING){
                 return;
             }
             try {
                 JCurrentStateInfoGUI.this.game.onGameStart();
-            }catch ( NotEnoughPlayerException | TooManyPlayerException | NotEnoughCountriesException | GameAllreadyStartedException | PlayerAlreadyHasAnOrderException e ){
+            }catch ( NotEnoughPlayerException | TooManyPlayerException | NotEnoughCountriesException | GameAllreadyStartedException | PlayerAlreadyHasAnOrderException | RemoteException e ){
                 new JExceptionDialog(JCurrentStateInfoGUI.this,e);
                 return;
             }
-            JCurrentStateInfoGUI.this.update();
+            try{
+                JCurrentStateInfoGUI.this.update();
+            }catch (RemoteException e){
+                new JExceptionDialog(JCurrentStateInfoGUI.this,e);
+            }
+
         }
     }
 
@@ -69,29 +87,33 @@ public class JCurrentStateInfoGUI extends JPanel {
             //Holen der aktuellen Runde
             try {
                 currentRound = JCurrentStateInfoGUI.this.game.getCurrentRound();
-            }catch (GameNotStartedException e){
+            }catch (GameNotStartedException | RemoteException e){
                 return;
             }
             //Holen des Aktuellen Turns
             try {
                 currentRound.setNextTurn();
-            }catch (ToManyNewArmysException | TurnNotCompleteException e){
+            }catch (ToManyNewArmysException | TurnNotCompleteException | RemoteException e){
                 new JExceptionDialog(JCurrentStateInfoGUI.this,e);
                 return;
             }catch (RoundCompleteException unused){
                 //Wenn Runde komplett erledigt, neue Runde
                 try {
                     game.setNextRound();
-                }catch (ToManyNewArmysException | RoundNotCompleteException | GameNotStartedException | GameIsCompletedException e){
+                }catch (ToManyNewArmysException | RoundNotCompleteException | GameNotStartedException | GameIsCompletedException | RemoteException e){
                     new JExceptionDialog(JCurrentStateInfoGUI.this,e);
                     return;
                 }
             }
-            JCurrentStateInfoGUI.this.update();
+            try {
+                JCurrentStateInfoGUI.this.update();
+            }catch (RemoteException e){
+                new JExceptionDialog(JCurrentStateInfoGUI.this,e);
+            }
         }
     }
 	
-	public JCurrentStateInfoGUI(final IGame game, final IPlayer player, final JGameGUI gameGUI){
+	public JCurrentStateInfoGUI(final IGame game, final IPlayer player, final JGameGUI gameGUI) throws RemoteException{
 		//Konstruktor bearbeiten (Update entfehrnen)
 		this.setLayout(new GridLayout(2, 1));
 		this.stepInfo.setWrapStyleWord(true);
@@ -104,7 +126,7 @@ public class JCurrentStateInfoGUI extends JPanel {
 		update();
 	}
 	
-	public void update() {
+	public void update() throws RemoteException{
         String textAreaMsg = "";
         String btnMsg = "";
         switch (this.game.getCurrentGameState()){

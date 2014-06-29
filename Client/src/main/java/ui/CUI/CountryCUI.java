@@ -12,6 +12,8 @@ import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
 
 
 import java.awt.event.ActionEvent;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.LinkedHashMap;
 
 /**
@@ -64,7 +66,7 @@ public class CountryCUI extends CUI {
                     IO.println(e.getMessage());
                     return;
                 }
-                catch (ToManyNewArmysException | TurnNotInCorrectStepException | NotTheOwnerException e ){
+                catch (ToManyNewArmysException | TurnNotInCorrectStepException | NotTheOwnerException | RemoteException e ){
                     IO.println(e.getMessage());
                     return;
                 }
@@ -106,7 +108,7 @@ public class CountryCUI extends CUI {
                 }catch (TurnNotInCorrectStepException e){
                     IO.println(e.getMessage());
                     return;
-                }catch (ToManyNewArmysException | NotTheOwnerException e) {
+                }catch (ToManyNewArmysException | NotTheOwnerException | RemoteException e) {
                     IO.println(e.getMessage());
                     return;
                 }

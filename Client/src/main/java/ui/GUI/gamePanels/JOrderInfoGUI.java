@@ -5,6 +5,8 @@ import javax.swing.*;
 import interfaces.IGame;
 import interfaces.data.IPlayer;
 
+import java.rmi.RemoteException;
+
 public class JOrderInfoGUI extends JTextArea {
 
 	private final IPlayer player;
@@ -18,14 +20,15 @@ public class JOrderInfoGUI extends JTextArea {
 		this.game = game;
 	}
 	
-	private void setContext(){
+	private void setContext() throws RemoteException{
+
 		if(this.game.getCurrentGameState() == IGame.gameStates.RUNNING){
 
                 this.setText(this.player.getOrder().toString());
 		}
 	}
 	
-	public void update(){
+	public void update() throws RemoteException{
 		setContext();
 	}
 

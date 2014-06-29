@@ -2,6 +2,7 @@ package main.java.ui.GUI;
 
 import exceptions.CountryNotInListException;
 import exceptions.PersistenceEndpointIOException;
+import exceptions.PlayerNameAlreadyChooseException;
 import interfaces.IGame;
 import interfaces.IGameManager;
 import interfaces.data.ICountry;
@@ -17,6 +18,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.UUID;
@@ -41,15 +44,19 @@ public class JGameManagerGUI extends JFrame {
          */
         @Override
         public void actionPerformed(ActionEvent event) {
-            JGameManagerGUI.this.openGameGUI();
+            try {
+                JGameManagerGUI.this.openGameGUI();
+            }catch (RemoteException e){
+                new JExceptionDialog(JGameManagerGUI.this,e);
+            }
         }
     }
 
-    public JGameManagerGUI(IGameManager manager){
+    public JGameManagerGUI(IGameManager manager) throws RemoteException{
         this.manager = manager;
         initialize();
     }
-    private void initialize()  {
+    private void initialize() throws RemoteException {
         //this.setSize(600, 400);
         //this.setPreferredSize(this.getSize());
 
@@ -85,7 +92,7 @@ public class JGameManagerGUI extends JFrame {
         int y = (int) ((dimension.getHeight()/2 - this.getHeight()) / 2);
         this.setLocation(x, y);
     }
-    public void openGameGUI(){
+    public void openGameGUI() throws RemoteException{
         IGame game;
         try {
             game = manager.addGame();
@@ -95,7 +102,7 @@ public class JGameManagerGUI extends JFrame {
         }
         openGameGUI(game);
     }
-    public void openGameGUI(IGame game){
+    public void openGameGUI(IGame game) throws RemoteException{
 
 
         String playerName = JGameManagerGUI.this.playerNameTxt.getText();
@@ -105,7 +112,14 @@ public class JGameManagerGUI extends JFrame {
         }
 
 
-        IPlayer currentPlayer = game.addPlayer(playerName);
+
+        IPlayer currentPlayer;
+        try {
+            currentPlayer = game.addPlayer(playerName);
+        }catch (PlayerNameAlreadyChooseException e){
+            new JExceptionDialog(this,e);
+            return;
+        }
         JGameGUI    gui = new JGameGUI(game,currentPlayer);
         GameCUI     cui = new GameCUI(game, null);
 

@@ -5,6 +5,7 @@ package main.java.ui.CUI;
  */
 import interfaces.ITurn;
 import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
 import main.java.ui.CUI.utils.CUI;
 import main.java.ui.CUI.utils.CommandListener;
@@ -17,7 +18,9 @@ import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
 
 
 import java.awt.event.ActionEvent;
+import java.rmi.RemoteException;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Diese Klasse dient ist zur Steuerung eines einzlenen Zuges über die Konsole gedacht
@@ -49,7 +52,15 @@ public class TurnCUI extends CUI {
          */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            for(ICountry c : turn.getPlayer().getCountries()){
+            IPlayer currentPlayer;
+            try{
+                currentPlayer = turn.getPlayer();
+            }catch (RemoteException e){
+                e.printStackTrace();
+                IO.println(e.getMessage());
+                return;
+            }
+             for(ICountry c : currentPlayer.getCountries()){
                 IO.println(c.toString());
             }
 
@@ -77,12 +88,26 @@ public class TurnCUI extends CUI {
         public void actionPerformed(ActionEvent actionEvent) {
             try {
                 turn.setNextStep();
-            }catch (TurnCompleteException e){
+            }
+            catch (RemoteException e){
+                e.printStackTrace();
+                IO.println(e.getMessage());
+                return;
+            }
+            catch (TurnCompleteException e){
                 IO.println("Dein Zug scheint beendet zu sein");
                 IO.println("Es wird autmatisch in die Runde gewechselt und mit dem Befehl next kannst du an den nächsten Spieler weitergeben.");
                 goIntoParentContext();
             }catch (ToManyNewArmysException e){
-                IO.println("Sie müssen noch " + turn.getNewArmysSize() + " Einheiten verteilen bevor sie in den nächsten step wechseln können ");
+                int newArmySize;
+                try {
+                    newArmySize = turn.getNewArmysSize();
+                }catch (RemoteException ex){
+                    ex.printStackTrace();
+                    IO.println(ex.getMessage());
+                    return;
+                }
+                IO.println("Sie müssen noch " + newArmySize + " Einheiten verteilen bevor sie in den nächsten step wechseln können ");
             }
         }
     }
@@ -105,36 +130,40 @@ public class TurnCUI extends CUI {
          */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            ITurn.steps currentStep = turn.getCurrentStep();
 
-            IO.printHeadline("Status des Zugs");
-            IO.println("Es ist " + turn.getPlayer() + " an der Reihe");
-            IO.println("Dein Zug befindet sich im status " + currentStep);
+            try {
+                ITurn.steps currentStep = turn.getCurrentStep();
 
-            if(currentStep == ITurn.steps.DISTRIBUTE){
-                if(turn.getNewArmysSize() > 0 ){
-                    IO.println("Du musst noch Einheiten auf deinen Ländern verteilen. Du darfst noch: "+ turn.getNewArmysSize() + " Einheiten verteilen");
+                IO.printHeadline("Status des Zugs");
+                IO.println("Es ist " + turn.getPlayer() + " an der Reihe");
+                IO.println("Dein Zug befindet sich im status " + currentStep);
+
+                if (currentStep == ITurn.steps.DISTRIBUTE) {
+                    if (turn.getNewArmysSize() > 0) {
+                        IO.println("Du musst noch Einheiten auf deinen Ländern verteilen. Du darfst noch: " + turn.getNewArmysSize() + " Einheiten verteilen");
+                    } else {
+                        IO.println("Du hast keine Einheiten mehr zu verteilen wechsel mit next in die nächste Stufe ");
+                    }
+                } else if (currentStep == ITurn.steps.FIGHT) {
+                    IO.println("Du befindest dich im Kampfmodus, greife Länder an!");
+
+                } else if (currentStep == ITurn.steps.MOVE) {
+                    IO.println("Du darfst noch einheiten bewegen.");
+
                 }
-                else {
-                    IO.println("Du hast keine Einheiten mehr zu verteilen wechsel mit next in die nächste Stufe ");
-                }
+
+                IO.printHeadline("Aufgabe des Spielers");
+                IOrder playerOrder = turn.getPlayer().getOrder();
+                IO.println(playerOrder.toString());
+
+                IO.printHeadline("Befehle des Turns");
+                IO.println("Dir stehen dazu folgende Komandos zur verfügung: ");
+                fireCommandEvent(new HelpListener());
+            }catch (RemoteException e){
+                e.printStackTrace();
+                IO.println(e.getMessage());
+                return;
             }
-            else if(currentStep == ITurn.steps.FIGHT){
-                IO.println("Du befindest dich im Kampfmodus, greife Länder an!");
-
-            }
-            else if(currentStep == ITurn.steps.MOVE){
-                IO.println("Du darfst noch einheiten bewegen.");
-
-            }
-
-            IO.printHeadline("Aufgabe des Spielers");
-            IOrder playerOrder = turn.getPlayer().getOrder();
-            IO.println(playerOrder.toString());
-
-            IO.printHeadline("Befehle des Turns");
-            IO.println("Dir stehen dazu folgende Komandos zur verfügung: ");
-            fireCommandEvent(new HelpListener());
 
         }
     }
@@ -165,6 +194,7 @@ public class TurnCUI extends CUI {
      */
     protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args){
         final String countryName;
+        final IPlayer currentPlayer;
         //Versuch einen namen des Landes als Argument zu holen
         try {
             countryName = args.get("parent").toStr();
@@ -173,8 +203,16 @@ public class TurnCUI extends CUI {
             return;
         }
 
+
+        try {
+            currentPlayer = this.turn.getPlayer();
+        }catch (RemoteException e){
+            e.printStackTrace();
+            IO.println(e.getMessage());
+            return;
+        }
         //Versuch das Land zu finden
-        ICountry found = this.turn.getPlayer().getCountry(countryName);
+        ICountry found = currentPlayer.getCountry(countryName);
         if(found == null){
             IO.println("Ihr Land " + countryName + " konnte nicht gefunden werden.");
         }

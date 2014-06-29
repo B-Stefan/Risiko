@@ -1,7 +1,9 @@
 package main.java.ui.GUI.utils.tableModels;
 
-import logic.Game;
+import interfaces.IGame;
+
 import javax.swing.table.DefaultTableModel;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,14 +16,14 @@ public class GameTableModel extends DefaultTableModel{
     /**
      * Spiel das in dieser Zeile angezeigt werden soll
      */
-	private final List<Game> games;
+	private final List<IGame> games;
 
     /**
      * Klasse, die zur Anzeige eines Spiels in einer JTable dient
      * @see javax.swing.JTable
      * @param games Spiel das angezeigt werden soll
      */
-    public GameTableModel(final List<Game> games) {
+    public GameTableModel(final List<IGame> games) throws RemoteException{
         super();
         this.games = games;
         this.columnIdentifiers = new Vector<String>();
@@ -36,7 +38,7 @@ public class GameTableModel extends DefaultTableModel{
      * @param games Spiel das angezeigt werden soll
      * @param columnNames Namen der Spalten
      */
-    public GameTableModel(final List<Game> games, final Vector<String> columnNames) {
+    public GameTableModel(final List<IGame> games, final Vector<String> columnNames) throws RemoteException{
 		super();
 		this.games = games;
 		this.columnIdentifiers = columnNames;
@@ -45,12 +47,12 @@ public class GameTableModel extends DefaultTableModel{
 
     /**
      * Setzt die Daten aus dem IGame in die Rows
-     * @see logic.Game
+     * @see interfaces.IGame
      * @param games
      */
-	public void setDataVector(final List<Game> games){
+	public void setDataVector(final List<IGame> games) throws RemoteException{
         final Vector<Vector<String>> rows = new Vector<Vector<String>>();
-        for (final Game game : games) {
+        for (final IGame game : games) {
             final Vector<String> gameInVector = new Vector<String>();
             gameInVector.add("SavedGame");
             gameInVector.add(game.getPlayers().size() + " Player");

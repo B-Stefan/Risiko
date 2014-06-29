@@ -1,6 +1,7 @@
 package main.java.ui.GUI;
 
 import java.awt.*;
+import java.rmi.RemoteException;
 
 import javax.swing.*;
 
@@ -20,7 +21,7 @@ public class JGameGUI extends JFrame {
     private final JCurrentStateInfoGUI currentStateInfoGUI;
     private final JCardInfo cardInfo;
 
-    public JGameGUI(IGame game, IPlayer player){
+    public JGameGUI(IGame game, IPlayer player) throws RemoteException{
 		super("Risiko");
 		this.game = game;
 		this.player = player;
@@ -66,7 +67,7 @@ public class JGameGUI extends JFrame {
         return south;
 	}
 
-    public void update (){
+    public void update () throws RemoteException{
         playersInfo.update();
         orderInfo.update();
         currentStateInfoGUI.update();

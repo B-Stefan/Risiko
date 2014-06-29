@@ -1,7 +1,9 @@
 package main.java.ui.CUI;
 
 import java.awt.event.ActionEvent;
+import java.rmi.RemoteException;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import exceptions.*;
 import interfaces.IFight;
@@ -23,7 +25,7 @@ public class FightCUI extends CUI {
 	public class attackingCommandListener extends CommandListener{
 		/**
          * Konstruktor, der Name und Argumente des Befehls festlegen
-         */		
+         */
 		public attackingCommandListener() {
 			super("attack", "Zum angreifen des zuvor ausgewählten Landes");
 			this.addArgument(new CommandListenerArgument("noOfArmies"));
@@ -37,38 +39,38 @@ public class FightCUI extends CUI {
 		 */
 		public void actionPerformed(ActionEvent arg) {
 			final int noOfArmies;
-			
+
 			try {
                 noOfArmies = this.getArgument("noOfArmies").toInt();
             }catch (InvalidCommandListernArgumentException e){
                 IO.println(e.getMessage());
                 return;
             }
-			
+
 			try{
 				fight.attacking(noOfArmies);
-			}catch (NotEnoughArmiesToAttackException e){
+			}catch (NotEnoughArmiesToAttackException | InvalidFightException | InvalidAmountOfArmiesException | AlreadyDicedException | RemoteException e)
+            {
                 IO.println(e.getMessage());
                 return;
-            }catch (InvalidAmountOfArmiesException e){
-                IO.println(e.getMessage());
-                return;
-            } catch (AlreadyDicedException e) {
-				IO.println(e.getMessage());
-				return;
-			} catch (InvalidFightException e) {
-				IO.println(e.getMessage());
-				return;
-			}
+            }
 			IO.println("");
 			IO.println("Angreifer Würfel:");
-			for(IDice d : fight.getAgressorsDice()){
+            List<IDice> agressorDices;
+            try {
+                agressorDices = fight.getAgressorsDice();
+            }catch (RemoteException e){
+                e.printStackTrace();
+                IO.println(e.getMessage());
+                return;
+            }
+			for(IDice d : agressorDices){
 				IO.println(d.toString());
 			}
 			IO.println("");
-		}		
+		}
 	}
-	
+
 	public class defendingCommandListener extends CommandListener{
 		/**
          * Konstruktor, der Name und Argumente des Befehls festlegen
@@ -124,25 +126,31 @@ public class FightCUI extends CUI {
 			} catch (InvalidFightException e) {
 				IO.println(e.getMessage());
 				return;
-			}catch (NotTheOwnerException | ToManyNewArmysException | AggessorNotThrowDiceException e) {
+			}catch (NotTheOwnerException | ToManyNewArmysException | AggessorNotThrowDiceException | RemoteException e) {
                 IO.println(e.getMessage());
                 return;
             }
-			IO.println("");
-			IO.println("Verteidiger Würfel:");
-			for(IDice d : fight.getDefendersDice()){
-				IO.println(d.toString());
-			}
-			IO.println("");
-			//Erste Zeile Angreifer, zweite Zeile Verteidiger, dritte Zeile übernommen ja (1) & nein (0)
-			int[] result = fight.getResult();
-			IO.println("Der Angreifer hat " + result[0] + " verloren");
-			IO.println("Der Verteidiger hat " + result[1] + " verloren");
-			IO.println("");
-			if(result[2] == 1){
-				IO.println("Der Angreifer hat " + fight.getTo().getName() + " erobert");
-				IO.println("");
-			}
+            try  {
+                IO.println("");
+                IO.println("Verteidiger Würfel:");
+                for(IDice d : fight.getDefendersDice()){
+                    IO.println(d.toString());
+                }
+                IO.println("");
+                //Erste Zeile Angreifer, zweite Zeile Verteidiger, dritte Zeile übernommen ja (1) & nein (0)
+                int[] result = fight.getResult();
+                IO.println("Der Angreifer hat " + result[0] + " verloren");
+                IO.println("Der Verteidiger hat " + result[1] + " verloren");
+                IO.println("");
+                if(result[2] == 1){
+                    IO.println("Der Angreifer hat " + fight.getTo().getName() + " erobert");
+                    IO.println("");
+                }
+            }catch (RemoteException e){
+                e.printStackTrace();
+                IO.println(e.getMessage());
+                return;
+            }
 		}
 		
 	}

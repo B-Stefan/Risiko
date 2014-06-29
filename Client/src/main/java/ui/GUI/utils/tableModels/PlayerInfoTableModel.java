@@ -1,13 +1,12 @@
 package main.java.ui.GUI.utils.tableModels;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 import interfaces.IGame;
 import interfaces.data.IPlayer;
-import logic.*;
-import logic.data.*;
 import exceptions.GameNotStartedException;
 
 /**
@@ -30,7 +29,7 @@ public class PlayerInfoTableModel extends DefaultTableModel{
      * @param game Spiel mit den Spielern
      * @param columnNames Spaltenüberschriften
      */
-	public PlayerInfoTableModel(final IGame game, final Vector<String> columnNames) {
+	public PlayerInfoTableModel(final IGame game, final Vector<String> columnNames) throws RemoteException{
 		super();
 		this.game = game;
 		this.columnIdentifiers = columnNames;
@@ -44,7 +43,7 @@ public class PlayerInfoTableModel extends DefaultTableModel{
      *
      * @param players Spieler, die in der Liste auftauchen sollen
      */
-	public void setDataVector(final List<IPlayer> players) {
+	public void setDataVector(final List<IPlayer> players) throws RemoteException{
         final Vector<Vector<String>> rows = new Vector<Vector<String>>();
         for (final IPlayer player : players) {
             final Vector<String> playerInVector = new Vector<String>();

@@ -7,6 +7,7 @@ import main.java.ui.GUI.JGameManagerGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
 public class JGameLoadMenu extends JMenu{
 
     private final IGameManager manager;
-    public JGameLoadMenu(IGameManager manager, JGameManagerGUI GameManagerGUI){
+    public JGameLoadMenu(IGameManager manager, JGameManagerGUI GameManagerGUI) throws RemoteException{
         super("Laden");
         this.manager = manager;
 

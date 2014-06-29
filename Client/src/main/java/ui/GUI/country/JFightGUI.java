@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 /**star
  * Created by Stefan on 18.06.14.
@@ -30,7 +31,7 @@ public class JFightGUI extends JModalDialog {
             JFightGUI.this.dispose();
         }
     }
-    public JFightGUI(final Component parent, final IFight fight)  {
+    public JFightGUI(final Component parent, final IFight fight) throws RemoteException {
         super(parent,"Fight",ModalityType.APPLICATION_MODAL);
         this.fight = fight;
         this.setLayout(new BorderLayout(5,5));

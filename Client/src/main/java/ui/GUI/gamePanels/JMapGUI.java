@@ -15,6 +15,7 @@ import main.java.ui.GUI.utils.JExceptionDialog;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 
 /**
@@ -58,7 +59,7 @@ public class JMapGUI extends JComponent {
                 ITurn currentTurn;
                 try {
                    currentTurn =  game.getCurrentRound().getCurrentTurn();
-                }catch (GameNotStartedException e){
+                }catch (GameNotStartedException | RemoteException e){
                     new JExceptionDialog(JMapGUI.this,e);
                     return;
                 }
@@ -77,7 +78,7 @@ public class JMapGUI extends JComponent {
      * @param game Spiel des der GameEngine
      *             @see interfaces.IGame
      */
-    public JMapGUI(IGame game){
+    public JMapGUI(IGame game) throws RemoteException{
         super();
         this.game = game;
         this.map = game.getMap();

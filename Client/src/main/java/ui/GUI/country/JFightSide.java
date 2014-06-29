@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.Stack;
 
 /**
@@ -65,14 +66,29 @@ public class JFightSide extends Panel {
                     JFightSide.this.fight.attacking(numberOfArmies);
                 }
 
-            }catch (AggessorNotThrowDiceException | NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException |InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException  | NotEnoughArmiesToAttackException| InvalidFightException | NotTheOwnerException e ){
+            }catch (AggessorNotThrowDiceException | NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException |InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException  | NotEnoughArmiesToAttackException| InvalidFightException | NotTheOwnerException | RemoteException e ){
                 new JExceptionDialog(frame,e);
                 return;
             }
 
-            JFightSide.this.update();
+            /**
+             * Try to update GUI
+             */
+            try {
+                JFightSide.this.update();
+            }catch (RemoteException e){
+             new JExceptionDialog(JFightSide.this,e);
+            }
+
+
             if(JFightSide.this.side == sides.DEFENDER){
-                int[] result = JFightSide.this.fight.getResult();
+                int[] result;
+                try {
+                    result = JFightSide.this.fight.getResult();
+                }catch (RemoteException e){
+                    new JExceptionDialog(JFightSide.this,e);
+                    return;
+                }
                 int defenderLostArmies = result[1];
                 int aggressorLostArmies = result[0];
                 int aggresorWon = result[2];
@@ -92,7 +108,7 @@ public class JFightSide extends Panel {
         }
     }
 
-    public JFightSide(IFight fight, sides side ){
+    public JFightSide(IFight fight, sides side ) throws RemoteException{
         this.fight = fight;
         this.side = side;
         this.numberOfArmiesText = new JTextField(SwingConstants.RIGHT);
@@ -120,7 +136,7 @@ public class JFightSide extends Panel {
         this.add(throwDice);
 
     }
-    public void update (){
+    public void update () throws RemoteException{
 
         final Window root = SwingUtilities.getWindowAncestor(this);
         if(root!= null){

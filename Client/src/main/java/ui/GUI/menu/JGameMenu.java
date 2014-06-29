@@ -8,6 +8,7 @@ import main.java.ui.GUI.utils.JExceptionDialog;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 /**
  * Created by Stefan on 25.06.14.
@@ -32,7 +33,7 @@ public class JGameMenu extends JMenu{
             }
             try {
                 JGameMenu.this.game.save();
-            }catch (PersistenceEndpointIOException e){
+            }catch (PersistenceEndpointIOException | RemoteException e){
                 new JExceptionDialog(JGameMenu.this,e);
                 return;
             }

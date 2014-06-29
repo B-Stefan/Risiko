@@ -10,6 +10,7 @@ import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
 
 import java.awt.event.ActionEvent;
+import java.rmi.RemoteException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class GameManagerCUI extends CUI {
             List<IGame> gameList;
             try {
                 gameList = gameManager.getGameList();
-            }catch (PersistenceEndpointIOException e ){
+            }catch (PersistenceEndpointIOException | RemoteException e ){
                 IO.println(e.getMessage());
                 return;
             }
@@ -68,7 +69,7 @@ public class GameManagerCUI extends CUI {
            IGame newGame;
             try {
                 newGame = gameManager.addGame();
-            }catch (PersistenceEndpointIOException e){
+            }catch (PersistenceEndpointIOException | RemoteException e){
                 IO.println(e.getMessage());
                 return;
             }
@@ -102,7 +103,7 @@ public class GameManagerCUI extends CUI {
 
             try {
                 gameManager.saveGame(index);
-            }catch (PersistenceEndpointIOException e){
+            }catch (PersistenceEndpointIOException | RemoteException e){
                 IO.println(e.getMessage());
                 return;
             }
@@ -144,7 +145,7 @@ public class GameManagerCUI extends CUI {
         List<IGame> games;
         try {
             games = this.gameManager.getGameList();
-        }catch (PersistenceEndpointIOException e){
+        }catch (PersistenceEndpointIOException | RemoteException e){
             IO.println(e.getMessage());
             return;
         }

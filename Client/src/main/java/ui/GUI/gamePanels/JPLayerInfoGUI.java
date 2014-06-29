@@ -1,6 +1,7 @@
 package main.java.ui.GUI.gamePanels;
 
 import java.awt.Dimension;
+import java.rmi.RemoteException;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
@@ -16,7 +17,7 @@ public class JPLayerInfoGUI extends JScrollPane{
     private final JTable playersTable;
 	
 	
-	public JPLayerInfoGUI(IGame game){
+	public JPLayerInfoGUI(IGame game) throws RemoteException{
         super();
 		this.game = game;
         final Vector<String> spalten = new Vector<String>();
@@ -31,7 +32,7 @@ public class JPLayerInfoGUI extends JScrollPane{
         this.setPreferredSize(new Dimension(150, 105));
 	}
 
-	public void update() {
+	public void update() throws RemoteException{
 		this.tModel.setDataVector(game.getPlayers());
 	}
 }

@@ -9,6 +9,7 @@ import exceptions.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 /**
  * Created by Stefan on 09.06.14.
@@ -32,12 +33,17 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
                 IFight fight;
                 try {
                     fight = JCountryFightMenu.this.turn.fight(from, to);
-                }catch (TurnNotInCorrectStepException | TurnNotAllowedStepException | ToManyNewArmysException | NotTheOwnerException e ){
+                }catch (TurnNotInCorrectStepException | TurnNotAllowedStepException | ToManyNewArmysException | NotTheOwnerException | RemoteException e ){
                     new JExceptionDialog(JCountryFightMenu.this,e);
                     return;
                 }
                 JPopupMenu menu = (JPopupMenu) JCountryFightMenu.this.getParent();
-                JModalDialog modal = new JFightGUI(menu.getInvoker(),fight);
+                try {
+                    JModalDialog modal = new JFightGUI(menu.getInvoker(),fight);
+                }catch (RemoteException e){
+                    new JExceptionDialog(JCountryFightMenu.this,e);
+                    return;
+                }
 
             }
         }

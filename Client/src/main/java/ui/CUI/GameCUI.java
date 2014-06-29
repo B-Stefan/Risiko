@@ -12,6 +12,7 @@ import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
 
 
 import java.awt.event.ActionEvent;
+import java.rmi.RemoteException;
 import java.util.LinkedHashMap;
 
 
@@ -62,7 +63,7 @@ public class GameCUI extends CUI implements Runnable {
             try {
                 GameCUI.this.game.onPlayerAdd(name);
             }
-            catch (GameAllreadyStartedException e ){
+            catch (GameAllreadyStartedException | RemoteException e ){
                 IO.println(e.getMessage());
                 return;
             }
@@ -92,13 +93,7 @@ public class GameCUI extends CUI implements Runnable {
         public void actionPerformed(ActionEvent actionEvent) {
            try {
                game.setNextRound();
-           }catch (RoundNotCompleteException e){
-               IO.println(e.getMessage());
-               return;
-           }catch (ToManyNewArmysException e){
-               IO.println(e.getMessage());
-               return;
-           }catch (GameNotStartedException e){
+           }catch (RoundNotCompleteException | RemoteException | ToManyNewArmysException | GameNotStartedException e){
                IO.println(e.getMessage());
                return;
            }catch (GameIsCompletedException e){
@@ -111,9 +106,13 @@ public class GameCUI extends CUI implements Runnable {
                IO.printHeadline("Winner");
                IO.printHeadline("IS");
 
-               IO.printHeadline("");
-               IO.printHeadline(game.getWinner().toString());
-               IO.printHeadline("");
+               try {
+                   IO.printHeadline("");
+                   IO.printHeadline(game.getWinner().toString());
+                   IO.printHeadline("");
+               }catch (RemoteException ex){
+                   IO.println(ex.getMessage());
+               }
                return;
            }
            goIntoChildContext();
@@ -138,7 +137,7 @@ public class GameCUI extends CUI implements Runnable {
         /**
          * Gibt alle Player auf der Konsole aus
          */
-        private void printPlayers (){
+        private void printPlayers () throws RemoteException{
             for (IPlayer player : GameCUI.this.game.getPlayers()) {
                 int index = (GameCUI.this.game.getPlayers().indexOf(player) + 1);
                 IO.println(index + ". Player: " + player.toString());
@@ -167,7 +166,7 @@ public class GameCUI extends CUI implements Runnable {
             catch (final GameAllreadyStartedException e ){
                 IO.println(e.getMessage());
                 return;
-            }catch (final PlayerAlreadyHasAnOrderException e){
+            }catch (final PlayerAlreadyHasAnOrderException | RemoteException e){
                 IO.println(e.getMessage());
                 return;
             }
@@ -177,7 +176,12 @@ public class GameCUI extends CUI implements Runnable {
             IO.println("Spielerliste");
 
 
-            this.printPlayers(); //Gibt alle Spieler aus
+            try {
+                this.printPlayers(); //Gibt alle Spieler aus
+            }catch (RemoteException e){
+                IO.println(e.getMessage());
+                return;
+            }
             GameCUI.this.goIntoChildContext(); //Bewegt die Konsole in den Untergeordneten Kontext
 
 
@@ -205,7 +209,15 @@ public class GameCUI extends CUI implements Runnable {
      */
     @Override
     public void listenConsole()  {
-        if ( this.game.getCurrentGameState() == IGame.gameStates.WAITING){
+        IGame.gameStates currentState;
+        try {
+            currentState = this.game.getCurrentGameState();
+        }catch (RemoteException e){
+            IO.println(e.getMessage());
+            return;
+        }
+
+        if ( currentState == IGame.gameStates.WAITING){
             IO.println("Willkommen bei Risiko mit dem command help erhalten Sie eine Übersicht über die Möglichkeiten");
         }
         super.listenConsole();
@@ -237,7 +249,7 @@ public class GameCUI extends CUI implements Runnable {
             round = game.getCurrentRound();
 
         }
-        catch (GameNotStartedException e ){
+        catch (GameNotStartedException | RemoteException  e ){
             IO.println(e.getMessage());
             return;
         }

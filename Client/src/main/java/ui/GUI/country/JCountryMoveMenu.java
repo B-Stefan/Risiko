@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 /**
  * Created by Stefan on 09.06.14.
@@ -46,7 +47,7 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
 
                 try {
                     turn.moveArmy(from,to,numberOfArmyies);
-                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException e ){
+                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException  | RemoteException e ){
                    new JExceptionDialog(JCountryMoveMenu.this,e);
                    return;
                 }
