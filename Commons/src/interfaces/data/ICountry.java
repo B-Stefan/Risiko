@@ -3,6 +3,8 @@ import interfaces.data.IArmy;
 import interfaces.data.IPlayer;
 
 import java.awt.Color;
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -10,7 +12,7 @@ import exceptions.CountriesNotConnectedException;
 import exceptions.CountryNotInListException;
 
 
-public interface ICountry{
+public interface ICountry extends Remote, Serializable {
 
     /**
      * Verbindet 2 Länder bidirektional

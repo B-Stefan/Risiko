@@ -8,6 +8,7 @@ import interfaces.data.IContinent;
 import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
@@ -128,31 +129,36 @@ public class OrderManager {
      */
     public static IOrder createRandomOrder(final IPlayer agend, final IGame game) {
 
-        int randIndex = new Random().nextInt(orderTypes.length);
-        Class randOrderType = orderTypes[randIndex];
+        try {
+            int randIndex = new Random().nextInt(orderTypes.length);
+            Class randOrderType = orderTypes[randIndex];
 
 
 
-        if(randOrderType == OrderTakeOverContinents.class){
+            if(randOrderType == OrderTakeOverContinents.class){
 
-            IContinent contigent1  = getRandomContinent(game.getMap().getContinents());
-            IContinent contigent2  = getRandomContinent(game.getMap().getContinents(), contigent1);
+                IContinent contigent1  = getRandomContinent(game.getMap().getContinents());
+                IContinent contigent2  = getRandomContinent(game.getMap().getContinents(), contigent1);
 
-            return new OrderTakeOverContinents(contigent1,contigent2,agend);
-        }
-        else if(randOrderType == OrderTakeOverCountries.class){
-            boolean withTwoArmys = new Random().nextBoolean();
-            return new OrderTakeOverCountries(withTwoArmys,agend);
-        }
+                return new OrderTakeOverContinents(contigent1,contigent2,agend);
+            }
+            else if(randOrderType == OrderTakeOverCountries.class){
+                boolean withTwoArmys = new Random().nextBoolean();
+                return new OrderTakeOverCountries(withTwoArmys,agend);
+            }
 
-        else if(randOrderType == OrderTerminatePlayer.class){
-            IPlayer playerToTerminate = getRandomPlayer(game.getPlayers(),agend);
-            return new OrderTerminatePlayer(playerToTerminate,agend);
-        }else if(randOrderType == OrderTakeOverThreeContinents.class){
-        	IContinent contigent1  = getRandomContinent(game.getMap().getContinents());
-            IContinent contigent2  = getRandomContinent(game.getMap().getContinents(), contigent1);
+            else if(randOrderType == OrderTerminatePlayer.class){
+                IPlayer playerToTerminate = getRandomPlayer(game.getPlayers(),agend);
+                return new OrderTerminatePlayer(playerToTerminate,agend);
+            }else if(randOrderType == OrderTakeOverThreeContinents.class){
+                IContinent contigent1  = getRandomContinent(game.getMap().getContinents());
+                IContinent contigent2  = getRandomContinent(game.getMap().getContinents(), contigent1);
 
-            return new OrderTakeOverThreeContinents(contigent1,contigent2,agend, game.getMap().getContinents());
+                return new OrderTakeOverThreeContinents(contigent1,contigent2,agend, game.getMap().getContinents());
+            }
+        }catch (RemoteException e){
+            //Kann nicht auftreten, da keine Netzwerkommunikation stattfinet
+            throw new RuntimeException(e);
         }
         return null;
 

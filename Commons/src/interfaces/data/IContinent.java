@@ -1,9 +1,11 @@
 package interfaces.data;
 
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.Map;
 import java.util.UUID;
 
-public interface IContinent {
+public interface IContinent extends Remote, Serializable {
 
 	public String getName();
 

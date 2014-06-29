@@ -1,22 +1,22 @@
 package persistence.objects;
-import logic.Game;
-import logic.data.*;
+import exceptions.PersistenceEndpointIOException;
+import interfaces.data.ICountry;
+import interfaces.data.IMap;
 import logic.data.Map;
 import persistence.PersistenceManager;
-import persistence.exceptions.PersistenceEndpointIOException;
 
 
 import java.util.*;
 
-public class PersistenceMap extends PersitenceObject<Map> {
+public class PersistenceMap extends PersitenceObject<IMap> {
 
     public final List<String> players = new ArrayList<String>();
     private final UUID id;
     private final List<String> countries = new ArrayList<String>();
-    public PersistenceMap(Map map, PersistenceManager manager) throws PersistenceEndpointIOException{
+    public PersistenceMap(IMap map, PersistenceManager manager) throws PersistenceEndpointIOException{
         super(map,manager);
         this.id = map.getId();
-        for (Country country: map.getCountries()){
+        for (ICountry country: map.getCountries()){
             this.countries.add(country.getId().toString());
         }
 
@@ -28,7 +28,7 @@ public class PersistenceMap extends PersitenceObject<Map> {
     }
 
     @Override
-    public Map convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
+    public IMap convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
         /*
          * Erstellen eines neuen Map Objects, da die Map nicht dynamisch sondern statisch ist reicht hier einfach das erzeugen.
          * Sollte sicht dies ändern müsste hier das laden der Countries angestoßen werden

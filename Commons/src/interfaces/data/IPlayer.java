@@ -4,6 +4,8 @@ import interfaces.data.Orders.IOrder;
 import interfaces.data.cards.*;
 
 import java.awt.Color;
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
@@ -14,7 +16,7 @@ import exceptions.CountryNotInListException;
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface IPlayer {
+public interface IPlayer extends Remote, Serializable {
 
 	/**
      * Getter für den Namen des Spielers

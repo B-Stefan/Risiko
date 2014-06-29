@@ -7,13 +7,16 @@ import interfaces.data.IPlayer;
 import interfaces.data.ICountry;
 import interfaces.data.cards.ICardDeck;
 
+import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface ITurn {
+public interface ITurn extends Remote, Serializable {
 
     /**
      * Die Steps bilden die möglichen Schritte eines Turns ab
@@ -52,18 +55,18 @@ public interface ITurn {
      * Gibt Den Wahrheitswert heraus ob in diesem Turn bisher ein TakeOver stattgefunden hat
      * @return
      */
-    public boolean getTakeOverSucess();
+    public boolean getTakeOverSucess() throws RemoteException;
     /**
      * Setzt den Wahrheitswert, ob in diesem Turn ein TakeOver stattgefunden hat
      * @param b
      */
-    public void setTakeOverSucess(boolean b);
+    public void setTakeOverSucess(boolean b)  throws RemoteException;
 
     /**
      *
      * @return - Aktueller Spieler, der diesen Zug durchführen muss
      */
-    public IPlayer getPlayer ();
+    public IPlayer getPlayer () throws RemoteException;
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
      * @see logic.Turn.steps
@@ -83,7 +86,7 @@ public interface ITurn {
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughCardsToExchangeException
      */
-    public void exchangeCards() throws ToManyNewArmysException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException;
+    public void exchangeCards() throws ToManyNewArmysException, RemoteException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException;
 
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
@@ -95,7 +98,7 @@ public interface ITurn {
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(ICountry position, int numberOfArmys) throws ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughNewArmysException, NotTheOwnerException ;
+    public void placeNewArmy(ICountry position, int numberOfArmys) throws ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughNewArmysException, NotTheOwnerException, RemoteException ;
 
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
@@ -107,7 +110,7 @@ public interface ITurn {
      * @throws NotTheOwnerException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(ICountry position) throws  ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException;
+    public void placeNewArmy(ICountry position) throws  ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException, RemoteException;
 
 
     /**
@@ -123,7 +126,7 @@ public interface ITurn {
      * @throws NotTheOwnerException
      * @throws ToManyNewArmysException
      */
-    public IFight fight (ICountry from, ICountry to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException;
+    public IFight fight (ICountry from, ICountry to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException;
 
     /**
      * Bewegt eine Einheit von einem Land in ein anderes Land.
@@ -137,7 +140,7 @@ public interface ITurn {
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      */
-    public void moveArmy(ICountry from,ICountry to, int numberOfArmies) throws ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException;
+    public void moveArmy(ICountry from,ICountry to, int numberOfArmies) throws ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException;
     /**
      * Bewegt eine Armee auf die neue Position.
      * Dise Methdoe bildet den 2. Step in einem Zug ab.
@@ -148,26 +151,26 @@ public interface ITurn {
      * @throws CountriesNotConnectedException
      * @throws ArmyAlreadyMovedException
      */
-    public void moveArmy(ICountry from,ICountry to, IArmy army) throws ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException;
+    public void moveArmy(ICountry from,ICountry to, IArmy army) throws ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException;
 
     /**
      * Überprüft, ob der Turn abgeschlossen wurde.
      * @return True wenn der Turn abgeschlossen wurde, false wenn nicht
      * @throws ToManyNewArmysException
      */
-    public boolean isComplete() throws ToManyNewArmysException;
+    public boolean isComplete() throws ToManyNewArmysException, RemoteException;
     /**
      * Gibt den aktuellen Step zurück
      * @return
      */
-    public steps getCurrentStep();
+    public steps getCurrentStep() throws RemoteException;
     /**
      * Gibt den folgenden step zurück. Ändert jedoch keine Eigenschaften des Turns
      * Dient dazu rauszufinden welcher step als nächstes dran wäre. Dabei kann null zurückgegeben werden, sobald kein nächster Step mehr da ist.
      * @return - Nächster Step der dran wäre
      */
 
-    public steps getNextStep ();
+    public steps getNextStep () throws RemoteException;
     /**
      * Versetzt den Turn in die nächste Stufe.
      *
@@ -175,20 +178,20 @@ public interface ITurn {
      * @throws ToManyNewArmysException
      */
 
-    public void setNextStep() throws TurnCompleteException, ToManyNewArmysException ;
+    public void setNextStep() throws TurnCompleteException, ToManyNewArmysException, RemoteException ;
 
     /**
      * Gibt die Anzahl der noch zu verteilenden Armeen zurück
      * @see #placeNewArmy(Country)
      * @return - Anzahl der noch zu verteilenden Armeen
      */
-    public int getNewArmysSize();
+    public int getNewArmysSize() throws RemoteException;
 
 
     /**
      * Gibt die in diesem Turn erlaubten steps zurück.
      * @return - In diesem Turn erlaubte steps
      */
-    public Queue<steps>  getAllowedSteps();
+    public Queue<steps>  getAllowedSteps() throws RemoteException;
 
 }

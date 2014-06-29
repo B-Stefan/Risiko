@@ -4,13 +4,16 @@ import exceptions.*;
 import interfaces.data.IMap;
 import interfaces.data.IPlayer;
 
+import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface IGame {
+public interface IGame extends Remote, Serializable {
 
     public static enum gameStates {
         WAITING, // Wait for start input
@@ -25,7 +28,7 @@ public interface IGame {
      * @throws exceptions.GameAllreadyStartedException
      * @throws exceptions.PlayerAlreadyHasAnOrderException
      */
-    public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAllreadyStartedException, PlayerAlreadyHasAnOrderException;
+    public void onGameStart() throws RemoteException, NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAllreadyStartedException, PlayerAlreadyHasAnOrderException;
 
 
 
@@ -36,20 +39,20 @@ public interface IGame {
      * @throws GameNotStartedException
      * @throws GameIsCompletedException
      */
-    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException,GameNotStartedException, GameIsCompletedException;
+    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException,GameNotStartedException, GameIsCompletedException,RemoteException;
 
     /**
      * Gibt die Aktelle Runde des Spielers zurück
      * @return
      * @throws GameNotStartedException
      */
-    public IRound getCurrentRound() throws GameNotStartedException;
+    public IRound getCurrentRound() throws GameNotStartedException,RemoteException;
 
     /**
      * Gibt den aktuellen Status des Spiels zurück
      * @return Status des Spiels
      */
-    public gameStates getCurrentGameState();
+    public gameStates getCurrentGameState() throws RemoteException;
 
     /**
      * Wird ausgelöst, wenn durch die GUI ein Spieler das Spiel verlässt
@@ -58,7 +61,7 @@ public interface IGame {
      *
      * @throws exceptions.PlayerNotExsistInGameException
      */
-    public void onPlayerDelete(final IPlayer player) throws PlayerNotExsistInGameException;
+    public void onPlayerDelete(final IPlayer player) throws PlayerNotExsistInGameException,RemoteException;
 
 
 
@@ -67,21 +70,21 @@ public interface IGame {
      *
      * @param name - Der Name des neuen Spielers
      */
-    public void onPlayerAdd(final String name) throws GameAllreadyStartedException;
+    public void onPlayerAdd(final String name) throws GameAllreadyStartedException,RemoteException;
 
     /**
      * Gibt den Gewinner zurück, der das Spiel gewonnen hat
      * Wenn keiner gewonnen hat gibt die Methode null zurück
      * @return Sieger des Spiels
      */
-    public IPlayer getWinner ();
+    public IPlayer getWinner () throws RemoteException;
 
     /**
      * Gibt die Karte des Spiels zurück
      *
      * @return
      */
-    public IMap getMap();
+    public IMap getMap() throws RemoteException;
 
 
     /**
@@ -89,25 +92,25 @@ public interface IGame {
      *
      * @param name - Name des neuen Spielers
      */
-    public IPlayer addPlayer(final String name) throws PlayerNameAlreadyChooseException;
+    public IPlayer addPlayer(final String name) throws PlayerNameAlreadyChooseException,RemoteException;
 
     /**
      * @return Liste der Spieler
      */
-    public List<IPlayer> getPlayers();
+    public List<IPlayer> getPlayers() throws RemoteException;
 
 
     /**
      * Getter für die ID
      * @return UUID des Spiels
      */
-    public UUID getId();
+    public UUID getId() throws RemoteException;
 
     /**
      * Speicher das Spiel ab
      *
      */
-    public boolean save () throws PersistenceEndpointIOException;
+    public boolean save () throws PersistenceEndpointIOException, RemoteException;
 
 
 

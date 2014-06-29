@@ -1,31 +1,32 @@
 package persistence.objects;
 
+import exceptions.PersistenceEndpointIOException;
+import interfaces.data.ICountry;
+import interfaces.data.IMap;
+import interfaces.data.IPlayer;
 import logic.data.Army;
 import logic.data.Country;
 import logic.data.Map;
 import logic.data.Player;
 import exceptions.CountriesNotConnectedException;
 import persistence.PersistenceManager;
-import persistence.exceptions.PersistenceEndpointIOException;
 
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class PersistencePlayer extends PersitenceObject<Player> {
+public class PersistencePlayer extends PersitenceObject<IPlayer> {
 
-    private transient Player player;
     private final UUID id;
     private final String name;
     private final Color color;
     private final HashMap<UUID,Integer> countries = new HashMap<UUID,Integer>();
-    public PersistencePlayer(Player player, PersistenceManager manager) throws PersistenceEndpointIOException{
+    public PersistencePlayer(IPlayer player, PersistenceManager manager) throws PersistenceEndpointIOException{
         super(player, manager);
-        this.player = player;
         this.name = player.getName();
         this.color = player.getColor();
         this.id =  player.getId();
-        for (Country c : player.getCountries()){
+        for (ICountry c : player.getCountries()){
             countries.put(c.getId(),c.getNumberOfArmys());
         }
     }
@@ -36,16 +37,16 @@ public class PersistencePlayer extends PersitenceObject<Player> {
     }
 
     @Override
-    public Player convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
+    public IPlayer convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
 
-        Map defaultMap = manager.getMapHandler().get(Map.DEFAULT_MAP_UUID);
+        IMap defaultMap = manager.getMapHandler().get(Map.DEFAULT_MAP_UUID);
         if(defaultMap == null){
             throw new PersistenceEndpointIOException("Die Karte "+Map.DEFAULT_MAP_UUID+ " konnte nicht gefunden werden ");
         }
 
         //Erstellen einer Liste aller Countries um einfach darin zu suchen, die Map hat bereits eine GetCountry(String) die auf dem Namen bassiert
-        HashMap<UUID,Country> allCountries = new HashMap<UUID,Country>();
-        for(Country country: defaultMap.getCountries()){
+        HashMap<UUID,ICountry> allCountries = new HashMap<UUID,ICountry>();
+        for(ICountry country: defaultMap.getCountries()){
             allCountries.put(country.getId(),country);
         }
 
@@ -54,7 +55,7 @@ public class PersistencePlayer extends PersitenceObject<Player> {
 
         // Zuordnen der Länder und Einheiten
         for(java.util.Map.Entry<UUID,Integer>  entry : this.countries.entrySet()){
-            Country mapCountry = allCountries.get(entry.getKey());
+            ICountry mapCountry = allCountries.get(entry.getKey());
 
             //wenn nicht gefunden
             if (mapCountry == null){

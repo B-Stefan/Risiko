@@ -1,7 +1,7 @@
 package persistence.objects;
 
+import exceptions.PersistenceEndpointIOException;
 import persistence.PersistenceManager;
-import persistence.exceptions.PersistenceEndpointIOException;
 
 import java.io.Serializable;
 import java.util.UUID;

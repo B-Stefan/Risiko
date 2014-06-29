@@ -1,10 +1,13 @@
 package interfaces.data;
 import exceptions.CountriesNotConnectedException;
 
+import java.io.Serializable;
+import java.rmi.Remote;
+
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface IArmy {
+public interface IArmy extends Remote, Serializable {
 	public void setPosition(ICountry country)  throws CountriesNotConnectedException;
 
     /**

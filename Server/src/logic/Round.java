@@ -11,10 +11,13 @@ import exceptions.RoundCompleteException;
 import exceptions.ToManyNewArmysException;
 import exceptions.TurnNotCompleteException;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Round implements IRound {
+public class Round extends UnicastRemoteObject implements IRound {
 	/**
 	 * Der Spieler, der am Zug ist
 	 */
@@ -26,7 +29,7 @@ public class Round implements IRound {
     private ICardDeck deck;
 	
 
-	public Round(ICardDeck deck, final List<IPlayer> players,final IMap map, final Queue<Turn.steps> steps){
+	public Round(ICardDeck deck, final List<IPlayer> players,final IMap map, final Queue<Turn.steps> steps) throws RemoteException{
 		this.deck = deck;
 		this.map = map;
         this.players = new LinkedBlockingQueue<IPlayer>(players);
@@ -38,14 +41,14 @@ public class Round implements IRound {
         }
 
 	}
-    public Round(ICardDeck deck2, final List<IPlayer> players2,final IMap map2){
+    public Round(ICardDeck deck2, final List<IPlayer> players2,final IMap map2) throws RemoteException{
         this(deck2, players2,map2, ITurn.getDefaultSteps());
     }
     /**
      * Setzt den nächsten Spieler als aktuellen Spieler
      * @throws RoundCompleteException
      */
-	public void setCurrentPlayer() throws RoundCompleteException{
+	public void setCurrentPlayer() throws RoundCompleteException,RemoteException {
         if(this.players.size() == 0){
             throw new RoundCompleteException();
         }
@@ -55,7 +58,7 @@ public class Round implements IRound {
 	 * Getter für den aktuellen Spieler
 	 * @return currentPayler: gibt aktuellen Spieler
 	 */
-	public IPlayer getCurrentPlayer(){
+	public IPlayer getCurrentPlayer() throws RemoteException{
 		return this.currentPlayer;
 	}
 
@@ -65,7 +68,7 @@ public class Round implements IRound {
      * @throws TurnNotCompleteException
      * @throws RoundCompleteException
      */
-	public void setNextTurn() throws ToManyNewArmysException, TurnNotCompleteException, RoundCompleteException{
+	public void setNextTurn() throws ToManyNewArmysException, TurnNotCompleteException, RoundCompleteException,RemoteException{
         if(this.getCurrentTurn() != null){
             if(!this.getCurrentTurn().isComplete()){
                 throw new TurnNotCompleteException(this.getCurrentTurn());
@@ -84,7 +87,7 @@ public class Round implements IRound {
      * @return True wenn Runde abgeschlossen ist
      * @throws ToManyNewArmysException
      */
-    public boolean isComplete() throws ToManyNewArmysException{
+    public boolean isComplete() throws ToManyNewArmysException,RemoteException{
         if(this.getCurrentTurn() == null){
             return false;
         }
@@ -98,7 +101,7 @@ public class Round implements IRound {
      * GIbt den aktuellen Turn zurück
      * @return
      */
-    public ITurn getCurrentTurn(){
+    public ITurn getCurrentTurn() throws RemoteException{
         return this.currentTurn;
     }
 
@@ -107,7 +110,7 @@ public class Round implements IRound {
      * @return
      */
     @Override
-    public String toString (){
+    public String toString () {
         return "Round";
     }
 }

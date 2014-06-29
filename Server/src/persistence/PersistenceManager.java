@@ -4,6 +4,9 @@ package persistence;
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
  */
 
+import interfaces.IGame;
+import interfaces.data.IMap;
+import interfaces.data.IPlayer;
 import logic.Game;
 import logic.data.Map;
 import logic.data.Player;
@@ -28,14 +31,14 @@ public class PersistenceManager {
 
     private PersistenceEndpoint<?> createHandler (Class type){
 
-        if (type == Game.class){
-                return new SerializableFileEndpoint<Game>(Game.class,PersistenceGame.class, this);
+        if (type == IGame.class){
+                return new SerializableFileEndpoint<IGame>(IGame.class,PersistenceGame.class, this);
         }
-        else if (type == Player.class){
-                return new SerializableFileEndpoint<Player>(Player.class,PersistencePlayer.class, this);
+        else if (type == IPlayer.class ){
+                return new SerializableFileEndpoint<IPlayer>(IPlayer.class,PersistencePlayer.class, this);
         }
-        else if (type == Map.class){
-            return new SerializableFileEndpoint<Map>(Map.class,PersistenceMap.class, this);
+        else if (type == IMap.class){
+            return new SerializableFileEndpoint<IMap>(IMap.class,PersistenceMap.class, this);
         }
         //@todo add more types
         return null;
@@ -46,14 +49,14 @@ public class PersistenceManager {
         }
         return endpoints.get(type);
     }
-    public PersistenceEndpoint<Game> getGameHandler(){
-        return (PersistenceEndpoint<Game>)this.getHandler(Game.class);
+    public PersistenceEndpoint<IGame> getGameHandler(){
+        return (PersistenceEndpoint<IGame>)this.getHandler(IGame.class);
     }
-    public PersistenceEndpoint<Player> getPlayerHandler(){
-        return (PersistenceEndpoint<Player>)this.getHandler(Player.class);
+    public PersistenceEndpoint<IPlayer> getPlayerHandler(){
+        return (PersistenceEndpoint<IPlayer>)this.getHandler(Player.class);
     }
-    public PersistenceEndpoint<Map> getMapHandler(){
-        return (PersistenceEndpoint<Map>)this.getHandler(Map.class);
+    public PersistenceEndpoint<IMap> getMapHandler(){
+        return (PersistenceEndpoint<IMap>)this.getHandler(IMap.class);
     }
 
 

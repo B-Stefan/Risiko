@@ -115,7 +115,7 @@ public class Country implements ICountry {
      * @return Nachbarn des Landes
      */
     public ArrayList<ICountry> getNeighbors (){
-        ArrayList<Country> list = new ArrayList<Country>();
+        ArrayList<ICountry> list = new ArrayList<ICountry>();
         list.addAll(this.neighbors.values());
         return list;
     }

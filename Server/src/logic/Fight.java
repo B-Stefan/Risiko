@@ -1,4 +1,6 @@
 package logic;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 import interfaces.IFight;
@@ -21,7 +23,7 @@ import exceptions.TurnNotInCorrectStepException;
 import logic.utils.*;
 import exceptions.*;
 
-public class Fight implements IFight {
+public class Fight extends UnicastRemoteObject implements IFight {
 	
 	/**
 	 * Das Land, von dem aus angegriffen wird
@@ -70,7 +72,7 @@ public class Fight implements IFight {
 	 * @param from
 	 * @param to
 	 */
-	public Fight(ICountry from, ICountry to, ITurn turn){
+	public Fight(ICountry from, ICountry to, ITurn turn) throws RemoteException{
 		this.to = to;
 		this.from = from;
 		this.agressor = this.from.getOwner();
@@ -96,7 +98,7 @@ public class Fight implements IFight {
 	 * @throws AlreadyDicedException 
 	 * @throws InvalidFightException 
 	 */
-	public void attacking(int agressorsArmies) throws NotEnoughArmiesToAttackException, InvalidAmountOfArmiesException, AlreadyDicedException, InvalidFightException{
+	public void attacking(int agressorsArmies) throws NotEnoughArmiesToAttackException, InvalidAmountOfArmiesException, AlreadyDicedException, InvalidFightException, RemoteException{
 		Stack<IArmy> agArmies = new Stack<IArmy>();
 		for (int i = 0; i<agressorsArmies; i++){
 			if (this.from.getArmyList().size()<agressorsArmies){
@@ -115,7 +117,7 @@ public class Fight implements IFight {
 	 * @throws AlreadyDicedException 
 	 * @throws InvalidFightException 
 	 */
-	public void attacking(Stack<IArmy> agressorsArmies) throws InvalidAmountOfArmiesException, NotEnoughArmiesToAttackException, AlreadyDicedException, InvalidFightException{
+	public void attacking(Stack<IArmy> agressorsArmies) throws InvalidAmountOfArmiesException, NotEnoughArmiesToAttackException, AlreadyDicedException, InvalidFightException {
 		this.agressorsArmies.clear();
 		this.agressorsArmies = agressorsArmies;
 		this.defendersDice.clear();
@@ -157,7 +159,7 @@ public class Fight implements IFight {
 	 * @throws InvalidFightException
      * @throws AggessorNotThrowDiceException
 	 */
-	public void defending(int defendersArmies) throws AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
+	public void defending(int defendersArmies) throws AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException{
 		if(this.agressorsDice.isEmpty()){
             throw new AggessorNotThrowDiceException();
         }
@@ -182,7 +184,7 @@ public class Fight implements IFight {
 	 * @throws TurnNotAllowedStepException 
 	 * @throws InvalidFightException 
 	 */
-	public void defending(Stack<IArmy> defendersArmies)throws ToManyNewArmysException,InvalidAmountOfArmiesException, NotEnoughArmysToMoveException,CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
+	public void defending(Stack<IArmy> defendersArmies)throws ToManyNewArmysException,InvalidAmountOfArmiesException, NotEnoughArmysToMoveException,CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException{
 		if (this.from.getOwner() == this.to.getOwner()){
 			throw new InvalidFightException();
 		}
@@ -213,7 +215,7 @@ public class Fight implements IFight {
 	 * @throws TurnNotInCorrectStepException 
 	 * @throws TurnNotAllowedStepException 
 	 */
-	private int[] result() throws ToManyNewArmysException, CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException{
+	private int[] result() throws ToManyNewArmysException, CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException{
 		int[] res = new int[3];
 		for(IDice di : this.defendersDice){
 			//Wenn der Würfel des Verteidigers höher oder gleich ist, dann wird eine Armee des Angreifers zerstört
@@ -247,12 +249,12 @@ public class Fight implements IFight {
 	 * getter für das Result
 	 * @return
 	 */
-	public int[] getResult(){
+	public int[] getResult() throws RemoteException{
 		return this.result;
 	}
 
 
-	private void setResult() throws ToManyNewArmysException,CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException{
+	private void setResult() throws ToManyNewArmysException,CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException{
 		this.result = result();
 	}
 	
@@ -260,7 +262,7 @@ public class Fight implements IFight {
 	 * Getter für die Liste der Würfel des Angreifers
 	 * @return Stack<Dice>
 	 */
-	public Stack<IDice> getAgressorsDice(){
+	public Stack<IDice> getAgressorsDice() throws RemoteException{
 		return this.agressorsDice;
 	}
 	
@@ -268,7 +270,7 @@ public class Fight implements IFight {
 	 * Getter für die Liste der Würfel des Verteidigers
 	 * @return Stack<Dice>
 	 */
-	public Stack<IDice> getDefendersDice(){
+	public Stack<IDice> getDefendersDice() throws RemoteException{
 		return this.defendersDice;
 	}
 	
@@ -291,7 +293,7 @@ public class Fight implements IFight {
 	 * Getter für das To Land
 	 * @return
 	 */
-	public ICountry getTo(){
+	public ICountry getTo() throws RemoteException{
 		return this.to;
 	}
 	
@@ -299,7 +301,7 @@ public class Fight implements IFight {
 	 * Getter für das From Land
 	 * @return
 	 */
-	public ICountry getFrom(){
+	public ICountry getFrom() throws RemoteException{
 		return this.from;
 	}
 
@@ -307,7 +309,7 @@ public class Fight implements IFight {
      * Getter für den Angreifer
      * @return
      */
-    public IPlayer getAggressor (){
+    public IPlayer getAggressor () throws RemoteException{
         return  this.agressor;
     }
 
@@ -315,7 +317,7 @@ public class Fight implements IFight {
      * Getter für Verteidiger
      * @return
      */
-    public IPlayer getDefender (){
+    public IPlayer getDefender () throws RemoteException{
         return this.getTo().getOwner();
     }
 	

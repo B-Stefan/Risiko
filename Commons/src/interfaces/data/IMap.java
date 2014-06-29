@@ -1,13 +1,15 @@
 package interfaces.data;
 
 import java.awt.*;
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.UUID;
 
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface IMap {
+public interface IMap extends Remote, Serializable {
     /**
      * Gibt die Liste aller Countries zurück
      * @return Liste aller Counties

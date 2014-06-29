@@ -5,11 +5,13 @@ import logic.Game;
 import persistence.PersistenceManager;
 import persistence.dataendpoints.PersistenceEndpoint;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 /**
  * Verwaltet eine Anzahl an Games und stellt Methdoen zum Seichern und Anzeigen der gespeicherten Spiele zur Verfügung
  */
-public class GameManager implements IGameManager {
+public class GameManager extends UnicastRemoteObject implements IGameManager {
 
     /**
      * Handler, der die Interaktion zum File-System oder DB-System verwaltet
@@ -20,7 +22,7 @@ public class GameManager implements IGameManager {
      * Verwaltet mehrere Spiele
      * @param manager - Manager, der die
      */
-    public GameManager(PersistenceManager manager) {
+    public GameManager(PersistenceManager manager) throws RemoteException{
         this.handler = manager.getGameHandler();
     }
 
@@ -29,7 +31,7 @@ public class GameManager implements IGameManager {
      * @return Gibt die Liste aller gespeicherten Spiele zurück
      * @throws PersistenceEndpointIOException
      */
-    public List<IGame> getGameList() throws PersistenceEndpointIOException{
+    public List<IGame> getGameList() throws PersistenceEndpointIOException, RemoteException{
         return this.handler.getAll();
     }
 
@@ -38,7 +40,7 @@ public class GameManager implements IGameManager {
      * @return Das neu erstellte Spiel
      * @throws PersistenceEndpointIOException Fehler beim Einlesen der Datei oder Speichern
      */
-    public Game addGame () throws PersistenceEndpointIOException{
+    public Game addGame () throws PersistenceEndpointIOException, RemoteException{
         Game newGame = new Game(handler);
         this.saveGame(newGame);
         return newGame;
@@ -49,7 +51,7 @@ public class GameManager implements IGameManager {
      * @param g  Spiel das gespeichert werden soll
      * @throws PersistenceEndpointIOException
      */
-    public void saveGame(IGame g) throws PersistenceEndpointIOException{
+    public void saveGame(IGame g) throws PersistenceEndpointIOException, RemoteException{
         this.handler.save(g);
     }
 
@@ -59,7 +61,7 @@ public class GameManager implements IGameManager {
      * @throws PersistenceEndpointIOException
      * @throws IndexOutOfBoundsException
      */
-    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException{
+    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException{
         List<Game> gameList = this.handler.getAll();
         Game gameToSave =  gameList.get(index);
         this.handler.save(gameToSave);

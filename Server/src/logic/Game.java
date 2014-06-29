@@ -1,5 +1,7 @@
 package logic;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.awt.Color;
 
@@ -23,7 +25,7 @@ import persistence.dataendpoints.PersistenceEndpoint;
  *
  * Klasse für ein eizelnes Spiel. Diese dient zur Spielverwaltung.
  */
-public class Game implements IGame {
+public class Game extends UnicastRemoteObject implements IGame {
 	
 	private Stack<Color> color = new Stack<Color>();
     /**
@@ -80,7 +82,7 @@ public class Game implements IGame {
      * Konstruktor
      * @param persistenceEndpoint Endpunkt zum speichern des spiels
      */
-    public Game(PersistenceEndpoint<IGame> persistenceEndpoint) {
+    public Game(PersistenceEndpoint<IGame> persistenceEndpoint) throws RemoteException{
         this(persistenceEndpoint,new Map());
     }
 
@@ -89,7 +91,7 @@ public class Game implements IGame {
      * @param persistenceEndpoint
      * @param map
      */
-    public Game(PersistenceEndpoint<IGame> persistenceEndpoint, IMap map){
+    public Game(PersistenceEndpoint<IGame> persistenceEndpoint, IMap map) throws RemoteException{
     	this.map= map;
         this.persistenceEndpoint = persistenceEndpoint;
         this.id = UUID.randomUUID();
@@ -113,7 +115,7 @@ public class Game implements IGame {
      * @throws GameAllreadyStartedException
      * @throws PlayerAlreadyHasAnOrderException
      */
-    public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAllreadyStartedException, PlayerAlreadyHasAnOrderException {
+    public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAllreadyStartedException, PlayerAlreadyHasAnOrderException,RemoteException {
 
         //Exception-Handling
         if (this.players.size() < Game.minCountPlayers) {
@@ -145,10 +147,14 @@ public class Game implements IGame {
      * @throws GameNotStartedException
      * @throws GameIsCompletedException
      */
-    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException,GameNotStartedException, GameIsCompletedException{
+    public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException,GameNotStartedException, GameIsCompletedException,RemoteException{
         if (this.currentRound != null) {
-            if (!this.currentRound.isComplete()) {
-                throw new RoundNotCompleteException();
+            try {
+                if (!this.currentRound.isComplete()) {
+                    throw new RoundNotCompleteException();
+                }
+            }catch (RemoteException e){
+                throw new RuntimeException(e);
             }
         }
         if (this.getCurrentGameState() == IGame.gameStates.WAITING){
@@ -165,7 +171,7 @@ public class Game implements IGame {
      * @return
      * @throws GameNotStartedException
      */
-    public IRound getCurrentRound() throws GameNotStartedException {
+    public IRound getCurrentRound() throws GameNotStartedException,RemoteException {
         if (this.getCurrentGameState() == IGame.gameStates.WAITING) {
             throw new GameNotStartedException();
         }
@@ -176,7 +182,7 @@ public class Game implements IGame {
      * Gibt den aktuellen Status des Spiels zurück
      * @return Status des Spiels
      */
-    public IGame.gameStates getCurrentGameState() {
+    public IGame.gameStates getCurrentGameState() throws RemoteException{
         return this.currentGameState;
     }
 
@@ -240,7 +246,7 @@ public class Game implements IGame {
      *
      * @throws exceptions.PlayerNotExsistInGameException
      */
-    public void onPlayerDelete(final IPlayer player) throws PlayerNotExsistInGameException {
+    public void onPlayerDelete(final IPlayer player) throws PlayerNotExsistInGameException, RemoteException{
         try {
             this.players.remove(player);
         } catch (final Exception e) {
@@ -254,7 +260,7 @@ public class Game implements IGame {
      *
      * @param name - Der Name des neuen Spielers
      */
-    public void onPlayerAdd(final String name) throws GameAllreadyStartedException {
+    public void onPlayerAdd(final String name) throws GameAllreadyStartedException,RemoteException {
 
         if (this.getCurrentGameState() != IGame.gameStates.WAITING) {
             throw new GameAllreadyStartedException();
@@ -268,7 +274,7 @@ public class Game implements IGame {
      * Pürft, ob das Spiel gewonnen wurde
      * @return Wenn gewonnen true
      */
-    private boolean isGameWon() throws GameNotStartedException{
+    private boolean isGameWon() throws GameNotStartedException,RemoteException{
         if(this.getCurrentGameState() == IGame.gameStates.WAITING){
             throw new GameNotStartedException();
         }
@@ -284,7 +290,7 @@ public class Game implements IGame {
      * Wenn keiner gewonnen hat gibt die Methode null zurück
      * @return Sieger des Spiels
      */
-    public IPlayer getWinner (){
+    public IPlayer getWinner () throws RemoteException{
         for(IPlayer player : players){
             if(player.getOrder().isCompleted()){
                 return player;
@@ -325,9 +331,10 @@ public class Game implements IGame {
      *
      * @return
      */
-    public IMap getMap() {
+    public IMap getMap() throws RemoteException{
         return map;
     }
+
 
     /**
      * Für dem Spiel einen neuen Spieler hinzu
@@ -346,7 +353,7 @@ public class Game implements IGame {
      *
      * @param name
      */
-    public IPlayer addPlayer(String name) throws PlayerNameAlreadyChooseException{
+    public IPlayer addPlayer(String name) throws PlayerNameAlreadyChooseException,RemoteException{
 
         for (IPlayer player: this.getPlayers()){
             if (player.getName().equals(name)){
@@ -361,7 +368,7 @@ public class Game implements IGame {
     /**
      * @return Liste der Spieler
      */
-    public List<IPlayer> getPlayers() {
+    public List<IPlayer> getPlayers() throws RemoteException{
         return this.players;
     }
 
@@ -369,7 +376,7 @@ public class Game implements IGame {
      * Getter für die ID
      * @return UUID des Spiels
      */
-    public UUID getId() {
+    public UUID getId() throws RemoteException{
         return id;
     }
 
@@ -386,7 +393,7 @@ public class Game implements IGame {
      * Speicher das Spiel ab
      *
      */
-    public boolean save () throws PersistenceEndpointIOException{
+    public boolean save () throws PersistenceEndpointIOException,RemoteException{
         return this.persistenceEndpoint.save(this);
     }
 }

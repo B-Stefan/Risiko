@@ -2,6 +2,9 @@ package interfaces.data.Orders;
 
 import interfaces.data.IPlayer;
 
+import java.io.Serializable;
+import java.rmi.Remote;
+
 /**
  *
  * @author  Stefan Bieliauskas
@@ -14,7 +17,7 @@ import interfaces.data.IPlayer;
  * sehr geringe Gemeinsamkeiten in der implementierung besitzten.
  *
  */
-public interface IOrder {
+public interface IOrder extends Remote, Serializable {
     /**
      *
      * @return Wenn die Order komplett ist => True
