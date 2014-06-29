@@ -1,11 +1,11 @@
 package exceptions;
-import logic.data.Player;
+import interfaces.data.IPlayer;
 
 /**
  * Created by Stefan on 06.05.14.
  */
 public class PlayerAlreadyHasAnOrderException extends Exception {
-    public PlayerAlreadyHasAnOrderException (Player player){
+    public PlayerAlreadyHasAnOrderException (IPlayer player){
         super("Der Spieler " + player + " hat bereits eine Order.");
     }
 }
