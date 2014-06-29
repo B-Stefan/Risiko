@@ -1,4 +1,5 @@
+package interfaces.data;
 
-public interface ICountry{
+public interface ICountry {
 
 }
