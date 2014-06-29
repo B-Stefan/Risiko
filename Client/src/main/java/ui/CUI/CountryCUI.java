@@ -1,13 +1,15 @@
 package main.java.ui.CUI;
 
+import exceptions.*;
+import interfaces.IFight;
+import interfaces.ITurn;
+import interfaces.data.ICountry;
 import main.java.ui.CUI.utils.CUI;
 import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
 import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
-import logic.data.Country;
-import logic.Fight;
-import logic.Turn;
+
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
@@ -16,8 +18,8 @@ import java.util.LinkedHashMap;
  * Created by Stefan on 30.04.14.
  */
 public class CountryCUI extends CUI {
-    private Turn turn;
-    private Country country;
+    private ITurn turn;
+    private ICountry country;
 
     public class ShowListener extends CommandListener {
 
@@ -29,7 +31,7 @@ public class CountryCUI extends CUI {
         public void actionPerformed(final ActionEvent actionEvent) {
             IO.println("Das Land gehört " + country.getOwner() + " und ist mit: " + country.getNumberOfArmys() + " Armeen besetzt");
             IO.println("Nachfolgend die Nachbarn des Landes");
-            for(Country c : country.getNeighbors()){
+            for(ICountry c : country.getNeighbors()){
                 IO.println(c.toString());
             }
         }
@@ -90,8 +92,8 @@ public class CountryCUI extends CUI {
                 return;
             }
 
-            Fight fight = null;
-            Country found = country.getNeighbor(target);
+            IFight fight = null;
+            ICountry found = country.getNeighbor(target);
             if (found == null){
                 IO.println("Leider konnte Ihr Land " + target + " nicht gefunden werden");
                 return;
@@ -113,7 +115,7 @@ public class CountryCUI extends CUI {
             goIntoChildContext(fightCUI);
         }
     }
-    public CountryCUI(Turn turn, Country context, CUI parent) {
+    public CountryCUI(ITurn turn, ICountry context, CUI parent) {
         super(context, parent);
         this.turn = turn;
         this.country = context;

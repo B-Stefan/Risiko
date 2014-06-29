@@ -1,5 +1,6 @@
 package persistence.dataendpoints;
 
+import exceptions.PersistenceEndpointIOException;
 import persistence.PersistenceManager;
 import persistence.objects.PersitenceObject;
 

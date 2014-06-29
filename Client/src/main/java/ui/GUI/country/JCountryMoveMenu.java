@@ -1,6 +1,6 @@
 package main.java.ui.GUI.country;
-import logic.Turn;
-import logic.data.Country;
+import interfaces.ITurn;
+import interfaces.data.ICountry;
 import exceptions.*;
 import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
  */
 public class JCountryMoveMenu extends JCountryNeighborsMenu {
 
-    private final Turn turn;
+    private final ITurn turn;
     public class NeighborActionListener implements ActionListener{
 
         /**
@@ -26,8 +26,8 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
         @Override
         public void actionPerformed(ActionEvent event) {
             if(event.getActionCommand() == "onCountryClick"){
-                Country from    = JCountryMoveMenu.this.getCountry();
-                Country to      = JCountryMoveMenu.this.getSelectedNeighborsMenuItem().getCountry();
+                ICountry from    = JCountryMoveMenu.this.getCountry();
+                ICountry to      = JCountryMoveMenu.this.getSelectedNeighborsMenuItem().getCountry();
 
                 int numberOfArmyies;
                 int min = 1;
@@ -60,7 +60,7 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
             }
         }
     }
-    public JCountryMoveMenu (final Country country, final Turn turn){
+    public JCountryMoveMenu (final ICountry country, final ITurn turn){
         super("Move",country);
         this.turn = turn;
         this.addActionListener(new NeighborActionListener());

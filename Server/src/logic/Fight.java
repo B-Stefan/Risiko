@@ -303,9 +303,18 @@ public class Fight implements IFight {
 		return this.from;
 	}
 
+    /**
+     * Getter für den Angreifer
+     * @return
+     */
     public IPlayer getAggressor (){
         return  this.agressor;
     }
+
+    /**
+     * Getter für Verteidiger
+     * @return
+     */
     public IPlayer getDefender (){
         return this.getTo().getOwner();
     }

@@ -2,16 +2,15 @@ package main.java.ui.GUI.gamePanels;
 
 import javax.swing.*;
 
-import logic.Game;
-import logic.data.Player;
-import exceptions.GameNotStartedException;
+import interfaces.IGame;
+import interfaces.data.IPlayer;
 
 public class JOrderInfoGUI extends JTextArea {
 
-	private final Player player;
-	private final Game game;
+	private final IPlayer player;
+	private final IGame game;
 	
-	public JOrderInfoGUI(Game game, Player player){
+	public JOrderInfoGUI(IGame game, IPlayer player){
 		super("");
 		this.setWrapStyleWord(true);
 		this.setLineWrap(true);
@@ -20,7 +19,7 @@ public class JOrderInfoGUI extends JTextArea {
 	}
 	
 	private void setContext(){
-		if(this.game.getCurrentGameState() == Game.gameStates.RUNNING){
+		if(this.game.getCurrentGameState() == IGame.gameStates.RUNNING){
 
                 this.setText(this.player.getOrder().toString());
 		}

@@ -3,6 +3,9 @@ package main.java.ui.GUI.utils.tableModels;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+
+import interfaces.IGame;
+import interfaces.data.IPlayer;
 import logic.*;
 import logic.data.*;
 import exceptions.GameNotStartedException;
@@ -16,7 +19,7 @@ public class PlayerInfoTableModel extends DefaultTableModel{
     /**
      * Spiel mit dem Playern die angezeigt werden sollen
      */
-	private final Game game;
+	private final IGame game;
 
 
     /**
@@ -27,7 +30,7 @@ public class PlayerInfoTableModel extends DefaultTableModel{
      * @param game Spiel mit den Spielern
      * @param columnNames Spaltenüberschriften
      */
-	public PlayerInfoTableModel(final Game game, final Vector<String> columnNames) {
+	public PlayerInfoTableModel(final IGame game, final Vector<String> columnNames) {
 		super();
 		this.game = game;
 		this.columnIdentifiers = columnNames;
@@ -41,19 +44,19 @@ public class PlayerInfoTableModel extends DefaultTableModel{
      *
      * @param players Spieler, die in der Liste auftauchen sollen
      */
-	public void setDataVector(final List<Player> players) {
+	public void setDataVector(final List<IPlayer> players) {
         final Vector<Vector<String>> rows = new Vector<Vector<String>>();
-        for (final Player player : players) {
+        for (final IPlayer player : players) {
             final Vector<String> playerInVector = new Vector<String>();
             playerInVector.add("" + player.getName());
             playerInVector.add("" + player.getCountries().size());
-            if (this.game.getCurrentGameState() == Game.gameStates.RUNNING){
+            if (this.game.getCurrentGameState() == IGame.gameStates.RUNNING){
                 try {
                     playerInVector.add(player == game.getCurrentRound().getCurrentPlayer()? "X" : "");
                 }catch (GameNotStartedException e){
                     playerInVector.add("");
                 }
-            }else if (this.game.getCurrentGameState() == Game.gameStates.WAITING){
+            }else if (this.game.getCurrentGameState() == IGame.gameStates.WAITING){
             	playerInVector.add("");
         	}
             rows.add(playerInVector);

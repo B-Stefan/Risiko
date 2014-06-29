@@ -6,14 +6,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import logic.*;
-import logic.data.*;
+import interfaces.IGame;
+import interfaces.IRound;
+import interfaces.ITurn;
+import interfaces.data.IPlayer;
 import exceptions.*;
 import main.java.ui.GUI.JGameGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
 
 public class JCurrentStateInfoGUI extends JPanel {
-	private final Game game;
+	private final IGame game;
     private final JGameGUI gameGUI;
 	private final JTextArea stepInfo = new JTextArea("");
 	private final JButton nextButton = new JButton("");
@@ -40,7 +42,7 @@ public class JCurrentStateInfoGUI extends JPanel {
          */
         @Override
         public void actionPerformed(ActionEvent event) {
-            if(JCurrentStateInfoGUI.this.game.getCurrentGameState() != Game.gameStates.WAITING){
+            if(JCurrentStateInfoGUI.this.game.getCurrentGameState() != IGame.gameStates.WAITING){
                 return;
             }
             try {
@@ -63,7 +65,7 @@ public class JCurrentStateInfoGUI extends JPanel {
          */
         @Override
         public void actionPerformed(ActionEvent event) {
-            Round currentRound;
+            IRound currentRound;
             //Holen der aktuellen Runde
             try {
                 currentRound = JCurrentStateInfoGUI.this.game.getCurrentRound();
@@ -89,7 +91,7 @@ public class JCurrentStateInfoGUI extends JPanel {
         }
     }
 	
-	public JCurrentStateInfoGUI(final Game game, final Player player, final JGameGUI gameGUI){
+	public JCurrentStateInfoGUI(final IGame game, final IPlayer player, final JGameGUI gameGUI){
 		//Konstruktor bearbeiten (Update entfehrnen)
 		this.setLayout(new GridLayout(2, 1));
 		this.stepInfo.setWrapStyleWord(true);
@@ -113,9 +115,9 @@ public class JCurrentStateInfoGUI extends JPanel {
             case RUNNING:
                 btnMsg = "Nächster Spieler";
                 try{
-                    Turn currentTurn= this.game.getCurrentRound().getCurrentTurn();
+                    ITurn currentTurn= this.game.getCurrentRound().getCurrentTurn();
                     if (currentTurn != null ){
-                        Player currentPlayer = currentTurn.getPlayer();
+                        IPlayer currentPlayer = currentTurn.getPlayer();
                         switch (currentTurn.getCurrentStep()){
                             case DISTRIBUTE:
                                 textAreaMsg = String.format(currentPlayer + " %n %n du musst noch " +currentTurn.getNewArmysSize() + " Einheiten verteilen.");break;

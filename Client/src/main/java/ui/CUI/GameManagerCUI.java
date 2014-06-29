@@ -1,13 +1,13 @@
 package main.java.ui.CUI;
 
+import exceptions.PersistenceEndpointIOException;
+import interfaces.IGame;
+import interfaces.IGameManager;
 import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
 import main.java.ui.CUI.utils.CUI;
 import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
-import main.java.GameManager;
-import logic.Game;
-import persistence.exceptions.PersistenceEndpointIOException;
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
@@ -23,7 +23,7 @@ public class GameManagerCUI extends CUI {
     /**
      * Bildet das Spiel ab für die die CUI erstellt wird
      */
-    private final GameManager gameManager;
+    private final IGameManager gameManager;
 
     public class ShowGamesCommandListener extends CommandListener {
 
@@ -37,7 +37,7 @@ public class GameManagerCUI extends CUI {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             int i = 0;
-            List<Game> gameList;
+            List<IGame> gameList;
             try {
                 gameList = gameManager.getGameList();
             }catch (PersistenceEndpointIOException e ){
@@ -45,7 +45,7 @@ public class GameManagerCUI extends CUI {
                 return;
             }
 
-            for(Game game: gameList){
+            for(IGame game: gameList){
                 i++;
                 IO.println(i + ". "+game);
             }
@@ -65,7 +65,7 @@ public class GameManagerCUI extends CUI {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
 
-           Game newGame;
+           IGame newGame;
             try {
                 newGame = gameManager.addGame();
             }catch (PersistenceEndpointIOException e){
@@ -100,7 +100,6 @@ public class GameManagerCUI extends CUI {
 
             index--;
 
-            Game newGame;
             try {
                 gameManager.saveGame(index);
             }catch (PersistenceEndpointIOException e){
@@ -117,7 +116,7 @@ public class GameManagerCUI extends CUI {
      * Verwaltet die Benutzerschnittstelle
      * @param gameManager - Der Manager den die CUI verwalten soll
      */
-    public GameManagerCUI(final GameManager gameManager) {
+    public GameManagerCUI(final IGameManager gameManager) {
         super(gameManager);
         this.gameManager = gameManager;
         this.addCommandListener(new ShowGamesCommandListener());
@@ -142,7 +141,7 @@ public class GameManagerCUI extends CUI {
             IO.println(e.getMessage());
             return;
         }
-        List<Game> games;
+        List<IGame> games;
         try {
             games = this.gameManager.getGameList();
         }catch (PersistenceEndpointIOException e){
@@ -151,7 +150,7 @@ public class GameManagerCUI extends CUI {
         }
 
 
-        Game game;
+        IGame game;
         try {
             game  = games.get(index);
         }catch (IndexOutOfBoundsException e ){

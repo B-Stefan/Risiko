@@ -1,9 +1,13 @@
 package main.java.ui.GUI;
 
-import main.java.GameManager;
-import logic.Game;
-import logic.data.Player;
-import persistence.exceptions.PersistenceEndpointIOException;
+import exceptions.CountryNotInListException;
+import exceptions.PersistenceEndpointIOException;
+import interfaces.IGame;
+import interfaces.IGameManager;
+import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
+import interfaces.data.Orders.IOrder;
+import interfaces.data.cards.ICard;
 import main.java.ui.CUI.GameCUI;
 import main.java.ui.GUI.menu.JGameLoadMenu;
 import main.java.ui.GUI.utils.JExceptionDialog;
@@ -13,6 +17,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.UUID;
 
 /**
  * Created by Stefan on 23.06.14.
@@ -21,7 +28,7 @@ public class JGameManagerGUI extends JFrame {
 
     private final JTextField playerNameTxt = new JTextField("");
     private final JButton startGameBtn = new JButton("Spiel starten");
-    private final GameManager manager;
+    private final IGameManager manager;
 
 
 
@@ -38,7 +45,7 @@ public class JGameManagerGUI extends JFrame {
         }
     }
 
-    public JGameManagerGUI(GameManager manager){
+    public JGameManagerGUI(IGameManager manager){
         this.manager = manager;
         initialize();
     }
@@ -79,7 +86,7 @@ public class JGameManagerGUI extends JFrame {
         this.setLocation(x, y);
     }
     public void openGameGUI(){
-        Game game;
+        IGame game;
         try {
             game = manager.addGame();
         }catch (PersistenceEndpointIOException e){
@@ -88,7 +95,7 @@ public class JGameManagerGUI extends JFrame {
         }
         openGameGUI(game);
     }
-    public void openGameGUI(Game game){
+    public void openGameGUI(IGame game){
 
 
         String playerName = JGameManagerGUI.this.playerNameTxt.getText();
@@ -98,8 +105,7 @@ public class JGameManagerGUI extends JFrame {
         }
 
 
-        Player currentPlayer = new Player(playerName);
-        game.addPlayer(currentPlayer);
+        IPlayer currentPlayer = game.addPlayer(playerName);
         JGameGUI    gui = new JGameGUI(game,currentPlayer);
         GameCUI     cui = new GameCUI(game, null);
 

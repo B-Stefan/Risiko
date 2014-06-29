@@ -1,8 +1,6 @@
 package main.java.ui.GUI.country;
 
-import logic.data.Country;
-import logic.Turn;
-import exceptions.TurnNotInCorrectStepException;
+import interfaces.data.ICountry;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +11,7 @@ import java.awt.event.ActionListener;
  */
 public abstract class JCountryNeighborsMenu extends JMenu {
 
-    private final Country country;
+    private final ICountry country;
     private JCountryNeighborsMenuItem selectedNeighborsMenuItem = null;
     private class NeighborsActionListener implements ActionListener {
         /**
@@ -37,17 +35,17 @@ public abstract class JCountryNeighborsMenu extends JMenu {
     public void setSelectedNeighborsMenuItem(JCountryNeighborsMenuItem item){
         this.selectedNeighborsMenuItem = item;
     }
-    public JCountryNeighborsMenu(final String title, final Country country){
+    public JCountryNeighborsMenu(final String title, final ICountry country){
         super(title);
         this.country = country;
-        for(Country neighbor: this.country.getNeighbors()){
+        for(ICountry neighbor: this.country.getNeighbors()){
             JMenuItem item = new JCountryNeighborsMenuItem(neighbor);
             item.addActionListener(new NeighborsActionListener());
             this.add(item);
         }
     }
 
-    public Country getCountry(){
+    public ICountry getCountry(){
         return this.country;
     }
 

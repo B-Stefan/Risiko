@@ -3,10 +3,10 @@ package main.java.ui.GUI.gamePanels;
 import javax.swing.*;
 
 import exceptions.GameNotStartedException;
-import logic.data.Country;
-import logic.data.Map;
-import logic.Turn;
-import logic.Game;
+import interfaces.IGame;
+import interfaces.ITurn;
+import interfaces.data.ICountry;
+import interfaces.data.IMap;
 import main.java.ui.GUI.country.JCountryPopupMenu;
 import main.java.ui.GUI.country.JCountryInfo;
 import main.java.ui.GUI.utils.MapLoader;
@@ -24,15 +24,15 @@ public class JMapGUI extends JComponent {
 
     /**
      * Kartenobjekt der GameEngeine
-     * @see logic.data.Map
+     * @see interfaces.data.IMap
      */
-    private final Map map;
+    private final IMap map;
 
     /**
      * Spiel aus der GameEngine
-     * @see logic.Game
+     * @see interfaces.IGame
      */
-    private final Game game;
+    private final IGame game;
 
     /**
      * Die Map Loader Klasse
@@ -49,13 +49,13 @@ public class JMapGUI extends JComponent {
         public void mouseClicked(MouseEvent event) {
             int x = (int) event.getX();
             int y = (int) event.getY();
-            Country country = JMapGUI.this.getCountry(x,y);
+            ICountry country = JMapGUI.this.getCountry(x,y);
             if (country == null){
                 new JExceptionDialog(JMapGUI.this,"Es konnte an dieser Position kein Land gefunden werden");
             }
             else
             {
-                Turn currentTurn;
+                ITurn currentTurn;
                 try {
                    currentTurn =  game.getCurrentRound().getCurrentTurn();
                 }catch (GameNotStartedException e){
@@ -75,9 +75,9 @@ public class JMapGUI extends JComponent {
     /**
      * Klasse, die zur Darstellung einer Karte dient
      * @param game Spiel des der GameEngine
-     *             @see logic.Game
+     *             @see interfaces.IGame
      */
-    public JMapGUI(Game game){
+    public JMapGUI(IGame game){
         super();
         this.game = game;
         this.map = game.getMap();
@@ -118,9 +118,9 @@ public class JMapGUI extends JComponent {
 
         //Immer wieder erneut löschen und hinzufügen ist am performantesten und auch am besten Wartbar
         this.removeAll();
-        HashMap<Point,Country> postions = this.mapLoader.getCountryInfoCoordinates(this.getWidth(),this.getHeight());
+        HashMap<Point,ICountry> postions = this.mapLoader.getCountryInfoCoordinates(this.getWidth(),this.getHeight());
         for(java.util.Map.Entry entry : postions.entrySet()){
-            Country country = (Country) entry.getValue();
+            ICountry country = (ICountry) entry.getValue();
             Point point = (Point) entry.getKey();
             JCountryInfo info = new JCountryInfo(country);
             info.setSize(new Dimension(50,50));
@@ -142,7 +142,7 @@ public class JMapGUI extends JComponent {
      * @param y Position auf der Y-Achse
      * @return Land das sich an der (x,y) Position befindet.
      */
-    public Country getCountry(int x, int y){
+    public ICountry getCountry(int x, int y){
         return this.mapLoader.getCountry(x,y, this.getWidth(),this.getHeight());
     }
 

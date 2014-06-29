@@ -5,6 +5,7 @@ import java.awt.Color;
 
 import interfaces.IGame;
 import interfaces.IRound;
+import interfaces.ITurn;
 import interfaces.data.IArmy;
 import interfaces.data.ICountry;
 import interfaces.data.IMap;
@@ -76,14 +77,18 @@ public class Game implements IGame {
     private ICardDeck deck;
 
     /**
-     * Konstruktor, wenn das Spiel mit einer bestimmten Karte erstellt werden soll
+     * Konstruktor
      * @param persistenceEndpoint Endpunkt zum speichern des spiels
-     * @param map Karte die für das Spiel verwnedet werden soll
      */
     public Game(PersistenceEndpoint<IGame> persistenceEndpoint) {
         this(persistenceEndpoint,new Map());
     }
 
+    /**
+     * Konstruktor, wennd as Spiel mit einer bestimmten Karte erzeugt werden soll
+     * @param persistenceEndpoint
+     * @param map
+     */
     public Game(PersistenceEndpoint<IGame> persistenceEndpoint, IMap map){
     	this.map= map;
         this.persistenceEndpoint = persistenceEndpoint;
@@ -127,7 +132,7 @@ public class Game implements IGame {
         OrderManager.createOrdersForPlayers(this.getPlayers(),this);
 
         this.currentGameState = IGame.gameStates.RUNNING;
-        this.setCurrentRound(new Round(this.deck, players, map, Turn.getDefaultStepsFirstRound()));
+        this.setCurrentRound(new Round(this.deck, players, map, ITurn.getDefaultStepsFirstRound()));
 
 
     }
@@ -329,11 +334,28 @@ public class Game implements IGame {
      *
      * @param player - neuer Spieler
      */
-    public void addPlayer(final IPlayer player) {
+    private void addPlayer(final IPlayer player) {
         if (player.getColor() == null){
             player.setColor(this.color.pop());
         }
         this.players.add(player);
+    }
+
+    /**
+     * Fügt einen neuen Spieler aufgrund des namens hinzu
+     *
+     * @param name
+     */
+    public IPlayer addPlayer(String name) throws PlayerNameAlreadyChooseException{
+
+        for (IPlayer player: this.getPlayers()){
+            if (player.getName().equals(name)){
+                throw new PlayerNameAlreadyChooseException(name);
+            }
+        }
+        IPlayer player = new Player(name);
+        this.players.add(player);
+        return player;
     }
 
     /**

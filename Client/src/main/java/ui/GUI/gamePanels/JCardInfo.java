@@ -9,17 +9,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import logic.Game;
-import logic.data.Player;
-import logic.data.cards.Card;
+import interfaces.data.IPlayer;
+import interfaces.data.cards.ICard;
 
 public class JCardInfo extends JFrame{
-	private final Player player;
+	private final IPlayer player;
 	private JTextArea cardInfo = new JTextArea("");
 	private JPanel context;
 	private JButton exchange;
 	
-	public JCardInfo(Player player){
+	public JCardInfo(IPlayer player){
 		this.player = player;
 		this.context = new JPanel();
 		this.context.setLayout(new GridLayout(2,1));
@@ -37,12 +36,12 @@ public class JCardInfo extends JFrame{
 	}
 	
 	public void update(){
-		Stack<Card> cards = this.player.getCards();
+		Stack<ICard> cards = this.player.getCards();
 
         String msg = "";
-        Iterator<Card> iter = cards.iterator();
+        Iterator<ICard> iter = cards.iterator();
         while (iter.hasNext()){
-            Card currentCard = iter.next();
+            ICard currentCard = iter.next();
             msg += String.format(currentCard + "%n");
         }
 

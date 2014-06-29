@@ -3,20 +3,22 @@ package main.java.ui.CUI;
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
 
+import exceptions.*;
+import interfaces.IFight;
+import interfaces.data.utils.IDice;
 import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
 import main.java.ui.CUI.utils.CUI;
 import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
-import logic.Fight;
-import logic.utils.*;
+
 
 public class FightCUI extends CUI {
 	
 	/**
 	 * Der momentane Fight
 	 */
-	private final Fight fight;
+	private final IFight fight;
 	
 	public class attackingCommandListener extends CommandListener{
 		/**
@@ -60,7 +62,7 @@ public class FightCUI extends CUI {
 			}
 			IO.println("");
 			IO.println("Angreifer Würfel:");
-			for(Dice d : fight.getAgressorsDice()){
+			for(IDice d : fight.getAgressorsDice()){
 				IO.println(d.toString());
 			}
 			IO.println("");
@@ -128,7 +130,7 @@ public class FightCUI extends CUI {
             }
 			IO.println("");
 			IO.println("Verteidiger Würfel:");
-			for(Dice d : fight.getDefendersDice()){
+			for(IDice d : fight.getDefendersDice()){
 				IO.println(d.toString());
 			}
 			IO.println("");
@@ -152,7 +154,7 @@ public class FightCUI extends CUI {
 	 * @param parent
 	 */
 	
-	protected FightCUI(Fight fight, CUI parent) {
+	protected FightCUI(IFight fight, CUI parent) {
 		super(fight, parent);
 		this.fight = fight;
 		this.addCommandListener(new defendingCommandListener());

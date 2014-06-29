@@ -1,7 +1,7 @@
 package main.java.ui.GUI.utils;
 
-import logic.data.Country;
-import logic.data.Map;
+import interfaces.data.ICountry;
+import interfaces.data.IMap;
 import org.magicwerk.brownies.collections.GapList; //Sehr schnelle Implementeirung für Array-Listen
 
 import javax.swing.*;
@@ -17,9 +17,9 @@ public class MapLoader {
 
     /**
      * Map Object von der GameEngine
-     * @see logic.data.Map
+     * @see interfaces.data.IMap
      */
-    private final Map map;
+    private final IMap map;
 
     /**
      * Karte, die dem Benutzer angezeigt wird
@@ -38,7 +38,7 @@ public class MapLoader {
      * Klasse zum laden der Map
      * @param map Map Objekt von der IGame Logic
      */
-    public MapLoader(Map map){
+    public MapLoader(IMap map){
        this.map = map;
        Dimension dim = new Dimension(400,400); // Dimension für die Background Bilder ‚
 
@@ -61,9 +61,9 @@ public class MapLoader {
      * @param height Breite auf die die Punkte skaliert werden sollen
      * @return Pro Punkt ein Land
      */
-    public HashMap<Point,Country> getCountryInfoCoordinates(int width, int height){
+    public HashMap<Point,ICountry> getCountryInfoCoordinates(int width, int height){
         BufferedImage img = this.backgroundCountryInfoImg;
-        HashMap<Point,Country> positions = new HashMap<Point,Country>();
+        HashMap<Point,ICountry> positions = new HashMap<Point,ICountry>();
         List colorList = GapList.create(); //Sehr schnelle Implementeirung für eine Array-List
 
         //Faktoren für Berechung der globalen x,y Koordinaten ermitteln
@@ -90,7 +90,7 @@ public class MapLoader {
                             col = newcol;
                             if(!col.equals(Color.BLACK)){
 
-                                Country country = map.getCountry(col);
+                                ICountry country = map.getCountry(col);
                                 if(country != null && !colorList.contains(col.getRGB()) ){
                                     int xCalc = (int) Math.round(x*xFactor);
                                     int yCalc = (int) Math.round(y*yFactor);
@@ -114,7 +114,7 @@ public class MapLoader {
      * @param height Höhe auf dem der Y Wert bassiert
      * @return Land das sich an diesen Koordinaten in Relation zur width und height befindet
      */
-    public Country getCountry(int x, int y, int width, int height){
+    public ICountry getCountry(int x, int y, int width, int height){
 
         //Faktoren für Berechung der globalen x,y Koordinaten ermitteln
         double xFactor = width / (double)this.backgroundCountryBorderImg.getWidth()  ;

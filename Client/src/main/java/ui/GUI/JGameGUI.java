@@ -4,15 +4,15 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import logic.*;
-import logic.data.Player;
+import interfaces.IGame;
+import interfaces.data.IPlayer;
 import main.java.ui.GUI.gamePanels.*;
 import main.java.ui.GUI.menu.JGameMenu;
 
 public class JGameGUI extends JFrame {
-	private final Game game;
+	private final IGame game;
 	private final JButton update;
-	private final Player player;
+	private final IPlayer player;
 	private final JMapGUI map;
     private final JMenuBar menuBar;
     private final JPLayerInfoGUI playersInfo;
@@ -20,7 +20,7 @@ public class JGameGUI extends JFrame {
     private final JCurrentStateInfoGUI currentStateInfoGUI;
     private final JCardInfo cardInfo;
 
-    public JGameGUI(Game game, Player player){
+    public JGameGUI(IGame game, IPlayer player){
 		super("Risiko");
 		this.game = game;
 		this.player = player;
@@ -73,11 +73,11 @@ public class JGameGUI extends JFrame {
         cardInfo.update();
         map.repaint();
     }
-    public Player getPlayer(){
+    public IPlayer getPlayer(){
         return this.player;
     }
 
-    public Game getGame(){
+    public IGame getGame(){
         return this.game;
     }
 }

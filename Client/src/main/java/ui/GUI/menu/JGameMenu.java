@@ -1,7 +1,7 @@
 package main.java.ui.GUI.menu;
 
-import logic.Game;
-import persistence.exceptions.PersistenceEndpointIOException;
+import exceptions.PersistenceEndpointIOException;
+import interfaces.IGame;
 import main.java.ui.GUI.JGameGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
 
@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
  */
 public class JGameMenu extends JMenu{
 
-    private final Game game;
+    private final IGame game;
     private final JMenuItem saveMenuItem;
 
     private class SaveGameListener implements ActionListener {
@@ -38,7 +38,7 @@ public class JGameMenu extends JMenu{
             }
         }
     }
-    public JGameMenu(Game game){
+    public JGameMenu(IGame game){
         super("Spiel");
         this.game = game;
         this.saveMenuItem = new JMenuItem("Speichern");

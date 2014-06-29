@@ -3,17 +3,18 @@ package main.java.ui.CUI;
 /**
  * Created by Stefan on 30.04.14.
  */
+import interfaces.ITurn;
+import interfaces.data.ICountry;
+import interfaces.data.Orders.IOrder;
 import main.java.ui.CUI.utils.CUI;
 import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
 
-import logic.data.Country;
-import logic.Turn;
 import exceptions.ToManyNewArmysException;
 import exceptions.TurnCompleteException;
 import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
-import logic.data.orders.IOrder;
+
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
@@ -27,7 +28,7 @@ public class TurnCUI extends CUI {
     /**
      * Zug der betreutt werden soll
      */
-    private  final  Turn turn;
+    private  final ITurn turn;
 
     /**
      * Event-Listener für das darstellen der Spielerkarte
@@ -48,7 +49,7 @@ public class TurnCUI extends CUI {
          */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            for(Country c : turn.getPlayer().getCountries()){
+            for(ICountry c : turn.getPlayer().getCountries()){
                 IO.println(c.toString());
             }
 
@@ -104,13 +105,13 @@ public class TurnCUI extends CUI {
          */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            Turn.steps currentStep = turn.getCurrentStep();
+            ITurn.steps currentStep = turn.getCurrentStep();
 
             IO.printHeadline("Status des Zugs");
             IO.println("Es ist " + turn.getPlayer() + " an der Reihe");
             IO.println("Dein Zug befindet sich im status " + currentStep);
 
-            if(currentStep == Turn.steps.DISTRIBUTE){
+            if(currentStep == ITurn.steps.DISTRIBUTE){
                 if(turn.getNewArmysSize() > 0 ){
                     IO.println("Du musst noch Einheiten auf deinen Ländern verteilen. Du darfst noch: "+ turn.getNewArmysSize() + " Einheiten verteilen");
                 }
@@ -118,11 +119,11 @@ public class TurnCUI extends CUI {
                     IO.println("Du hast keine Einheiten mehr zu verteilen wechsel mit next in die nächste Stufe ");
                 }
             }
-            else if(currentStep == Turn.steps.FIGHT){
+            else if(currentStep == ITurn.steps.FIGHT){
                 IO.println("Du befindest dich im Kampfmodus, greife Länder an!");
 
             }
-            else if(currentStep == Turn.steps.MOVE){
+            else if(currentStep == ITurn.steps.MOVE){
                 IO.println("Du darfst noch einheiten bewegen.");
 
             }
@@ -144,7 +145,7 @@ public class TurnCUI extends CUI {
      * @param parent Die übergeordnete CUI Instanz
      */
 
-    public TurnCUI(Turn turn, CUI parent){
+    public TurnCUI(ITurn turn, CUI parent){
         super(turn,parent);
         this.turn = turn;
 
@@ -173,7 +174,7 @@ public class TurnCUI extends CUI {
         }
 
         //Versuch das Land zu finden
-        Country found = this.turn.getPlayer().getCountry(countryName);
+        ICountry found = this.turn.getPlayer().getCountry(countryName);
         if(found == null){
             IO.println("Ihr Land " + countryName + " konnte nicht gefunden werden.");
         }

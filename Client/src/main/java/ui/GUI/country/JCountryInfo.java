@@ -8,13 +8,13 @@ import java.awt.Graphics;
 
 import javax.swing.JLabel;
 
-import logic.data.Country;
+import interfaces.data.ICountry;
 
 public class JCountryInfo extends JLabel{
-	private final Country country;
+	private final ICountry country;
 	private static final int BORDER = 4;
 	
-	public JCountryInfo(Country country){
+	public JCountryInfo(ICountry country){
 		this.country = country;
 		
 		setMinimumSize(new Dimension(20,20));

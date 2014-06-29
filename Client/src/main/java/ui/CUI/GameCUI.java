@@ -1,13 +1,15 @@
 package main.java.ui.CUI;
 
+import exceptions.*;
+import interfaces.IGame;
+import interfaces.IRound;
+import interfaces.data.IPlayer;
 import main.java.ui.CUI.utils.CUI;
 import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
 import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
-import logic.Game;
-import logic.data.Player;
-import logic.Round;
+
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
@@ -22,7 +24,7 @@ public class GameCUI extends CUI implements Runnable {
     /**
      * Bildet das Spiel ab für die die CUI erstellt wird
      */
-    private final Game game;
+    private final IGame game;
 
     /**
      * Klasse für Event-Listener zum hinzufügen eines Spielers
@@ -137,7 +139,7 @@ public class GameCUI extends CUI implements Runnable {
          * Gibt alle Player auf der Konsole aus
          */
         private void printPlayers (){
-            for (Player player : GameCUI.this.game.getPlayers()) {
+            for (IPlayer player : GameCUI.this.game.getPlayers()) {
                 int index = (GameCUI.this.game.getPlayers().indexOf(player) + 1);
                 IO.println(index + ". Player: " + player.toString());
             }
@@ -188,7 +190,7 @@ public class GameCUI extends CUI implements Runnable {
      * @param game - Das spiel, das die GUI betrifft
      * @throws Exception
      */
-    public GameCUI(final Game game,CUI parent) {
+    public GameCUI(final IGame game,CUI parent) {
         super(game,parent);
         this.game = game;
 
@@ -203,7 +205,7 @@ public class GameCUI extends CUI implements Runnable {
      */
     @Override
     public void listenConsole()  {
-        if ( this.game.getCurrentGameState() == Game.gameStates.WAITING){
+        if ( this.game.getCurrentGameState() == IGame.gameStates.WAITING){
             IO.println("Willkommen bei Risiko mit dem command help erhalten Sie eine Übersicht über die Möglichkeiten");
         }
         super.listenConsole();
@@ -230,7 +232,7 @@ public class GameCUI extends CUI implements Runnable {
      */
     @Override
     protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args) {
-        final Round round;
+        final IRound round;
         try {
             round = game.getCurrentRound();
 

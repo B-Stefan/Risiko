@@ -1,8 +1,8 @@
 package main.java.ui.GUI.menu;
 
-import main.java.GameManager;
-import logic.Game;
-import persistence.exceptions.PersistenceEndpointIOException;
+import exceptions.PersistenceEndpointIOException;
+import interfaces.IGame;
+import interfaces.IGameManager;
 import main.java.ui.GUI.JGameManagerGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
 
@@ -14,12 +14,12 @@ import java.util.List;
  */
 public class JGameLoadMenu extends JMenu{
 
-    private final GameManager manager;
-    public JGameLoadMenu(GameManager manager, JGameManagerGUI GameManagerGUI){
+    private final IGameManager manager;
+    public JGameLoadMenu(IGameManager manager, JGameManagerGUI GameManagerGUI){
         super("Laden");
         this.manager = manager;
 
-        List<Game> savedGames;
+        List<IGame> savedGames;
         try {
             savedGames = this.manager.getGameList();
         }catch (PersistenceEndpointIOException e){
@@ -28,7 +28,7 @@ public class JGameLoadMenu extends JMenu{
         }
 
         //Add saved games to Meue
-        for(Game savedGame : savedGames){
+        for(IGame savedGame : savedGames){
             JMenuItem item = new JGameLoadMenuItem(savedGame,GameManagerGUI);
             this.add(item);
         }

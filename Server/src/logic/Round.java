@@ -26,10 +26,10 @@ public class Round implements IRound {
     private ICardDeck deck;
 	
 
-	public Round(ICardDeck deck2, final List<IPlayer> players2,final IMap map2, final Queue<Turn.steps> steps){
-		this.deck = deck2;
-		this.map = map2;
-        this.players = new LinkedBlockingQueue<Player>(players2);
+	public Round(ICardDeck deck, final List<IPlayer> players,final IMap map, final Queue<Turn.steps> steps){
+		this.deck = deck;
+		this.map = map;
+        this.players = new LinkedBlockingQueue<IPlayer>(players);
         this.turnSteps = steps;
         try {
             this.setNextTurn();
@@ -39,7 +39,7 @@ public class Round implements IRound {
 
 	}
     public Round(ICardDeck deck2, final List<IPlayer> players2,final IMap map2){
-        this(deck2, players2,map2, Turn.getDefaultSteps());
+        this(deck2, players2,map2, ITurn.getDefaultSteps());
     }
     /**
      * Setzt den nächsten Spieler als aktuellen Spieler

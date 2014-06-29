@@ -1,7 +1,7 @@
 package main.java.ui.GUI.country;
 
-import logic.Turn;
-import logic.data.Country;
+import interfaces.ITurn;
+import interfaces.data.ICountry;
 import exceptions.*;
 import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
@@ -18,8 +18,8 @@ public class JCountryPlaceMenuItem extends JMenuItem {
 
 
 
-    private final Country country;
-    private final Turn turn;
+    private final ICountry country;
+    private final ITurn turn;
 
     public class MoveClickListener implements ActionListener {
         /**
@@ -29,7 +29,7 @@ public class JCountryPlaceMenuItem extends JMenuItem {
          */
         @Override
         public void actionPerformed(ActionEvent event) {
-            Country to    = JCountryPlaceMenuItem.this.getCountry();
+            ICountry to    = JCountryPlaceMenuItem.this.getCountry();
 
             int numberOfArmyies;
             int min = 1;
@@ -63,13 +63,13 @@ public class JCountryPlaceMenuItem extends JMenuItem {
             }
         }
     }
-    public JCountryPlaceMenuItem(Country country, Turn turn){
+    public JCountryPlaceMenuItem(ICountry country, ITurn turn){
         super("Place");
         this.country = country;
         this.turn = turn;
         this.addActionListener(new MoveClickListener());
     }
-    public Country getCountry(){
+    public ICountry getCountry(){
         return country;
     }
 

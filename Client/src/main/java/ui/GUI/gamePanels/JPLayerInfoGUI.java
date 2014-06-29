@@ -6,18 +6,17 @@ import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import logic.Game;
-import exceptions.GameNotStartedException;
+import interfaces.IGame;
 import main.java.ui.GUI.utils.tableModels.PlayerInfoTableModel;
 
 
 public class JPLayerInfoGUI extends JScrollPane{
-	private final Game game;
+	private final IGame game;
 	private PlayerInfoTableModel tModel;
     private final JTable playersTable;
 	
 	
-	public JPLayerInfoGUI(Game game){
+	public JPLayerInfoGUI(IGame game){
         super();
 		this.game = game;
         final Vector<String> spalten = new Vector<String>();

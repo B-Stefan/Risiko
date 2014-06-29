@@ -1,8 +1,8 @@
 package main.java.ui.GUI.country;
 
-import logic.Fight;
+import interfaces.IFight;
+import interfaces.data.utils.IDice;
 import exceptions.*;
-import logic.utils.Dice;
 import main.java.ui.GUI.JGameGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
@@ -21,7 +21,7 @@ public class JFightSide extends Panel {
         DEFENDER,
         AGGRESSOR
     }
-    private final Fight fight;
+    private final IFight fight;
     private final sides side;
     private final JTextField numberOfArmiesText;
     private final JTextArea thrownDiceText;
@@ -92,7 +92,7 @@ public class JFightSide extends Panel {
         }
     }
 
-    public JFightSide(Fight fight, sides side ){
+    public JFightSide(IFight fight, sides side ){
         this.fight = fight;
         this.side = side;
         this.numberOfArmiesText = new JTextField(SwingConstants.RIGHT);
@@ -135,8 +135,8 @@ public class JFightSide extends Panel {
 
         }
 
-        final Stack<Dice> dices = new Stack<Dice>();
-        final Stack<Dice> ds;
+        final Stack<IDice> dices = new Stack<IDice>();
+        final Stack<IDice> ds;
         if(this.side == sides.AGGRESSOR){
             ds = this.fight.getAgressorsDice();
 
@@ -145,13 +145,13 @@ public class JFightSide extends Panel {
 
         }
         //Copy entries
-        for(Dice d: ds){
+        for(IDice d: ds){
             dices.push(d);
         }
 
         String str = "";
         while (!dices.empty()){
-            final Dice dice = dices.pop();
+            final IDice dice = dices.pop();
             str += String.format(dice.getDiceNumber() + "%n" );
         }
         this.thrownDiceText.setText(str);

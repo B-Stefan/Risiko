@@ -1,9 +1,7 @@
 package main.java.ui.GUI.country;
 
 //import com.sun.codemodel.internal.JMod;
-import logic.Fight;
-import logic.Turn;
-import logic.data.Country;
+import interfaces.IFight;
 import main.java.ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
@@ -15,7 +13,7 @@ import java.awt.event.ActionListener;
  * Created by Stefan on 18.06.14.
  */
 public class JFightGUI extends JModalDialog {
-    private final Fight fight;
+    private final IFight fight;
     private class CloseBtnListener implements ActionListener {
 
         /**
@@ -32,7 +30,7 @@ public class JFightGUI extends JModalDialog {
             JFightGUI.this.dispose();
         }
     }
-    public JFightGUI(final Component parent, final Fight fight)  {
+    public JFightGUI(final Component parent, final IFight fight)  {
         super(parent,"Fight",ModalityType.APPLICATION_MODAL);
         this.fight = fight;
         this.setLayout(new BorderLayout(5,5));

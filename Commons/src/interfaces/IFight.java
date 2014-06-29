@@ -2,6 +2,8 @@ package interfaces;
 
 import exceptions.*;
 import interfaces.data.IArmy;
+import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
 import interfaces.data.utils.IDice;
 
 import java.util.Stack;
@@ -51,6 +53,37 @@ public interface IFight {
      */
     public Stack<IDice> getAgressorsDice();
 
+
+
+    /**
+     * Getter für die Liste der Würfel des Verteidigers
+     * @return Stack<Dice>
+     */
+    public Stack<IDice> getDefendersDice();
+
+    /**
+     * Getter für den Angreifer
+     * @return
+     */
+    public IPlayer getAggressor ();
+
+    /**
+     * Getter für Verteidiger
+     * @return
+     */
+    public IPlayer getDefender ();
+
+    /**
+     * Getter für das From Land
+     * @return
+     */
+    public ICountry getFrom();
+
+    /**
+     * Getter für das To Land
+     * @return
+     */
+    public ICountry getTo();
 
 
     }

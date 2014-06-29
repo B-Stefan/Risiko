@@ -83,12 +83,13 @@ public interface IGame {
      */
     public IMap getMap();
 
+
     /**
      * Für dem Spiel einen neuen Spieler hinzu
      *
-     * @param player - neuer Spieler
+     * @param name - Name des neuen Spielers
      */
-    public void addPlayer(final IPlayer player);
+    public IPlayer addPlayer(final String name) throws PlayerNameAlreadyChooseException;
 
     /**
      * @return Liste der Spieler
@@ -106,7 +107,7 @@ public interface IGame {
      * Speicher das Spiel ab
      *
      */
-    public boolean save ();
+    public boolean save () throws PersistenceEndpointIOException;
 
 
 

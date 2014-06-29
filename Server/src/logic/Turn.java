@@ -21,42 +21,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Turn implements ITurn{
 
     /**
-     * Die Steps bilden die möglichen Schritte eines Turns ab
-      */
-    public  static enum steps {
-        DISTRIBUTE,
-        FIGHT,
-        MOVE
-    }
-
-    /**
-     * Gibt die Standardschritte zurück, die ein Turn normalerweise druchläuft
-     * @return - Standard Schritte
-     */
-    public static Queue<steps> getDefaultSteps (){
-        Queue<steps> s = new LinkedBlockingQueue<steps>(3) {
-        };
-        s.add(steps.DISTRIBUTE);
-        s.add(steps.FIGHT);
-        s.add(steps.MOVE);
-        return s;
-    }
-
-    /**
-     * Gibt die Schritte zurück, die alle Spieler in der ersten Runde druchlaufen müssen
-     * @return - Schritte für die erste Runde
-     */
-    public static Queue<steps> getDefaultStepsFirstRound (){
-        Queue<steps> s = new LinkedBlockingQueue<steps>(3) {
-        };
-        s.add(steps.DISTRIBUTE);
-        s.add(steps.FIGHT);
-        s.add(steps.MOVE);
-        return s;
-    }
-
-
-    /**
      * Bildet den Spieler ab, dir diesen Turn durchführen musss
      */
     private final IPlayer player;
@@ -460,7 +424,7 @@ public class Turn implements ITurn{
 
     /**
      * Gibt die Anzahl der noch zu verteilenden Armeen zurück
-     * @see #placeNewArmy(Country)
+     * @see #placeNewArmy(interfaces.data.ICountry)
      * @return - Anzahl der noch zu verteilenden Armeen
      */
     public int getNewArmysSize() {

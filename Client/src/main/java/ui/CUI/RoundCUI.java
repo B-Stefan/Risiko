@@ -1,10 +1,10 @@
 package main.java.ui.CUI;
 
+import interfaces.IRound;
 import main.java.ui.CUI.utils.CUI;
 import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
-import logic.Round;
 import exceptions.RoundCompleteException;
 import exceptions.ToManyNewArmysException;
 import exceptions.TurnNotCompleteException;
@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
 
 public class RoundCUI extends CUI {
-	private final Round round;
+	private final IRound round;
 
     public class NextPlayerCommandListener extends CommandListener {
 
@@ -42,7 +42,7 @@ public class RoundCUI extends CUI {
         }
     }
 
-	public RoundCUI(Round fight, CUI parent){
+	public RoundCUI(IRound fight, CUI parent){
 		super(fight, parent);
 		this.round= fight;
         this.addCommandListener(new NextPlayerCommandListener());

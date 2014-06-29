@@ -1,7 +1,7 @@
 package main.java.ui.GUI.country;
 
-import logic.data.Country;
-import logic.Turn;
+import interfaces.ITurn;
+import interfaces.data.ICountry;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +12,10 @@ import java.awt.*;
 public class JCountryPopupMenu extends JPopupMenu{
 
 
-    private final Country country;
-    private final Turn turn;
+    private final ICountry country;
+    private final ITurn turn;
 
-    public JCountryPopupMenu(Country country, Turn turn){
+    public JCountryPopupMenu(ICountry country, ITurn turn){
         super();
         this.country = country;
         this.turn = turn;

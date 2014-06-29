@@ -1,9 +1,10 @@
 package main.java.ui.GUI.country;
-import logic.Fight;
-import logic.Turn;
-import logic.data.Country;
+import interfaces.IFight;
+import interfaces.ITurn;
+import interfaces.data.ICountry;
 import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
+import exceptions.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,8 +15,8 @@ import java.awt.event.ActionListener;
  */
 public class JCountryFightMenu extends JCountryNeighborsMenu {
 
-    private final Turn turn;
-    private final Country country;
+    private final ITurn turn;
+    private final ICountry country;
     public class NeighborActionListener implements ActionListener{
 
         /**
@@ -26,9 +27,9 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
         @Override
         public void actionPerformed(ActionEvent event) {
             if(event.getActionCommand() == "onCountryClick"){
-                Country from    = JCountryFightMenu.this.country;
-                Country to      =  JCountryFightMenu.this.getSelectedNeighborsMenuItem().getCountry();
-                Fight fight;
+                ICountry from    =  JCountryFightMenu.this.country;
+                ICountry to      =  JCountryFightMenu.this.getSelectedNeighborsMenuItem().getCountry();
+                IFight fight;
                 try {
                     fight = JCountryFightMenu.this.turn.fight(from, to);
                 }catch (TurnNotInCorrectStepException | TurnNotAllowedStepException | ToManyNewArmysException | NotTheOwnerException e ){
@@ -41,7 +42,7 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
             }
         }
     }
-    public JCountryFightMenu(final Country country, final Turn turn){
+    public JCountryFightMenu(final ICountry country, final ITurn turn){
         super("Fight",country);
         this.country = country;
         this.turn = turn;
