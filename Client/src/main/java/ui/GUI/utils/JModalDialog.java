@@ -28,7 +28,7 @@ public class JModalDialog extends JDialog {
      */
     public static int showAskIntegerModal(final Component com, final String title, String message, int min, final int max) throws UserCanceledException {
 
-        Frame frame = (Frame) SwingUtilities.getWindowAncestor(com);
+        Window frame =  SwingUtilities.getWindowAncestor(com);
         if (min > max) {
             min = max;
         }
@@ -65,14 +65,14 @@ public class JModalDialog extends JDialog {
 
 
     public static void showInfoDialog(final Component com, final String title, final String message) {
-        Frame frame = (Frame) SwingUtilities.getWindowAncestor(com);
+        Window frame =  SwingUtilities.getWindowAncestor(com);
         JOptionPane.showMessageDialog(frame,
                 message,
                 title,
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static String showInputDialog(Frame frame, String message, String title) {
+    public static String showInputDialog(Window frame, String message, String title) {
         return JOptionPane.showInputDialog(frame, message, title);
     }
 

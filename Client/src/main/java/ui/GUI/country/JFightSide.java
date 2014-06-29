@@ -5,6 +5,7 @@ import main.java.logic.exceptions.*;
 import main.java.logic.utils.Dice;
 import main.java.ui.GUI.JGameGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
+import main.java.ui.GUI.utils.JModalDialog;
 import sun.tools.tree.CastExpression;
 
 import javax.swing.*;
@@ -72,6 +73,24 @@ public class JFightSide extends Panel {
             }
 
             JFightSide.this.update();
+            if(JFightSide.this.side == sides.DEFENDER){
+                int[] result = JFightSide.this.fight.getResult();
+                int defenderLostArmies = result[0];
+                int aggressorLostArmies = result[1];
+                int aggresorWon = result[2];
+                if (aggresorWon == 1){
+                    JModalDialog.showInfoDialog(JFightSide.this,"Angriff erfolgreich","Der Angreifer hat das Land übernommen");
+                    //Close Window
+                    Window JDialogRoot = SwingUtilities.getWindowAncestor(JFightSide.this);
+                    JDialogRoot.dispose();
+                }else{
+                    String str = String.format("Der Angreifer hat " + aggressorLostArmies + "Armeen verloren %n");
+                    str  += String.format("Der Verteidiger hat " + defenderLostArmies + "Armeen verloren %n");
+                    str  += "Der Kampf geht weiter ";
+                    JModalDialog.showInfoDialog(JFightSide.this,"Erfolgreich verteidigt",str);
+                }
+
+            }
         }
     }
 
@@ -93,6 +112,7 @@ public class JFightSide extends Panel {
 
 
         this.thrownDiceText.setRows(3);
+        this.thrownDiceText.setText(String.format("%n %n %n")); // Default 3 leerzeichen, sieht besser aus
         this.thrownDiceText.setEnabled(false);
         this.numberOfArmiesText.transferFocus();
         this.add(this.thrownDiceText);
@@ -104,11 +124,11 @@ public class JFightSide extends Panel {
     }
     public void update (){
 
-        Window root = SwingUtilities.getWindowAncestor(this);
+        final Window root = SwingUtilities.getWindowAncestor(this);
         if(root!= null){
-            Window mainRoot = SwingUtilities.getWindowAncestor(root);
+            final Window mainRoot = SwingUtilities.getWindowAncestor(root);
             try {
-                JGameGUI gameGUI = (JGameGUI) SwingUtilities.getWindowAncestor(root);
+                final JGameGUI gameGUI = (JGameGUI) SwingUtilities.getWindowAncestor(root);
                 gameGUI.update();
             }catch (ClassCastException e){
                 new JExceptionDialog(this,e);
@@ -117,21 +137,23 @@ public class JFightSide extends Panel {
 
         }
 
-        Stack<Dice> dices = new Stack<Dice>();
+        final Stack<Dice> dices = new Stack<Dice>();
+        final Stack<Dice> ds;
         if(this.side == sides.AGGRESSOR){
-            final Stack<Dice> ds = this.fight.getAgressorsDice();
-        	for(Dice d: ds){
-        		dices.push(d);
-        	}
+            ds = this.fight.getAgressorsDice();
+
         }else{
-            final Stack<Dice> ds = this.fight.getDefendersDice();
-          	for(Dice d: ds){
-          		dices.push(d);
-          	}
+            ds = this.fight.getDefendersDice();
+
         }
+        //Copy entries
+        for(Dice d: ds){
+            dices.push(d);
+        }
+
         String str = "";
         while (!dices.empty()){
-            Dice dice = dices.pop();
+            final Dice dice = dices.pop();
             str += String.format(dice.getDiceNumber() + "%n" );
         }
         this.thrownDiceText.setText(str);

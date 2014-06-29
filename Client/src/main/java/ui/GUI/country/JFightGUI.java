@@ -35,19 +35,17 @@ public class JFightGUI extends JModalDialog {
     public JFightGUI(final Component parent, final Fight fight)  {
         super(parent,"Fight",ModalityType.APPLICATION_MODAL);
         this.fight = fight;
-        this.setLayout(new BorderLayout(10,10));
+        this.setLayout(new BorderLayout(5,5));
 
         JPanel centerPanel = new JPanel();
 
         centerPanel.add(new JFightSide(this.fight, JFightSide.sides.DEFENDER));
         centerPanel.add(new JFightSide(this.fight,JFightSide.sides.AGGRESSOR));
-
         centerPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-
         this.add(centerPanel,BorderLayout.CENTER);
 
         //Close btn
-        JButton closeBtn = new JButton("Aufgeben");
+        JButton closeBtn = new JButton("Kampf verlassen");
         closeBtn.addActionListener(new CloseBtnListener());
         this.add(closeBtn,BorderLayout.SOUTH);
 
