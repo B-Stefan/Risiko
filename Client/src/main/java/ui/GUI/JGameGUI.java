@@ -72,6 +72,7 @@ public class JGameGUI extends JFrame {
         playersInfo.update();
         orderInfo.update();
         currentStateInfoGUI.update();
+        cardInfo.update();
         map.repaint();
     }
     public Player getPlayer(){

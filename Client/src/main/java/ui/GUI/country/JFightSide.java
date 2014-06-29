@@ -73,8 +73,8 @@ public class JFightSide extends Panel {
             JFightSide.this.update();
             if(JFightSide.this.side == sides.DEFENDER){
                 int[] result = JFightSide.this.fight.getResult();
-                int defenderLostArmies = result[0];
-                int aggressorLostArmies = result[1];
+                int defenderLostArmies = result[1];
+                int aggressorLostArmies = result[0];
                 int aggresorWon = result[2];
                 if (aggresorWon == 1){
                     JModalDialog.showInfoDialog(JFightSide.this,"Angriff erfolgreich","Der Angreifer hat das Land übernommen");

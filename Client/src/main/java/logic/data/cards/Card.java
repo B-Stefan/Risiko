@@ -44,4 +44,13 @@ public class Card implements Comparable<Card> {
 			return -1;
 		}
 	}
+    public String toString(){
+        Country country = this.getCountry();
+        String msg = "";
+        if (country != null){
+            msg += country.getName();
+        }
+        msg += this.getType();
+        return  msg;
+    }
 }

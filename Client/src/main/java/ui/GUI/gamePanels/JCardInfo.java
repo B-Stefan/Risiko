@@ -2,6 +2,7 @@ package main.java.ui.GUI.gamePanels;
 
 import java.awt.GridLayout;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Stack;
 
 import javax.swing.JButton;
@@ -30,16 +31,23 @@ public class JCardInfo extends JFrame{
 	}
 	
 	private void setContext(){
-		setCardInfo();
+		update();
 		setExchange();
 		this.context.add(this.cardInfo);
 		this.context.add(this.exchange);
 	}
 	
-	private void setCardInfo(){
+	public void update(){
 		Stack<Card> cards = this.player.getCards();
 
-		this.cardInfo.setText("");
+        String msg = "";
+        Iterator<Card> iter = cards.iterator();
+        while (iter.hasNext()){
+            Card currentCard = iter.next();
+            msg += String.format(currentCard + "%n");
+        }
+
+		this.cardInfo.setText(msg);
 	}
 	
 	private void setExchange(){
