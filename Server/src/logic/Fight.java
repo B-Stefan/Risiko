@@ -1,6 +1,8 @@
 package logic;
 import java.util.*;
 
+import interfaces.IFight;
+import interfaces.data.utils.IDice;
 import logic.data.Army;
 import logic.data.Country;
 import logic.data.Player;
@@ -15,7 +17,7 @@ import exceptions.TurnNotInCorrectStepException;
 import logic.utils.*;
 import exceptions.*;
 
-public class Fight {
+public class Fight implements IFight {
 	
 	/**
 	 * Das Land, von dem aus angegriffen wird
@@ -44,7 +46,7 @@ public class Fight {
 	/**
 	 * Liste der Würfel des Angreifers
 	 */
-	private Stack<Dice> agressorsDice = new Stack<Dice>();
+	private Stack<IDice> agressorsDice = new Stack<IDice>();
 	
 	/**
 	 * Zeile 1: Anzahl der verlorenen Einheiten des Angreifers
@@ -244,8 +246,9 @@ public class Fight {
 	public int[] getResult(){
 		return this.result;
 	}
-	
-	public void setResult() throws ToManyNewArmysException,CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException{
+
+
+	private void setResult() throws ToManyNewArmysException,CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException{
 		this.result = result();
 	}
 	
@@ -253,7 +256,7 @@ public class Fight {
 	 * Getter für die Liste der Würfel des Angreifers
 	 * @return Stack<Dice>
 	 */
-	public Stack<Dice> getAgressorsDice(){
+	public Stack<IDice> getAgressorsDice(){
 		return this.agressorsDice;
 	}
 	

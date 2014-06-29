@@ -1,6 +1,9 @@
 package logic.data;
 
 
+import interfaces.IMap;
+import interfaces.data.ICountry;
+
 import java.awt.*;
 import java.util.*;
 
@@ -9,7 +12,7 @@ import java.util.*;
  *
  * Dient zur Verwaltung der Karte für ein Spiel
  */
-public class Map  {
+public class Map  implements IMap{
 
 
     public static final String DEFAULT_MAP_UUID = "03c64c20-fc74-11e3-a3ac-0800200c9a66";
@@ -271,6 +274,10 @@ public class Map  {
     }
 
 
+    /**
+     * Gibt die Liste aller Countries zurück
+     * @return Liste aller Counties
+     */
     public ArrayList<Country> getCountries() {
         return this.countries;
     }
@@ -293,7 +300,7 @@ public class Map  {
      * @param n String (name des zu suchenden Landes)
      * @return das zu suchende Land
      */
-    public Country getCountry(String n){
+    public ICountry getCountry(String n){
     	for (Country c : countries){
     		if(c.getName().equals(n)){
     			return c;
@@ -306,7 +313,7 @@ public class Map  {
      * @param col Color (Farbe des zu suchenden Landes)
      * @return das zu suchende Land
      */
-    public Country getCountry(Color col){
+    public ICountry getCountry(Color col){
         for (Country c : countries){
             if(c.getColor().equals(col)){
                 return c;
@@ -319,7 +326,7 @@ public class Map  {
      *
      * @return Alle Kontinente dieser Karte
      */
-    public ArrayList<Continent> getContinents() {
+    public ArrayList<IContinent> getContinents() {
         return continents;
     }
 

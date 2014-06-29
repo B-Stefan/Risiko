@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * @author Stefan
  *         Diese Klasse ist für die Verwaltung der einzelnen Console Line Ebenen zuständig. Eine Instanz dieser Klasse stellt eine Ebene da.
- *         Beispiel: "Game > Map >" In diesem Beispiel wäre Game eine Instanze einer Klasse, die CUI implementiert und Map anlaog zu Game.
+ *         Beispiel: "IGame > Map >" In diesem Beispiel wäre IGame eine Instanze einer Klasse, die CUI implementiert und Map anlaog zu IGame.
  */
 public abstract class CUI {
 

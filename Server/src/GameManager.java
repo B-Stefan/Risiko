@@ -1,13 +1,15 @@
+import exceptions.PersistenceEndpointIOException;
+import interfaces.IGame;
+import interfaces.IGameManager;
 import logic.Game;
 import persistence.PersistenceManager;
 import persistence.dataendpoints.PersistenceEndpoint;
-import persistence.exceptions.PersistenceEndpointIOException;
 
 import java.util.*;
 /**
  * Verwaltet eine Anzahl an Games und stellt Methdoen zum Seichern und Anzeigen der gespeicherten Spiele zur Verfügung
  */
-public class GameManager {
+public class GameManager implements IGameManager {
 
     /**
      * Handler, der die Interaktion zum File-System oder DB-System verwaltet
@@ -27,7 +29,7 @@ public class GameManager {
      * @return Gibt die Liste aller gespeicherten Spiele zurück
      * @throws PersistenceEndpointIOException
      */
-    public List<Game> getGameList() throws PersistenceEndpointIOException{
+    public List<IGame> getGameList() throws PersistenceEndpointIOException{
         return this.handler.getAll();
     }
 
@@ -47,7 +49,7 @@ public class GameManager {
      * @param g  Spiel das gespeichert werden soll
      * @throws PersistenceEndpointIOException
      */
-    public void saveGame(Game g) throws PersistenceEndpointIOException{
+    public void saveGame(IGame g) throws PersistenceEndpointIOException{
         this.handler.save(g);
     }
 

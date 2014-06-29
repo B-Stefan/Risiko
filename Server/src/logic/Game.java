@@ -3,20 +3,23 @@ package logic;
 import java.util.*;
 import java.awt.Color;
 
+import interfaces.IGame;
+import interfaces.IMap;
+import interfaces.IRound;
+import interfaces.data.IPlayer;
 import logic.data.*;
 import logic.data.Map;
 import exceptions.*;
 import logic.data.cards.CardDeck;
 import logic.data.orders.OrderManager;
 import persistence.dataendpoints.PersistenceEndpoint;
-import persistence.exceptions.PersistenceEndpointIOException;
 
 /**
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
  *
  * Klasse für ein eizelnes Spiel. Diese dient zur Spielverwaltung.
  */
-public class Game {
+public class Game implements IGame {
 	
 	private Stack<Color> color = new Stack<Color>();
     /**
@@ -29,26 +32,20 @@ public class Game {
      */
     public static final int maxCountPlayers = 5;
 
-    public static enum gameStates {
-        WAITING, // Wait for start input
-        RUNNING, // The gamePanels passes through the rounds
-        FINISHED // One player finished his order
-    }
-
     /**
      * Representiert die Karte des Spiels
      */
-    private final Map map;
+    private final IMap map;
 
     /**
      * Listet alle Spieler auf, die aktiv am Spiel teilnehmen.
      */
-    private final List<Player> players = new ArrayList<Player>();
+    private final List<IPlayer> players = new ArrayList<IPlayer>();
 
     /**
      * The current gamePanels state, default => WAITING
      */
-    private  gameStates currentGameState = gameStates.WAITING;
+    private IGame.gameStates currentGameState = IGame.gameStates.WAITING;
 
     /**
      * Contains the current round , default null
@@ -98,11 +95,14 @@ public class Game {
     public CardDeck getDeck(){
     	return this.deck;
     }
-    
+
     /**
-     * Startet das Speil, sodass der Spielstatus und co aktualisiert werden
-     *
-     * @throws exceptions.NotEnoughPlayerException
+     * Startet das Spiel
+     * @throws NotEnoughPlayerException
+     * @throws TooManyPlayerException
+     * @throws NotEnoughCountriesException
+     * @throws GameAllreadyStartedException
+     * @throws PlayerAlreadyHasAnOrderException
      */
     public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAllreadyStartedException, PlayerAlreadyHasAnOrderException {
 
@@ -113,7 +113,7 @@ public class Game {
             throw new TooManyPlayerException(Game.maxCountPlayers);
         } else if (this.map.getCountries().size() < this.players.size()) {
             throw new NotEnoughCountriesException(this.map.getCountries().size());
-        } else if (this.currentGameState != gameStates.WAITING) {
+        } else if (this.currentGameState != IGame.gameStates.WAITING) {
             throw new GameAllreadyStartedException();
         }
 
@@ -122,20 +122,27 @@ public class Game {
         this.setDefaultArmys();
         OrderManager.createOrdersForPlayers(this.getPlayers(),this);
 
-        this.currentGameState = gameStates.RUNNING;
+        this.currentGameState = IGame.gameStates.RUNNING;
         this.setCurrentRound(new Round(this.deck, players, map, Turn.getDefaultStepsFirstRound()));
 
 
     }
 
 
+    /**
+     * Versetzt das Spiel in die nächste Runde
+     * @throws ToManyNewArmysException
+     * @throws RoundNotCompleteException
+     * @throws GameNotStartedException
+     * @throws GameIsCompletedException
+     */
     public void setNextRound() throws ToManyNewArmysException, RoundNotCompleteException,GameNotStartedException, GameIsCompletedException{
         if (this.currentRound != null) {
             if (!this.currentRound.isComplete()) {
                 throw new RoundNotCompleteException();
             }
         }
-        if (this.getCurrentGameState() == gameStates.WAITING){
+        if (this.getCurrentGameState() == IGame.gameStates.WAITING){
             throw  new GameNotStartedException();
         }
         else if(this.isGameWon()){
@@ -145,23 +152,22 @@ public class Game {
     }
 
     /**
-     * Gibt die aktuelle Runde des Spiels zurück
-     *
+     * Gibt die Aktelle Runde des Spielers zurück
      * @return
+     * @throws GameNotStartedException
      */
-    public Round getCurrentRound() throws GameNotStartedException {
-        if (this.getCurrentGameState() == gameStates.WAITING) {
+    public IRound getCurrentRound() throws GameNotStartedException {
+        if (this.getCurrentGameState() == IGame.gameStates.WAITING) {
             throw new GameNotStartedException();
         }
         return this.currentRound;
     }
 
     /**
-     * Gibt den aktuellen status des Games zurück
-     *
-     * @return
+     * Gibt den aktuellen Status des Spiels zurück
+     * @return Status des Spiels
      */
-    public gameStates getCurrentGameState() {
+    public IGame.gameStates getCurrentGameState() {
         return this.currentGameState;
     }
 
@@ -225,7 +231,7 @@ public class Game {
      *
      * @throws exceptions.PlayerNotExsistInGameException
      */
-    public void onPlayerDelete(final Player player) throws PlayerNotExsistInGameException {
+    public void onPlayerDelete(final IPlayer player) throws PlayerNotExsistInGameException {
         try {
             this.players.remove(player);
         } catch (final Exception e) {
@@ -241,7 +247,7 @@ public class Game {
      */
     public void onPlayerAdd(final String name) throws GameAllreadyStartedException {
 
-        if (this.getCurrentGameState() != gameStates.WAITING) {
+        if (this.getCurrentGameState() != IGame.gameStates.WAITING) {
             throw new GameAllreadyStartedException();
         } else {
             Player newPlayer = new Player(name, this.color.pop());
@@ -254,7 +260,7 @@ public class Game {
      * @return Wenn gewonnen true
      */
     private boolean isGameWon() throws GameNotStartedException{
-        if(this.getCurrentGameState() == gameStates.WAITING){
+        if(this.getCurrentGameState() == IGame.gameStates.WAITING){
             throw new GameNotStartedException();
         }
         if(this.getWinner()!=null){
@@ -269,7 +275,7 @@ public class Game {
      * Wenn keiner gewonnen hat gibt die Methode null zurück
      * @return Sieger des Spiels
      */
-    public Player getWinner (){
+    public IPlayer getWinner (){
         for(Player player : players){
             if(player.getOrder().isCompleted()){
                 return player;
@@ -292,7 +298,7 @@ public class Game {
      *
      * @param s
      */
-    public void setCurrentGameState(gameStates s) {
+    public void setCurrentGameState(IGame.gameStates s) {
         this.currentGameState = s;
     }
 
@@ -301,7 +307,7 @@ public class Game {
      *
      * @param players
      */
-    public void addPlayers(List<Player> players) {
+    public void addPlayers(List<IPlayer> players) {
         this.players.addAll(players);
     }
 
@@ -310,7 +316,7 @@ public class Game {
      *
      * @return
      */
-    public logic.data.Map getMap() {
+    public IMap getMap() {
         return map;
     }
 
@@ -319,7 +325,7 @@ public class Game {
      *
      * @param player - neuer Spieler
      */
-    public void addPlayer(final Player player) {
+    public void addPlayer(final IPlayer player) {
         if (player.getColor() == null){
             player.setColor(this.color.pop());
         }
@@ -329,7 +335,7 @@ public class Game {
     /**
      * @return Liste der Spieler
      */
-    public List<Player> getPlayers() {
+    public List<IPlayer> getPlayers() {
         return this.players;
     }
 
@@ -343,7 +349,7 @@ public class Game {
 
     /**
      * Gibt das Spiel als String aus.
-     * @return Gibt "Game" zurück
+     * @return Gibt "IGame" zurück
      */
     @Override
     public String toString() {
@@ -351,7 +357,7 @@ public class Game {
     }
 
     /**
-     * Speicher das Spile ab
+     * Speicher das Spiel ab
      *
      */
     public boolean save () throws PersistenceEndpointIOException{

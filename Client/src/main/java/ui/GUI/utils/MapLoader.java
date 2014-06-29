@@ -36,7 +36,7 @@ public class MapLoader {
 
     /**
      * Klasse zum laden der Map
-     * @param map Map Objekt von der Game Logic
+     * @param map Map Objekt von der IGame Logic
      */
     public MapLoader(Map map){
        this.map = map;

@@ -1,4 +1,9 @@
 package logic;
+import interfaces.IFight;
+import interfaces.ITurn;
+import interfaces.data.IArmy;
+import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
 import logic.data.*;
 import logic.data.cards.CardDeck;
 import exceptions.*;
@@ -11,7 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Dabei druchläuft ein Turn verschiende Schritte (steps) Der Turn wird durch die Runde (Round) erstellt.
  *
  */
-public class Turn {
+public class Turn implements ITurn{
 
     /**
      * Die Steps bilden die möglichen Schritte eines Turns ab
@@ -73,12 +78,12 @@ public class Turn {
      * @see #currentStep
      * @see java.util.concurrent.LinkedBlockingQueue
      */
-    public  final Queue<steps> allowedSteps;
+    private final Queue<steps> allowedSteps;
 
     /**
      * Bildet die aktuelle Stufe des Zuges ab.
      * Diese Varriable kann nie den Wert null haben
-     * @see #Turn(Player, logic.data.Map, java.util.Queue)
+     * @see #(Player, logic.data.Map, java.util.Queue)
      */
     private steps currentStep;
     
@@ -136,7 +141,7 @@ public class Turn {
      *
      * @return - Aktueller Spieler, der diesen Zug durchführen muss
      */
-    public Player getPlayer (){
+    public IPlayer getPlayer (){
     	return this.player; 
     }
 
@@ -228,6 +233,14 @@ public class Turn {
     }
 
 
+    /**
+     * Tauscht die Karten für den aktuellen Spieler ein
+     * @throws ToManyNewArmysException
+     * @throws ExchangeNotPossibleException
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
+     * @throws NotEnoughCardsToExchangeException
+     */
     public void exchangeCards() throws ToManyNewArmysException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException{
     	if(this.isStepAllowed(steps.DISTRIBUTE)){
     		if(this.determineAmountOfNewArmies() == this.getNewArmysSize()){
@@ -249,7 +262,7 @@ public class Turn {
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(Country position, int numberOfArmys) throws ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException {
+    public void placeNewArmy(ICountry position, int numberOfArmys) throws ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException {
         for(int i = 0; i!= numberOfArmys; i++){
             this.placeNewArmy(position);
         }
@@ -264,7 +277,7 @@ public class Turn {
      * @throws NotTheOwnerException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(Country position) throws  ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException{
+    public void placeNewArmy(ICountry position) throws  ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException{
         if (position.getOwner() != this.getPlayer())
         {
             throw  new NotTheOwnerException(this.getPlayer(), position);
@@ -302,7 +315,7 @@ public class Turn {
      * @throws NotTheOwnerException
      * @throws ToManyNewArmysException
      */
-    public Fight fight (Country from, Country to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException{
+    public IFight fight (ICountry from, ICountry to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException{
 
         if (from.getOwner() != this.getPlayer())
         {
@@ -332,7 +345,7 @@ public class Turn {
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      */
-    public void moveArmy(Country from,Country to, int numberOfArmies) throws ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException {
+    public void moveArmy(ICountry from,ICountry to, int numberOfArmies) throws ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException {
 
 
 
@@ -359,7 +372,7 @@ public class Turn {
      * @throws CountriesNotConnectedException
      * @throws ArmyAlreadyMovedException
      */
-    public void moveArmy(Country from,Country to, Army army) throws ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException {
+    public void moveArmy(ICountry from,ICountry to, IArmy army) throws ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException {
 
         if (from.getOwner() != this.getPlayer())
         {

@@ -1,13 +1,14 @@
 package logic.utils;
 
 
+import interfaces.data.utils.IDice;
 
 /**
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
  *
  * Diese Klasse dient zum Würfeln
  */
-public class Dice implements Comparable<Dice>  {
+public class Dice implements  IDice {
 	
 	private int dicenumber;
 
@@ -26,7 +27,11 @@ public class Dice implements Comparable<Dice>  {
 		dicenumber = (int)(Math.random()*6+1);
 		//choose a random number between 1-6 	
 		}
-	
+
+    /**
+     * Gibt die Gewürfelte Zahl aus
+     * @return
+     */
 	public int getDiceNumber() {
 		return dicenumber;
 	}
@@ -36,8 +41,8 @@ public class Dice implements Comparable<Dice>  {
      * @param otherDice - der andere Würfel der vergleichen werden soll
      * @return - 0 => equals; 1=> greater; -1 => smaller
      */
-    @Override
-    public int compareTo(Dice otherDice){
+
+    public int compareTo(IDice otherDice){
         if(this.dicenumber == otherDice.getDiceNumber()){
             return 0;  //equals
         }
@@ -54,7 +59,7 @@ public class Dice implements Comparable<Dice>  {
      * @param otherDice Zu prüfender Würfel
      * @return True, wenn aktueller würfel größer is
      */
-    public boolean isDiceHigherOrEqual(Dice otherDice){
+    public boolean isDiceHigherOrEqual(IDice otherDice){
     	if(this.compareTo(otherDice)==1){
     		return true;
     	}else if(this.compareTo(otherDice)==0){
@@ -68,5 +73,5 @@ public class Dice implements Comparable<Dice>  {
     	String s = "" + this.dicenumber;
     	return s;
     }
-    
+
 }

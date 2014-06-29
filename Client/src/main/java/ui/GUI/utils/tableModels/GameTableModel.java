@@ -44,7 +44,7 @@ public class GameTableModel extends DefaultTableModel{
 	}
 
     /**
-     * Setzt die Daten aus dem Game in die Rows
+     * Setzt die Daten aus dem IGame in die Rows
      * @see logic.Game
      * @param games
      */

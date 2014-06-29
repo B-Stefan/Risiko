@@ -71,7 +71,7 @@ public class SerializableFileEndpoint <T> extends PersistenceEndpoint<T> {
 
     /**
      * Erstellt einen Endpoint für eine bestimmte Logic-Klasse.
-     * z.B.: new SerializableFileEndpoint<Game>(Game.class, PersistenceGame.class, manager);
+     * z.B.: new SerializableFileEndpoint<IGame>(IGame.class, PersistenceGame.class, manager);
      * Diese Klasse dient dann zur Veraltung aller Spiele und bietet die einfache Möglichkeit ein Spiel zu Speichern oder zu laden.
      * Die Serialisierung geschieht dabei vollkommen automamtisiert.
      * @param sourceClass - Klasse der Spiellogic, die gespeichert werden soll

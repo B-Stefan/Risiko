@@ -13,7 +13,7 @@ import java.util.UUID;
  * Diese Klasse dient zur Vereinheitlichung aller Endpunkte zum Speichern von Spielen, Spielern, Ländern usw.
  *
  * @see persistence.PersistenceManager
- * @param <T> Enhält die Logik-Klasse z.b. Game oder Player, die gepeichert werden soll
+ * @param <T> Enhält die Logik-Klasse z.b. IGame oder Player, die gepeichert werden soll
  */
 public abstract class PersistenceEndpoint<T> {
 

@@ -50,7 +50,7 @@ public class PersistenceGame extends PersitenceObject<Game> {
         newGame.addPlayers(players);
         newGame.setCurrentGameState(this.gameState);
 
-        //Game waiting for players
+        //IGame waiting for players
         if (newGame.getPlayers().size() > 0 ) {
             newGame.setCurrentRound(new Round(newGame.getDeck(), newGame.getPlayers(), newGame.getMap()));
         }
