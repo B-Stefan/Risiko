@@ -8,10 +8,7 @@ import javax.swing.*;
 
 import main.java.logic.*;
 import main.java.logic.data.Player;
-import main.java.ui.GUI.gamePanels.JCurrentStateInfoGUI;
-import main.java.ui.GUI.gamePanels.JMapGUI;
-import main.java.ui.GUI.gamePanels.JOrderInfoGUI;
-import main.java.ui.GUI.gamePanels.JPLayerInfoGUI;
+import main.java.ui.GUI.gamePanels.*;
 import main.java.ui.GUI.menu.JGameMenu;
 
 public class JGameGUI extends JFrame {
@@ -20,14 +17,22 @@ public class JGameGUI extends JFrame {
 	private final Player player;
 	private final JMapGUI map;
     private final JMenuBar menuBar;
-	
-	public JGameGUI(Game game, Player player){
+    private final JPLayerInfoGUI playersInfo;
+    private final JOrderInfoGUI orderInfo;
+    private final JCurrentStateInfoGUI currentStateInfoGUI;
+    private final JCardInfo cardInfo;
+
+    public JGameGUI(Game game, Player player){
 		super("Risiko");
 		this.game = game;
 		this.player = player;
 		this.map = new JMapGUI(game);
         this.update = new JButton("Update");
         this.menuBar = new JMenuBar();
+        this.playersInfo = new JPLayerInfoGUI(this.game);
+        this.orderInfo = new JOrderInfoGUI(this.game, this.player);
+        this.currentStateInfoGUI =   new JCurrentStateInfoGUI(this.game, this.player, this);
+        this.cardInfo =  new JCardInfo(this.player);
 		initialize();
 	}
 	
@@ -52,42 +57,23 @@ public class JGameGUI extends JFrame {
 	private JPanel setSouthPanel() {
 		JPanel south = new JPanel();
         south.setLayout(new GridLayout(1, 4, 10, 0));
-        
-        //JPlayerInfoGUI erzeugen
-        final JPLayerInfoGUI playersInfo = new JPLayerInfoGUI(this.game);
-        
-        //JOrderInfoGUI erzeugen
-        final JOrderInfoGUI orderInfo = new JOrderInfoGUI(this.game, this.player);
-        
-        //JCurrentStateInfoGUI erzeugen
-        final JCurrentStateInfoGUI currentStateInfo = new JCurrentStateInfoGUI(this.game, this.player, this.update);
-      
-        //JCardInfo erzeugen
-        //final JCardInfo cardInfo = new JCardInfo(this.player);
-        
+
         //Panel
-        south.add(playersInfo.getContext());
-        south.add(currentStateInfo.getContext());
-        south.add(orderInfo.getContext());
-        //south.add(cardInfo.getContext());
+        south.add(playersInfo);
+        south.add(currentStateInfoGUI);
+        south.add(orderInfo);
+        south.add(cardInfo.getContext());
         
         south.setBorder(BorderFactory.createTitledBorder("Übersicht"));
-        
-        update.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent ae) {
-
-                playersInfo.update();
-                orderInfo.update();
-                currentStateInfo.update();
-                map.repaint();
-
-            }
-
-        });
-        
         return south;
 	}
 
+    public void update (){
+        playersInfo.update();
+        orderInfo.update();
+        currentStateInfoGUI.update();
+        map.repaint();
+    }
     public Player getPlayer(){
         return this.player;
     }

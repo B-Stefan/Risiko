@@ -3,68 +3,143 @@ package main.java.ui.GUI.gamePanels;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 import main.java.logic.*;
 import main.java.logic.data.*;
-import main.java.logic.exceptions.GameNotStartedException;
+import main.java.logic.exceptions.*;
+import main.java.ui.GUI.JGameGUI;
+import main.java.ui.GUI.utils.JExceptionDialog;
 
-public class JCurrentStateInfoGUI extends JFrame {
+public class JCurrentStateInfoGUI extends JPanel {
 	private final Game game;
-	private JTextArea stepInfo = new JTextArea("");
-	private JPanel context;
-	private JButton nextStep;
+    private final JGameGUI gameGUI;
+	private final JTextArea stepInfo = new JTextArea("");
+	private final JButton nextButton = new JButton("");
+
+    private class UpdateActionListener implements ActionListener{
+
+        /**
+         * Invoked when an action occurs.
+         *
+         * @param e
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JCurrentStateInfoGUI.this.gameGUI.update();
+        }
+    }
+
+    private class StartGameActionListener implements ActionListener{
+
+        /**
+         * Invoked when an action occurs.
+         *
+         * @param event
+         */
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            if(JCurrentStateInfoGUI.this.game.getCurrentGameState() != Game.gameStates.WAITING){
+                return;
+            }
+            try {
+                JCurrentStateInfoGUI.this.game.onGameStart();
+            }catch ( NotEnoughPlayerException | TooManyPlayerException | NotEnoughCountriesException | GameAllreadyStartedException | PlayerAlreadyHasAnOrderException e ){
+                new JExceptionDialog(JCurrentStateInfoGUI.this,e);
+                return;
+            }
+            JCurrentStateInfoGUI.this.update();
+        }
+    }
+
+
+    private class NextTurnOrRoundActionListener implements ActionListener{
+
+        /**
+         * Methode, die das Spiel in den nächsten Set oder Turn versetzt
+         *
+         * @param event
+         */
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            Round currentRound;
+            //Holen der aktuellen Runde
+            try {
+                currentRound = JCurrentStateInfoGUI.this.game.getCurrentRound();
+            }catch (GameNotStartedException e){
+                return;
+            }
+            //Holen des Aktuellen Turns
+            try {
+                currentRound.setNextTurn();
+            }catch (ToManyNewArmysException | TurnNotCompleteException e){
+                new JExceptionDialog(JCurrentStateInfoGUI.this,e);
+                return;
+            }catch (RoundCompleteException unused){
+                //Wenn Runde komplett erledigt, neue Runde
+                try {
+                    game.setNextRound();
+                }catch (ToManyNewArmysException | RoundNotCompleteException | GameNotStartedException | GameIsCompletedException e){
+                    new JExceptionDialog(JCurrentStateInfoGUI.this,e);
+                    return;
+                }
+            }
+            JCurrentStateInfoGUI.this.update();
+        }
+    }
 	
-	
-	public JCurrentStateInfoGUI(Game game, Player player, JButton Update){
+	public JCurrentStateInfoGUI(final Game game, final Player player, final JGameGUI gameGUI){
 		//Konstruktor bearbeiten (Update entfehrnen)
-		this.context = new JPanel();
-		this.context.setLayout(new GridLayout(2,1));
+		this.setLayout(new GridLayout(2, 1));
 		this.stepInfo.setWrapStyleWord(true);
 		this.stepInfo.setLineWrap(true);
 		this.game = game;
-		this.nextStep = Update;
-		//this.nextStep = new JButton("nächster Zug");
-		setContext();
-	}
-	
-	private void setContext() {
-		if(this.game.getCurrentGameState() == Game.gameStates.WAITING){
-			this.stepInfo.setText("Das Spiel hat noch nicht gestartet");
-		}else if(this.game.getCurrentGameState() == Game.gameStates.RUNNING){
-            try {
-                if(this.game.getCurrentRound().getCurrentTurn().getCurrentStep() == Turn.steps.DISTRIBUTE){
-                    String n = String.format(this.game.getCurrentRound().getCurrentTurn().toString() + "%n%nDu musst noch "+ this.game.getCurrentRound().getCurrentTurn().getNewArmysSize() + " Armeen verteilen");
-                    this.stepInfo.setText(n);
-                }else {
-                    this.stepInfo.setText(this.game.getCurrentRound().getCurrentTurn().toString());
-                }
-            }catch (GameNotStartedException e){
-                this.stepInfo.setText("Spiel nicht gestartet");
-            }
-
-		}else if(this.game.getCurrentGameState() == Game.gameStates.FINISHED){
-			this.stepInfo.setText("Das Spiel wurde beendet");
-		}
-		this.context.add(this.stepInfo);
-		this.context.add(this.nextStep);
-		
-		this.nextStep.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent ae) {
-            //Hinzufügen Funktion
-            }
-		});
+        this.gameGUI = gameGUI;
+        this.nextButton.addActionListener(new UpdateActionListener());
+        this.nextButton.addActionListener(new StartGameActionListener());
+        this.nextButton.addActionListener(new NextTurnOrRoundActionListener());
+		update();
 	}
 	
 	public void update() {
-		setContext();
+        String textAreaMsg = "";
+        String btnMsg = "";
+        switch (this.game.getCurrentGameState()){
+            case WAITING:
+                textAreaMsg = "Spiel nicht gestartet";
+                btnMsg = "Spiel starten";
+                break;
+            case RUNNING:
+                btnMsg = "Nächster Spieler";
+                try{
+                    Turn currentTurn= this.game.getCurrentRound().getCurrentTurn();
+                    if (currentTurn != null ){
+                        Player currentPlayer = currentTurn.getPlayer();
+                        switch (currentTurn.getCurrentStep()){
+                            case DISTRIBUTE:
+                                textAreaMsg = String.format(currentPlayer + " %n %n du musst noch " +currentTurn.getNewArmysSize() + " Einheiten verteilen.");break;
+                            case FIGHT:
+                                textAreaMsg = currentPlayer + "Du darfst angreifen ";break;
+                            case MOVE:
+                                textAreaMsg = currentPlayer + "du darfst nur noch Einheiten bewegen";break;
+                        }
+                    }
+                }catch (GameNotStartedException e) {
+                    throw new RuntimeException(e);
+                }
+            break;
+            case FINISHED: textAreaMsg = "Das Spiel wurde beendet";
+
+        }
+		this.stepInfo.setText(textAreaMsg);
+        this.nextButton.setText(btnMsg);
+		this.add(this.stepInfo);
+		this.add(this.nextButton);
+
 	}
-	
-	public JPanel getContext(){
-		return this.context;
-	}
+
+
 }

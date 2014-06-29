@@ -1,23 +1,20 @@
 package main.java.ui.GUI.gamePanels;
 
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import main.java.logic.Game;
 import main.java.logic.data.Player;
 import main.java.logic.exceptions.GameNotStartedException;
 
-public class JOrderInfoGUI extends JFrame {
+public class JOrderInfoGUI extends JTextArea {
 
-	private JTextArea context;
 	private final Player player;
 	private final Game game;
 	
 	public JOrderInfoGUI(Game game, Player player){
-		this.context = new JTextArea("");
-		this.context.setWrapStyleWord(true);
-		this.context.setLineWrap(true);
+		super("");
+		this.setWrapStyleWord(true);
+		this.setLineWrap(true);
 		this.player = player;
 		this.game = game;
 	}
@@ -25,15 +22,12 @@ public class JOrderInfoGUI extends JFrame {
 	private void setContext(){
 		if(this.game.getCurrentGameState() == Game.gameStates.RUNNING){
 
-                this.context.setText(this.player.getOrder().toString());
+                this.setText(this.player.getOrder().toString());
 		}
 	}
 	
 	public void update(){
 		setContext();
 	}
-	
-	public JTextArea getContext(){
-		return this.context;
-	}
+
 }

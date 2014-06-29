@@ -13,19 +13,15 @@ import main.java.logic.exceptions.GameNotStartedException;
 import main.java.ui.GUI.utils.tableModels.PlayerInfoTableModel;
 
 
-public class JPLayerInfoGUI extends JFrame{
+public class JPLayerInfoGUI extends JScrollPane{
 	private final Game game;
 	private PlayerInfoTableModel tModel;
-	private JScrollPane context;
+    private final JTable playersTable;
 	
 	
 	public JPLayerInfoGUI(Game game){
+        super();
 		this.game = game;
-		setContext();
-	}
-	
-	private void setContext(){
-        // ListModel als "Datencontainer" anlegen:
         final Vector<String> spalten = new Vector<String>();
         spalten.add("Spieler");
         spalten.add("Länder");
@@ -33,18 +29,11 @@ public class JPLayerInfoGUI extends JFrame{
 
         //Spieler Liste
         this.tModel = new PlayerInfoTableModel(this.game, spalten);
-        JTable playersTable = new JTable(this.tModel);
-        this.context = new JScrollPane(playersTable);
-        this.context.setPreferredSize(new Dimension(150, 105));
+        this.playersTable = new JTable(this.tModel);
+        this.getViewport().add(playersTable);
+        this.setPreferredSize(new Dimension(150, 105));
 	}
-	
-	public PlayerInfoTableModel getTModel(){
-		return this.tModel;
-	}
-	
-	public JScrollPane getContext(){
-		return this.context;
-	}
+
 	public void update() {
 		this.tModel.setDataVector(game.getPlayers());
 	}
