@@ -1,6 +1,5 @@
 package main;
 import configuration.ServerConstants;
-import configuration.ServerConts;
 import interfaces.IGameManager;
 import main.java.ui.CUI.utils.IO;
 import main.java.ui.GUI.JGameManagerGUI;
