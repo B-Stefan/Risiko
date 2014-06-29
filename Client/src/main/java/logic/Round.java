@@ -1,9 +1,9 @@
 package main.java.logic;
 import main.java.logic.data.*;
+import main.java.logic.data.cards.CardDeck;
 import main.java.logic.exceptions.RoundCompleteException;
 import main.java.logic.exceptions.ToManyNewArmysException;
 import main.java.logic.exceptions.TurnNotCompleteException;
-
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,9 +17,11 @@ public class Round {
 	private Queue<Player> players;
     private Queue<Turn.steps> turnSteps;
     private Turn currentTurn;
+    private CardDeck deck;
 	
 
-	public Round(final List<Player> p,final main.java.logic.data.Map map, final Queue<Turn.steps> steps){
+	public Round(CardDeck deck, final List<Player> p,final main.java.logic.data.Map map, final Queue<Turn.steps> steps){
+		this.deck = deck;
 		this.map = map;
         this.players = new LinkedBlockingQueue<Player>(p);
         this.turnSteps = steps;
@@ -30,8 +32,8 @@ public class Round {
         }
 
 	}
-    public Round(final List<Player> p,final main.java.logic.data.Map map){
-        this(p,map, Turn.getDefaultSteps());
+    public Round(CardDeck deck, final List<Player> p,final main.java.logic.data.Map map){
+        this(deck, p,map, Turn.getDefaultSteps());
     }
 	/**
 	 * Setzt den obersten Spieler der Queue als CurrentPlayer und l�scht ihn aus der Queue (Poll())
@@ -59,7 +61,7 @@ public class Round {
         }
 
         this.setCurrentPlayer();
-        this.currentTurn = new Turn(this.getCurrentPlayer(), this.map, this.turnSteps);
+        this.currentTurn = new Turn(this.getCurrentPlayer(), this.map, this.turnSteps, this.deck );
 
 	}
 

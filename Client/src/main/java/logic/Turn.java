@@ -1,5 +1,6 @@
 package main.java.logic;
 import main.java.logic.data.*;
+import main.java.logic.data.cards.CardDeck;
 import main.java.logic.exceptions.*;
 
 import java.security.acl.NotOwnerException;
@@ -82,6 +83,10 @@ public class Turn {
      * @see #Turn(Player, main.java.logic.data.Map, java.util.Queue)
      */
     private steps currentStep;
+    
+    private CardDeck deck;
+    
+    private boolean takeOverSucess;
 
 
     /**
@@ -90,8 +95,9 @@ public class Turn {
      * @param m - Karte auf dem der Spieler sich bewegt
      * @param steps - Die geforderten Steps, die der Turn druchlaufen soll
      */
-    public Turn(final Player p,final main.java.logic.data.Map m,final  Queue<steps> steps){
-        this.player = p;
+    public Turn(final Player p,final main.java.logic.data.Map m,final  Queue<steps> steps, CardDeck deck){
+        this.deck = deck;
+    	this.player = p;
         this.map = m;
 
         //Argumentprüfung
@@ -112,6 +118,20 @@ public class Turn {
         //Aktuellen status auf den ersten Eintrag in der Queue setzten
         this.setCurrentStep(this.allowedSteps.poll());// Erstes element aus der Liste auf aktuellen status setzten
 
+    }
+    /**
+     * Gibt Den Wahrheitswert heraus ob in diesem Turn bisher ein TakeOver stattgefunden hat
+     * @return
+     */
+    public boolean getTakeOverSucess(){
+    	return this.takeOverSucess;
+    }
+    /**
+     * Setzt den Wahrheitswert, ob in diesem Turn ein TakeOver stattgefunden hat
+     * @param b
+     */
+    public void setTakeOverSucess(boolean b){
+    	this.takeOverSucess = b;
     }
 
     /**
@@ -210,6 +230,17 @@ public class Turn {
     }
 
 
+    public void exchangeCards() throws ToManyNewArmysException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException{
+    	if(this.isStepAllowed(steps.DISTRIBUTE)){
+    		if(this.determineAmountOfNewArmies() == this.getNewArmysSize()){
+    			if(this.deck.exchangeCards(this.player)){
+    				this.createNewArmies(this.deck.calculateBonus());
+    			}
+    		}else{
+    			throw new ExchangeNotPossibleException();
+    		}
+    	}
+    }
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
      * @see main.java.logic.Turn.steps

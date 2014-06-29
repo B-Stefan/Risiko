@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.util.*;
 
 import main.java.logic.exceptions.*;
+import main.java.logic.data.cards.Card;
 import main.java.logic.data.cards.CardDeck;
 import main.java.logic.data.orders.*;
 
@@ -15,47 +16,40 @@ public class Player {
     private IOrder order;
     private UUID id;
     private Color color;
-    private CardDeck deck;
-    private Stack<String> ownDeck = new Stack<String>();
+    private Stack<Card> Deck = new Stack<Card>();
 
     public Player(String name) {
         this.name = name;
         this.id = UUID.randomUUID();
-        this.ownDeck.add("");
 
     }
     public Player(String name, Color color) {
         this(name);
         this.color = color;
     }
-    
-    public Player(String name, Color color, CardDeck deck) {
-        this(name,color);
-        this.deck = deck;
-    }
 
     public String getName() {
         return this.name;
-    }
-    public boolean redeemPossible(){
-    	//Muss noch erarbeitet werden
-    	return false;
     }
     /**
      * Sortiert das eigene Deck und gibt es aus
      * @return
      */
-    public Stack<String> getCards(){
-    	Collections.sort(this.ownDeck);
-    	return this.ownDeck;
+    public Stack<Card> getCards(){
+    	Collections.sort(this.Deck);
+    	return this.Deck;
     }
-    /**
-     * Fügt eine Karte aus dem Deck in das eigene Deck
-     */
-    public void drawCard(){
-    	this.ownDeck.add(this.deck.getCard());
+    public void removeCard(Card c){
+    	this.Deck.remove(c);
     }
-
+    
+    public void drawNewCard(Card c) throws YouCannotDrawANewCardException{
+    	if(this.Deck.size() == 5){
+    		throw new YouCannotDrawANewCardException();
+    	}
+    	this.Deck.add(c);
+    }
+    
     public String ToString() {
         return getName();
     }

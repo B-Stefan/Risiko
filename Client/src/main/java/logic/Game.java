@@ -6,8 +6,8 @@ import java.awt.Color;
 import main.java.GameManager;
 import main.java.logic.data.*;
 import main.java.logic.data.Map;
-import main.java.logic.exceptions.PlayerNotExsistInGameException;
 import main.java.logic.exceptions.*;
+import main.java.logic.data.cards.CardDeck;
 import main.java.logic.data.orders.OrderManager;
 import main.java.persistence.dataendpoints.PersistenceEndpoint;
 import main.java.persistence.exceptions.PersistenceEndpointIOException;
@@ -77,6 +77,7 @@ public class Game {
     public Game(PersistenceEndpoint<Game> persistenceEndpoint) {
         this(persistenceEndpoint,new Map());
     }
+    private CardDeck deck;
 
     /**
      * Konstruktor, wenn das Spiel mit einer bestimmten Karte erstellt werden soll
@@ -84,14 +85,15 @@ public class Game {
      * @param map Karte die für das Spiel verwnedet werden soll
      */
     public Game(PersistenceEndpoint<Game> persistenceEndpoint, Map map){
-       this.map= map;
-       this.persistenceEndpoint = persistenceEndpoint;
-       this.id = UUID.randomUUID();
-       this.color.add(Color.BLUE);
-       this.color.add(Color.GREEN);
-       this.color.add(Color.ORANGE);
-       this.color.add(Color.RED);
-       this.color.add(Color.MAGENTA);
+    	this.map= map;
+        this.persistenceEndpoint = persistenceEndpoint;
+        this.id = UUID.randomUUID();
+        this.color.add(Color.BLUE);
+        this.color.add(Color.GREEN);
+        this.color.add(Color.ORANGE);
+        this.color.add(Color.RED);
+        this.color.add(Color.MAGENTA);
+        this.deck = new CardDeck(this.map.getCountries());
     }
 
     /**
@@ -118,7 +120,7 @@ public class Game {
         OrderManager.createOrdersForPlayers(this.getPlayers(),this);
 
         this.currentGameState = gameStates.RUNNING;
-        this.setCurrentRound(new Round(players, map, Turn.getDefaultStepsFirstRound()));
+        this.setCurrentRound(new Round(this.deck, players, map, Turn.getDefaultStepsFirstRound()));
 
 
     }
@@ -136,7 +138,7 @@ public class Game {
         else if(this.isGameWon()){
             throw  new GameIsCompletedException();
         }
-        this.currentRound = new Round(this.players, this.map);
+        this.currentRound = new Round(this.deck, this.players, this.map);
     }
 
     /**
