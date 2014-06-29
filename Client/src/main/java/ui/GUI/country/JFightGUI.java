@@ -1,9 +1,9 @@
 package main.java.ui.GUI.country;
 
 //import com.sun.codemodel.internal.JMod;
-import main.java.logic.Fight;
-import main.java.logic.Turn;
-import main.java.logic.data.Country;
+import logic.Fight;
+import logic.Turn;
+import logic.data.Country;
 import main.java.ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;

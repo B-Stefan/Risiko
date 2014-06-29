@@ -1,6 +1,6 @@
 package main.java.ui.GUI.country;
 
-import main.java.logic.data.Country;
+import logic.data.Country;
 
 import javax.swing.*;
 

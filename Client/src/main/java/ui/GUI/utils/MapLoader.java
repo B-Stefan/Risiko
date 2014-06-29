@@ -1,7 +1,7 @@
 package main.java.ui.GUI.utils;
 
-import main.java.logic.data.Country;
-import main.java.logic.data.Map;
+import logic.data.Country;
+import logic.data.Map;
 import org.magicwerk.brownies.collections.GapList; //Sehr schnelle Implementeirung für Array-Listen
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ public class MapLoader {
 
     /**
      * Map Object von der GameEngine
-     * @see main.java.logic.data.Map
+     * @see logic.data.Map
      */
     private final Map map;
 

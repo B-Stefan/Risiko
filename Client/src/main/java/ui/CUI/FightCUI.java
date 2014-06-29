@@ -8,9 +8,8 @@ import main.java.ui.CUI.utils.CUI;
 import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
-import main.java.logic.Fight;
-import main.java.logic.exceptions.*;
-import main.java.logic.utils.*;
+import logic.Fight;
+import logic.utils.*;
 
 public class FightCUI extends CUI {
 	

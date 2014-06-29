@@ -1,13 +1,11 @@
 package main.java.ui.GUI.country;
-import main.java.logic.Fight;
-import main.java.logic.Turn;
-import main.java.logic.data.Country;
-import main.java.logic.exceptions.*;
+import logic.Fight;
+import logic.Turn;
+import logic.data.Country;
 import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

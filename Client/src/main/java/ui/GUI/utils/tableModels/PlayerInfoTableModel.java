@@ -3,9 +3,9 @@ package main.java.ui.GUI.utils.tableModels;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
-import main.java.logic.*;
-import main.java.logic.data.*;
-import main.java.logic.exceptions.GameNotStartedException;
+import logic.*;
+import logic.data.*;
+import exceptions.GameNotStartedException;
 
 /**
  * Klasse die zur Anzeige eines Spielers in einer JTable dient

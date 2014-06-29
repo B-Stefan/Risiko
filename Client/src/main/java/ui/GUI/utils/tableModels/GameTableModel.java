@@ -1,6 +1,6 @@
 package main.java.ui.GUI.utils.tableModels;
 
-import main.java.logic.Game;
+import logic.Game;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.Vector;
@@ -45,7 +45,7 @@ public class GameTableModel extends DefaultTableModel{
 
     /**
      * Setzt die Daten aus dem Game in die Rows
-     * @see main.java.logic.Game
+     * @see logic.Game
      * @param games
      */
 	public void setDataVector(final List<Game> games){

@@ -1,7 +1,7 @@
 package main.java.ui.GUI.country;
 
-import main.java.logic.data.Country;
-import main.java.logic.Turn;
+import logic.data.Country;
+import logic.Turn;
 
 import javax.swing.*;
 import java.awt.*;

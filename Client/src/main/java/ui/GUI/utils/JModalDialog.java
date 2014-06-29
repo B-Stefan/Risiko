@@ -1,6 +1,6 @@
 package main.java.ui.GUI.utils;
 
-import main.java.logic.exceptions.UserCanceledException;
+import exceptions.UserCanceledException;
 
 import javax.swing.*;
 import java.awt.*;

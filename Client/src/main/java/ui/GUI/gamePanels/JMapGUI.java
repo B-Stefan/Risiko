@@ -2,11 +2,11 @@ package main.java.ui.GUI.gamePanels;
 
 import javax.swing.*;
 
-import main.java.logic.exceptions.GameNotStartedException;
-import main.java.logic.data.Country;
-import main.java.logic.data.Map;
-import main.java.logic.Turn;
-import main.java.logic.Game;
+import exceptions.GameNotStartedException;
+import logic.data.Country;
+import logic.data.Map;
+import logic.Turn;
+import logic.Game;
 import main.java.ui.GUI.country.JCountryPopupMenu;
 import main.java.ui.GUI.country.JCountryInfo;
 import main.java.ui.GUI.utils.MapLoader;
@@ -24,13 +24,13 @@ public class JMapGUI extends JComponent {
 
     /**
      * Kartenobjekt der GameEngeine
-     * @see main.java.logic.data.Map
+     * @see logic.data.Map
      */
     private final Map map;
 
     /**
      * Spiel aus der GameEngine
-     * @see main.java.logic.Game
+     * @see logic.Game
      */
     private final Game game;
 
@@ -75,7 +75,7 @@ public class JMapGUI extends JComponent {
     /**
      * Klasse, die zur Darstellung einer Karte dient
      * @param game Spiel des der GameEngine
-     *             @see main.java.logic.Game
+     *             @see logic.Game
      */
     public JMapGUI(Game game){
         super();

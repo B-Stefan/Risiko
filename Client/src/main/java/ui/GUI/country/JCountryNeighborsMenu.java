@@ -1,16 +1,12 @@
 package main.java.ui.GUI.country;
 
-import main.java.logic.data.Country;
-import main.java.logic.Turn;
-import main.java.logic.exceptions.TurnNotInCorrectStepException;
-import main.java.ui.CUI.utils.IO;
+import logic.data.Country;
+import logic.Turn;
+import exceptions.TurnNotInCorrectStepException;
 
 import javax.swing.*;
-import javax.swing.event.MenuDragMouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * Created by Stefan on 09.06.14.

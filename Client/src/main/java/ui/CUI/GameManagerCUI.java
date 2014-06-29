@@ -6,8 +6,8 @@ import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
 import main.java.GameManager;
-import main.java.logic.Game;
-import main.java.persistence.exceptions.PersistenceEndpointIOException;
+import logic.Game;
+import persistence.exceptions.PersistenceEndpointIOException;
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;

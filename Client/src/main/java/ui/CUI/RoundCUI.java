@@ -4,10 +4,10 @@ import main.java.ui.CUI.utils.CUI;
 import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
-import main.java.logic.Round;
-import main.java.logic.exceptions.RoundCompleteException;
-import main.java.logic.exceptions.ToManyNewArmysException;
-import main.java.logic.exceptions.TurnNotCompleteException;
+import logic.Round;
+import exceptions.RoundCompleteException;
+import exceptions.ToManyNewArmysException;
+import exceptions.TurnNotCompleteException;
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;

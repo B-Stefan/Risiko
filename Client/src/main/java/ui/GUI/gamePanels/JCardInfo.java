@@ -1,7 +1,6 @@
 package main.java.ui.GUI.gamePanels;
 
 import java.awt.GridLayout;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -10,9 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import main.java.logic.Game;
-import main.java.logic.data.Player;
-import main.java.logic.data.cards.Card;
+import logic.Game;
+import logic.data.Player;
+import logic.data.cards.Card;
 
 public class JCardInfo extends JFrame{
 	private final Player player;

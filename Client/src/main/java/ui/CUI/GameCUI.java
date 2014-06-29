@@ -5,10 +5,9 @@ import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
 import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
-import main.java.logic.exceptions.*;
-import main.java.logic.Game;
-import main.java.logic.data.Player;
-import main.java.logic.Round;
+import logic.Game;
+import logic.data.Player;
+import logic.Round;
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;

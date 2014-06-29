@@ -1,8 +1,7 @@
 package main.java.ui.GUI.country;
-import main.java.logic.Turn;
-import main.java.logic.data.Country;
-import main.java.logic.exceptions.*;
-import main.java.ui.CUI.utils.IO;
+import logic.Turn;
+import logic.data.Country;
+import exceptions.*;
 import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
 

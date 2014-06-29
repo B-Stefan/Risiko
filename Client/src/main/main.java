@@ -1,6 +1,6 @@
 package main;
 import main.java.GameManager;
-import main.java.persistence.PersistenceManager;
+import persistence.PersistenceManager;
 import main.java.ui.GUI.JGameManagerGUI;
 
 import javax.swing.*;

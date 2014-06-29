@@ -8,7 +8,7 @@ import java.awt.Graphics;
 
 import javax.swing.JLabel;
 
-import main.java.logic.data.Country;
+import logic.data.Country;
 
 public class JCountryInfo extends JLabel{
 	private final Country country;

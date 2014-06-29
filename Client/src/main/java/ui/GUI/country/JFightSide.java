@@ -1,8 +1,8 @@
 package main.java.ui.GUI.country;
 
-import main.java.logic.Fight;
-import main.java.logic.exceptions.*;
-import main.java.logic.utils.Dice;
+import logic.Fight;
+import exceptions.*;
+import logic.utils.Dice;
 import main.java.ui.GUI.JGameGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
@@ -85,7 +85,7 @@ public class JFightSide extends Panel {
                     String str = String.format("Der Angreifer hat " + aggressorLostArmies + "Armeen verloren %n");
                     str  += String.format("Der Verteidiger hat " + defenderLostArmies + "Armeen verloren %n");
                     str  += "Der Kampf geht weiter ";
-                    JModalDialog.showInfoDialog(JFightSide.this,"Erfolgreich verteidigt",str);
+                    JModalDialog.showInfoDialog(JFightSide.this, "Erfolgreich verteidigt", str);
                 }
 
             }

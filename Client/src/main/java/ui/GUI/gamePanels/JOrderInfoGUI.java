@@ -2,9 +2,9 @@ package main.java.ui.GUI.gamePanels;
 
 import javax.swing.*;
 
-import main.java.logic.Game;
-import main.java.logic.data.Player;
-import main.java.logic.exceptions.GameNotStartedException;
+import logic.Game;
+import logic.data.Player;
+import exceptions.GameNotStartedException;
 
 public class JOrderInfoGUI extends JTextArea {
 

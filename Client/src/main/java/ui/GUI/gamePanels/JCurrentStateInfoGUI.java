@@ -3,14 +3,12 @@ package main.java.ui.GUI.gamePanels;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.*;
 
-import main.java.logic.*;
-import main.java.logic.data.*;
-import main.java.logic.exceptions.*;
+import logic.*;
+import logic.data.*;
+import exceptions.*;
 import main.java.ui.GUI.JGameGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
 

@@ -5,10 +5,9 @@ import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
 import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
-import main.java.logic.data.Country;
-import main.java.logic.Fight;
-import main.java.logic.Turn;
-import main.java.logic.exceptions.*;
+import logic.data.Country;
+import logic.Fight;
+import logic.Turn;
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;

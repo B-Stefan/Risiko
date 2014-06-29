@@ -1,9 +1,9 @@
 package main.java.ui.GUI;
 
 import main.java.GameManager;
-import main.java.logic.Game;
-import main.java.logic.data.Player;
-import main.java.persistence.exceptions.PersistenceEndpointIOException;
+import logic.Game;
+import logic.data.Player;
+import persistence.exceptions.PersistenceEndpointIOException;
 import main.java.ui.CUI.GameCUI;
 import main.java.ui.GUI.menu.JGameLoadMenu;
 import main.java.ui.GUI.utils.JExceptionDialog;

@@ -1,15 +1,13 @@
 package main.java.ui.GUI.gamePanels;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.Vector;
 
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import main.java.logic.Game;
-import main.java.logic.exceptions.GameNotStartedException;
+import logic.Game;
+import exceptions.GameNotStartedException;
 import main.java.ui.GUI.utils.tableModels.PlayerInfoTableModel;
 
 

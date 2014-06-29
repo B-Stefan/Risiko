@@ -8,12 +8,12 @@ import main.java.ui.CUI.utils.CommandListener;
 import main.java.ui.CUI.utils.CommandListenerArgument;
 import main.java.ui.CUI.utils.IO;
 
-import main.java.logic.data.Country;
-import main.java.logic.Turn;
-import main.java.logic.exceptions.ToManyNewArmysException;
-import main.java.logic.exceptions.TurnCompleteException;
+import logic.data.Country;
+import logic.Turn;
+import exceptions.ToManyNewArmysException;
+import exceptions.TurnCompleteException;
 import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
-import main.java.logic.data.orders.IOrder;
+import logic.data.orders.IOrder;
 
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;

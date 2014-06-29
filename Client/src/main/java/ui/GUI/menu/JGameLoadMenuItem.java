@@ -1,6 +1,6 @@
 package main.java.ui.GUI.menu;
 
-import main.java.logic.Game;
+import logic.Game;
 import main.java.ui.GUI.JGameManagerGUI;
 
 import javax.swing.*;
