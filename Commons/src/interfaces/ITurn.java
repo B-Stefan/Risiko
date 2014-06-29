@@ -90,5 +90,18 @@ public interface ITurn {
      */
     public IFight fight (ICountry from, ICountry to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException;
 
+    /**
+     * Bewegt eine Einheit von einem Land in ein anderes Land.
+     * @param from Land von dem aus sich die Einheit bewegen soll
+     * @param to Zielland
+     * @param numberOfArmies Anzahl der Armeen
+     * @throws NotEnoughArmysToMoveException
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
+     * @throws CountriesNotConnectedException
+     * @throws ArmyAlreadyMovedException
+     * @throws NotTheOwnerException
+     */
+    public void moveArmy(ICountry from,ICountry to, int numberOfArmies) throws ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException;
 
     }
