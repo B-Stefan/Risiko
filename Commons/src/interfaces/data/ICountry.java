@@ -1,4 +1,4 @@
 
-public class ICountry{
+public interface ICountry{
 
 }
