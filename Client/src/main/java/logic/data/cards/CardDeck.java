@@ -5,7 +5,6 @@ import java.util.*;
 import main.java.logic.data.Country;
 import main.java.logic.data.Player;
 import main.java.logic.exceptions.NotEnoughCardsToExchangeException;
-import main.java.logic.exceptions.YouCannotDrawANewCardException;
 import main.java.ui.CUI.utils.IO;
 
 public class CardDeck {
@@ -44,7 +43,7 @@ public class CardDeck {
 		}
 		return bo;
 	}
-	public void drawCard(Player pl) throws YouCannotDrawANewCardException{
+	public void drawCard(Player pl){
 		pl.drawNewCard(deck.pop());
 	}
 	public boolean exchangeCards(Player pl) throws NotEnoughCardsToExchangeException{

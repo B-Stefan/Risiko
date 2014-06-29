@@ -223,6 +223,7 @@ public class Fight {
 				//Wenn keine Armeen des Verteidigers mehr auf dem zu erobernden Land stehen, dann ziehen die Armeen des Angreifers rüber
 				//Möglicherweise eigene Methode?
 				if(this.to.getArmyList().isEmpty()){
+					this.currentTurn.setTakeOverSucess(true);
 					this.to.setOwner(this.agressor);
 					for(Army a : this.agressorsArmies){
 						this.currentTurn.moveArmy(this.from,this.to, a);

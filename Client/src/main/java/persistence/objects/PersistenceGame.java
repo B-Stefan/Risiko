@@ -52,7 +52,7 @@ public class PersistenceGame extends PersitenceObject<Game> {
 
         //Game waiting for players
         if (newGame.getPlayers().size() > 0 ) {
-            newGame.setCurrentRound(new Round(newGame.getPlayers(), newGame.getMap()));
+            newGame.setCurrentRound(new Round(newGame.getDeck(), newGame.getPlayers(), newGame.getMap()));
         }
 
         return newGame;

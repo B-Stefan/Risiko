@@ -58,8 +58,9 @@ public class Round {
             if(!this.getCurrentTurn().isComplete()){
                 throw new TurnNotCompleteException(this.getCurrentTurn());
             }
+            this.deck.drawCard(this.currentTurn.getPlayer());
         }
-
+        
         this.setCurrentPlayer();
         this.currentTurn = new Turn(this.getCurrentPlayer(), this.map, this.turnSteps, this.deck );
 

@@ -43,11 +43,10 @@ public class Player {
     	this.Deck.remove(c);
     }
     
-    public void drawNewCard(Card c) throws YouCannotDrawANewCardException{
-    	if(this.Deck.size() == 5){
-    		throw new YouCannotDrawANewCardException();
+    public void drawNewCard(Card c){
+    	if(this.Deck.size() <= 5){
+    		this.Deck.add(c);
     	}
-    	this.Deck.add(c);
     }
     
     public String ToString() {

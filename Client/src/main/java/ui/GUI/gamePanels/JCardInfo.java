@@ -11,12 +11,13 @@ import javax.swing.JTextArea;
 
 import main.java.logic.Game;
 import main.java.logic.data.Player;
+import main.java.logic.data.cards.Card;
 
 public class JCardInfo extends JFrame{
 	private final Player player;
 	private JTextArea cardInfo = new JTextArea("");
 	private JPanel context;
-	private JButton redeem;
+	private JButton exchange;
 	
 	public JCardInfo(Player player){
 		this.player = player;
@@ -24,33 +25,24 @@ public class JCardInfo extends JFrame{
 		this.context.setLayout(new GridLayout(2,1));
 		this.cardInfo.setWrapStyleWord(true);
 		this.cardInfo.setLineWrap(true);
-		this.redeem = new JButton("eintauschen");
+		this.exchange = new JButton("eintauschen");
 		setContext();
 	}
 	
 	private void setContext(){
 		setCardInfo();
-		setRedeem();
+		setExchange();
 		this.context.add(this.cardInfo);
-		this.context.add(this.redeem);
+		this.context.add(this.exchange);
 	}
 	
 	private void setCardInfo(){
-		Stack<String> cards = this.player.getCards();
-		String info = "";
-		String old = cards.peek();
-		Collections.reverse(cards);
-		for(String n : cards){
-			if(!old.equals(n)){
-				info = String.format(info + "%n");
-			}
-			info = info + n + " ";
-			old = n;
-		}
-		this.cardInfo.setText(info);
+		Stack<Card> cards = this.player.getCards();
+
+		this.cardInfo.setText("");
 	}
 	
-	private void setRedeem(){
+	private void setExchange(){
 	}
 	
 	public JPanel getContext(){

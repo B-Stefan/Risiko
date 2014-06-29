@@ -96,6 +96,10 @@ public class Game {
         this.deck = new CardDeck(this.map.getCountries());
     }
 
+    public CardDeck getDeck(){
+    	return this.deck;
+    }
+    
     /**
      * Startet das Speil, sodass der Spielstatus und co aktualisiert werden
      *
