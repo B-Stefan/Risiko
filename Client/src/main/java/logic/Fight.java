@@ -148,10 +148,14 @@ public class Fight {
 	 * @throws ArmyAlreadyMovedException 
 	 * @throws TurnNotInCorrectStepException 
 	 * @throws TurnNotAllowedStepException 
-	 * @throws InvalidFightException 
+	 * @throws InvalidFightException
+     * @throws AggessorNotThrowDiceException
 	 */
-	public void defending(int defendersArmies) throws ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
-		Stack<Army> defArmies = new Stack<Army>();
+	public void defending(int defendersArmies) throws AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
+		if(this.agressorsDice.isEmpty()){
+            throw new AggessorNotThrowDiceException();
+        }
+        Stack<Army> defArmies = new Stack<Army>();
 		if (this.to.getArmyList().size()<defendersArmies){
 			throw new NotEnoughArmiesToDefendException();
 		}

@@ -123,7 +123,7 @@ public class FightCUI extends CUI {
 			} catch (InvalidFightException e) {
 				IO.println(e.getMessage());
 				return;
-			}catch (NotTheOwnerException | ToManyNewArmysException e) {
+			}catch (NotTheOwnerException | ToManyNewArmysException | AggessorNotThrowDiceException e) {
                 IO.println(e.getMessage());
                 return;
             }

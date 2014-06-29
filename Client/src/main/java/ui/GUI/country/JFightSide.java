@@ -3,7 +3,9 @@ package main.java.ui.GUI.country;
 import main.java.logic.Fight;
 import main.java.logic.exceptions.*;
 import main.java.logic.utils.Dice;
+import main.java.ui.GUI.JGameGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
+import sun.tools.tree.CastExpression;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +66,7 @@ public class JFightSide extends Panel {
                     JFightSide.this.fight.attacking(numberOfArmies);
                 }
 
-            }catch (NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException |InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException  | NotEnoughArmiesToAttackException| InvalidFightException | NotTheOwnerException e ){
+            }catch (AggessorNotThrowDiceException | NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException |InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException  | NotEnoughArmiesToAttackException| InvalidFightException | NotTheOwnerException e ){
                 new JExceptionDialog(frame,e);
                 return;
             }
@@ -104,7 +106,15 @@ public class JFightSide extends Panel {
 
         Window root = SwingUtilities.getWindowAncestor(this);
         if(root!= null){
-            root.repaint();//Neuzeichnen der gesamten karte, falls der Owner sich geändert hat oder die Anzahl der Armeen
+            Window mainRoot = SwingUtilities.getWindowAncestor(root);
+            try {
+                JGameGUI gameGUI = (JGameGUI) SwingUtilities.getWindowAncestor(root);
+                gameGUI.update();
+            }catch (ClassCastException e){
+                new JExceptionDialog(this,e);
+            }
+            mainRoot.repaint();
+
         }
 
         Stack<Dice> dices = new Stack<Dice>();
