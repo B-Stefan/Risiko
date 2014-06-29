@@ -1,5 +1,5 @@
 package main;
-import configuration.ServerConts;
+import configuration.ServerConstants;
 import interfaces.IGameManager;
 
 import java.rmi.NotBoundException;
@@ -13,8 +13,8 @@ import java.rmi.registry.Registry;
 public class ServerEngine {
 
     public static IGameManager getGameMangerService () throws RemoteException, NotBoundException{
-        final Registry registry = LocateRegistry.getRegistry(ServerConts.DEFAULT_SERVER, ServerConts.DEFAULT_PORT);
-        final IGameManager gameManager = (IGameManager) registry.lookup(ServerConts.DEFAULT_SERVICE_Name);
+        final Registry registry = LocateRegistry.getRegistry(ServerConstants.DEFAULT_SERVER, ServerConstants.DEFAULT_PORT);
+        final IGameManager gameManager = (IGameManager) registry.lookup(ServerConstants.DEFAULT_SERVICE_Name);
         return gameManager;
     }
 }
