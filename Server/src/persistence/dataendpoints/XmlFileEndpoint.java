@@ -1,5 +1,7 @@
 package persistence.dataendpoints;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 import persistence.PersistenceManager;
 import persistence.objects.PersitenceObject;
 
@@ -11,12 +13,14 @@ import java.util.UUID;
  * Diese Klasse stellt die Möglichkeit zur Speicherung durch einfache Serialisierung zur Verfügung.
  * @param <T>
  */
-public class SerializableFileEndpoint<T> extends AbstractFileEndpoint<T> {
+public class XmlFileEndpoint<T> extends AbstractFileEndpoint<T> {
 
 
 
-    public SerializableFileEndpoint(Class<T> sourceClass, Class<? extends PersitenceObject<T>> dataClass, PersistenceManager manager) {
+    private XStream xstream;
+    public XmlFileEndpoint(Class<T> sourceClass, Class<? extends PersitenceObject<T>> dataClass, PersistenceManager manager) {
         super(sourceClass, dataClass, manager);
+        this.xstream = new XStream(new StaxDriver());
     }
 
     /**
@@ -28,17 +32,8 @@ public class SerializableFileEndpoint<T> extends AbstractFileEndpoint<T> {
             AbstractFileEndpoint.createDir();
             HashMap<UUID, PersitenceObject<T>> fileData = null;
             try {
-                ObjectInputStream reader = new ObjectInputStream(new FileInputStream(AbstractFileEndpoint.convertFileNameToPath(this.fileName)));
-                chachedObjects = (HashMap<UUID, PersitenceObject<T>>) reader.readObject();
-            }catch (ClassNotFoundException e){
-                throw new RuntimeException(e);
-            }
-            catch (EOFException e){
-                //File ist leer
-
-            }
-            catch (InvalidClassException e){
-
+                FileInputStream reader = new FileInputStream(AbstractFileEndpoint.convertFileNameToPath(this.fileName));
+                chachedObjects = (HashMap<UUID, PersitenceObject<T>>) xstream.fromXML(reader);
             }
             catch (FileNotFoundException e){
                 this.writeFile(); // File erstellen, wenn nicht vorhanden
@@ -61,9 +56,8 @@ public class SerializableFileEndpoint<T> extends AbstractFileEndpoint<T> {
         {
             try {
                 FileOutputStream fos  = new FileOutputStream(AbstractFileEndpoint.convertFileNameToPath(this.fileName),false);
-                ObjectOutputStream  writer = new ObjectOutputStream(fos);
-                writer.writeObject(this.chachedObjects);
-                writer.close();
+                String xml = xstream.toXML(this.chachedObjects);
+                fos.write(xml.getBytes());
             }
             catch (IOException e){
                 e.printStackTrace();
