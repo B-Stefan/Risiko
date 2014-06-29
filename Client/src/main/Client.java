@@ -1,4 +1,5 @@
 package main;
+import configuration.ServerConstants;
 import configuration.ServerConts;
 import interfaces.IGameManager;
 import main.java.ui.CUI.utils.IO;
@@ -50,7 +51,7 @@ public class Client {
             errorFrame.setVisible(true);
             errorFrame.add(new BackgroundImagePanel("/resources/noConnectionBg.jpg"));
             errorFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            new JExceptionDialog(errorFrame,"Beim Verbindungsaufbau zum Server" + ServerConts.DEFAULT_SERVER + ":" + ServerConts.DEFAULT_PORT + " ist ein Fehler aufgetreten");
+            new JExceptionDialog(errorFrame,"Beim Verbindungsaufbau zum Server" + ServerConstants.DEFAULT_SERVER + ":" + ServerConstants.DEFAULT_PORT + " ist ein Fehler aufgetreten");
         }
 
 

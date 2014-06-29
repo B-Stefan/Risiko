@@ -1,4 +1,5 @@
 
+import configuration.ServerConstants;
 import configuration.ServerConts;
 import persistence.PersistenceManager;
 import java.rmi.RemoteException;
@@ -17,9 +18,9 @@ public class Server {
 
         try {
             final GameManager gameManager = new GameManager(this.persistenceManager);
-            final Registry registry = LocateRegistry.createRegistry(ServerConts.DEFAULT_PORT);
+            final Registry registry = LocateRegistry.createRegistry(ServerConstants.DEFAULT_PORT);
 
-            registry.rebind(ServerConts.DEFAULT_SERVICE_Name, gameManager);
+            registry.rebind(ServerConstants.DEFAULT_SERVICE_Name, gameManager);
 
             System.out.println("Risiko-Server läuft...");
         } catch (final RemoteException e) {
