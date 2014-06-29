@@ -1,8 +1,10 @@
 package logic.data;
 
 
-import interfaces.IMap;
+import interfaces.data.IContinent;
 import interfaces.data.ICountry;
+import interfaces.data.IMap;
+import interfaces.data.IPlayer;
 
 import java.awt.*;
 import java.util.*;
@@ -19,12 +21,12 @@ public class Map  implements IMap{
     /**
      * Beinhaltet alle Länder, für die Karte
      */
-    private final ArrayList<Country> countries = new ArrayList<Country>();
+    private final ArrayList<ICountry> countries = new ArrayList<ICountry>();
 
     /**
      * Beinhaltet alle Kontinente für die Karte
      */
-    private final ArrayList<Continent> continents = new ArrayList<Continent>();
+    private final ArrayList<IContinent> continents = new ArrayList<IContinent>();
 
     /**
      * ID der Karte
@@ -111,24 +113,24 @@ public class Map  implements IMap{
 
         
         //Australien
-        Country ostaustralien  = this.getCountry("Ostaustralien");
+        ICountry ostaustralien  = this.getCountry("Ostaustralien");
         ostaustralien.connectTo(this.getCountry("Westaustralien"));
         ostaustralien.connectTo(this.getCountry("Neu-Guinea"));
 
-        Country indonesien  = this.getCountry("Indonesien");
+        ICountry indonesien  = this.getCountry("Indonesien");
         indonesien.connectTo(this.getCountry("Siam"));
         indonesien.connectTo(this.getCountry("Westaustralien"));
         indonesien.connectTo(this.getCountry("Philippinen"));
         
-        Country Neuguinea = this.getCountry("Neu-Guinea");
+        ICountry Neuguinea = this.getCountry("Neu-Guinea");
         Neuguinea.connectTo(this.getCountry("Westaustralien"));
         
-        Country neuseeland = this.getCountry("Neuseeland");
+        ICountry neuseeland = this.getCountry("Neuseeland");
         neuseeland.connectTo(this.getCountry("Ostaustralien"));
 
 
         //Asien
-        Country China  = this.getCountry("China");
+        ICountry China  = this.getCountry("China");
         China.connectTo(this.getCountry("Siam"));
         China.connectTo(this.getCountry("Indien"));
         China.connectTo(this.getCountry("Mongolei"));
@@ -136,36 +138,36 @@ public class Map  implements IMap{
         China.connectTo(this.getCountry("Sibirien"));
         China.connectTo(this.getCountry("Ural"));
 
-        Country mongolei  = this.getCountry("Mongolei");
+        ICountry mongolei  = this.getCountry("Mongolei");
         mongolei.connectTo(this.getCountry("Japan"));
         mongolei.connectTo(this.getCountry("Irrutsk"));
         mongolei.connectTo(this.getCountry("Sibirien"));
 
-        Country jakutsk  = this.getCountry("Jakutsk");
+        ICountry jakutsk  = this.getCountry("Jakutsk");
         jakutsk.connectTo(this.getCountry("Kamtschatka"));
         jakutsk.connectTo(this.getCountry("Sibirien"));
         jakutsk.connectTo(this.getCountry("Irrutsk"));
         
-        Country japan = this.getCountry("Japan");
+        ICountry japan = this.getCountry("Japan");
         japan.connectTo(this.getCountry("Hawaii"));
         japan.connectTo(this.getCountry("Philippinen"));
         japan.connectTo(this.getCountry("Kamtschatka"));
         
-        Country irrutsk = this.getCountry("Irrutsk");
+        ICountry irrutsk = this.getCountry("Irrutsk");
         irrutsk.connectTo(this.getCountry("Kamtschatka"));
         irrutsk.connectTo(this.getCountry("Sibirien"));
         
-        Country Indien = this.getCountry("Indien");
+        ICountry Indien = this.getCountry("Indien");
         Indien.connectTo(this.getCountry("Siam"));
         Indien.connectTo(this.getCountry("Mittlerer-Osten"));
         Indien.connectTo(this.getCountry("Afghanistan"));
         
-        Country ural = this.getCountry("Ural");
+        ICountry ural = this.getCountry("Ural");
         ural.connectTo(this.getCountry("Sibirien"));
         ural.connectTo(this.getCountry("Afghanistan"));
         ural.connectTo(this.getCountry("Ukraine"));
         
-        Country mittlererOsten = this.getCountry("Mittlerer-Osten");
+        ICountry mittlererOsten = this.getCountry("Mittlerer-Osten");
         mittlererOsten.connectTo(this.getCountry("Afghanistan"));
         mittlererOsten.connectTo(this.getCountry("Ukraine"));
         mittlererOsten.connectTo(this.getCountry("Ägypten"));
@@ -173,45 +175,45 @@ public class Map  implements IMap{
         
         
         //Europa
-        Country ukraine = this.getCountry("Ukraine");
+        ICountry ukraine = this.getCountry("Ukraine");
         ukraine.connectTo(this.getCountry("Afghanistan"));
         ukraine.connectTo(this.getCountry("Südeuropa"));
         ukraine.connectTo(this.getCountry("Skandinavien"));
         ukraine.connectTo(this.getCountry("Mitteleuropa"));
         
-        Country Skandinavien = this.getCountry("Skandinavien");
+        ICountry Skandinavien = this.getCountry("Skandinavien");
         Skandinavien.connectTo(this.getCountry("Svalbard"));
         Skandinavien.connectTo(this.getCountry("Island"));
         Skandinavien.connectTo(this.getCountry("Großbritannien"));
         Skandinavien.connectTo(this.getCountry("Mitteleuropa"));
         
-        Country gb = this.getCountry("Großbritannien");
+        ICountry gb = this.getCountry("Großbritannien");
         gb.connectTo(this.getCountry("Island"));
         gb.connectTo(this.getCountry("Mitteleuropa"));
         gb.connectTo(this.getCountry("Westeuropa"));
         
-        Country westEu = this.getCountry("Westeuropa");
+        ICountry westEu = this.getCountry("Westeuropa");
         westEu.connectTo(this.getCountry("Nordwestafrika"));
         westEu.connectTo(this.getCountry("Südeuropa"));
         westEu.connectTo(this.getCountry("Mitteleuropa"));
         
-        Country southEu = this.getCountry("Südeuropa");
+        ICountry southEu = this.getCountry("Südeuropa");
         southEu.connectTo(this.getCountry("Ägypten"));
         southEu.connectTo(this.getCountry("Nordwestafrika"));
         
         //Afrika
-        Country noWeAfrika = this.getCountry("Nordwestafrika");
+        ICountry noWeAfrika = this.getCountry("Nordwestafrika");
         noWeAfrika.connectTo(this.getCountry("Ägypten"));
         noWeAfrika.connectTo(this.getCountry("Ostafrika"));
         noWeAfrika.connectTo(this.getCountry("Kongo"));
         
-        Country ostAfrika = this.getCountry("Ostafrika");
+        ICountry ostAfrika = this.getCountry("Ostafrika");
         ostAfrika.connectTo(this.getCountry("Ägypten"));
         ostAfrika.connectTo(this.getCountry("Kongo"));
         ostAfrika.connectTo(this.getCountry("Südafrika"));
         ostAfrika.connectTo(this.getCountry("Madagaskar"));
         
-        Country southAfrika = this.getCountry("Südafrika");
+        ICountry southAfrika = this.getCountry("Südafrika");
         southAfrika.connectTo(this.getCountry("Madagaskar"));
         southAfrika.connectTo(this.getCountry("Kongo"));
         southAfrika.connectTo(this.getCountry("Falkland-Inseln"));
@@ -219,54 +221,54 @@ public class Map  implements IMap{
 
         
         //Süd-Amerika
-        Country brasil = this.getCountry("Brasilien");
+        ICountry brasil = this.getCountry("Brasilien");
         brasil.connectTo(this.getCountry("Nordwestafrika"));
         brasil.connectTo(this.getCountry("Venezuela"));
         brasil.connectTo(this.getCountry("Peru"));
         brasil.connectTo(this.getCountry("Argentinien"));
         
-        Country venezuela = this.getCountry("Venezuela");
+        ICountry venezuela = this.getCountry("Venezuela");
         venezuela.connectTo(this.getCountry("Peru"));
         venezuela.connectTo(this.getCountry("Mittelamerika"));
         
-        Country Argentinien = this.getCountry("Argentinien");
+        ICountry Argentinien = this.getCountry("Argentinien");
         Argentinien.connectTo(this.getCountry("Peru"));
         Argentinien.connectTo(this.getCountry("Falkland-Inseln"));
         Argentinien.connectTo(this.getCountry("Neuseeland"));
         
         
         //Nord-Amerika
-        Country mittelamerika = this.getCountry("Mittelamerika");
+        ICountry mittelamerika = this.getCountry("Mittelamerika");
         mittelamerika.connectTo(this.getCountry("Oststaaten"));
         mittelamerika.connectTo(this.getCountry("Weststaaten"));
 
-        Country Weststaaten = this.getCountry("Weststaaten");
+        ICountry Weststaaten = this.getCountry("Weststaaten");
         Weststaaten.connectTo(this.getCountry("Oststaaten"));
         Weststaaten.connectTo(this.getCountry("Hawaii"));
         Weststaaten.connectTo(this.getCountry("Alberta"));
         Weststaaten.connectTo(this.getCountry("Ontario"));
         
-        Country Ontario = this.getCountry("Ontario");
+        ICountry Ontario = this.getCountry("Ontario");
         Ontario.connectTo(this.getCountry("Quebec"));
         Weststaaten.connectTo(this.getCountry("Oststaaten"));
         Weststaaten.connectTo(this.getCountry("Nunavut"));
         Weststaaten.connectTo(this.getCountry("Nordwest-Territorium"));
         Weststaaten.connectTo(this.getCountry("Alberta"));
 
-        Country alaska = this.getCountry("Alaska");
+        ICountry alaska = this.getCountry("Alaska");
         alaska.connectTo(this.getCountry("Kamtschatka"));
         alaska.connectTo(this.getCountry("Nordwest-Territorium"));
         alaska.connectTo(this.getCountry("Alberta"));
         
-        Country Nordwest = this.getCountry("Nordwest-Territorium");
+        ICountry Nordwest = this.getCountry("Nordwest-Territorium");
         Nordwest.connectTo(this.getCountry("Alberta"));
         Nordwest.connectTo(this.getCountry("Nunavut"));
         
-        Country Nunavut = this.getCountry("Nunavut");
+        ICountry Nunavut = this.getCountry("Nunavut");
         Nunavut.connectTo(this.getCountry("Quebec"));
         Nunavut.connectTo(this.getCountry("Grönland"));
         
-        Country groenland = this.getCountry("Grönland");
+        ICountry groenland = this.getCountry("Grönland");
         groenland.connectTo(this.getCountry("Quebec"));
         groenland.connectTo(this.getCountry("Svalbard"));
         groenland.connectTo(this.getCountry("Island"));
@@ -278,7 +280,7 @@ public class Map  implements IMap{
      * Gibt die Liste aller Countries zurück
      * @return Liste aller Counties
      */
-    public ArrayList<Country> getCountries() {
+    public ArrayList<ICountry> getCountries() {
         return this.countries;
     }
 
@@ -287,9 +289,9 @@ public class Map  implements IMap{
      * @param p der aktuelle Spieler
      * @return die Anzahl der Bonus Einheiten
      */
-    public int getBonus(Player p){
+    public int getBonus(IPlayer p){
     	int bonus = 0;
-    	for (Continent c : this.continents){
+    	for (IContinent c : this.continents){
     		if(c.getCurrentOwner()==p){bonus += c.getBonus();}
     	}
     	return bonus;
@@ -301,7 +303,7 @@ public class Map  implements IMap{
      * @return das zu suchende Land
      */
     public ICountry getCountry(String n){
-    	for (Country c : countries){
+    	for (ICountry c : countries){
     		if(c.getName().equals(n)){
     			return c;
     		}
@@ -314,7 +316,7 @@ public class Map  implements IMap{
      * @return das zu suchende Land
      */
     public ICountry getCountry(Color col){
-        for (Country c : countries){
+        for (ICountry c : countries){
             if(c.getColor().equals(col)){
                 return c;
             }

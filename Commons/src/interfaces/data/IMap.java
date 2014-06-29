@@ -1,7 +1,4 @@
-package interfaces;
-
-import interfaces.data.ICountry;
-import interfaces.data.IPlayer;
+package interfaces.data;
 
 import java.awt.*;
 import java.util.ArrayList;

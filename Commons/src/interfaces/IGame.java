@@ -1,6 +1,7 @@
 package interfaces;
 
 import exceptions.*;
+import interfaces.data.IMap;
 import interfaces.data.IPlayer;
 
 import java.util.List;

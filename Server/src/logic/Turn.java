@@ -3,7 +3,9 @@ import interfaces.IFight;
 import interfaces.ITurn;
 import interfaces.data.IArmy;
 import interfaces.data.ICountry;
+import interfaces.data.IMap;
 import interfaces.data.IPlayer;
+import interfaces.data.cards.ICardDeck;
 import logic.data.*;
 import logic.data.cards.CardDeck;
 import exceptions.*;
@@ -57,20 +59,20 @@ public class Turn implements ITurn{
     /**
      * Bildet den Spieler ab, dir diesen Turn durchführen musss
      */
-    private final Player player;
+    private final IPlayer player;
     /**
      * Bildet die Karte ab auf dem der Spieler diesen Zug durchführt
      */
-	private final logic.data.Map map;
+	private final IMap map;
     /**
      * Bildet ein Stack mit neuen Armeen ab, die der Spieler auf dem Spielfeld verteilen muss
      */
-	private final Stack<Army> newArmies = new Stack<Army>();
+	private final Stack<IArmy> newArmies = new Stack<IArmy>();
 
     /**
      * Bildet die Liste der Armeen ab, die in diesem Zug bereits bewegt wurden
      */
-	private final ArrayList<Army> movedArmies = new ArrayList<Army>();
+	private final ArrayList<IArmy> movedArmies = new ArrayList<IArmy>();
 
     /**
      * Bildet die Warteschlange der Steps ab, die der Spieler noch durchlaufen muss.
@@ -87,21 +89,21 @@ public class Turn implements ITurn{
      */
     private steps currentStep;
     
-    private CardDeck deck;
+    private ICardDeck deck;
     
     private boolean takeOverSucess;
 
 
     /**
      * Constructor für den Turn, der einen Turn inizialisiert
-     * @param p - Player, der den Turn druchführen muss
-     * @param m - Karte auf dem der Spieler sich bewegt
+     * @param iPlayer - Player, der den Turn druchführen muss
+     * @param map2 - Karte auf dem der Spieler sich bewegt
      * @param steps - Die geforderten Steps, die der Turn druchlaufen soll
      */
-    public Turn(final Player p,final logic.data.Map m,final  Queue<steps> steps, CardDeck deck){
-        this.deck = deck;
-    	this.player = p;
-        this.map = m;
+    public Turn(final IPlayer iPlayer,final IMap map2,final  Queue<steps> steps, ICardDeck deck2){
+        this.deck = deck2;
+    	this.player = iPlayer;
+        this.map = map2;
 
         //Argumentprüfung
         if(steps.isEmpty()){
@@ -182,7 +184,7 @@ public class Turn implements ITurn{
      * @param a bewegte Armee
      */
 
-    private void addMovedArmy(Army a){
+    private void addMovedArmy(IArmy a){
     	this.movedArmies.add(a);
     }
     /**
@@ -190,7 +192,7 @@ public class Turn implements ITurn{
      * @param a Armee, die Überprüft werden soll
      * @return boolean -> true wenn die Armee bereits verschoben wurde, false, wenn sie nioch nicht verschoben wurde
      */
-    private boolean isArmyAlreadyMoved(Army a){
+    private boolean isArmyAlreadyMoved(IArmy a){
     	return movedArmies.contains(a);
     }
 
@@ -290,7 +292,7 @@ public class Turn implements ITurn{
                 throw new NotEnoughNewArmysException(this);
             }
             else {
-                Army a = this.newArmies.pop();
+                IArmy a = this.newArmies.pop();
                 try {
                     a.setPosition(position);
                 }catch (CountriesNotConnectedException e){
@@ -349,16 +351,16 @@ public class Turn implements ITurn{
 
 
 
-        List<Army> armies = (List<Army>) from.getArmyList().clone();
+        List<IArmy> armies = (List<IArmy>) from.getArmyList().clone();
         //Löschen aller Armeen, die bereits bewegt wurden, somit können nur die Armen versucht werden zu bwegen, die noch nicht bewegt wurde.
-        for(Army army : armies){
+        for(IArmy army : armies){
             if(this.movedArmies.contains(army)){
                 armies.remove(army);
             }
         }
 
         for(int i = 0; i!= numberOfArmies; i++){
-            Army army = armies.get(armies.size()-1);
+            IArmy army = armies.get(armies.size()-1);
             moveArmy(from,to,army);
         }
     }

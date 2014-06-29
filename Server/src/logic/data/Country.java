@@ -2,6 +2,7 @@ package logic.data;
 
 import exceptions.CountriesNotConnectedException;
 import exceptions.CountryNotInListException;
+import interfaces.data.*;
 
 import java.awt.Color;
 import java.util.*;
@@ -12,7 +13,7 @@ import java.util.Map.Entry;
  *
  * Diese Klasse bildet ein einzelnes Land des Spiels ab
  */
-public class Country {
+public class Country implements ICountry {
 
     /**
      * Name des Lands
@@ -34,19 +35,19 @@ public class Country {
      * Bildet die relation der Nachbarländer ab
      * Der Key ist dabei die ID des Landes
      */
-    private final HashMap<UUID, Country> neighbors = new HashMap<UUID, Country>();
+    private final HashMap<UUID, ICountry> neighbors = new HashMap<UUID, ICountry>();
     
-    private final Continent continent;
+    private final IContinent continent;
 
     /**
      * Bestimmt den Spieler, der aktuell das Land besetzt hällt
      */
-    private Player owner;
+    private IPlayer owner;
     
     /**
      * Liste aller Armeen im Besitzt des jeweilligen Spielers
      */
-    private ArrayList<Army> armyList = new ArrayList<Army>();
+    private ArrayList<IArmy> armyList = new ArrayList<IArmy>();
 
 
     /**
@@ -55,7 +56,7 @@ public class Country {
      * @param continent Kontinent des Landes
      *
      */
-    public Country(final String name, Continent continent, Color color) {
+    public Country(final String name, IContinent continent, Color color) {
         this.name = name;
         this.id = UUID.nameUUIDFromBytes(name.getBytes()); // statische UUID bassierend auf dem Namen, da die Karte im Moment nicht dynamisch ist
         this.continent = continent;
@@ -69,7 +70,7 @@ public class Country {
      *
      * @param connectTo Das Land zu dem eine Verbindung hergestellt werden soll
      */
-    public void connectTo(Country connectTo) {
+    public void connectTo(ICountry connectTo) {
         if (!this.isConnected(connectTo)) {
             neighbors.put(connectTo.getId(), connectTo); //Hash map aktualisieren
             connectTo.connectTo(this); //Gegenverbindung setzten
@@ -78,11 +79,11 @@ public class Country {
 
     /**
      * Prüft, ob das Land mit dem aktuellen Land verbunden ist
-     * @param countryToCheck Land das geprüft werden soll
+     * @param connectTo Land das geprüft werden soll
      * @return True wenn das Land verbunden ist
      */
-    public boolean isConnected(Country countryToCheck) {
-        return neighbors.containsValue(countryToCheck);
+    public boolean isConnected(ICountry connectTo) {
+        return neighbors.containsValue(connectTo);
     }
 
 
@@ -91,7 +92,7 @@ public class Country {
      * @param id UUID des Landes was benötigt wird
      * @return Land das gesucht wurde, oder null
      */
-    public Country getNeighbor (UUID id){
+    public ICountry getNeighbor (UUID id){
         return neighbors.get(id);
     }
 
@@ -100,8 +101,8 @@ public class Country {
      * @param searchName - Name nach dem gesucht werden soll
      * @return Land das gesucht wurde oder null wenn nicht gefunden
      */
-    public Country getNeighbor (String searchName){
-        for (Entry<UUID, Country> entry : this.neighbors.entrySet()){
+    public ICountry getNeighbor (String searchName){
+        for (Entry<UUID, ICountry> entry : this.neighbors.entrySet()){
             if(entry.getValue().getName().equals(searchName)){
                 return entry.getValue();
             }
@@ -113,7 +114,7 @@ public class Country {
      * Gibt alle Nachbarn des Landes zurück
      * @return Nachbarn des Landes
      */
-    public ArrayList<Country> getNeighbors (){
+    public ArrayList<ICountry> getNeighbors (){
         ArrayList<Country> list = new ArrayList<Country>();
         list.addAll(this.neighbors.values());
         return list;
@@ -124,8 +125,7 @@ public class Country {
      *
      * @param p Spieler, der als Owener gesetzt werden soll
      */
-    public void setOwner(Player p) {
-
+    public void setOwner(IPlayer p) {
     	this.owner = p;
     }
 
@@ -135,7 +135,7 @@ public class Country {
      * @param newOwner
      * @throws CountryNotInListException
      */
-    public void changeOwner(Player newOwner) throws CountryNotInListException{
+    public void changeOwner(IPlayer newOwner) throws CountryNotInListException{
        	this.owner.removeCountry(this);
         this.owner = newOwner;
     }
@@ -145,7 +145,7 @@ public class Country {
      * F�gt die Armee a in die Liste der Armeen des Spielers hinzu
      * @param a in die Liste der Armeen einzuf�gende Armee
      */
-    public void addArmy(Army a) throws CountriesNotConnectedException{
+    public void addArmy(IArmy a) throws CountriesNotConnectedException{
         if(!armyList.contains(a)){
             armyList.add(a);
             a.setPosition(this);
@@ -157,7 +157,7 @@ public class Country {
      * @param army Armee, die Gelöscht werden soll
      * @throws CountriesNotConnectedException
      */
-    public void removeArmy(Army army) throws CountriesNotConnectedException{
+    public void removeArmy(IArmy army) throws CountriesNotConnectedException{
         if(armyList.contains(army)){
             armyList.remove(army);
             army.setPosition(null);
@@ -174,7 +174,7 @@ public class Country {
     /**
      * @return Den Spieler, der dieses Land gerade besetzt hat
      */
-    public Player getOwner() {
+    public IPlayer getOwner() {
         return this.owner;
     }
 
@@ -203,7 +203,7 @@ public class Country {
      * Getter ArmyList des Spielers
      * @return armyList. Liste der Armeen des Spielers
      */
-    public ArrayList<Army> getArmyList(){
+    public ArrayList<IArmy> getArmyList(){
     	return this.armyList;
     }
 
@@ -215,7 +215,7 @@ public class Country {
     public String toString() {
         String postFix = " Owner: ";
         if (this.owner != null) {
-            postFix += this.owner.ToString();
+            postFix += this.owner.toString();
         }
         postFix += " Armeen: " + this.getNumberOfArmys();
         return this.getName() + postFix;

@@ -4,9 +4,12 @@ import java.util.*;
 import java.awt.Color;
 
 import interfaces.IGame;
-import interfaces.IMap;
 import interfaces.IRound;
+import interfaces.data.IArmy;
+import interfaces.data.ICountry;
+import interfaces.data.IMap;
 import interfaces.data.IPlayer;
+import interfaces.data.cards.ICardDeck;
 import logic.data.*;
 import logic.data.Map;
 import exceptions.*;
@@ -50,7 +53,7 @@ public class Game implements IGame {
     /**
      * Contains the current round , default null
      */
-    private  Round currentRound;
+    private  IRound currentRound;
 
     /**
      * Name für das SPiel, erstmal aktuelles Datum
@@ -65,22 +68,23 @@ public class Game implements IGame {
     /**
      * Der GameManager, der für die Persistenz verwendet werden soll.
      */
-    private final PersistenceEndpoint<Game> persistenceEndpoint;
+    private final PersistenceEndpoint<IGame> persistenceEndpoint;
     /**
      *
      * @param persistenceEndpoint - Der Manager, der zur Speicherung des Spiels verwnedet werden soll
      */
-    public Game(PersistenceEndpoint<Game> persistenceEndpoint) {
-        this(persistenceEndpoint,new Map());
-    }
-    private CardDeck deck;
+    private ICardDeck deck;
 
     /**
      * Konstruktor, wenn das Spiel mit einer bestimmten Karte erstellt werden soll
      * @param persistenceEndpoint Endpunkt zum speichern des spiels
      * @param map Karte die für das Spiel verwnedet werden soll
      */
-    public Game(PersistenceEndpoint<Game> persistenceEndpoint, Map map){
+    public Game(PersistenceEndpoint<IGame> persistenceEndpoint) {
+        this(persistenceEndpoint,new Map());
+    }
+
+    public Game(PersistenceEndpoint<IGame> persistenceEndpoint, IMap map){
     	this.map= map;
         this.persistenceEndpoint = persistenceEndpoint;
         this.id = UUID.randomUUID();
@@ -92,7 +96,7 @@ public class Game implements IGame {
         this.deck = new CardDeck(this.map.getCountries());
     }
 
-    public CardDeck getDeck(){
+    public ICardDeck getDeck(){
     	return this.deck;
     }
 
@@ -180,7 +184,7 @@ public class Game implements IGame {
         /**
          * Stack, der die Länder beinhaltet, die noch zu verteilen sind
          */
-        Stack<Country> countriesStack = new Stack<Country>();
+        Stack<ICountry> countriesStack = new Stack<ICountry>();
         countriesStack.addAll(this.map.getCountries());
         Collections.shuffle(countriesStack); // Durchmischen der Länder
 
@@ -190,7 +194,7 @@ public class Game implements IGame {
          */
         while (!countriesStack.empty()) {
 
-            for (Player p : players) {
+            for (IPlayer p : players) {
                 if(!countriesStack.empty()){
                     p.addCountry(countriesStack.pop());
                 }
@@ -208,11 +212,11 @@ public class Game implements IGame {
      *
      */
     private void setDefaultArmys() {
-        for (Player player : players) {
-            for (Country country : player.getCountries()) {
+        for (IPlayer player : players) {
+            for (ICountry country : player.getCountries()) {
                 //Nur machen, wenn noch keine Armee auf dem Land sitzt
                 if (country.getArmyList().size() == 0) {
-                    Army a = new Army(player);
+                    IArmy a = new Army(player);
                     try {
                         country.addArmy(a);
                     } catch (CountriesNotConnectedException e) {
@@ -250,7 +254,7 @@ public class Game implements IGame {
         if (this.getCurrentGameState() != IGame.gameStates.WAITING) {
             throw new GameAllreadyStartedException();
         } else {
-            Player newPlayer = new Player(name, this.color.pop());
+            IPlayer newPlayer = new Player(name, this.color.pop());
             this.addPlayer(newPlayer);
         }
     }
@@ -276,7 +280,7 @@ public class Game implements IGame {
      * @return Sieger des Spiels
      */
     public IPlayer getWinner (){
-        for(Player player : players){
+        for(IPlayer player : players){
             if(player.getOrder().isCompleted()){
                 return player;
             }
@@ -289,7 +293,7 @@ public class Game implements IGame {
      *
      * @param r
      */
-    public void setCurrentRound(Round r) {
+    public void setCurrentRound(IRound r) {
         this.currentRound = r;
     }
 

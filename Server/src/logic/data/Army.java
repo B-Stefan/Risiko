@@ -1,5 +1,6 @@
 package logic.data;
 
+import interfaces.data.*;
 import exceptions.CountriesNotConnectedException;
 
 /**
@@ -7,25 +8,25 @@ import exceptions.CountriesNotConnectedException;
  *
  * Diese Klasse bildet eine einzelne Armee im Spiel ab
  */
-public class Army {
+public class Army implements IArmy{
 
     /**
      * Der Owner beschreibt wem diese Armee im Spiel zugeordnet wird.
      */
-	private final Player owner;
+	private final IPlayer owner;
 
 
     /**
      * Die Position spiegelt dabei immer die aktuelle Position dieser Armee da
      */
-	private Country position;
+	private ICountry position;
 
 
     /**
      * Erstellt eine Armee für das Spiel, der Besitzer kann nachträglich nicht geändert werden
      * @param player Besitzer dieser Armee
      */
-	public Army(final Player player){
+	public Army(final IPlayer player){
 		this.owner = player;
 	}
 
@@ -41,7 +42,7 @@ public class Army {
 	 *
      * @see Country#addArmy(Army)
      */
-	public void setPosition(Country country)  throws CountriesNotConnectedException{
+	public void setPosition(ICountry country)  throws CountriesNotConnectedException{
 
         //Armee sitzt bereits auf der Position
         if(country == this.position){
@@ -74,7 +75,7 @@ public class Army {
      * Gibt den Besitzer der Armee wieder
      * @return  Besitzer der Armee
      */
-    public Player getOwner(){
+    public IPlayer getOwner(){
         return this.owner;
     }
 
@@ -83,7 +84,7 @@ public class Army {
 	 * Getter für die Position
 	 * @return position Aktuelle Position der Armee, kann null zurückgeben.
 	 */
-	public Country getPosition(){
+	public ICountry getPosition(){
 		return this.position;
 	}
 	

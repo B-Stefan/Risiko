@@ -1,6 +1,10 @@
 package logic;
 import exceptions.TooManyPlayerException;
 import interfaces.IRound;
+import interfaces.ITurn;
+import interfaces.data.IMap;
+import interfaces.data.IPlayer;
+import interfaces.data.cards.ICardDeck;
 import logic.data.*;
 import logic.data.cards.CardDeck;
 import exceptions.RoundCompleteException;
@@ -14,18 +18,18 @@ public class Round implements IRound {
 	/**
 	 * Der Spieler, der am Zug ist
 	 */
-	private Player currentPlayer;
-    private logic.data.Map map;
-	private Queue<Player> players;
+	private IPlayer currentPlayer;
+    private IMap map;
+	private Queue<IPlayer> players;
     private Queue<Turn.steps> turnSteps;
-    private Turn currentTurn;
-    private CardDeck deck;
+    private ITurn currentTurn;
+    private ICardDeck deck;
 	
 
-	public Round(CardDeck deck, final List<Player> p,final logic.data.Map map, final Queue<Turn.steps> steps){
-		this.deck = deck;
-		this.map = map;
-        this.players = new LinkedBlockingQueue<Player>(p);
+	public Round(ICardDeck deck2, final List<IPlayer> players2,final IMap map2, final Queue<Turn.steps> steps){
+		this.deck = deck2;
+		this.map = map2;
+        this.players = new LinkedBlockingQueue<Player>(players2);
         this.turnSteps = steps;
         try {
             this.setNextTurn();
@@ -34,8 +38,8 @@ public class Round implements IRound {
         }
 
 	}
-    public Round(CardDeck deck, final List<Player> p,final logic.data.Map map){
-        this(deck, p,map, Turn.getDefaultSteps());
+    public Round(ICardDeck deck2, final List<IPlayer> players2,final IMap map2){
+        this(deck2, players2,map2, Turn.getDefaultSteps());
     }
     /**
      * Setzt den nächsten Spieler als aktuellen Spieler
@@ -51,7 +55,7 @@ public class Round implements IRound {
 	 * Getter für den aktuellen Spieler
 	 * @return currentPayler: gibt aktuellen Spieler
 	 */
-	public Player getCurrentPlayer(){
+	public IPlayer getCurrentPlayer(){
 		return this.currentPlayer;
 	}
 
@@ -62,8 +66,6 @@ public class Round implements IRound {
      * @throws RoundCompleteException
      */
 	public void setNextTurn() throws ToManyNewArmysException, TurnNotCompleteException, RoundCompleteException{
-
-
         if(this.getCurrentTurn() != null){
             if(!this.getCurrentTurn().isComplete()){
                 throw new TurnNotCompleteException(this.getCurrentTurn());
@@ -96,7 +98,7 @@ public class Round implements IRound {
      * GIbt den aktuellen Turn zurück
      * @return
      */
-    public Turn getCurrentTurn(){
+    public ITurn getCurrentTurn(){
         return this.currentTurn;
     }
 

@@ -1,29 +1,32 @@
 package logic.data.cards;
 
+import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
+import interfaces.data.cards.ICard;
 import logic.data.*;
 
-public class Card implements Comparable<Card> {
-	private Player belongsTo;
+public class Card implements ICard {
+	private IPlayer belongsTo;
 	private String type;
-	private Country country;
+	private ICountry country;
 	
-	public Card(Country co, String ty){
-		this.country = co;
+	public Card(ICountry c, String ty){
+		this.country = c;
 		this.type = ty;
 	}
-	public void setBelongsTo(Player pl){
+	public void setBelongsTo(IPlayer pl){
 		this.belongsTo = pl;
 	}
-	public Country getCountry(){
+	public ICountry getCountry(){
 		return this.country;
 	}
-	public Player getBelongsTo(){
+	public IPlayer getBelongsTo(){
 		return this.belongsTo;
 	}
 	public String getType(){
 		return this.type;
 	}
-	public int compareTo(Card otherCard){
+	public int compareTo(ICard otherCard){
 		if(otherCard.getType() == this.getType()){
 			return 0; //equals
 		}else if(otherCard.getType() == "Soldat"){
@@ -45,7 +48,7 @@ public class Card implements Comparable<Card> {
 		}
 	}
     public String toString(){
-        Country country = this.getCountry();
+        ICountry country = this.getCountry();
         String msg = "";
         if (country != null){
             msg += country.getName();

@@ -1,5 +1,7 @@
 package logic.data;
 
+import interfaces.data.*;
+
 import java.util.*;
 import java.util.Map;
 
@@ -9,7 +11,7 @@ import java.util.Map;
  *
  * Dise Klasse bildet ein einzelnes Kontinent ab
  */
-public class Continent{
+public class Continent implements IContinent{
 
 	/**
 	 * Name des Kontinents
@@ -20,7 +22,7 @@ public class Continent{
 	 * Eine ArrayLsit mit den Ländern, die sich auf dem Kontinent befinden Länder
      * @return Gibt die Liste der Länder zurück, die disem Kontinent zugeordnet wurden
 	 */
-	private HashMap<UUID,Country> countrys = new HashMap<UUID, Country>();
+	private HashMap<UUID,ICountry> countrys = new HashMap<UUID, ICountry>();
 
 	/**
 	 * der Bonus, der die Kontrolle des jeweiligen Kontinents einbringt für die neuen Armeen
@@ -51,12 +53,12 @@ public class Continent{
      * Ermittelt den aktuellen Besitzter des Kontinents, prüft ob alle Länder den gleichen Player als owner haben
      * @return Gibt den Player zurück, der alle Länder auf diesem Kontinent besitzt, wenn der Kontinent geteilt wird wird null zurück gegeben.
      */
-    public Player getCurrentOwner (){
+    public IPlayer getCurrentOwner (){
         boolean playerChange = false;
-        Player ruler = null;
+        IPlayer ruler = null;
 
-        for (Map.Entry<UUID,Country> entry : countrys.entrySet()){
-            Country currentCountry = entry.getValue();
+        for (Map.Entry<UUID,ICountry> entry : countrys.entrySet()){
+            ICountry currentCountry = entry.getValue();
 
             if(ruler != null && ruler!= currentCountry.getOwner()){
                 playerChange = true;
@@ -78,7 +80,7 @@ public class Continent{
 	 * Fügt dem Kontinent ein Land hinzu
 	 * @param player Der Land, der dem Kontinent hinzugefügt werden soll
 	 */
-	public void addCountry(Country player){
+	public void addCountry(ICountry player){
 		if(!countrys.containsKey(player.getId())){
             countrys.put(player.getId(), player);
         }
@@ -89,7 +91,7 @@ public class Continent{
      * @param countryToDelete Land das gelöscht werden soll
      * @return
      */
-    public boolean removeCountry (Country countryToDelete){
+    public boolean removeCountry (ICountry countryToDelete){
         if(countrys.containsKey(countryToDelete.getId())){
             countrys.remove(countryToDelete);
             return  true;

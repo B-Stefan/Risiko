@@ -1,5 +1,8 @@
 package logic.data.orders;
 
+import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
+import interfaces.data.Orders.IOrder;
 import logic.data.Country;
 import logic.data.Player;
 
@@ -11,17 +14,17 @@ public class OrderTakeOverCountries implements IOrder {
 	/**
 	 * Der Spieler, dem die Order zugewiesen ist
 	 */
-	private Player agent;
+	private IPlayer agent;
 	
 	/**
 	 * 
 	 * @param twoArmies True bedeutet, dass es sich bei dem Auftrag um den Fall handelt, dass zwei Armeen auf den Ländern stehen müssen. Bei False müssen nur eine bestimmte Anzahl an Ländern eingenommen werden
-	 * @param ag Der Spieler, dem die Order zugewiesen wird
+	 * @param agend Der Spieler, dem die Order zugewiesen wird
 	 *
 	 */
-	public OrderTakeOverCountries(boolean twoArmies, Player ag) {
+	public OrderTakeOverCountries(boolean twoArmies, IPlayer agend) {
 		this.withTwoArmies = twoArmies;
-		setAgent(ag);
+		setAgent(agend);
 	}
 	
 	/**
@@ -33,7 +36,7 @@ public class OrderTakeOverCountries implements IOrder {
 	public boolean isCompleted() {
 		if (withTwoArmies){
 			if(this.agent.getCountries().size()>=18){
-				for(Country c : this.agent.getCountries()){
+				for(ICountry c : this.agent.getCountries()){
 					if(c.getArmyList().size()<2){
 						return false;
 					}
@@ -52,8 +55,8 @@ public class OrderTakeOverCountries implements IOrder {
 	 * Setzt den Spieler, dem die Order zugewiesen ist und setzt zudem beim Spieler den Auftrag
 	 */
 	@Override
-	public void setAgent(Player ag)  {
-			this.agent = ag;
+	public void setAgent(IPlayer agend)  {
+			this.agent = agend;
 	}
 
     @Override
@@ -67,7 +70,7 @@ public class OrderTakeOverCountries implements IOrder {
 	 * @return Player
 	 */
 
-	public Player getAgent() {
+	public IPlayer getAgent() {
 		return this.agent;
 	}
 

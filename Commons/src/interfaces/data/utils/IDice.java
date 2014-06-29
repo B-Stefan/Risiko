@@ -14,4 +14,5 @@ public interface IDice extends Comparable<IDice> {
      *  throw the dice
      */
     public void throwDice();
+	public boolean isDiceHigherOrEqual(IDice iDice);
 }

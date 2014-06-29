@@ -2,6 +2,10 @@ package logic;
 import java.util.*;
 
 import interfaces.IFight;
+import interfaces.ITurn;
+import interfaces.data.IArmy;
+import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
 import interfaces.data.utils.IDice;
 import logic.data.Army;
 import logic.data.Country;
@@ -22,27 +26,27 @@ public class Fight implements IFight {
 	/**
 	 * Das Land, von dem aus angegriffen wird
 	 */
-	private Country from;
+	private ICountry from;
 	/**
 	 * Das Land, welches angegriffen wird
 	 */
-	private Country to;
+	private ICountry to;
 	/**
 	 * Der Angreifer
 	 */
-	private Player agressor;
+	private IPlayer agressor;
 	/**
 	 * Die Liste der Armeen, mit denen in diesem Gefecht verteidigt wird
 	 */
-	private Stack<Army> defendersArmies = new Stack<Army>();
+	private Stack<IArmy> defendersArmies = new Stack<IArmy>();
 	/**
 	 * Die Liste der Armeen, mit denen in diesem Gefecht angegriffen wird
 	 */
-	private Stack<Army> agressorsArmies = new Stack<Army>();
+	private Stack<IArmy> agressorsArmies = new Stack<IArmy>();
 	/**
 	 * Liste der Würfel des Verteidigers
 	 */
-	private Stack<Dice> defendersDice = new Stack<Dice>();
+	private Stack<IDice> defendersDice = new Stack<IDice>();
 	/**
 	 * Liste der Würfel des Angreifers
 	 */
@@ -58,7 +62,7 @@ public class Fight implements IFight {
 	/**
 	 * Der Zug, in dem sich der Fight befindet
 	 */
-	private Turn currentTurn;
+	private ITurn currentTurn;
 	
 	
 	/**
@@ -66,7 +70,7 @@ public class Fight implements IFight {
 	 * @param from
 	 * @param to
 	 */
-	public Fight(Country from, Country to, Turn turn){
+	public Fight(ICountry from, ICountry to, ITurn turn){
 		this.to = to;
 		this.from = from;
 		this.agressor = this.from.getOwner();
@@ -78,8 +82,8 @@ public class Fight implements IFight {
 	 * @param aL
 	 * @return
 	 */
-	private Stack<Army> listToStack(List<Army> aL){
-		Stack<Army> stack = new Stack<Army>();
+	private Stack<IArmy> listToStack(List<IArmy> aL){
+		Stack<IArmy> stack = new Stack<IArmy>();
 		stack.addAll(aL);
 		return stack;
 	}
@@ -93,7 +97,7 @@ public class Fight implements IFight {
 	 * @throws InvalidFightException 
 	 */
 	public void attacking(int agressorsArmies) throws NotEnoughArmiesToAttackException, InvalidAmountOfArmiesException, AlreadyDicedException, InvalidFightException{
-		Stack<Army> agArmies = new Stack<Army>();
+		Stack<IArmy> agArmies = new Stack<IArmy>();
 		for (int i = 0; i<agressorsArmies; i++){
 			if (this.from.getArmyList().size()<agressorsArmies){
 				throw new NotEnoughArmiesToAttackException();
@@ -111,7 +115,7 @@ public class Fight implements IFight {
 	 * @throws AlreadyDicedException 
 	 * @throws InvalidFightException 
 	 */
-	public void attacking(Stack<Army> agressorsArmies) throws InvalidAmountOfArmiesException, NotEnoughArmiesToAttackException, AlreadyDicedException, InvalidFightException{
+	public void attacking(Stack<IArmy> agressorsArmies) throws InvalidAmountOfArmiesException, NotEnoughArmiesToAttackException, AlreadyDicedException, InvalidFightException{
 		this.agressorsArmies.clear();
 		this.agressorsArmies = agressorsArmies;
 		this.defendersDice.clear();
@@ -157,7 +161,7 @@ public class Fight implements IFight {
 		if(this.agressorsDice.isEmpty()){
             throw new AggessorNotThrowDiceException();
         }
-        Stack<Army> defArmies = new Stack<Army>();
+        Stack<IArmy> defArmies = new Stack<IArmy>();
 		if (this.to.getArmyList().size()<defendersArmies){
 			throw new NotEnoughArmiesToDefendException();
 		}
@@ -178,7 +182,7 @@ public class Fight implements IFight {
 	 * @throws TurnNotAllowedStepException 
 	 * @throws InvalidFightException 
 	 */
-	public void defending(Stack<Army> defendersArmies)throws ToManyNewArmysException,InvalidAmountOfArmiesException, NotEnoughArmysToMoveException,CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
+	public void defending(Stack<IArmy> defendersArmies)throws ToManyNewArmysException,InvalidAmountOfArmiesException, NotEnoughArmysToMoveException,CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException{
 		if (this.from.getOwner() == this.to.getOwner()){
 			throw new InvalidFightException();
 		}
@@ -211,7 +215,7 @@ public class Fight implements IFight {
 	 */
 	private int[] result() throws ToManyNewArmysException, CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException{
 		int[] res = new int[3];
-		for(Dice di : this.defendersDice){
+		for(IDice di : this.defendersDice){
 			//Wenn der Würfel des Verteidigers höher oder gleich ist, dann wird eine Armee des Angreifers zerstört
 			if(di.isDiceHigherOrEqual(this.agressorsDice.get(0))){
 				this.from.removeArmy(this.agressorsArmies.pop());
@@ -227,7 +231,7 @@ public class Fight implements IFight {
 				if(this.to.getArmyList().isEmpty()){
 					this.currentTurn.setTakeOverSucess(true);
 					this.to.setOwner(this.agressor);
-					for(Army a : this.agressorsArmies){
+					for(IArmy a : this.agressorsArmies){
 						this.currentTurn.moveArmy(this.from,this.to, a);
 					}
 					res[2] = 1;
@@ -264,7 +268,7 @@ public class Fight implements IFight {
 	 * Getter für die Liste der Würfel des Verteidigers
 	 * @return Stack<Dice>
 	 */
-	public Stack<Dice> getDefendersDice(){
+	public Stack<IDice> getDefendersDice(){
 		return this.defendersDice;
 	}
 	
@@ -272,7 +276,7 @@ public class Fight implements IFight {
 	 * Setter für die Liste der Armeen des Verteidigers
 	 * @param newArmies
 	 */
-	public void setDefendersArmies(Stack<Army> newArmies){
+	public void setDefendersArmies(Stack<IArmy> newArmies){
 		this.defendersArmies = newArmies;
 	}
 	
@@ -280,14 +284,14 @@ public class Fight implements IFight {
 	 * Setter für die Liste der Armeen des Angreifers
 	 * @param newArmies
 	 */
-	public void setAgressorsArmies(Stack<Army> newArmies){
+	public void setAgressorsArmies(Stack<IArmy> newArmies){
 		this.agressorsArmies = newArmies;
 	}
 	/**
 	 * Getter für das To Land
 	 * @return
 	 */
-	public Country getTo(){
+	public ICountry getTo(){
 		return this.to;
 	}
 	
@@ -295,14 +299,14 @@ public class Fight implements IFight {
 	 * Getter für das From Land
 	 * @return
 	 */
-	public Country getFrom(){
+	public ICountry getFrom(){
 		return this.from;
 	}
 
-    public Player getAggressor (){
+    public IPlayer getAggressor (){
         return  this.agressor;
     }
-    public Player getDefender (){
+    public IPlayer getDefender (){
         return this.getTo().getOwner();
     }
 	

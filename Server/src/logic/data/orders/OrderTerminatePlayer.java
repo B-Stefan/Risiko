@@ -1,5 +1,7 @@
 package logic.data.orders;
 
+import interfaces.data.IPlayer;
+import interfaces.data.Orders.IOrder;
 import logic.data.Player;
 
 /**
@@ -15,23 +17,23 @@ public class OrderTerminatePlayer implements IOrder{
 	/**
 	 * Der Spieler, der von dem Spieler, dem die Order zugeiwesen ist, vernichtet werden soll
 	 */
-	private Player victim;
+	private IPlayer victim;
 	/**
 	 * Der Spieler, dem die Order zugewiesen ist
 	 */
-	private Player agent;
+	private IPlayer agent;
 
 
 	
 	/**
 	 * Zuerst wird der Agent gesetzt, damit ausgeschlossen werden kann, dass das Victim und der Player identisch sind
-	 * @param victim Opfer des Auftrags
-	 * @param ag Der Spieler, dem die Order zugewiesen werden soll
+	 * @param playerToTerminate Opfer des Auftrags
+	 * @param agend Der Spieler, dem die Order zugewiesen werden soll
 	 */
-	 public OrderTerminatePlayer(Player victim, Player ag)  {
+	 public OrderTerminatePlayer(IPlayer playerToTerminate, IPlayer agend)  {
 
-         this.victim = victim;
-         this.agent = ag;
+         this.victim = playerToTerminate;
+         this.agent = agend;
 
 	 }
 
@@ -39,7 +41,7 @@ public class OrderTerminatePlayer implements IOrder{
 	 /**
 	  * Setzt den Spieler, dem die Order zugewiesen ist und setzt zudem beim Spieler den Auftrag
 	  */
-	public void setAgent(Player ag)  {
+	public void setAgent(IPlayer ag)  {
         this.agent = ag;
 	}
 	
@@ -61,7 +63,7 @@ public class OrderTerminatePlayer implements IOrder{
      * @return Player
      */
     
-	public Player getVictim() {
+	public IPlayer getVictim() {
 		return victim;
 	}
 	/**
@@ -69,7 +71,7 @@ public class OrderTerminatePlayer implements IOrder{
 	 * @param victim
 	 */
 
-	public void setVictim(Player victim) {
+	public void setVictim(IPlayer victim) {
 		this.victim = victim;
 	}
 
@@ -78,7 +80,7 @@ public class OrderTerminatePlayer implements IOrder{
 	 * Getter für den Agent
 	 * @return Player
 	 */
-	public Player getAgent() {
+	public IPlayer getAgent() {
 		return this.agent;
 	}
 

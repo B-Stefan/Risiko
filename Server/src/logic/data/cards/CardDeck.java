@@ -1,22 +1,26 @@
 package logic.data.cards;
 
+import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
+import interfaces.data.cards.ICard;
+import interfaces.data.cards.ICardDeck;
+
 import java.util.*;
 
 import logic.data.Country;
 import logic.data.Player;
 import exceptions.NotEnoughCardsToExchangeException;
-import main.java.ui.CUI.utils.IO;
 
-public class CardDeck {
-	private Stack<Card> deck = new Stack<Card>();
+public class CardDeck implements ICardDeck {
+	private Stack<ICard> deck = new Stack<ICard>();
 	private Stack<Integer> bonus = new Stack<Integer>();
 	
-	public CardDeck(ArrayList<Country> cos){
-		builtDeck(cos);
+	public CardDeck(ArrayList<ICountry> arrayList){
+		builtDeck(arrayList);
 	}
 	
-	private void builtDeck(ArrayList<Country> cos){
-		for(Country c : cos){
+	private void builtDeck(ArrayList<ICountry> cos){
+		for(ICountry c : cos){
 			if(deck.isEmpty()||this.deck.size() == 1){
 				this.deck.add(new Card(c, "Joker"));
 			}else if(this.deck.lastElement().getType() == "Kanone"){
@@ -43,18 +47,18 @@ public class CardDeck {
 		}
 		return bo;
 	}
-	public void drawCard(Player pl){
+	public void drawCard(IPlayer pl){
 		pl.drawNewCard(deck.pop());
 	}
-	public boolean exchangeCards(Player pl) throws NotEnoughCardsToExchangeException{
+	public boolean exchangeCards(IPlayer pl) throws NotEnoughCardsToExchangeException{
 		if(pl.getCards().size()<3){
 			throw new NotEnoughCardsToExchangeException();
 		}
 		int i = pl.getCards().size() - 1;
-		Stack<Card> kanonen = new Stack<Card>();
-		Stack<Card> reiter = new Stack<Card>();
-		Stack<Card> soldaten = new Stack<Card>();
-		Stack<Card> joker = new Stack<Card>();
+		Stack<ICard> kanonen = new Stack<ICard>();
+		Stack<ICard> reiter = new Stack<ICard>();
+		Stack<ICard> soldaten = new Stack<ICard>();
+		Stack<ICard> joker = new Stack<ICard>();
 		while(i>=0){
 			if(pl.getCards().get(i).getType() == "Kanone"){
 				kanonen.push(pl.getCards().get(i));
@@ -120,17 +124,17 @@ public class CardDeck {
 		}
 		return false;
 	}
-	private void putBackCard(Player pl, Card c){
+	private void putBackCard(IPlayer pl, ICard c){
 		pl.removeCard(c);
 	}
-	public Stack<Card> getCards(){
+	public Stack<ICard> getCards(){
 		return this.deck;
 	}
 	public Stack<Integer> getBonusList(){
 		return this.bonus;
 	}
 	
-	public void returnCards(Card card1, Card card2, Card card3, Player pl){
+	public void returnCards(ICard card1, ICard card2, ICard card3, IPlayer pl){
 		this.deck.push(card1);
 		putBackCard(pl, card1);
 		this.deck.push(card2);
