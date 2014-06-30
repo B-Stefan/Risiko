@@ -3,6 +3,7 @@ package main.java.ui.GUI;
 import exceptions.CountryNotInListException;
 import exceptions.PersistenceEndpointIOException;
 import exceptions.PlayerNameAlreadyChooseException;
+import exceptions.PlayerNotExsistInGameException;
 import interfaces.IGame;
 import interfaces.IGameManager;
 import interfaces.data.ICountry;
@@ -112,13 +113,26 @@ public class JGameManagerGUI extends JFrame {
         }
 
 
-
         IPlayer currentPlayer;
-        try {
-            currentPlayer = game.addPlayer(playerName);
-        }catch (PlayerNameAlreadyChooseException e){
-            new JExceptionDialog(this,e);
-            return;
+
+
+        if (game.getCurrentGameState() == IGame.gameStates.RUNNING){
+            //Wenn Spiel geladen wird
+            try {
+                currentPlayer = game.getPlayer(playerName);
+            }catch (PlayerNotExsistInGameException e){
+                new JExceptionDialog(this,e);
+                return;
+            }
+        }
+        else{
+            //Neues Spiel
+            try {
+                currentPlayer = game.addPlayer(playerName);
+            }catch (PlayerNameAlreadyChooseException e){
+                new JExceptionDialog(this,e);
+                return;
+            }
         }
         JGameGUI    gui = new JGameGUI(game,currentPlayer);
         GameCUI     cui = new GameCUI(game, null);

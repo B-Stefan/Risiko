@@ -300,6 +300,22 @@ public class Game extends UnicastRemoteObject implements IGame {
     }
 
     /**
+     * Gibt den Spieler zum angegebenen Namen zurück
+     * @param name - Name des gesuchten Spielers
+     * @return Spieler
+     * @throws PlayerNotExsistInGameException Wenn Spieler nicht gefunden wird
+     * @throws RemoteException
+     */
+    public IPlayer getPlayer(final String name) throws PlayerNotExsistInGameException, RemoteException{
+        for (IPlayer player: players){
+            if(player.getName().equals(name)){
+                return player;
+            }
+        }
+        throw new PlayerNotExsistInGameException(name);
+    }
+
+    /**
      * Setzt die aktuelle Runde
      *
      * @param r

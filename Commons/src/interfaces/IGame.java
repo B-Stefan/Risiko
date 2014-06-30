@@ -88,11 +88,22 @@ public interface IGame extends Remote, Serializable {
 
 
     /**
-     * Für dem Spiel einen neuen Spieler hinzu
-     *
-     * @param name - Name des neuen Spielers
+     * FÜgt dem Spiel den Spieler mit dem Namem hinzu
+     * @param name Name des Neuen Spielers
+     * @return Den neuen Spieler
+     * @throws PlayerNameAlreadyChooseException
+     * @throws RemoteException
      */
     public IPlayer addPlayer(final String name) throws PlayerNameAlreadyChooseException,RemoteException;
+
+    /**
+     * Gibt den Spieler zum angegebenen Namen zurück
+     * @param name - Name des gesuchten Spielers
+     * @return Spieler
+     * @throws PlayerNotExsistInGameException Wenn Spieler nicht gefunden wird
+     * @throws RemoteException
+     */
+    public IPlayer getPlayer(final String name) throws PlayerNotExsistInGameException, RemoteException;
 
     /**
      * @return Liste der Spieler
