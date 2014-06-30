@@ -62,15 +62,17 @@ public class Turn extends UnicastRemoteObject implements ITurn{
 
 
     /**
-     * Constructor für den Turn, der einen Turn inizialisiert
-     * @param iPlayer - Player, der den Turn druchführen muss
-     * @param map2 - Karte auf dem der Spieler sich bewegt
-     * @param steps - Die geforderten Steps, die der Turn druchlaufen soll
+     * Konstruktor für einen Turn
+     * @param iPlayer Spieler der den Turn durchführen soll
+     * @param map Karte für den Turn
+     * @param steps Erlaubte Steps für diesen Turn
+     * @param deck Das Card-Deck für alle Spieler
+     * @throws RemoteException
      */
-    public Turn(final IPlayer iPlayer,final IMap map2,final  Queue<steps> steps, ICardDeck deck2) throws RemoteException{
-        this.deck = deck2;
+    public Turn(final IPlayer iPlayer,final IMap map,final  Queue<steps> steps, ICardDeck deck) throws RemoteException{
+        this.deck = deck;
     	this.player = iPlayer;
-        this.map = map2;
+        this.map = map;
 
         //Argumentprüfung
         if(steps.isEmpty()){
@@ -278,17 +280,15 @@ public class Turn extends UnicastRemoteObject implements ITurn{
     }
 
     /**
-     * Angreifen eines Landes mit einer definierten Anzahl von einheiten
+     * Führt einen Kampf aus
      * @param from - Von diesem Land wird angegriffen
      * @param to - Dieses land soll angegrifffen werden
+     * @return Die Kampfinstanz
+     * @throws TurnNotInCorrectStepException
      * @throws TurnNotAllowedStepException
-     * @throws CountriesNotConnectedException 
-     * @throws InvalidPlayerException 
-     * @throws InvalidAmountOfArmiesException 
-     * @throws NotEnoughArmiesToDefendException 
-     * @throws NotEnoughArmiesToAttackException
-     * @throws NotTheOwnerException
      * @throws ToManyNewArmysException
+     * @throws NotTheOwnerException
+     * @throws RemoteException
      */
     public IFight fight (ICountry from, ICountry to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException{
 

@@ -8,7 +8,7 @@ import interfaces.data.utils.IDice;
  *
  * Diese Klasse dient zum Würfeln
  */
-public class Dice implements  IDice {
+public class Dice implements IDice {
 	
 	private int dicenumber;
 

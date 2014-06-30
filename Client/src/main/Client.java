@@ -1,13 +1,13 @@
 package main;
-import configuration.ServerConstants;
+import com.sun.javaws.exceptions.InvalidArgumentException;
+import configuration.ServerConfiguration;
 import interfaces.IGameManager;
-import main.java.ui.CUI.utils.IO;
 import main.java.ui.GUI.JGameManagerGUI;
-import main.java.ui.GUI.utils.BackgroundImagePanel;
 import main.java.ui.GUI.utils.JExceptionDialog;
 
 import javax.swing.*;
 import java.lang.*;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 /**
@@ -16,13 +16,52 @@ import java.rmi.RemoteException;
  */
 public class Client {
 
-    /**
-     * Client Anweiseung
-     * @param args - Keine
-     * @throws Exception
-     */
-    public static void main(String[] args) throws Exception{
 
+    /*
+    * Erstellt einen Client
+    * @param args ServerConfiguration
+    *             args[0] - HOST - Der Host, der verwendet werden soll
+    *             args[1] - PORT - Der Port der verwendet werden soll
+    *             args[2] - GAME_MANAGER_SERVICE_NAME - Servicename für den GameManager
+    *
+    */
+    public Client(String[] args){
+        /**
+         * Konfiguration über Argument erzeugt, ansonstne default
+         */
+        ServerConfiguration serverConfiguration;
+
+        if(args.length > 0){
+            try {
+                serverConfiguration = ServerConfiguration.fromArgs(args);
+            }catch (InvalidArgumentException | ClassCastException e){
+                new JExceptionDialog("Ihre Argumente sind nicht gültig. Bitte passen Sie diese an. Argumente: " + args);
+                return;
+            }
+        }else {
+            serverConfiguration = ServerConfiguration.DEFAULT;
+        }
+        this.openClient(serverConfiguration);
+
+    }
+
+    /**
+     * Öffnet einen Client auf Basis einer Serverkonfiguration
+     * @param configuration
+     */
+    public Client(ServerConfiguration configuration){
+        this.openClient(configuration);
+    }
+
+    /**
+     * Verbindet den Client und öffnet die GameManagerGUI
+     * @param serverConfiguration
+     */
+    private void openClient(ServerConfiguration serverConfiguration){
+
+        /**
+         * Mac style
+         */
         try {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Risiko");
@@ -41,18 +80,30 @@ public class Client {
             System.out.println("UnsupportedLookAndFeelException: " + e.getMessage());
         }
 
-        try{
-            IGameManager manager = ServerEngine.getGameMangerService();
-            new JGameManagerGUI(manager);
-        }catch (RemoteException e){
+        /**
+         * Servercommunikation
+         */
+        ServerEngine serverEngine = new ServerEngine(serverConfiguration);              //ServerEngine erstellen
 
-            JFrame errorFrame = new JFrame();
-            errorFrame.setVisible(true);
-            errorFrame.add(new BackgroundImagePanel("/resources/noConnectionBg.jpg"));
-            errorFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            new JExceptionDialog(errorFrame,"Beim Verbindungsaufbau zum Server" + ServerConstants.DEFAULT_SERVER + ":" + ServerConstants.DEFAULT_PORT + " ist ein Fehler aufgetreten");
+        try{
+            IGameManager manager = serverEngine.getGameMangerService();                 //GameManager vom Server holen
+            new JGameManagerGUI(manager);
+        }catch (RemoteException | NotBoundException e){
+            new JExceptionDialog("Beim Verbindungsaufbau zum Server: rmi://" + serverConfiguration.SERVER_HOST + ":" + serverConfiguration.PORT + " ist ein Fehler aufgetreten");
         }
 
 
+    }
+
+    /*
+    * @param args ServerConfiguration
+    *             args[0] - HOST - Der Host, der verwendet werden soll
+    *             args[1] - PORT - Der Port der verwendet werden soll
+    *             args[2] - GAME_MANAGER_SERVICE_NAME - Servicename für den GameManager
+    *
+    */
+    public static void main(String[] args) {
+        //Erstellen des Clients
+        new Client(args);
     }
 }

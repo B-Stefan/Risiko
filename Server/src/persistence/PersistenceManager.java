@@ -11,6 +11,7 @@ import logic.data.Player;
 import persistence.dataendpoints.AbstractFileEndpoint;
 import persistence.dataendpoints.PersistenceEndpoint;
 import persistence.dataendpoints.SerializableFileEndpoint;
+import persistence.dataendpoints.XmlFileEndpoint;
 import persistence.objects.*;
 
 import java.util.HashMap;
