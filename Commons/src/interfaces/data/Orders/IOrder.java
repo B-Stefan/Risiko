@@ -23,11 +23,7 @@ public interface IOrder extends Remote, Serializable {
      * @return Wenn die Order komplett ist => True
      */
     public boolean isCompleted();
-    /**
-     *
-     * @return - Aktueller Spieler, der den Auftrag erledigen muss
-     */
-    public void setAgent(IPlayer ag);
+
 
 
     public String toString();

@@ -40,6 +40,22 @@ public class JExceptionDialog {
     }
 
     /**
+     * Klasse zum anzeigen einer Exception
+     * @param e
+     */
+    public JExceptionDialog(Exception e){
+        this(new JWindow(),e);
+    }
+
+    /**
+     * Klasse zum anzeigen einer Exception
+     * @param e
+     */
+    public JExceptionDialog(String e){
+        this(new JWindow(),e);
+    }
+
+    /**
      * Öffnet den modalen Dialog
      */
     private void openModal (){
