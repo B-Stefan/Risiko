@@ -10,7 +10,7 @@ import java.util.List;
 import logic.data.Continent;
 import logic.data.Player;
 
-public class OrderTakeOverThreeContinents implements IOrder{
+public class OrderTakeOverThreeContinents extends AbstractOrder implements IOrder{
 	/**
 	 * Liste alle Kontoinente zur Prüfung des dritten Kontinents
 	 */
@@ -36,10 +36,11 @@ public class OrderTakeOverThreeContinents implements IOrder{
 	 * @param arrayList die Liste aller Kontinente
 	 */
 	public OrderTakeOverThreeContinents(IContinent contigent1, IContinent contigent2, IPlayer agend, ArrayList<IContinent> arrayList){
-		this.continentOne = contigent1;
+		super(agend);
+        this.continentOne = contigent1;
 		this.continentTwo = contigent2;
 		this.continents = arrayList;
-		setAgent(agend);
+
 	}
 	/**
 	 * Es wird ein Wahrheitswert ermittelt, der angibt, ob der dritte (beliebige) Kontinent übernommen wurde
@@ -55,23 +56,7 @@ public class OrderTakeOverThreeContinents implements IOrder{
 		}
 		return false;
 	}
-	/**
-	 * Setzt den Spieler, dem die Order zugewiesen ist und setzt zudem beim Spieler den Auftrag
-	 */
-	public void setAgent(IPlayer ag) {
-		this.agent = ag;
-	}
-	/**
-	 * Getter für den Agent
-	 * @return Player
-	 */
 
-	public IPlayer getAgent() {
-		return this.agent;
-	}
-	/**
-	 * Überprüft, ob die Order erfüllt wurde (Für beide Fälle)
-	 */
 	@Override
 	public boolean isCompleted() {
 		if(thirdContinent() && this.agent == this.continentOne.getCurrentOwner() && this.agent == this.continentTwo.getCurrentOwner()){

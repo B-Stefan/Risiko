@@ -7,7 +7,7 @@ import logic.data.Continent;
 import logic.data.Player;
 
 
-public class OrderTakeOverContinents implements IOrder {
+public class OrderTakeOverContinents extends AbstractOrder implements IOrder {
 	/**
 	 * Erster Kontinent, der erobert werden soll
 	 */
@@ -16,23 +16,19 @@ public class OrderTakeOverContinents implements IOrder {
 	 * zweiter Kontinent, der erobert werden soll
 	 */
 	private IContinent continentTwo;
-	/**
-	 * Der Spieler, dem die Order zugewiesen ist
-	 */
-	private IPlayer agent;
 
 	/**
 	 * der zweite Constructor ist für die Erstellung einer Order, bei der nur zwei bestimmte Kontinente übernommen werden müssen
 	 * Die Kontinentliste wird in diesem Fall auf null gesetzt, da es keinen dritten Kontinent zu ermitteln gibt
-	 * @param contigent1 erster zu übernehmender Kontinent
-	 * @param contigent2 zweiter zu übernehmender Kontinent
+	 * @param continent1 erster zu übernehmender Kontinent
+	 * @param continent2 zweiter zu übernehmender Kontinent
 	 * @param agend Spieler, dem die Order zugewiesen ist
 	 */
 	public OrderTakeOverContinents(IContinent continent1, IContinent continent2, IPlayer agend) {
-
+        super(agend);
 		this.continentOne = continent1;
 		this.continentTwo = continent2;
-		setAgent(agend);
+
 	}
 	
 	/**
@@ -46,20 +42,6 @@ public class OrderTakeOverContinents implements IOrder {
 		return false;
 	}
 
-	/**
-	 * Setzt den Spieler, dem die Order zugewiesen ist und setzt zudem beim Spieler den Auftrag
-	 */
-	public void setAgent(IPlayer ag) {
-		this.agent = ag;
-	}
-	/**
-	 * Getter für den Agent
-	 * @return Player
-	 */
-
-	public IPlayer getAgent() {
-		return this.agent;
-	}
 
     @Override
     public String toString(){

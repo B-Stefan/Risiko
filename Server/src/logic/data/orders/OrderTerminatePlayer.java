@@ -13,17 +13,11 @@ import logic.data.Player;
  *
  * @see IOrder
  */
-public class OrderTerminatePlayer implements IOrder{
+public class OrderTerminatePlayer extends AbstractOrder implements IOrder{
 	/**
 	 * Der Spieler, der von dem Spieler, dem die Order zugeiwesen ist, vernichtet werden soll
 	 */
 	private IPlayer victim;
-	/**
-	 * Der Spieler, dem die Order zugewiesen ist
-	 */
-	private IPlayer agent;
-
-
 	
 	/**
 	 * Zuerst wird der Agent gesetzt, damit ausgeschlossen werden kann, dass das Victim und der Player identisch sind
@@ -31,23 +25,10 @@ public class OrderTerminatePlayer implements IOrder{
 	 * @param agend Der Spieler, dem die Order zugewiesen werden soll
 	 */
 	 public OrderTerminatePlayer(IPlayer playerToTerminate, IPlayer agend)  {
-
+         super(agend);
          this.victim = playerToTerminate;
-         this.agent = agend;
-
 	 }
 
-	 
-	 /**
-	  * Setzt den Spieler, dem die Order zugewiesen ist und setzt zudem beim Spieler den Auftrag
-	  */
-	public void setAgent(IPlayer ag)  {
-        this.agent = ag;
-	}
-	
-	/**
-	 * prüft, ob das Victim vernichtet wurde. Dieser wurde vernichtet, wenn er keine Länder mehr besitzt. 
-	 */
 	
     @Override
     public boolean isCompleted() {
@@ -66,23 +47,7 @@ public class OrderTerminatePlayer implements IOrder{
 	public IPlayer getVictim() {
 		return victim;
 	}
-	/**
-	 * Setter für Victim
-	 * @param victim
-	 */
 
-	public void setVictim(IPlayer victim) {
-		this.victim = victim;
-	}
-
-
-	/**
-	 * Getter für den Agent
-	 * @return Player
-	 */
-	public IPlayer getAgent() {
-		return this.agent;
-	}
 
     @Override
     public String toString(){
