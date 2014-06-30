@@ -1,4 +1,4 @@
-import com.sun.javaws.exceptions.InvalidArgumentException;
+
 import configuration.ServerConfiguration;
 import interfaces.IGameManager;
 import ui.GUI.utils.JExceptionDialog;
@@ -33,7 +33,7 @@ public class Client {
         if(args.length > 0){
             try {
                 serverConfiguration = ServerConfiguration.fromArgs(args);
-            }catch (InvalidArgumentException | ClassCastException e){
+            }catch (IllegalArgumentException | ClassCastException e){
                 new JExceptionDialog("Ihre Argumente sind nicht gültig. Bitte passen Sie diese an. Argumente: " + args);
                 return;
             }

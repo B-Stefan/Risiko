@@ -1,6 +1,6 @@
 package configuration;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
+
 
 /**
  * Created by Stefan on 29.06.14.
@@ -26,9 +26,9 @@ public class ServerConfiguration {
      * @throws InvalidArgumentException
      * @throws ClassCastException
      */
-    public static ServerConfiguration fromArgs(String[] args) throws InvalidArgumentException, ClassCastException{
+    public static ServerConfiguration fromArgs(String[] args) throws IllegalArgumentException, ClassCastException{
         if(args.length < 3){
-            throw new InvalidArgumentException(args);
+            throw new IllegalArgumentException(args.toString());
         }
         return new ServerConfiguration(Integer.parseInt(args[0]),args[1],args[2]);
 
