@@ -8,7 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import interfaces.IGame;
-import main.java.ui.GUI.utils.tableModels.PlayerInfoTableModel;
+import ui.GUI.utils.tableModels.PlayerInfoTableModel;
 
 
 public class JPLayerInfoGUI extends JScrollPane{

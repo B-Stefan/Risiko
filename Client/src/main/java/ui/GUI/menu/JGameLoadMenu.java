@@ -3,8 +3,8 @@ package ui.GUI.menu;
 import exceptions.PersistenceEndpointIOException;
 import interfaces.IGame;
 import interfaces.IGameManager;
-import main.java.meManagerGUI;
-import main.java.ui.GUI.utils.JExceptionDialog;
+import ui.GUI.JGameManagerGUI;
+import ui.GUI.utils.JExceptionDialog;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

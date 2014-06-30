@@ -3,9 +3,10 @@ package ui.GUI.country;
 import interfaces.IFight;
 import interfaces.data.utils.IDice;
 import exceptions.*;
-import main.java.meGUI;
-import main.java.ui.GUI.utiionDialog;
-import main.java.ui.GUI.utils.JModalDialog;
+import ui.GUI.JGameGUI;
+import ui.GUI.utils.JExceptionDialog;
+import ui.GUI.utils.JModalDialog;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -93,7 +94,7 @@ public class JFightSide extends Panel {
                 int aggressorLostArmies = result[0];
                 int aggresorWon = result[2];
                 if (aggresorWon == 1){
-                    JModalDialog.showInfoDialog(JFightSide.this,"Angriff erfolgreich","Der Angreifer hat das Land übernommen");
+                    JModalDialog.showInfoDialog(JFightSide.this, "Angriff erfolgreich", "Der Angreifer hat das Land übernommen");
                     //Close Window
                     Window JDialogRoot = SwingUtilities.getWindowAncestor(JFightSide.this);
                     JDialogRoot.dispose();

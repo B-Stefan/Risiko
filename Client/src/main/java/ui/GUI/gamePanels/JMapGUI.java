@@ -7,9 +7,10 @@ import interfaces.IGame;
 import interfaces.ITurn;
 import interfaces.data.ICountry;
 import interfaces.data.IMap;
-import main.java.ntry.JCountryPopupMenu;
-import main.java.ui.GUI.coutryInfo;
-import main.java.ui.GUI.utils.MapLoad main.java.ui.GUI.utils.JExceptionDialog;
+import ui.GUI.country.JCountryInfo;
+import ui.GUI.country.JCountryPopupMenu;
+import ui.GUI.utils.JExceptionDialog;
+import ui.GUI.utils.MapLoader;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

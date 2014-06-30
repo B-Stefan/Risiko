@@ -1,8 +1,8 @@
 package ui.GUI.menu;
 
 import interfaces.IGame;
-import main.java.meManagerGUI;
-import main.java.ui.GUI.utils.JExceptionDialog;
+import ui.GUI.JGameManagerGUI;
+import ui.GUI.utils.JExceptionDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
  */
 public class JGameLoadMenuItem extends JMenuItem {
     private final  IGame game;
-    private final  JGameManagerGUI gameManagerGUI;
+    private final JGameManagerGUI gameManagerGUI;
 
     private class OnItemClickedListener implements ActionListener {
 

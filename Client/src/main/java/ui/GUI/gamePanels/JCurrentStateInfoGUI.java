@@ -12,8 +12,8 @@ import interfaces.IRound;
 import interfaces.ITurn;
 import interfaces.data.IPlayer;
 import exceptions.*;
-import main.java.meGUI;
-import main.java.ui.GUI.utils.JExceptionDialog;
+import ui.GUI.JGameGUI;
+import ui.GUI.utils.JExceptionDialog;
 
 public class JCurrentStateInfoGUI extends JPanel {
 	private final IGame game;
