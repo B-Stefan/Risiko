@@ -1,4 +1,4 @@
-package main.java.ui.GUI.country;
+package ui.GUI.country;
 
 import interfaces.data.ICountry;
 

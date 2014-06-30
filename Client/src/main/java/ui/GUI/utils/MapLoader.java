@@ -1,4 +1,4 @@
-package main.java.ui.GUI.utils;
+package ui.GUI.utils;
 
 import interfaces.data.ICountry;
 import interfaces.data.IMap;

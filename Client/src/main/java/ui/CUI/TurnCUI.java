@@ -1,4 +1,4 @@
-package main.java.ui.CUI;
+package ui.CUI;
 
 /**
  * Created by Stefan on 30.04.14.
@@ -7,14 +7,14 @@ import interfaces.ITurn;
 import interfaces.data.ICountry;
 import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
-import main.java.ui.CUI.utils.CUI;
-import main.java.ui.CUI.utils.CommandListener;
-import main.java.ui.CUI.utils.CommandListenerArgument;
-import main.java.ui.CUI.utils.IO;
+import ui.CUI.utils.CUI;
+import ui.CUI.utils.CommandListener;
+import ui.CUI.utils.CommandListenerArgument;
+import ui.CUI.utils.IO;
 
 import exceptions.ToManyNewArmysException;
 import exceptions.TurnCompleteException;
-import main.java.ui.CUI.exceptions.InvalidCommandListernArgumentException;
+import ui.CUI.exceptions.InvalidCommandListernArgumentException;
 
 
 import java.awt.event.ActionEvent;

@@ -1,4 +1,4 @@
-package main.java.ui.GUI.utils.tableModels;
+package ui.GUI.utils.tableModels;
 
 import interfaces.IGame;
 

@@ -1,9 +1,9 @@
-package main.java.ui.GUI.menu;
+package ui.GUI.menu;
 
 import exceptions.PersistenceEndpointIOException;
 import interfaces.IGame;
-import main.java.ui.GUI.JGameGUI;
-import main.java.ui.GUI.utils.JExceptionDialog;
+import ui.GUI.JGameGUI;
+import ui.GUI.utils.JExceptionDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

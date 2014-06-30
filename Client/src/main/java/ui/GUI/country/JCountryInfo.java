@@ -1,4 +1,4 @@
-package main.java.ui.GUI.country;
+package ui.GUI.country;
 
 import java.awt.Color;
 import java.awt.Dimension;

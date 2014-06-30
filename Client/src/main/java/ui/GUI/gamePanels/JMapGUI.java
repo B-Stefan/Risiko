@@ -1,4 +1,4 @@
-package main.java.ui.GUI.gamePanels;
+package ui.GUI.gamePanels;
 
 import javax.swing.*;
 
@@ -7,10 +7,9 @@ import interfaces.IGame;
 import interfaces.ITurn;
 import interfaces.data.ICountry;
 import interfaces.data.IMap;
-import main.java.ui.GUI.country.JCountryPopupMenu;
-import main.java.ui.GUI.country.JCountryInfo;
-import main.java.ui.GUI.utils.MapLoader;
-import main.java.ui.GUI.utils.JExceptionDialog;
+import main.java.ntry.JCountryPopupMenu;
+import main.java.ui.GUI.coutryInfo;
+import main.java.ui.GUI.utils.MapLoad main.java.ui.GUI.utils.JExceptionDialog;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

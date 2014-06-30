@@ -1,8 +1,8 @@
-package main.java.ui.GUI.country;
+package ui.GUI.country;
 
 //import com.sun.codemodel.internal.JMod;
 import interfaces.IFight;
-import main.java.ui.GUI.utils.JModalDialog;
+import ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
 import java.awt.*;

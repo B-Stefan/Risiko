@@ -1,4 +1,4 @@
-package main.java.ui.GUI;
+package ui.GUI;
 
 import exceptions.CountryNotInListException;
 import exceptions.PersistenceEndpointIOException;
@@ -10,10 +10,10 @@ import interfaces.data.ICountry;
 import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
 import interfaces.data.cards.ICard;
-import main.java.ui.CUI.GameCUI;
-import main.java.ui.GUI.menu.JGameLoadMenu;
-import main.java.ui.GUI.utils.JExceptionDialog;
-import main.java.ui.GUI.utils.JModalDialog;
+import ui.CUI.GameCUI;
+import ui.GUI.menu.JGameLoadMenu;
+import ui.GUI.utils.JExceptionDialog;
+import ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
 import java.awt.*;

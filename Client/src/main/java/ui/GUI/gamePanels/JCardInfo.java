@@ -1,4 +1,4 @@
-package main.java.ui.GUI.gamePanels;
+package ui.GUI.gamePanels;
 
 import java.awt.GridLayout;
 import java.util.Iterator;

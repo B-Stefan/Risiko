@@ -1,4 +1,4 @@
-package main.java.ui.GUI;
+package ui.GUI;
 
 import java.awt.*;
 import java.rmi.RemoteException;
@@ -7,8 +7,8 @@ import javax.swing.*;
 
 import interfaces.IGame;
 import interfaces.data.IPlayer;
-import main.java.ui.GUI.gamePanels.*;
-import main.java.ui.GUI.menu.JGameMenu;
+import ui.GUI.gamePanels.*;
+import ui.GUI.menu.JGameMenu;
 
 public class JGameGUI extends JFrame {
 	private final IGame game;

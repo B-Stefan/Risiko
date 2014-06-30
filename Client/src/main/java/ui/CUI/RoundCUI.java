@@ -1,10 +1,10 @@
-package main.java.ui.CUI;
+package ui.CUI;
 
 import interfaces.IRound;
-import main.java.ui.CUI.utils.CUI;
-import main.java.ui.CUI.utils.CommandListener;
-import main.java.ui.CUI.utils.CommandListenerArgument;
-import main.java.ui.CUI.utils.IO;
+import ui.CUI.utils.CUI;
+import ui.CUI.utils.CommandListener;
+import ui.CUI.utils.CommandListenerArgument;
+import ui.CUI.utils.IO;
 import exceptions.RoundCompleteException;
 import exceptions.ToManyNewArmysException;
 import exceptions.TurnNotCompleteException;

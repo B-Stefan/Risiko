@@ -1,10 +1,10 @@
-package main.java.ui.GUI.country;
+package ui.GUI.country;
 
 import interfaces.IFight;
 import interfaces.data.utils.IDice;
 import exceptions.*;
-import main.java.ui.GUI.JGameGUI;
-import main.java.ui.GUI.utils.JExceptionDialog;
+import main.java.meGUI;
+import main.java.ui.GUI.utiionDialog;
 import main.java.ui.GUI.utils.JModalDialog;
 import javax.swing.*;
 import java.awt.*;

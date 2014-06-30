@@ -1,9 +1,9 @@
-package main.java.ui.GUI.country;
+package ui.GUI.country;
 import interfaces.IFight;
 import interfaces.ITurn;
 import interfaces.data.ICountry;
-import main.java.ui.GUI.utils.JExceptionDialog;
-import main.java.ui.GUI.utils.JModalDialog;
+import ui.GUI.utils.JExceptionDialog;
+import ui.GUI.utils.JModalDialog;
 import exceptions.*;
 
 import javax.swing.*;

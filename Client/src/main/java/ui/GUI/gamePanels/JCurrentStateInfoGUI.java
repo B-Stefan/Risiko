@@ -1,4 +1,4 @@
-package main.java.ui.GUI.gamePanels;
+package ui.GUI.gamePanels;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,7 +12,7 @@ import interfaces.IRound;
 import interfaces.ITurn;
 import interfaces.data.IPlayer;
 import exceptions.*;
-import main.java.ui.GUI.JGameGUI;
+import main.java.meGUI;
 import main.java.ui.GUI.utils.JExceptionDialog;
 
 public class JCurrentStateInfoGUI extends JPanel {
