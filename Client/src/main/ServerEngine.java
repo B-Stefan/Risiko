@@ -26,13 +26,6 @@ public class ServerEngine {
     }
 
     /**
-     * ServerEngine mit der Default Serverkonfiguration
-     */
-    public ServerEngine(){
-        this(ServerConfiguration.DEFAULT);
-    }
-
-    /**
      * Versucht die Verbindung zum Server aufzubauen und den GameService zu errecihen
      * @return IGameManager
      * @throws RemoteException
