@@ -1,5 +1,7 @@
 package logic.data.orders;
 
+import java.rmi.RemoteException;
+
 import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
 import logic.data.Player;
@@ -24,14 +26,14 @@ public class OrderTerminatePlayer extends AbstractOrder implements IOrder{
 	 * @param playerToTerminate Opfer des Auftrags
 	 * @param agend Der Spieler, dem die Order zugewiesen werden soll
 	 */
-	 public OrderTerminatePlayer(IPlayer playerToTerminate, IPlayer agend)  {
+	 public OrderTerminatePlayer(IPlayer playerToTerminate, IPlayer agend) throws RemoteException {
          super(agend);
          this.victim = playerToTerminate;
 	 }
 
 	
     @Override
-    public boolean isCompleted() {
+    public boolean isCompleted()throws RemoteException {
     	if (this.victim.getCountries().isEmpty()) {
             return true;
         } else {

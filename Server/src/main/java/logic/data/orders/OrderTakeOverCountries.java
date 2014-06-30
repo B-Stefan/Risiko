@@ -1,5 +1,7 @@
 package logic.data.orders;
 
+import java.rmi.RemoteException;
+
 import interfaces.data.ICountry;
 import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
@@ -17,7 +19,7 @@ public class OrderTakeOverCountries extends AbstractOrder implements IOrder {
      *                  Ländern stehen müssen. Bei False müssen nur eine bestimmte Anzahl an Ländern eingenommen werden
      * @param agend     Der Spieler, dem die Order zugewiesen wird
      */
-    public OrderTakeOverCountries(boolean twoArmies, IPlayer agend) {
+    public OrderTakeOverCountries(boolean twoArmies, IPlayer agend) throws RemoteException{
         super(agend);
         this.withTwoArmies = twoArmies;
 
@@ -29,7 +31,7 @@ public class OrderTakeOverCountries extends AbstractOrder implements IOrder {
      * überprüft er nur, ob 24 Länder übernommen wurden
      */
     @Override
-    public boolean isCompleted() {
+    public boolean isCompleted() throws RemoteException{
         if (withTwoArmies) {
             if (this.agent.getCountries().size() >= 18) {
                 for (ICountry c : this.agent.getCountries()) {

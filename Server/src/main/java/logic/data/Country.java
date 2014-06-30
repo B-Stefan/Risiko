@@ -5,6 +5,8 @@ import exceptions.CountryNotInListException;
 import interfaces.data.*;
 
 import java.awt.Color;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -13,7 +15,7 @@ import java.util.Map.Entry;
  *
  * Diese Klasse bildet ein einzelnes Land des Spiels ab
  */
-public class Country implements ICountry {
+public class Country extends UnicastRemoteObject implements ICountry {
 
     /**
      * Name des Lands
@@ -56,7 +58,7 @@ public class Country implements ICountry {
      * @param continent Kontinent des Landes
      *
      */
-    public Country(final String name, IContinent continent, Color color) {
+    public Country(final String name, IContinent continent, Color color) throws RemoteException {
         this.name = name;
         this.id = UUID.nameUUIDFromBytes(name.getBytes()); // statische UUID bassierend auf dem Namen, da die Karte im Moment nicht dynamisch ist
         this.continent = continent;
@@ -70,7 +72,7 @@ public class Country implements ICountry {
      *
      * @param connectTo Das Land zu dem eine Verbindung hergestellt werden soll
      */
-    public void connectTo(ICountry connectTo) {
+    public void connectTo(ICountry connectTo) throws RemoteException {
         if (!this.isConnected(connectTo)) {
             neighbors.put(connectTo.getId(), connectTo); //Hash map aktualisieren
             connectTo.connectTo(this); //Gegenverbindung setzten
@@ -82,7 +84,7 @@ public class Country implements ICountry {
      * @param connectTo Land das geprüft werden soll
      * @return True wenn das Land verbunden ist
      */
-    public boolean isConnected(ICountry connectTo) {
+    public boolean isConnected(ICountry connectTo) throws RemoteException {
         return neighbors.containsValue(connectTo);
     }
 
@@ -92,7 +94,7 @@ public class Country implements ICountry {
      * @param id UUID des Landes was benötigt wird
      * @return Land das gesucht wurde, oder null
      */
-    public ICountry getNeighbor (UUID id){
+    public ICountry getNeighbor (UUID id) throws RemoteException{
         return neighbors.get(id);
     }
 
@@ -101,7 +103,7 @@ public class Country implements ICountry {
      * @param searchName - Name nach dem gesucht werden soll
      * @return Land das gesucht wurde oder null wenn nicht gefunden
      */
-    public ICountry getNeighbor (String searchName){
+    public ICountry getNeighbor (String searchName) throws RemoteException{
         for (Entry<UUID, ICountry> entry : this.neighbors.entrySet()){
             if(entry.getValue().getName().equals(searchName)){
                 return entry.getValue();
@@ -114,7 +116,7 @@ public class Country implements ICountry {
      * Gibt alle Nachbarn des Landes zurück
      * @return Nachbarn des Landes
      */
-    public ArrayList<ICountry> getNeighbors (){
+    public ArrayList<ICountry> getNeighbors () throws RemoteException{
         ArrayList<ICountry> list = new ArrayList<ICountry>();
         list.addAll(this.neighbors.values());
         return list;
@@ -125,7 +127,7 @@ public class Country implements ICountry {
      *
      * @param p Spieler, der als Owener gesetzt werden soll
      */
-    public void setOwner(IPlayer p) {
+    public void setOwner(IPlayer p) throws RemoteException{
     	this.owner = p;
     }
 
@@ -135,7 +137,7 @@ public class Country implements ICountry {
      * @param newOwner
      * @throws CountryNotInListException
      */
-    public void changeOwner(IPlayer newOwner) throws CountryNotInListException{
+    public void changeOwner(IPlayer newOwner) throws CountryNotInListException, RemoteException{
        	this.owner.removeCountry(this);
         this.owner = newOwner;
     }
@@ -145,7 +147,7 @@ public class Country implements ICountry {
      * F�gt die Armee a in die Liste der Armeen des Spielers hinzu
      * @param a in die Liste der Armeen einzuf�gende Armee
      */
-    public void addArmy(IArmy a) throws CountriesNotConnectedException{
+    public void addArmy(IArmy a) throws CountriesNotConnectedException, RemoteException{
         if(!armyList.contains(a)){
             armyList.add(a);
             a.setPosition(this);
@@ -157,7 +159,7 @@ public class Country implements ICountry {
      * @param army Armee, die Gelöscht werden soll
      * @throws CountriesNotConnectedException
      */
-    public void removeArmy(IArmy army) throws CountriesNotConnectedException{
+    public void removeArmy(IArmy army) throws CountriesNotConnectedException, RemoteException{
         if(armyList.contains(army)){
             armyList.remove(army);
             army.setPosition(null);
@@ -168,34 +170,34 @@ public class Country implements ICountry {
      *
      * @return Anzahl der Armeen auf dem Land
      */
-    public int getNumberOfArmys (){
+    public int getNumberOfArmys () throws RemoteException{
         return this.armyList.size();
     }
     /**
      * @return Den Spieler, der dieses Land gerade besetzt hat
      */
-    public IPlayer getOwner() {
+    public IPlayer getOwner() throws RemoteException{
         return this.owner;
     }
 
     /**
      * @return Name des Lands
      */
-    public String getName() {
+    public String getName() throws RemoteException{
         return this.name;
     }
 
     /**
      * @return Die unique Id für das Land
      */
-    public UUID getId() {
+    public UUID getId() throws RemoteException{
         return this.id;
     }
 
     /**
      * @return Die Farbe des Countrys
      */
-    public Color getColor() {
+    public Color getColor() throws RemoteException{
         return this.color;
     }
 
@@ -203,7 +205,7 @@ public class Country implements ICountry {
      * Getter ArmyList des Spielers
      * @return armyList. Liste der Armeen des Spielers
      */
-    public ArrayList<IArmy> getArmyList(){
+    public ArrayList<IArmy> getArmyList() throws RemoteException{
     	return this.armyList;
     }
 
@@ -217,8 +219,13 @@ public class Country implements ICountry {
         if (this.owner != null) {
             postFix += this.owner.toString();
         }
-        postFix += " Armeen: " + this.getNumberOfArmys();
-        return this.getName() + postFix;
+        try {
+			postFix += " Armeen: " + this.getNumberOfArmys();
+			return this.getName() + postFix;
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return "";
+		}
     }
 
 
@@ -228,10 +235,15 @@ public class Country implements ICountry {
      * @return
      */
     @Override
-    public boolean equals(Object otherCountry){
+    public boolean equals(Object otherCountry) {
         if(otherCountry instanceof  Country){
             Country country = (Country) otherCountry;
-            return country.getId() == this.getId();
+            try {
+				return country.getId() == this.getId();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				return false;
+			}
         }
         return false;
     }

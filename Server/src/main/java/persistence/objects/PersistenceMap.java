@@ -5,7 +5,7 @@ import interfaces.data.IMap;
 import logic.data.Map;
 import persistence.PersistenceManager;
 
-
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class PersistenceMap extends PersitenceObject<IMap> {
@@ -13,7 +13,7 @@ public class PersistenceMap extends PersitenceObject<IMap> {
     public final List<String> players = new ArrayList<String>();
     private final UUID id;
     private final List<String> countries = new ArrayList<String>();
-    public PersistenceMap(IMap map, PersistenceManager manager) throws PersistenceEndpointIOException{
+    public PersistenceMap(IMap map, PersistenceManager manager) throws PersistenceEndpointIOException, RemoteException{
         super(map,manager);
         this.id = map.getId();
         for (ICountry country: map.getCountries()){
@@ -33,7 +33,12 @@ public class PersistenceMap extends PersitenceObject<IMap> {
          * Erstellen eines neuen Map Objects, da die Map nicht dynamisch sondern statisch ist reicht hier einfach das erzeugen.
          * Sollte sicht dies ändern müsste hier das laden der Countries angestoßen werden
          */
-        Map newMap = new Map();
+        Map newMap;
+		try {
+			newMap = new Map();
+		} catch (RemoteException e) {
+			throw new PersistenceEndpointIOException( e);
+		}
         return newMap;
     }
 }

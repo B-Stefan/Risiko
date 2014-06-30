@@ -1,5 +1,8 @@
 package logic.data;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 import interfaces.data.*;
 import exceptions.CountriesNotConnectedException;
 
@@ -8,7 +11,7 @@ import exceptions.CountriesNotConnectedException;
  *
  * Diese Klasse bildet eine einzelne Armee im Spiel ab
  */
-public class Army implements IArmy{
+public class Army extends UnicastRemoteObject implements IArmy{
 
     /**
      * Der Owner beschreibt wem diese Armee im Spiel zugeordnet wird.
@@ -26,7 +29,7 @@ public class Army implements IArmy{
      * Erstellt eine Armee für das Spiel, der Besitzer kann nachträglich nicht geändert werden
      * @param player Besitzer dieser Armee
      */
-	public Army(final IPlayer player){
+	public Army(final IPlayer player) throws RemoteException{
 		this.owner = player;
 	}
 
@@ -42,7 +45,7 @@ public class Army implements IArmy{
 	 *
      * @see Country#addArmy(Army)
      */
-	public void setPosition(ICountry country)  throws CountriesNotConnectedException{
+	public void setPosition(ICountry country)  throws CountriesNotConnectedException, RemoteException{
 
         //Armee sitzt bereits auf der Position
         if(country == this.position){
@@ -75,7 +78,7 @@ public class Army implements IArmy{
      * Gibt den Besitzer der Armee wieder
      * @return  Besitzer der Armee
      */
-    public IPlayer getOwner(){
+    public IPlayer getOwner() throws RemoteException{
         return this.owner;
     }
 
@@ -84,7 +87,7 @@ public class Army implements IArmy{
 	 * Getter für die Position
 	 * @return position Aktuelle Position der Armee, kann null zurückgeben.
 	 */
-	public ICountry getPosition(){
+	public ICountry getPosition()throws RemoteException{
 		return this.position;
 	}
 	

@@ -3,6 +3,7 @@ package interfaces.data;
 import java.awt.*;
 import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -14,14 +15,14 @@ public interface IMap extends Remote, Serializable {
      * Gibt die Liste aller Countries zurück
      * @return Liste aller Counties
      */
-    public ArrayList<ICountry> getCountries();
+    public ArrayList<ICountry> getCountries() throws RemoteException;
 
     /**
      * Berechnet den Benous, den ein Spieler an Einheiten bekommt f�r die komplette Einnahme des jeweilligen Kontinents
      * @param p der aktuelle Spieler
      * @return die Anzahl der Bonus Einheiten
      */
-    public int getBonus(IPlayer p);
+    public int getBonus(IPlayer p)throws RemoteException;
 
 
     /**
@@ -29,24 +30,24 @@ public interface IMap extends Remote, Serializable {
      * @param n String (name des zu suchenden Landes)
      * @return das zu suchende Land
      */
-    public ICountry getCountry(String n);
+    public ICountry getCountry(String n) throws RemoteException;
 
     /**
      * Vergleicht die Farbe mit der übergebenen Farbe
      * @param col Color (Farbe des zu suchenden Landes)
      * @return das zu suchende Land
      */
-    public ICountry getCountry(Color col);
+    public ICountry getCountry(Color col)throws RemoteException;
 
     /**
      *
      * @return Alle Kontinente dieser Karte
      */
-    public ArrayList<IContinent> getContinents();
+    public ArrayList<IContinent> getContinents()throws RemoteException;
 
     /**
      * Getter für die ID
      */
-    public UUID getId();
+    public UUID getId()throws RemoteException;
 
 }

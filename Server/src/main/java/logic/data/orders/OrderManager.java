@@ -7,8 +7,10 @@ import interfaces.IGame;
 import interfaces.data.IContinent;
 import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
+import interfaces.data.Orders.IOrderManager;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
@@ -18,10 +20,12 @@ import java.util.ArrayList;
  *
  * Diese Klasse bildet die Funktionen zum zufälligen generieren der Orders ab
  */
-public class OrderManager {
+public class OrderManager extends UnicastRemoteObject implements IOrderManager {
 
 
-    /**
+
+
+	/**
      * Beinhaltet alle Klassen, für die eine Order erstellt werdne kann
      */
     public static final Class[] orderTypes = new Class[] {
@@ -127,7 +131,7 @@ public class OrderManager {
      * @return Auftrag für den Spieler
      * @throws PlayerAlreadyHasAnOrderException
      */
-    public static IOrder createRandomOrder(final IPlayer agend, final IGame game) {
+    public static IOrder createRandomOrder(final IPlayer agend, final IGame game) throws RemoteException{
 
         try {
             int randIndex = new Random().nextInt(orderTypes.length);
@@ -164,7 +168,7 @@ public class OrderManager {
 
     }
 
-    public static void createOrdersForPlayers(final List<IPlayer> players, final  IGame game) throws PlayerAlreadyHasAnOrderException{
+    public static void createOrdersForPlayers(final List<IPlayer> players, final  IGame game) throws PlayerAlreadyHasAnOrderException, RemoteException{
         List<PlayerAlreadyHasAnOrderException> exceptions = new ArrayList<PlayerAlreadyHasAnOrderException>();
 
         //Für jeden Spieler eine Order setzten, exceptions sammeln, da die Player danach eventuell ja funktionieren könnten.
@@ -185,5 +189,8 @@ public class OrderManager {
             }
         }
     }
+    protected OrderManager() throws RemoteException {
+		super();
+	}
 
 }

@@ -5,8 +5,10 @@ import interfaces.data.IContinent;
 import interfaces.data.ICountry;
 import interfaces.data.IMap;
 import interfaces.data.IPlayer;
+import java.rmi.RemoteException;
 
 import java.awt.*;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 /**
@@ -14,7 +16,7 @@ import java.util.*;
  *
  * Dient zur Verwaltung der Karte für ein Spiel
  */
-public class Map  implements IMap{
+public class Map extends UnicastRemoteObject implements IMap{
 
 
     public static final String DEFAULT_MAP_UUID = "03c64c20-fc74-11e3-a3ac-0800200c9a66";
@@ -35,7 +37,7 @@ public class Map  implements IMap{
     /**
      * Erstellt eine neue Standard-Karte
      */
-    public Map() {
+    public Map() throws RemoteException{
 
         //Kontinente erzeugen
         Continent northAmerica  = new Continent("Nord Amerika", 5);
@@ -280,7 +282,7 @@ public class Map  implements IMap{
      * Gibt die Liste aller Countries zurück
      * @return Liste aller Counties
      */
-    public ArrayList<ICountry> getCountries() {
+    public ArrayList<ICountry> getCountries() throws RemoteException {
         return this.countries;
     }
 
@@ -289,7 +291,7 @@ public class Map  implements IMap{
      * @param p der aktuelle Spieler
      * @return die Anzahl der Bonus Einheiten
      */
-    public int getBonus(IPlayer p){
+    public int getBonus(IPlayer p) throws RemoteException{
     	int bonus = 0;
     	for (IContinent c : this.continents){
     		if(c.getCurrentOwner()==p){bonus += c.getBonus();}
@@ -302,7 +304,7 @@ public class Map  implements IMap{
      * @param n String (name des zu suchenden Landes)
      * @return das zu suchende Land
      */
-    public ICountry getCountry(String n){
+    public ICountry getCountry(String n) throws RemoteException{
     	for (ICountry c : countries){
     		if(c.getName().equals(n)){
     			return c;
@@ -315,7 +317,7 @@ public class Map  implements IMap{
      * @param col Color (Farbe des zu suchenden Landes)
      * @return das zu suchende Land
      */
-    public ICountry getCountry(Color col){
+    public ICountry getCountry(Color col) throws RemoteException{
         for (ICountry c : countries){
             if(c.getColor().equals(col)){
                 return c;
@@ -328,14 +330,14 @@ public class Map  implements IMap{
      *
      * @return Alle Kontinente dieser Karte
      */
-    public ArrayList<IContinent> getContinents() {
+    public ArrayList<IContinent> getContinents() throws RemoteException {
         return continents;
     }
 
     /**
      * Getter für die ID
      */
-    public UUID getId(){
+    public UUID getId() throws RemoteException{
         return id;
     }
 }

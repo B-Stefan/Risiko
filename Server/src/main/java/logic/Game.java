@@ -191,7 +191,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      * Verteilt die Länder beim Spielstart an alle angemeldeten Spieler.
      *
      */
-    private void distributeCountries() {
+    private void distributeCountries()throws RemoteException {
         /**
          * Stack, der die Länder beinhaltet, die noch zu verteilen sind
          */
@@ -222,7 +222,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      *
      */
-    private void setDefaultArmys() {
+    private void setDefaultArmys()throws RemoteException {
         for (IPlayer player : players) {
             for (ICountry country : player.getCountries()) {
                 //Nur machen, wenn noch keine Armee auf dem Land sitzt
@@ -357,7 +357,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      * @param player - neuer Spieler
      */
-    private void addPlayer(final IPlayer player) {
+    private void addPlayer(final IPlayer player)throws RemoteException {
         if (player.getColor() == null){
             player.setColor(this.color.pop());
         }

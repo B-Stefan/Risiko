@@ -5,21 +5,23 @@ import interfaces.data.IPlayer;
 import interfaces.data.cards.ICard;
 import interfaces.data.cards.ICardDeck;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 import logic.data.Country;
 import logic.data.Player;
 import exceptions.NotEnoughCardsToExchangeException;
 
-public class CardDeck implements ICardDeck {
+public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 	private Stack<ICard> deck = new Stack<ICard>();
 	private Stack<Integer> bonus = new Stack<Integer>();
 	
-	public CardDeck(ArrayList<ICountry> arrayList){
+	public CardDeck(ArrayList<ICountry> arrayList) throws RemoteException{
 		builtDeck(arrayList);
 	}
 	
-	private void builtDeck(ArrayList<ICountry> cos){
+	private void builtDeck(ArrayList<ICountry> cos) throws RemoteException{
 		for(ICountry c : cos){
 			if(deck.isEmpty()||this.deck.size() == 1){
 				this.deck.add(new Card(c, "Joker"));
@@ -40,17 +42,17 @@ public class CardDeck implements ICardDeck {
 		this.bonus.push(6);
 		this.bonus.push(4);
 	}
-	public int calculateBonus(){
+	public int calculateBonus() throws RemoteException{
 		int bo = this.bonus.pop();
 		if(this.bonus.isEmpty()){
 			this.bonus.push(bo + 5);
 		}
 		return bo;
 	}
-	public void drawCard(IPlayer pl){
+	public void drawCard(IPlayer pl) throws RemoteException{
 		pl.drawNewCard(deck.pop());
 	}
-	public boolean exchangeCards(IPlayer pl) throws NotEnoughCardsToExchangeException{
+	public boolean exchangeCards(IPlayer pl) throws NotEnoughCardsToExchangeException, RemoteException{
 		if(pl.getCards().size()<3){
 			throw new NotEnoughCardsToExchangeException();
 		}
@@ -124,17 +126,17 @@ public class CardDeck implements ICardDeck {
 		}
 		return false;
 	}
-	private void putBackCard(IPlayer pl, ICard c){
+	private void putBackCard(IPlayer pl, ICard c) throws RemoteException{
 		pl.removeCard(c);
 	}
-	public Stack<ICard> getCards(){
+	public Stack<ICard> getCards()throws RemoteException{
 		return this.deck;
 	}
-	public Stack<Integer> getBonusList(){
+	public Stack<Integer> getBonusList() throws RemoteException{
 		return this.bonus;
 	}
 	
-	public void returnCards(ICard card1, ICard card2, ICard card3, IPlayer pl){
+	public void returnCards(ICard card1, ICard card2, ICard card3, IPlayer pl) throws RemoteException{
 		this.deck.push(card1);
 		putBackCard(pl, card1);
 		this.deck.push(card2);

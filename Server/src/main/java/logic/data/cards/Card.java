@@ -1,5 +1,7 @@
 package logic.data.cards;
 
+import java.rmi.RemoteException;
+
 import interfaces.data.ICountry;
 import interfaces.data.IPlayer;
 import interfaces.data.cards.ICard;
@@ -51,7 +53,12 @@ public class Card implements ICard {
         ICountry country = this.getCountry();
         String msg = "";
         if (country != null){
-            msg += country.getName();
+            try {
+				msg += country.getName();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				return "";
+			}
         }
         msg += this.getType();
         return  msg;

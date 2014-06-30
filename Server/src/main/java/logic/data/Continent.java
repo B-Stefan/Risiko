@@ -2,6 +2,8 @@ package logic.data;
 
 import interfaces.data.*;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.Map;
 
@@ -11,7 +13,7 @@ import java.util.Map;
  *
  * Dise Klasse bildet ein einzelnes Kontinent ab
  */
-public class Continent implements IContinent{
+public class Continent extends UnicastRemoteObject implements IContinent{
 
 	/**
 	 * Name des Kontinents
@@ -34,7 +36,7 @@ public class Continent implements IContinent{
      * @param name Name des Kontinents
      * @param bonus Bonus, der der Owner pro Runde an Armeen erhält
      */
-	public Continent (final String name, int bonus){
+	public Continent (final String name, int bonus) throws RemoteException{
 		this.name = name;
 		this.bonus = bonus;
 	}
@@ -44,7 +46,7 @@ public class Continent implements IContinent{
 	 * @return Gibt den Namen des KOntinents zurück
 	 */
 
-	public String getName(){
+	public String getName() throws RemoteException{
 		return this.name;
 	}
 
@@ -53,7 +55,7 @@ public class Continent implements IContinent{
      * Ermittelt den aktuellen Besitzter des Kontinents, prüft ob alle Länder den gleichen Player als owner haben
      * @return Gibt den Player zurück, der alle Länder auf diesem Kontinent besitzt, wenn der Kontinent geteilt wird wird null zurück gegeben.
      */
-    public IPlayer getCurrentOwner (){
+    public IPlayer getCurrentOwner () throws RemoteException{
         boolean playerChange = false;
         IPlayer ruler = null;
 
@@ -80,7 +82,7 @@ public class Continent implements IContinent{
 	 * Fügt dem Kontinent ein Land hinzu
 	 * @param player Der Land, der dem Kontinent hinzugefügt werden soll
 	 */
-	public void addCountry(ICountry player){
+	public void addCountry(ICountry player) throws RemoteException{
 		if(!countrys.containsKey(player.getId())){
             countrys.put(player.getId(), player);
         }
@@ -91,7 +93,7 @@ public class Continent implements IContinent{
      * @param countryToDelete Land das gelöscht werden soll
      * @return
      */
-    public boolean removeCountry (ICountry countryToDelete){
+    public boolean removeCountry (ICountry countryToDelete) throws RemoteException{
         if(countrys.containsKey(countryToDelete.getId())){
             countrys.remove(countryToDelete);
             return  true;
@@ -100,13 +102,18 @@ public class Continent implements IContinent{
 
     }
 
-    public int getBonus(){
+    public int getBonus() throws RemoteException{
     	return this.bonus;
     }
 
     @Override
-    public String toString(){
-        return this.getName();
+    public String toString() {
+        try {
+			return this.getName();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return "";
+		}
     }
 
 }

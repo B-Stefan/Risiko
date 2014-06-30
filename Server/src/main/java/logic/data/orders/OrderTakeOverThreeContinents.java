@@ -4,6 +4,7 @@ import interfaces.data.IContinent;
 import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class OrderTakeOverThreeContinents extends AbstractOrder implements IOrde
 	 * @param agend Spieler, dem die Order zugewiesen ist
 	 * @param arrayList die Liste aller Kontinente
 	 */
-	public OrderTakeOverThreeContinents(IContinent contigent1, IContinent contigent2, IPlayer agend, ArrayList<IContinent> arrayList){
+	public OrderTakeOverThreeContinents(IContinent contigent1, IContinent contigent2, IPlayer agend, ArrayList<IContinent> arrayList)throws RemoteException{
 		super(agend);
         this.continentOne = contigent1;
 		this.continentTwo = contigent2;
@@ -46,7 +47,7 @@ public class OrderTakeOverThreeContinents extends AbstractOrder implements IOrde
 	 * Es wird ein Wahrheitswert ermittelt, der angibt, ob der dritte (beliebige) Kontinent übernommen wurde
 	 * @return True, wenn ein dritter Kontinent übernommen wurde, Flase wenn nicht
 	 */
-	private boolean thirdContinent(){
+	private boolean thirdContinent()throws RemoteException{
 		for(IContinent c : this.continents){
 			if(c != this.continentOne && c != this.continentTwo && c != null){
 				if(c.getCurrentOwner() == this.agent){
@@ -58,7 +59,7 @@ public class OrderTakeOverThreeContinents extends AbstractOrder implements IOrde
 	}
 
 	@Override
-	public boolean isCompleted() {
+	public boolean isCompleted()throws RemoteException {
 		if(thirdContinent() && this.agent == this.continentOne.getCurrentOwner() && this.agent == this.continentTwo.getCurrentOwner()){
 			return true;
 		}

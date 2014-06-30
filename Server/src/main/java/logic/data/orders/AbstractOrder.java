@@ -1,11 +1,14 @@
 package logic.data.orders;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 import interfaces.data.IPlayer;
 
 /**
  * Created by Stefan on 30.06.14.
  */
-public class AbstractOrder {
+public class AbstractOrder extends UnicastRemoteObject{
 
     /**
      * Der Spieler, dem die Order zugewiesen ist
@@ -14,7 +17,7 @@ public class AbstractOrder {
 
 
 
-    protected AbstractOrder(final IPlayer agend){
+    protected AbstractOrder(final IPlayer agend) throws RemoteException{
         this.agent = agend;
     }
 

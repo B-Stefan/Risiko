@@ -4,6 +4,7 @@ import interfaces.data.IPlayer;
 
 import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -22,9 +23,6 @@ public interface IOrder extends Remote, Serializable {
      *
      * @return Wenn die Order komplett ist => True
      */
-    public boolean isCompleted();
+    public boolean isCompleted()throws RemoteException;
 
-
-
-    public String toString();
 }

@@ -134,7 +134,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * Berechnet die Anzahl der Armeen, die der jewilige Spieler am Anfang seines Zuges neu hinzubekommt.
      * @return Anzahl, der neuen Armeen des jeweiligen Spielers
      */
-    private int determineAmountOfNewArmies(){
+    private int determineAmountOfNewArmies()throws RemoteException{
     	int amountNewArmies = (this.player.getCountries().size())/3;
     	amountNewArmies += this.map.getBonus(this.player);
     	if (amountNewArmies<3){
@@ -147,7 +147,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * Füllt die Liste der neuen Armeen
      * @param numberOfArmysToCreate - Anzahl wie viele Armeen erstellt werden sollen
      */
-    private void createNewArmies(int numberOfArmysToCreate){
+    private void createNewArmies(int numberOfArmysToCreate)throws RemoteException{
     	for (int i = 0; i<numberOfArmysToCreate; i++){
     		this.newArmies.add(new Army(this.player));
     	}

@@ -117,7 +117,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	 * @throws AlreadyDicedException 
 	 * @throws InvalidFightException 
 	 */
-	public void attacking(Stack<IArmy> agressorsArmies) throws InvalidAmountOfArmiesException, NotEnoughArmiesToAttackException, AlreadyDicedException, InvalidFightException {
+	public void attacking(Stack<IArmy> agressorsArmies) throws InvalidAmountOfArmiesException, RemoteException, NotEnoughArmiesToAttackException, AlreadyDicedException, InvalidFightException {
 		this.agressorsArmies.clear();
 		this.agressorsArmies = agressorsArmies;
 		this.defendersDice.clear();

@@ -1,5 +1,7 @@
 package logic.data.orders;
 
+import java.rmi.RemoteException;
+
 import interfaces.data.IContinent;
 import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
@@ -24,7 +26,7 @@ public class OrderTakeOverContinents extends AbstractOrder implements IOrder {
 	 * @param continent2 zweiter zu übernehmender Kontinent
 	 * @param agend Spieler, dem die Order zugewiesen ist
 	 */
-	public OrderTakeOverContinents(IContinent continent1, IContinent continent2, IPlayer agend) {
+	public OrderTakeOverContinents(IContinent continent1, IContinent continent2, IPlayer agend)throws RemoteException {
         super(agend);
 		this.continentOne = continent1;
 		this.continentTwo = continent2;
@@ -35,7 +37,7 @@ public class OrderTakeOverContinents extends AbstractOrder implements IOrder {
 	 * Überprüft, ob die Order erfüllt wurde (Für beide Fälle)
 	 */
 	@Override
-	public boolean isCompleted() {
+	public boolean isCompleted() throws RemoteException{
 		if(this.agent == this.continentOne.getCurrentOwner() && this.agent == this.continentTwo.getCurrentOwner()){
 			return true;
 		}
@@ -44,7 +46,7 @@ public class OrderTakeOverContinents extends AbstractOrder implements IOrder {
 
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.agent + " hat die Aufgabe " + continentOne + " und " + continentTwo + " zu erobern. ";
     }
 }
