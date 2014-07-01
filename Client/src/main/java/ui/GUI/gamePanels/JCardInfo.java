@@ -1,6 +1,8 @@
 package ui.GUI.gamePanels;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
@@ -11,22 +13,42 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import ui.GUI.utils.JExceptionDialog;
+import exceptions.NotEnoughCardsToExchangeException;
 import interfaces.data.IPlayer;
 import interfaces.data.cards.ICard;
+import interfaces.data.cards.ICardDeck;
 
 public class JCardInfo extends JFrame{
 	private final IPlayer player;
 	private JTextArea cardInfo = new JTextArea("");
 	private JPanel context;
 	private JButton exchange;
+	private ICardDeck deck;
 	
-	public JCardInfo(IPlayer player) throws RemoteException{
+	private class ExchangeActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			try {
+				deck.exchangeCards(player);
+			} catch (RemoteException | NotEnoughCardsToExchangeException e) {
+				new JExceptionDialog(e);
+				return;
+			}
+		}
+		
+	}
+	
+	public JCardInfo(IPlayer player, ICardDeck deck) throws RemoteException{
 		this.player = player;
+		this.deck = deck;
 		this.context = new JPanel();
 		this.context.setLayout(new GridLayout(2,1));
 		this.cardInfo.setWrapStyleWord(true);
 		this.cardInfo.setLineWrap(true);
 		this.exchange = new JButton("eintauschen");
+		this.exchange.addActionListener(new ExchangeActionListener());
 		setContext();
 	}
 	

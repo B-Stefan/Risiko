@@ -1,5 +1,6 @@
 package logic.data.cards;
 
+import interfaces.data.IPlayer;
 import interfaces.data.cards.ICardDeck;
 
 import java.rmi.RemoteException;
@@ -49,10 +50,11 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 	public void drawCard(Player pl) throws RemoteException{
 		pl.drawNewCard(deck.pop());
 	}
-	public boolean exchangeCards(Player pl) throws NotEnoughCardsToExchangeException, RemoteException{
-		if(pl.getCards().size()<3){
+	public boolean exchangeCards(IPlayer p) throws NotEnoughCardsToExchangeException, RemoteException{
+		if(p.getCards().size()<3){
 			throw new NotEnoughCardsToExchangeException();
 		}
+		Player pl = (Player) p;
 		int i = pl.getCards().size() - 1;
 		Stack<Card> kanonen     = new Stack<Card>();
 		Stack<Card> reiter      = new Stack<Card>();

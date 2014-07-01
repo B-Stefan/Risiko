@@ -3,6 +3,7 @@ package interfaces;
 import exceptions.*;
 import interfaces.data.IMap;
 import interfaces.data.IPlayer;
+import interfaces.data.cards.ICardDeck;
 
 import java.io.Serializable;
 import java.rmi.Remote;
@@ -116,6 +117,6 @@ public interface IGame extends Remote, Serializable, IToStringRemote {
     public boolean save () throws PersistenceEndpointIOException, RemoteException;
 
 
-
+    public ICardDeck getDeck();
 
     }

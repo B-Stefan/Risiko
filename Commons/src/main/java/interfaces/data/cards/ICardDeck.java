@@ -15,5 +15,5 @@ import exceptions.NotEnoughCardsToExchangeException;
  */
 public interface ICardDeck extends Remote, Serializable {
 
-
+	public boolean exchangeCards(IPlayer pl) throws NotEnoughCardsToExchangeException, RemoteException;
 }

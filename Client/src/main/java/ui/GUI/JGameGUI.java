@@ -31,7 +31,7 @@ public class JGameGUI extends JFrame {
         this.playersInfo = new JPLayerInfoGUI(this.game);
         this.orderInfo = new JOrderInfoGUI(this.game, this.player);
         this.currentStateInfoGUI =   new JCurrentStateInfoGUI(this.game, this.player, this);
-        this.cardInfo =  new JCardInfo(this.player);
+        this.cardInfo =  new JCardInfo(this.player, this.game.getDeck());
 		initialize();
 	}
 	
