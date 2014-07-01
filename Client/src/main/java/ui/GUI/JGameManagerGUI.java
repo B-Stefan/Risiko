@@ -4,9 +4,11 @@ import exceptions.GameAllreadyStartedException;
 import exceptions.PersistenceEndpointIOException;
 import exceptions.PlayerNameAlreadyChooseException;
 import exceptions.PlayerNotExsistInGameException;
+import interfaces.IClient;
 import interfaces.IGame;
 import interfaces.IGameManager;
 import interfaces.data.IPlayer;
+import server.logic.ClientEventProcessor;
 import ui.CUI.GameCUI;
 import ui.GUI.menu.JGameLoadRunningGameMenu;
 import ui.GUI.menu.JGameLoadSavedGameMenu;
@@ -27,6 +29,7 @@ public class JGameManagerGUI extends JFrame {
     private final JTextField playerNameTxt = new JTextField("");
     private final JButton startGameBtn = new JButton("Spiel starten");
     private final IGameManager manager;
+    private final ClientEventProcessor remoteEventProcessor;
 
 
 
@@ -49,6 +52,7 @@ public class JGameManagerGUI extends JFrame {
 
     public JGameManagerGUI(IGameManager manager) throws RemoteException{
         this.manager = manager;
+        this.remoteEventProcessor = new ClientEventProcessor();
         initialize();
     }
     private void initialize() throws RemoteException {
@@ -80,6 +84,7 @@ public class JGameManagerGUI extends JFrame {
         this.centreWindow();
         this.setVisible(true);
         this.pack();
+
 
     }
     private  void centreWindow( ) {
@@ -123,13 +128,13 @@ public class JGameManagerGUI extends JFrame {
         else{
             //Neues Spiel
             try {
-                currentPlayer = game.addPlayer(playerName);
+                currentPlayer = game.addPlayer(playerName,this.remoteEventProcessor);
             }catch (PlayerNameAlreadyChooseException | GameAllreadyStartedException e){
                 new JExceptionDialog(this,e);
                 return;
             }
         }
-        JGameGUI    gui = new JGameGUI(game,currentPlayer);
+        JGameGUI    gui = new JGameGUI(game,currentPlayer,this.remoteEventProcessor);
         GameCUI     cui = new GameCUI(game, null);
 
         Thread t = new Thread(cui);

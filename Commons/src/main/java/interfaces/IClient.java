@@ -9,5 +9,13 @@ import java.rmi.RemoteException;
  */
 public interface IClient extends Remote,Serializable{
 
-    public void updateGUI() throws RemoteException;
+    public static enum UIUpdateTypes {
+        PLAYER,
+        COUNtRY,
+        FIGHT,
+        ALL
+    }
+    public void receiveMessage(String msg) throws RemoteException;
+    public void receiveFightEvent(IFight fight) throws RemoteException;
+    public void receiveUIUpdateEvent() throws RemoteException;
 }

@@ -24,10 +24,6 @@ public class JFightGUI extends JModalDialog {
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            Window root = JFightGUI.this.getOwner();
-            if (root != null ){
-                root.repaint(); // Repaint der gesamten Karte beim Schließen des Fights
-            }
             JFightGUI.this.dispose();
         }
     }
@@ -48,8 +44,9 @@ public class JFightGUI extends JModalDialog {
         closeBtn.addActionListener(new CloseBtnListener());
         this.add(closeBtn,BorderLayout.SOUTH);
 
-        this.pack();
         this.setVisible(true);
+        this.pack();
+
 
     }
 

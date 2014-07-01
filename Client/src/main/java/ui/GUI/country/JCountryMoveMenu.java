@@ -59,12 +59,6 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
                    return;
                 }
 
-                //Repaint the whole map
-                JPopupMenu menu = (JPopupMenu) JCountryMoveMenu.this.getParent();
-                Component com = menu.getInvoker();
-                if(com != null){
-                    com.repaint();
-                }
             }
         }
     }

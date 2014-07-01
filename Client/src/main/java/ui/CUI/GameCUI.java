@@ -1,9 +1,11 @@
 package ui.CUI;
 
 import exceptions.*;
+import interfaces.IClient;
 import interfaces.IGame;
 import interfaces.IRound;
 import interfaces.data.IPlayer;
+import server.logic.ClientEventProcessor;
 import ui.CUI.utils.CUI;
 import ui.CUI.utils.CommandListener;
 import ui.CUI.utils.CommandListenerArgument;
@@ -26,6 +28,11 @@ public class GameCUI extends CUI implements Runnable {
      * Bildet das Spiel ab für die die CUI erstellt wird
      */
     private final IGame game;
+
+    /**
+     * Bietet die Möglichkeit auf events vom Server zu horchen
+     */
+    private final IClient remoteEventProcessor;
 
     /**
      * Listener, um ein Spiel zu speichern.
@@ -82,7 +89,7 @@ public class GameCUI extends CUI implements Runnable {
             }
 
             try {
-                GameCUI.this.game.addPlayer(name);
+                GameCUI.this.game.addPlayer(name,GameCUI.this.remoteEventProcessor);
             }
             catch (GameAllreadyStartedException | PlayerNameAlreadyChooseException | RemoteException e ){
                 IO.println(e.getMessage());
@@ -215,9 +222,10 @@ public class GameCUI extends CUI implements Runnable {
      * @param game - Das spiel, das die GUI betrifft
      * @throws Exception
      */
-    public GameCUI(final IGame game,CUI parent) {
+    public GameCUI(final IGame game,CUI parent) throws RemoteException{
         super(game,parent);
         this.game = game;
+        this.remoteEventProcessor = new ClientEventProcessor();
 
         //Hinzufügen der Listener
         this.addCommandListener(new AddPlayerCommand());

@@ -139,18 +139,6 @@ public class JFightSide extends Panel {
     }
     public void update () throws RemoteException{
 
-        final Window root = SwingUtilities.getWindowAncestor(this);
-        if(root!= null){
-            final Window mainRoot = SwingUtilities.getWindowAncestor(root);
-            try {
-                final JGameGUI gameGUI = (JGameGUI) SwingUtilities.getWindowAncestor(root);
-                gameGUI.update();
-            }catch (ClassCastException e){
-                new JExceptionDialog(this,e);
-            }
-            mainRoot.repaint();
-
-        }
 
         final Stack<? extends IDice> dices;
         if(this.side == sides.AGGRESSOR){

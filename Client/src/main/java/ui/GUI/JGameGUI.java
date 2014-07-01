@@ -1,14 +1,23 @@
 package ui.GUI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import javax.swing.*;
 
+import interfaces.IClient;
+import interfaces.IFight;
 import interfaces.IGame;
 import interfaces.data.IPlayer;
+import server.logic.ClientEventProcessor;
+import server.logic.IFightActionListener;
+import ui.GUI.country.JFightGUI;
 import ui.GUI.gamePanels.*;
 import ui.GUI.menu.JGameMenu;
+import ui.GUI.utils.JExceptionDialog;
 
 public class JGameGUI extends JFrame {
 	private final IGame game;
@@ -20,8 +29,52 @@ public class JGameGUI extends JFrame {
     private final JOrderInfoGUI orderInfo;
     private final JCurrentStateInfoGUI currentStateInfoGUI;
     private final JCardInfo cardInfo;
+    private final ClientEventProcessor remoteEventProcessor;
 
-    public JGameGUI(IGame game, IPlayer player) throws RemoteException{
+    /**
+     * Wird augerufen, wenn der Server ein Update des UI verlangt
+     */
+    private class UpdateUIListener implements ActionListener{
+
+        /**
+         * Invoked when an action occurs.
+         *
+         * @param event
+         */
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            try {
+                JGameGUI.this.update();
+            }catch (RemoteException e){
+                new JExceptionDialog(JGameGUI.this,e);
+            }
+        }
+    }
+
+
+    /**
+     * Wird augerufen, wenn der Server ein Update des UI verlangt
+     */
+    private class OpenFightUIListener implements IFightActionListener{
+
+        /**
+         * Invoked when an action occurs.
+         *
+         * @param fight the Fight to show
+         */
+        @Override
+        public void actionPerformed(IFight fight) {
+            try{
+                new JFightGUI(JGameGUI.this,fight);
+            }catch (RemoteException e){
+                new JExceptionDialog(JGameGUI.this,e);
+            }
+
+        }
+    }
+
+
+    public JGameGUI(IGame game, IPlayer player, ClientEventProcessor remoteEventProcessor) throws RemoteException{
 		super("Risiko");
 		this.game = game;
 		this.player = player;
@@ -32,6 +85,16 @@ public class JGameGUI extends JFrame {
         this.orderInfo = new JOrderInfoGUI(this.game, this.player);
         this.currentStateInfoGUI =   new JCurrentStateInfoGUI(this.game, this.player, this);
         this.cardInfo =  new JCardInfo(this.player, this.game.getDeck());
+        this.remoteEventProcessor = remoteEventProcessor;
+
+        /**
+         * Hinzufügen der Listeneners für Events, die vom Server gesnedet werden
+         *
+         */
+
+        this.remoteEventProcessor.addUpdateUIListener(new UpdateUIListener());
+        this.remoteEventProcessor.addFightListener(new OpenFightUIListener());
+
 		initialize();
 	}
 	

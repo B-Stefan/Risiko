@@ -65,11 +65,7 @@ public class JCountryPlaceMenuItem extends JMenuItem {
                 new JExceptionDialog(JCountryPlaceMenuItem.this,e);
                 return;
             }
-            JPopupMenu menu = (JPopupMenu) JCountryPlaceMenuItem.this.getParent();
-            Component com = menu.getInvoker();
-            if(com != null){
-                com.repaint();
-            }
+
         }
     }
     public JCountryPlaceMenuItem(ICountry country, ITurn turn){

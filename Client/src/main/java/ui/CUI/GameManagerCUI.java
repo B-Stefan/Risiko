@@ -72,7 +72,13 @@ public class GameManagerCUI extends CUI {
                 IO.println(e.getMessage());
                 return;
             }
-           goIntoChildContext(new GameCUI(newGame,GameManagerCUI.this));
+            try {
+                goIntoChildContext(new GameCUI(newGame,GameManagerCUI.this));
+            }catch (RemoteException e){
+                IO.println(e.getMessage());
+                return;
+            }
+
         }
 
     }
@@ -124,7 +130,14 @@ public class GameManagerCUI extends CUI {
             IO.println("Bitte geben Sie einen gültigen Index ein");
             return;
         }
-        super.goIntoChildContext(new GameCUI(game,this));
+        GameCUI gameCUI;
+        try {
+            gameCUI = new GameCUI(game,this);
+        }catch (RemoteException e){
+            e.printStackTrace();
+            return;
+        }
+        super.goIntoChildContext(gameCUI);
     }
 
 
