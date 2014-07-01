@@ -6,6 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 import exceptions.*;
+import interfaces.IClient;
 import interfaces.data.ICountry;
 import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
@@ -15,21 +16,23 @@ import java.util.UUID;
 
 public class Player extends UnicastRemoteObject implements IPlayer{
 
-    private String name;
-    private List<Country> countries = new ArrayList<Country>();
+    private final String name;
+    private final List<Country> countries = new ArrayList<Country>();
+    private final List<Card> deck = new ArrayList<Card>();
+    private final IClient client;
+    private final UUID id;
     private IOrder order;
-    private UUID id;
     private Color color;
-    private List<Card> deck = new ArrayList<Card>();
 
-    public Player(String name) throws RemoteException{
+    public Player(final String name, final IClient client) throws RemoteException{
         this.name = name;
         this.id = UUID.randomUUID();
+        this.client = client;
 
     }
     
-    public Player(String name, Color color)throws RemoteException {
-        this(name);
+    public Player(final String name, final Color color, final IClient client)throws RemoteException {
+        this(name,client);
         this.color = color;
     }
 

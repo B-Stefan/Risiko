@@ -1,17 +1,12 @@
 package logic;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.awt.Color;
 
+import interfaces.IClient;
 import interfaces.IGame;
-import interfaces.IRound;
-import interfaces.ITurn;
-import interfaces.data.IArmy;
-import interfaces.data.ICountry;
-import interfaces.data.IMap;
 import interfaces.data.IPlayer;
 import interfaces.data.cards.ICardDeck;
 import logic.data.*;
@@ -77,7 +72,9 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      * @param persistenceEndpoint - Der Manager, der zur Speicherung des Spiels verwnedet werden soll
      */
-    private CardDeck deck;
+    private final CardDeck deck;
+
+    private ClientManager clientManager;
 
     /**
      * Konstruktor
@@ -376,7 +373,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      * @param name
      */
-    public Player addPlayer(String name) throws GameAllreadyStartedException, PlayerNameAlreadyChooseException,RemoteException{
+    public Player addPlayer(String name, IClient clientProcessor) throws GameAllreadyStartedException, PlayerNameAlreadyChooseException,RemoteException{
         if (this.getCurrentGameState() != IGame.gameStates.WAITING) {
             throw new GameAllreadyStartedException();
         }
@@ -387,7 +384,7 @@ public class Game extends UnicastRemoteObject implements IGame {
             }
         }
 
-        Player player = new Player(name);
+        Player player = new Player(name,clientProcessor);
         this.players.add(player);
         return player;
     }

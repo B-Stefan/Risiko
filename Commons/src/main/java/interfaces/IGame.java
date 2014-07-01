@@ -83,11 +83,12 @@ public interface IGame extends Remote, Serializable, IToStringRemote {
     /**
      * FÜgt dem Spiel den Spieler mit dem Namem hinzu
      * @param name Name des Neuen Spielers
+     * @param client Client object des Spielers für Brodcast
      * @return Den neuen Spieler
      * @throws PlayerNameAlreadyChooseException
      * @throws RemoteException
      */
-    public IPlayer addPlayer(final String name) throws GameAllreadyStartedException,PlayerNameAlreadyChooseException,RemoteException;
+    public IPlayer addPlayer(final String name, final IClient client) throws GameAllreadyStartedException,PlayerNameAlreadyChooseException,RemoteException;
 
     /**
      * Gibt den Spieler zum angegebenen Namen zurück
