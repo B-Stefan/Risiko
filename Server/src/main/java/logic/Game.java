@@ -101,7 +101,7 @@ public class Game extends UnicastRemoteObject implements IGame {
         this.color.add(Color.ORANGE);
         this.color.add(Color.RED);
         this.color.add(Color.MAGENTA);
-        this.deck = new CardDeck(this.map.getCountriesReal());
+        this.deck = new CardDeck(this.map.getCountriesReal(),this);
     }
 
     public ICardDeck getDeck(){
@@ -313,6 +313,22 @@ public class Game extends UnicastRemoteObject implements IGame {
     public Player getPlayer(final String name) throws PlayerNotExsistInGameException, RemoteException{
         for (Player player: players){
             if(player.getName().equals(name)){
+                return player;
+            }
+        }
+        throw new PlayerNotExsistInGameException(name);
+    }
+
+    /**
+     * Gibt den Spieler zum angegebenen IPlayer zurück
+     * @param otherPlayer - Name des gesuchten Spielers
+     * @return Spieler
+     * @throws PlayerNotExsistInGameException Wenn Spieler nicht gefunden wird
+     * @throws RemoteException
+     */
+    public Player getPlayer(final IPlayer otherPlayer) throws PlayerNotExsistInGameException{
+        for (Player player: players){
+            if(player.equals(otherPlayer)){
                 return player;
             }
         }

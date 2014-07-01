@@ -1,5 +1,7 @@
 package logic.data.cards;
 
+import exceptions.PlayerNotExsistInGameException;
+import exceptions.RemoteExceptionPlayerNotFound;
 import interfaces.data.IPlayer;
 import interfaces.data.cards.ICardDeck;
 
@@ -7,19 +9,22 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
+import logic.Game;
 import logic.data.Country;
 import logic.data.Player;
 import exceptions.NotEnoughCardsToExchangeException;
 
 public class CardDeck extends UnicastRemoteObject implements ICardDeck {
-	private Stack<Card> deck = new Stack<Card>();
-	private Stack<Integer> bonus = new Stack<Integer>();
-	
-	public CardDeck(ArrayList<Country> arrayList) throws RemoteException{
-		builtDeck(arrayList);
+	private final Stack<Card> deck = new Stack<Card>();
+	private final Stack<Integer> bonus = new Stack<Integer>();
+	private final Game game;
+	public CardDeck(final List<Country> arrayList, final Game game) throws RemoteException{
+		this.game = game;
+        builtDeck(arrayList);
+
 	}
 	
-	private void builtDeck(ArrayList<Country> cos) throws RemoteException{
+	private void builtDeck(List<Country> cos) throws RemoteException{
 		for(Country c : cos){
 			if(deck.isEmpty()||this.deck.size() == 1){
 				this.deck.add(new Card(c, "Joker"));
@@ -50,11 +55,17 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 	public void drawCard(Player pl) throws RemoteException{
 		pl.drawNewCard(deck.pop());
 	}
-	public boolean exchangeCards(IPlayer p) throws NotEnoughCardsToExchangeException, RemoteException{
-		if(p.getCards().size()<3){
-			throw new NotEnoughCardsToExchangeException();
-		}
-		Player pl = (Player) p;
+	public boolean exchangeCards(IPlayer player) throws NotEnoughCardsToExchangeException, RemoteException{
+        Player pl;
+        try {
+            pl = game.getPlayer(player.getName());
+        }catch (PlayerNotExsistInGameException e){
+            throw new RemoteExceptionPlayerNotFound();
+        }
+
+        if(pl.getCards().size()<3){
+            throw new NotEnoughCardsToExchangeException();
+        }
 		int i = pl.getCards().size() - 1;
 		Stack<Card> kanonen     = new Stack<Card>();
 		Stack<Card> reiter      = new Stack<Card>();
