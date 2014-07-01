@@ -35,12 +35,14 @@ public class JCountryPlaceMenuItem extends JMenuItem {
             int numberOfArmyies;
             int min = 1;
             int max = 1; //Dient nur zur Clientseitigen prüfen, wird auf Serverseite nochmal geprüft und als Exception abgefangen
-            String message = String.format("Bitte geben Sie an, wieviele Armeen Sie auf " + to.getName() + " plazieren möchten");
+            String message;
 
             try {
                 max = turn.getNewArmysSize();
+                message = String.format("Bitte geben Sie an, wieviele Armeen Sie auf " + to.getName() + " plazieren möchten");
             }catch (RemoteException e){
                 new JExceptionDialog(JCountryPlaceMenuItem.this,e);
+                return;
             }
 
 
@@ -59,7 +61,7 @@ public class JCountryPlaceMenuItem extends JMenuItem {
 
             try {
                 turn.placeNewArmy(to,numberOfArmyies);
-            }catch (TurnNotAllowedStepException | ToManyNewArmysException | TurnNotInCorrectStepException | NotEnoughNewArmysException | RemoteException | NotTheOwnerException e ){
+            }catch (TurnNotAllowedStepException | ToManyNewArmysException | TurnNotInCorrectStepException | NotEnoughNewArmysException | RemoteException | RemoteCountryNotFoundException | NotTheOwnerException e ){
                 new JExceptionDialog(JCountryPlaceMenuItem.this,e);
                 return;
             }

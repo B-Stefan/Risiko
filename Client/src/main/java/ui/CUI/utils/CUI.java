@@ -1,8 +1,10 @@
 package ui.CUI.utils;
 
+import interfaces.IToStringRemote;
 import ui.CUI.exceptions.InvalidCommandListernArgumentException;
 
 import java.awt.event.ActionEvent;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.*;
 
@@ -40,7 +42,7 @@ public abstract class CUI {
      * Der aktuelle Kontext in dem sich die CUI bewegt
      */
 
-    private Object context;
+    private IToStringRemote context;
 
     /**
      * Enthält alle möglichkeiten, die er User ausführen kann
@@ -104,7 +106,7 @@ public abstract class CUI {
      *
      * @param context - Der Kontext für den eine CUI erzeugt werden soll
      */
-    protected CUI(Object context) {
+    protected CUI(IToStringRemote context) {
         this.context = context;
         this.addCommandListener(new ChangeDirListener());
         this.addCommandListener(new HelpListener());
@@ -116,7 +118,7 @@ public abstract class CUI {
      * @param context  - Der Kontext für den eine CUI erzeugt werden soll
      * @param parent - übergeordnete CUI
      */
-    public CUI(Object context, CUI parent) {
+    public CUI(IToStringRemote context, CUI parent) {
         this(context);
         this.parent = parent;
     }
@@ -282,7 +284,13 @@ public abstract class CUI {
         if (this.parent != null) {
             prefix += this.parent.toString();
         }
-        return prefix + context.toString() + " > ";
+        String contextstr;
+        try {
+            contextstr = context.toStringRemote();
+        }catch (RemoteException e){
+            throw new RuntimeException(e);
+        }
+        return prefix + contextstr + " > ";
     }
 
     /**

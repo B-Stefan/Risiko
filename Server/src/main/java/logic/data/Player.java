@@ -1,7 +1,4 @@
 package logic.data;
-import interfaces.data.*;
-import interfaces.data.Orders.IOrder;
-import interfaces.data.cards.*;
 
 import java.awt.Color;
 import java.rmi.RemoteException;
@@ -9,19 +6,21 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 import exceptions.*;
+import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
+import interfaces.data.Orders.IOrder;
+import interfaces.data.cards.ICard;
 import logic.data.cards.Card;
-import logic.data.orders.*;
-
 import java.util.UUID;
 
 public class Player extends UnicastRemoteObject implements IPlayer{
 
     private String name;
-    private ArrayList<ICountry> countries = new ArrayList<ICountry>();
+    private List<Country> countries = new ArrayList<Country>();
     private IOrder order;
     private UUID id;
     private Color color;
-    private Stack<ICard> Deck = new Stack<ICard>();
+    private List<Card> deck = new ArrayList<Card>();
 
     public Player(String name) throws RemoteException{
         this.name = name;
@@ -45,24 +44,32 @@ public class Player extends UnicastRemoteObject implements IPlayer{
      * Sortiert das eigene Deck und gibt es aus
      * @return
      */
-    public Stack<ICard> getCards()throws RemoteException{
-    	Collections.sort(this.Deck);
-    	return this.Deck;
+    public List<? extends ICard> getCards()throws RemoteException{
+    	return this.deck;
+    }
+
+    /**
+     * Sortiert das eigene Deck und gibt es aus
+     * @return
+     */
+    public List<Card> getCardsReal(){
+        return this.deck;
     }
     /**
      * entfernt eine Karte aus dem eigenen Deck
      * @param c
      */
-    public void removeCard(ICard c)throws RemoteException{
-    	this.Deck.remove(c);
+    public void removeCard(Card c)throws RemoteException{
+    	this.deck.remove(c);
     }
+
     /**
      * Eine neue Karte wird zum Deck hinzugefügt
      * @param c
      */
-    public void drawNewCard(ICard c)throws RemoteException{
-    	if(this.Deck.size() <= 5){
-    		this.Deck.add(c);
+    public void drawNewCard(Card c)throws RemoteException{
+    	if(this.deck.size() <= 5){
+    		this.deck.add((Card)c);
     	}
     }
 
@@ -70,7 +77,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
      * Fügt ein Land der Liste des Spielers hinzu
      * @param c
      */
-    public void addCountry(final ICountry c)throws RemoteException{
+    public void addCountry(final Country c)throws RemoteException{
         c.setOwner(this);
     	countries.add(c);
     }
@@ -78,8 +85,15 @@ public class Player extends UnicastRemoteObject implements IPlayer{
      * Getter für die Länderliste des Spielers
      * @return
      */
-    public ArrayList<ICountry> getCountries()throws RemoteException{
-    	return this.countries;    	
+    public List<? extends ICountry> getCountries()throws RemoteException{
+        return this.countries;
+    }
+    /**
+     * Getter für die Länderliste des Spielers
+     * @return
+     */
+    public List<Country> getCountriesReal(){
+        return this.countries;
     }
     
     /**
@@ -111,25 +125,48 @@ public class Player extends UnicastRemoteObject implements IPlayer{
 		}
     }
     /**
+     * ToString methode, die Remote aufgerufen werden kann
+     * @return
+     * @throws RemoteException
+     */
+    public String toStringRemote() throws RemoteException{
+        return this.toString();
+    }
+
+    /**
      * Gibt ein Land aus der Liste der Länder des Spielers aus
      * @param n
      * @return
      */
     public ICountry getCountry(String n) throws RemoteException{
-    	for (ICountry c : countries){
+    	for (Country c : countries){
     		if(c.getName().equals(n)){
-    			return c;
+                ICountry iCountry = c;
+    			return iCountry;
     		}
     	}
     	return null;
     }
-    
+    /**
+     * Gibt ein Land aus der Liste der Länder des Spielers aus
+     * @param country
+     * @return
+     */
+    public Country getCountry(ICountry country){
+        for (Country c : countries){
+            if(c.equals(country)){
+                return c;
+            }
+        }
+        return null;
+    }
+
     /**
      * Entfernt ein land aus der Liste der Länder des Spielers
      * @param c
      * @throws CountryNotInListException
      */
-    public void removeCountry(ICountry c) throws CountryNotInListException, RemoteException{
+    public void removeCountry(Country c) throws CountryNotInListException, RemoteException{
     	if (countries.contains(c)){
     		this.countries.remove(c);
     	}else{

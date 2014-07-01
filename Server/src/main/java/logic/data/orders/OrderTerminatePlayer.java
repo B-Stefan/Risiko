@@ -19,14 +19,14 @@ public class OrderTerminatePlayer extends AbstractOrder implements IOrder{
 	/**
 	 * Der Spieler, der von dem Spieler, dem die Order zugeiwesen ist, vernichtet werden soll
 	 */
-	private IPlayer victim;
+	private final Player victim;
 	
 	/**
 	 * Zuerst wird der Agent gesetzt, damit ausgeschlossen werden kann, dass das Victim und der Player identisch sind
 	 * @param playerToTerminate Opfer des Auftrags
 	 * @param agend Der Spieler, dem die Order zugewiesen werden soll
 	 */
-	 public OrderTerminatePlayer(IPlayer playerToTerminate, IPlayer agend) throws RemoteException {
+	 public OrderTerminatePlayer(final Player playerToTerminate, final Player agend) throws RemoteException {
          super(agend);
          this.victim = playerToTerminate;
 	 }

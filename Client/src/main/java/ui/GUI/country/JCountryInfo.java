@@ -5,10 +5,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.rmi.RemoteException;
 
 import javax.swing.JLabel;
 
 import interfaces.data.ICountry;
+import ui.CUI.utils.IO;
+import ui.GUI.utils.JExceptionDialog;
 
 public class JCountryInfo extends JLabel{
 	private final ICountry country;
@@ -28,20 +31,33 @@ public class JCountryInfo extends JLabel{
 		final int height = 30;
 		// Farbe entsprechend des besetzenden Spielers setzten
 		final Color col;
-		if (!(this.country.getOwner() == null)){
-			col = this.country.getOwner().getColor();
-		}else{
-			col = Color.BLACK;
-		}
+        try {
+            if (!(this.country.getOwner() == null)){
+                col = this.country.getOwner().getColor();
+            }else{
+                col = Color.BLACK;
+            }
+        }catch (RemoteException e){
+            e.printStackTrace();
+            IO.println(e.getMessage());
+            return;
+        }
 		g.setColor(col);
 		g.fillArc(0, 0, width, height, 0, 360);
 		g.setColor(Color.white);
 		g.fillArc(this.BORDER, this.BORDER, width - 2 * this.BORDER, height - 2 * this.BORDER, 0, 360);
-		writeLabel(g, width, height);
+        try {
+            writeLabel(g, width, height);
+        }catch (RemoteException e){
+            e.printStackTrace();
+            IO.println(e.getMessage());
+            return;
+        }
+
 	}
 	
-	private void writeLabel(final Graphics g, final int width, final int height){
-		final String amountArmies = "" + this.country.getArmyList().size();
+	private void writeLabel(final Graphics g, final int width, final int height) throws RemoteException{
+		final String amountArmies = "" + this.country.getArmySize();
         // Font einstellen
         final Font myFont = new Font(Font.SANS_SERIF, Font.BOLD, 16);
         g.setFont(myFont);

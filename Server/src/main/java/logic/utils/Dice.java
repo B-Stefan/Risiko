@@ -3,19 +3,23 @@ package logic.utils;
 
 import interfaces.data.utils.IDice;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 /**
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
  *
  * Diese Klasse dient zum Würfeln
  */
-public class Dice implements IDice {
+@SuppressWarnings("serial")
+public class Dice extends UnicastRemoteObject implements IDice,Comparable<IDice> {
 	
 	private int dicenumber;
 
     /**
      * Erstellt und wirft den Würfel
      */
-	public Dice(){
+	public Dice()  throws RemoteException{
 		this.throwDice();
 	}
 
@@ -23,7 +27,7 @@ public class Dice implements IDice {
 	/**
 	 *  throw the dice 
 	 */
-	public void throwDice() {
+	public void throwDice() throws RemoteException {
 		dicenumber = (int)(Math.random()*6+1);
 		//choose a random number between 1-6 	
 		}
@@ -43,14 +47,18 @@ public class Dice implements IDice {
      */
 
     public int compareTo(IDice otherDice){
-        if(this.dicenumber == otherDice.getDiceNumber()){
-            return 0;  //equals
-        }
-        else if (this.dicenumber > otherDice.getDiceNumber()){
-            return 1; //größer
-        }
-        else {
-            return -1; //kleiner
+        try {
+            if(this.dicenumber == otherDice.getDiceNumber()){
+                return 0;  //equals
+            }
+            else if (this.dicenumber > otherDice.getDiceNumber()){
+                return 1; //größer
+            }
+            else {
+                return -1; //kleiner
+            }
+        }catch (RemoteException e){
+            throw new RuntimeException(e);
         }
     }
 
@@ -59,7 +67,7 @@ public class Dice implements IDice {
      * @param otherDice Zu prüfender Würfel
      * @return True, wenn aktueller würfel größer is
      */
-    public boolean isDiceHigherOrEqual(IDice otherDice){
+    public boolean isDiceHigherOrEqual(IDice otherDice)  throws RemoteException{
     	if(this.compareTo(otherDice)==1){
     		return true;
     	}else if(this.compareTo(otherDice)==0){
@@ -72,6 +80,9 @@ public class Dice implements IDice {
     public String toString(){
     	String s = "" + this.dicenumber;
     	return s;
+    }
+    public String toStringRemote () throws RemoteException{
+        return this.toString();
     }
 
 }

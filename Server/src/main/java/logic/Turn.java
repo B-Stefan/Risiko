@@ -3,15 +3,12 @@ import interfaces.IFight;
 import interfaces.ITurn;
 import interfaces.data.IArmy;
 import interfaces.data.ICountry;
-import interfaces.data.IMap;
-import interfaces.data.IPlayer;
-import interfaces.data.cards.ICardDeck;
 import logic.data.*;
-import logic.data.cards.CardDeck;
 import exceptions.*;
+import logic.data.Map;
+import logic.data.cards.CardDeck;
 
 import java.rmi.RemoteException;
-import java.rmi.server.RemoteObject;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -23,23 +20,50 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Turn extends UnicastRemoteObject implements ITurn{
 
+
+    /**
+     * Gibt die Standardschritte zurück, die ein Turn normalerweise druchläuft
+     * @return - Standard Schritte
+     */
+    public static Queue<steps> getDefaultSteps () {
+        Queue<steps> s = new LinkedBlockingQueue<steps>(3) {
+        };
+        s.add(steps.DISTRIBUTE);
+        s.add(steps.FIGHT);
+        s.add(steps.MOVE);
+        return s;
+    }
+
+    /**
+     * Gibt die Schritte zurück, die alle Spieler in der ersten Runde druchlaufen müssen
+     * @return - Schritte für die erste Runde
+     */
+    public static Queue<steps> getDefaultStepsFirstRound () {
+        Queue<steps> s = new LinkedBlockingQueue<steps>(3) {
+        };
+        s.add(steps.DISTRIBUTE);
+        s.add(steps.FIGHT);
+        s.add(steps.MOVE);
+        return s;
+    }
+
     /**
      * Bildet den Spieler ab, dir diesen Turn durchführen musss
      */
-    private final IPlayer player;
+    private final Player player;
     /**
      * Bildet die Karte ab auf dem der Spieler diesen Zug durchführt
      */
-	private final IMap map;
+	private final Map map;
     /**
      * Bildet ein Stack mit neuen Armeen ab, die der Spieler auf dem Spielfeld verteilen muss
      */
-	private final Stack<IArmy> newArmies = new Stack<IArmy>();
+	private final Stack<Army> newArmies = new Stack<Army>();
 
     /**
      * Bildet die Liste der Armeen ab, die in diesem Zug bereits bewegt wurden
      */
-	private final ArrayList<IArmy> movedArmies = new ArrayList<IArmy>();
+	private final ArrayList<Army> movedArmies = new ArrayList<Army>();
 
     /**
      * Bildet die Warteschlange der Steps ab, die der Spieler noch durchlaufen muss.
@@ -56,22 +80,22 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      */
     private steps currentStep;
     
-    private ICardDeck deck;
+    private CardDeck deck;
     
     private boolean takeOverSucess;
 
 
     /**
      * Konstruktor für einen Turn
-     * @param iPlayer Spieler der den Turn durchführen soll
+     * @param player Spieler der den Turn durchführen soll
      * @param map Karte für den Turn
      * @param steps Erlaubte Steps für diesen Turn
      * @param deck Das Card-Deck für alle Spieler
      * @throws RemoteException
      */
-    public Turn(final IPlayer iPlayer,final IMap map,final  Queue<steps> steps, ICardDeck deck) throws RemoteException{
+    public Turn(final Player player,final Map map,final  Queue<steps> steps, CardDeck deck) throws RemoteException{
         this.deck = deck;
-    	this.player = iPlayer;
+    	this.player = player;
         this.map = map;
 
         //Argumentprüfung
@@ -112,7 +136,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      *
      * @return - Aktueller Spieler, der diesen Zug durchführen muss
      */
-    public IPlayer getPlayer () throws RemoteException{
+    public Player getPlayer () throws RemoteException{
     	return this.player; 
     }
 
@@ -129,7 +153,16 @@ public class Turn extends UnicastRemoteObject implements ITurn{
         }
         return msg;
     }
-    
+
+    /**
+     * ToString methode, die Remote aufgerufen werden kann
+     * @return
+     * @throws RemoteException
+     */
+    public String toStringRemote() throws RemoteException{
+        return this.toString();
+    }
+
     /**
      * Berechnet die Anzahl der Armeen, die der jewilige Spieler am Anfang seines Zuges neu hinzubekommt.
      * @return Anzahl, der neuen Armeen des jeweiligen Spielers
@@ -159,7 +192,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @param a bewegte Armee
      */
 
-    private void addMovedArmy(IArmy a){
+    private void addMovedArmy(Army a){
     	this.movedArmies.add(a);
     }
     /**
@@ -239,7 +272,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(ICountry position, int numberOfArmys) throws ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException, RemoteException {
+    public void placeNewArmy(ICountry position, int numberOfArmys) throws RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException, RemoteException {
         for(int i = 0; i!= numberOfArmys; i++){
             this.placeNewArmy(position);
         }
@@ -248,14 +281,18 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
      * @see logic.Turn.steps
      * @see Turn#getDefaultSteps()
-     * @param position - Das Land auf welches die neue Armee plaziert werden soll
+     * @param positionFromClient - Das Land auf welches die neue Armee plaziert werden soll
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
      * @throws NotTheOwnerException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(ICountry position) throws  ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException, RemoteException{
-        if (position.getOwner() != this.getPlayer())
+    public void placeNewArmy(ICountry positionFromClient) throws  RemoteCountryNotFoundException,ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException, RemoteException{
+        Country position = this.map.getCountry(positionFromClient);
+        if(position == null){
+            throw new RemoteCountryNotFoundException();
+        }
+        else if (position.getOwner() != this.getPlayer())
         {
             throw  new NotTheOwnerException(this.getPlayer(), position);
         }
@@ -267,7 +304,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
                 throw new NotEnoughNewArmysException(this);
             }
             else {
-                IArmy a = this.newArmies.pop();
+                Army a = this.newArmies.pop();
                 try {
                     a.setPosition(position);
                 }catch (CountriesNotConnectedException e){
@@ -281,8 +318,8 @@ public class Turn extends UnicastRemoteObject implements ITurn{
 
     /**
      * Führt einen Kampf aus
-     * @param from - Von diesem Land wird angegriffen
-     * @param to - Dieses land soll angegrifffen werden
+     * @param fromClientCountry - Von diesem Land wird angegriffen
+     * @param toClientCountry - Dieses land soll angegrifffen werden
      * @return Die Kampfinstanz
      * @throws TurnNotInCorrectStepException
      * @throws TurnNotAllowedStepException
@@ -290,9 +327,14 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws NotTheOwnerException
      * @throws RemoteException
      */
-    public IFight fight (ICountry from, ICountry to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException{
+    public IFight fight (ICountry fromClientCountry, ICountry toClientCountry) throws RemoteCountryNotFoundException, TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException{
+        Country from = this.map.getCountry(fromClientCountry);
+        Country to = this.map.getCountry(toClientCountry);
 
-        if (from.getOwner() != this.getPlayer())
+        if(from == null || to == null ){
+            throw new RemoteCountryNotFoundException();
+        }
+        else if (from.getOwner() != this.getPlayer())
         {
             throw  new NotTheOwnerException(this.getPlayer(), from);
         }
@@ -310,8 +352,8 @@ public class Turn extends UnicastRemoteObject implements ITurn{
 
     /**
      * Bewegt eine Einheit von einem Land in ein anderes Land.
-     * @param from Land von dem aus sich die Einheit bewegen soll
-     * @param to Zielland
+     * @param fromClientCountry Land von dem aus sich die Einheit bewegen soll
+     * @param toClientCounty Zielland
      * @param numberOfArmies Anzahl der Armeen
      * @throws NotEnoughArmysToMoveException
      * @throws TurnNotAllowedStepException
@@ -320,21 +362,28 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      */
-    public void moveArmy(ICountry from,ICountry to, int numberOfArmies) throws ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException {
+    public void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException {
 
+        Country from = this.map.getCountry(fromClientCountry);
+        Country to = this.map.getCountry(toClientCounty);
 
+        if(from == null || to == null ){
+            throw new RemoteCountryNotFoundException();
+        }
 
-        List<IArmy> armies = (List<IArmy>) from.getArmyList().clone();
+        List<Army> armies = new ArrayList<Army>();
+        Collections.copy(armies,from.getArmyList());
+
         //Löschen aller Armeen, die bereits bewegt wurden, somit können nur die Armen versucht werden zu bwegen, die noch nicht bewegt wurde.
-        for(IArmy army : armies){
+        for(Army army : armies){
             if(this.movedArmies.contains(army)){
                 armies.remove(army);
             }
         }
 
         for(int i = 0; i!= numberOfArmies; i++){
-            IArmy army = armies.get(armies.size()-1);
-            moveArmy(from,to,army);
+            Army army = armies.get(armies.size()-1);
+            this.moveArmy(from, to, army);
         }
     }
     /**
@@ -347,9 +396,12 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws CountriesNotConnectedException
      * @throws ArmyAlreadyMovedException
      */
-    public void moveArmy(ICountry from,ICountry to, IArmy army) throws ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException {
+    public void moveArmy(Country from,Country to, Army army) throws RemoteCountryNotFoundException,ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException {
 
-        if (from.getOwner() != this.getPlayer())
+        if(from == null || to == null ){
+            throw new RemoteCountryNotFoundException();
+        }
+        else if (from.getOwner() != this.getPlayer())
         {
             throw  new NotTheOwnerException(this.getPlayer(), from);
         }

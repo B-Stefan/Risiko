@@ -15,7 +15,7 @@ import java.util.Stack;
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface IFight extends Remote, Serializable {
+public interface IFight extends Remote, Serializable,IToStringRemote {
     /**
      * Attacking überschrieben für CUI
      * @param agressorsArmies
@@ -39,7 +39,7 @@ public interface IFight extends Remote, Serializable {
      * @throws InvalidFightException
      * @throws exceptions.AggessorNotThrowDiceException
      */
-    public void defending(int defendersArmies) throws AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, RemoteException, InvalidFightException, NotTheOwnerException;
+    public void defending(int defendersArmies) throws RemoteCountryNotFoundException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, RemoteException, InvalidFightException, NotTheOwnerException;
 
     /**
      * Gibt das Ergebnis des Fights komprimiert zurück
@@ -55,7 +55,7 @@ public interface IFight extends Remote, Serializable {
      * Getter für die Liste der Würfel des Angreifers
      * @return Stack<Dice>
      */
-    public Stack<IDice> getAgressorsDice() throws RemoteException;
+    public Stack<? extends IDice> getAgressorsDice() throws RemoteException;
 
 
 
@@ -63,7 +63,7 @@ public interface IFight extends Remote, Serializable {
      * Getter für die Liste der Würfel des Verteidigers
      * @return Stack<Dice>
      */
-    public Stack<IDice> getDefendersDice() throws RemoteException;
+    public Stack<? extends IDice> getDefendersDice() throws RemoteException;
 
     /**
      * Getter für den Angreifer
@@ -90,4 +90,5 @@ public interface IFight extends Remote, Serializable {
     public ICountry getTo() throws RemoteException;
 
 
-    }
+
+}

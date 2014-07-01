@@ -13,16 +13,16 @@ import java.util.List;
 /**
  * Created by Stefan on 25.06.14.
  */
-public class JGameLoadMenu extends JMenu{
+public class JGameLoadSavedGameMenu extends JMenu{
 
     private final IGameManager manager;
-    public JGameLoadMenu(IGameManager manager, JGameManagerGUI GameManagerGUI) throws RemoteException{
-        super("Laden");
+    public JGameLoadSavedGameMenu(IGameManager manager, JGameManagerGUI GameManagerGUI) throws RemoteException{
+        super("Spiel laden");
         this.manager = manager;
 
         List<IGame> savedGames;
         try {
-            savedGames = this.manager.getGameList();
+            savedGames = this.manager.getSavedGameList();
         }catch (PersistenceEndpointIOException e){
             new JExceptionDialog(this,e);
             return;

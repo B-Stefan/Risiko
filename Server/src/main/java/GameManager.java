@@ -1,3 +1,4 @@
+import exceptions.GameNotFoundException;
 import exceptions.PersistenceEndpointIOException;
 import interfaces.IGame;
 import interfaces.IGameManager;
@@ -16,14 +17,27 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
     /**
      * Handler, der die Interaktion zum File-System oder DB-System verwaltet
      */
-    private PersistenceEndpoint handler;
+    private final PersistenceEndpoint handler;
+
+    /**
+     * Diese Liste beinhaltet alle Spiele, bei denen aktuell Spieler angemeldet sind
+     */
+    private final Map<UUID,Game> runningGames = new HashMap<UUID,Game>();
 
     /**
      * Verwaltet mehrere Spiele
      * @param manager - Manager, der die
      */
-    public GameManager(PersistenceManager manager) throws RemoteException{
+    public GameManager(final PersistenceManager manager) throws RemoteException{
         this.handler = manager.getGameHandler();
+    }
+    /**
+     *
+     * @return Gibt die Liste aller gespeicherten Spiele zurück
+     * @throws PersistenceEndpointIOException
+     */
+    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException{
+        return this.handler.getAll();
     }
 
     /**
@@ -31,9 +45,14 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      * @return Gibt die Liste aller gespeicherten Spiele zurück
      * @throws PersistenceEndpointIOException
      */
-    public List<IGame> getGameList() throws PersistenceEndpointIOException, RemoteException{
-        return this.handler.getAll();
+    public List<IGame> getRunningGameList() throws PersistenceEndpointIOException, RemoteException{
+        List<IGame> runningGames = new ArrayList<IGame>();
+        for(Map.Entry<UUID,Game> entry : this.runningGames.entrySet()){
+            runningGames.add(entry.getValue());
+        }
+        return runningGames;
     }
+
 
     /**
      * Erstellt und speichert dieses neue Spiel ab
@@ -42,7 +61,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      */
     public Game addGame () throws PersistenceEndpointIOException, RemoteException{
         Game newGame = new Game(handler);
-        this.saveGame(newGame);
+        this.runningGames.put(newGame.getId(),newGame);
         return newGame;
     }
 
@@ -51,10 +70,15 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      * @param g  Spiel das gespeichert werden soll
      * @throws PersistenceEndpointIOException
      */
-    public void saveGame(IGame g) throws PersistenceEndpointIOException, RemoteException{
-        this.handler.save(g);
+    public void saveGame(IGame g) throws PersistenceEndpointIOException,GameNotFoundException, RemoteException{
+        Game gameToSave = runningGames.get(g.getId());
+        if(gameToSave == null){
+            throw new GameNotFoundException();
+        }
+        else {
+            this.handler.save(gameToSave);
+        }
     }
-
     /**
      * Speichert ein Spiel ab
      * @param index Index aus der Liste von @see #getGameList
@@ -69,6 +93,15 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
     @Override
     public String toString(){
         return "GameManager";
+    }
+
+    /**
+     * ToString methode, die Remote aufgerufen werden kann
+     * @return
+     * @throws RemoteException
+     */
+    public String toStringRemote() throws RemoteException{
+        return this.toString();
     }
 
 }

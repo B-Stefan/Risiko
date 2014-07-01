@@ -16,7 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface ITurn extends Remote, Serializable {
+public interface ITurn extends Remote, Serializable, IToStringRemote {
 
     /**
      * Die Steps bilden die möglichen Schritte eines Turns ab
@@ -25,31 +25,6 @@ public interface ITurn extends Remote, Serializable {
         DISTRIBUTE,
         FIGHT,
         MOVE
-    }
-    /**
-     * Gibt die Standardschritte zurück, die ein Turn normalerweise druchläuft
-     * @return - Standard Schritte
-     */
-    public static Queue<steps> getDefaultSteps (){
-        Queue<steps> s = new LinkedBlockingQueue<steps>(3) {
-        };
-        s.add(steps.DISTRIBUTE);
-        s.add(steps.FIGHT);
-        s.add(steps.MOVE);
-        return s;
-    }
-
-    /**
-     * Gibt die Schritte zurück, die alle Spieler in der ersten Runde druchlaufen müssen
-     * @return - Schritte für die erste Runde
-     */
-    public static Queue<steps> getDefaultStepsFirstRound (){
-        Queue<steps> s = new LinkedBlockingQueue<steps>(3) {
-        };
-        s.add(steps.DISTRIBUTE);
-        s.add(steps.FIGHT);
-        s.add(steps.MOVE);
-        return s;
     }
     /**
      * Gibt Den Wahrheitswert heraus ob in diesem Turn bisher ein TakeOver stattgefunden hat
@@ -67,16 +42,7 @@ public interface ITurn extends Remote, Serializable {
      * @return - Aktueller Spieler, der diesen Zug durchführen muss
      */
     public IPlayer getPlayer () throws RemoteException;
-    /**
-     * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
-     * @see logic.Turn.steps
-     * @see Turn#getDefaultSteps()
-     * @param position - Das Land auf welches die neue Armee plaziert werden soll
-     * @param numberOfArmys - Wieviele Einheiten auf diesem Land plaziert werden sollen.
-     * @throws exceptions.TurnNotAllowedStepException
-     * @throws exceptions.TurnNotInCorrectStepException
-     * @throws exceptions.NotEnoughNewArmysException
-     */
+
 
     /**
      * Tauscht die Karten für den aktuellen Spieler ein
@@ -91,26 +57,23 @@ public interface ITurn extends Remote, Serializable {
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
      * @see interfaces.ITurn.steps
-     * @see #getDefaultSteps()
      * @param position - Das Land auf welches die neue Armee plaziert werden soll
      * @param numberOfArmys - Wieviele Einheiten auf diesem Land plaziert werden sollen.
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(ICountry position, int numberOfArmys) throws ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughNewArmysException, NotTheOwnerException, RemoteException ;
+    public void placeNewArmy(ICountry position, int numberOfArmys) throws RemoteCountryNotFoundException,ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughNewArmysException, NotTheOwnerException, RemoteException ;
 
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
-     * @see logic.Turn.steps
-     * @see Turn#getDefaultSteps()
      * @param position - Das Land auf welches die neue Armee plaziert werden soll
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
      * @throws NotTheOwnerException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(ICountry position) throws  ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException, RemoteException;
+    public void placeNewArmy(ICountry position) throws  RemoteCountryNotFoundException,ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException, RemoteException;
 
 
     /**
@@ -126,7 +89,7 @@ public interface ITurn extends Remote, Serializable {
      * @throws NotTheOwnerException
      * @throws ToManyNewArmysException
      */
-    public IFight fight (ICountry from, ICountry to) throws TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException;
+    public IFight fight (ICountry from, ICountry to) throws RemoteCountryNotFoundException,TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException;
 
     /**
      * Bewegt eine Einheit von einem Land in ein anderes Land.
@@ -140,18 +103,7 @@ public interface ITurn extends Remote, Serializable {
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      */
-    public void moveArmy(ICountry from,ICountry to, int numberOfArmies) throws ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException;
-    /**
-     * Bewegt eine Armee auf die neue Position.
-     * Dise Methdoe bildet den 2. Step in einem Zug ab.
-     *
-     * @param from - Ausgangsland
-     * @param to - Neues Land
-     * @param army - Die Armee, die bewegt werden soll
-     * @throws CountriesNotConnectedException
-     * @throws ArmyAlreadyMovedException
-     */
-    public void moveArmy(ICountry from,ICountry to, IArmy army) throws ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException;
+    public void moveArmy(ICountry from,ICountry to, int numberOfArmies) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException;
 
     /**
      * Überprüft, ob der Turn abgeschlossen wurde.
@@ -182,7 +134,6 @@ public interface ITurn extends Remote, Serializable {
 
     /**
      * Gibt die Anzahl der noch zu verteilenden Armeen zurück
-     * @see #placeNewArmy(Country)
      * @return - Anzahl der noch zu verteilenden Armeen
      */
     public int getNewArmysSize() throws RemoteException;

@@ -43,7 +43,7 @@ public class PlayerInfoTableModel extends DefaultTableModel{
      *
      * @param players Spieler, die in der Liste auftauchen sollen
      */
-	public void setDataVector(final List<IPlayer> players) throws RemoteException{
+	public void setDataVector(final List<? extends IPlayer> players) throws RemoteException{
         final Vector<Vector<String>> rows = new Vector<Vector<String>>();
         for (final IPlayer player : players) {
             final Vector<String> playerInVector = new Vector<String>();
@@ -51,7 +51,7 @@ public class PlayerInfoTableModel extends DefaultTableModel{
             playerInVector.add("" + player.getCountries().size());
             if (this.game.getCurrentGameState() == IGame.gameStates.RUNNING){
                 try {
-                    playerInVector.add(player == game.getCurrentRound().getCurrentPlayer()? "X" : "");
+                    playerInVector.add(player.equals(game.getCurrentRound().getCurrentPlayer())? "X" : "");
                 }catch (GameNotStartedException e){
                     playerInVector.add("");
                 }

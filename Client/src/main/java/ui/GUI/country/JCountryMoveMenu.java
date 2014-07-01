@@ -32,8 +32,15 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
 
                 int numberOfArmyies;
                 int min = 1;
-                int max = from.getNumberOfArmys()-1; //-1, da noch eine Einheit da bleiben muss, Dient hier aber nur zur Clientseitigen prüfen wird auch Serverseite auch nochnal geprüft.
-                String message = String.format("Bitte geben Sie an, wieviele Armeen Sie von " + from.getName() + " nach " + to.getName() + " verschieben möchten. %n Sie können maximal " +  max);
+                int max = 1; //-1, da noch eine Einheit da bleiben muss, Dient hier aber nur zur Clientseitigen prüfen wird auch Serverseite auch nochnal geprüft.
+                String message = "";
+                try {
+                    max = from.getNumberOfArmys()-1;
+                    message = String.format("Bitte geben Sie an, wieviele Armeen Sie von " + from.getName() + " nach " + to.getName() + " verschieben möchten. %n Sie können maximal " +  max);
+                }catch (RemoteException e){
+                    new JExceptionDialog(JCountryMoveMenu.this,e);
+                    return;
+                }
 
 
                 try {
@@ -47,7 +54,7 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
 
                 try {
                     turn.moveArmy(from,to,numberOfArmyies);
-                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException  | RemoteException e ){
+                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException  | RemoteCountryNotFoundException | RemoteException e ){
                    new JExceptionDialog(JCountryMoveMenu.this,e);
                    return;
                 }
@@ -61,7 +68,7 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
             }
         }
     }
-    public JCountryMoveMenu (final ICountry country, final ITurn turn){
+    public JCountryMoveMenu (final ICountry country, final ITurn turn) throws RemoteException{
         super("Move",country);
         this.turn = turn;
         this.addActionListener(new NeighborActionListener());

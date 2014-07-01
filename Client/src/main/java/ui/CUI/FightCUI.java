@@ -56,18 +56,17 @@ public class FightCUI extends CUI {
             }
 			IO.println("");
 			IO.println("Angreifer Würfel:");
-            List<IDice> agressorDices;
+            List<? extends IDice> agressorDices;
             try {
                 agressorDices = fight.getAgressorsDice();
+                for(IDice d : agressorDices){
+                    IO.println(d.toStringRemote());
+                }
             }catch (RemoteException e){
                 e.printStackTrace();
                 IO.println(e.getMessage());
                 return;
             }
-			for(IDice d : agressorDices){
-				IO.println(d.toString());
-			}
-			IO.println("");
 		}
 	}
 
@@ -126,7 +125,7 @@ public class FightCUI extends CUI {
 			} catch (InvalidFightException e) {
 				IO.println(e.getMessage());
 				return;
-			}catch (NotTheOwnerException | ToManyNewArmysException | AggessorNotThrowDiceException | RemoteException e) {
+			}catch (NotTheOwnerException | ToManyNewArmysException | AggessorNotThrowDiceException | RemoteException | RemoteCountryNotFoundException e) {
                 IO.println(e.getMessage());
                 return;
             }
@@ -134,7 +133,7 @@ public class FightCUI extends CUI {
                 IO.println("");
                 IO.println("Verteidiger Würfel:");
                 for(IDice d : fight.getDefendersDice()){
-                    IO.println(d.toString());
+                    IO.println(d.toStringRemote());
                 }
                 IO.println("");
                 //Erste Zeile Angreifer, zweite Zeile Verteidiger, dritte Zeile übernommen ja (1) & nein (0)

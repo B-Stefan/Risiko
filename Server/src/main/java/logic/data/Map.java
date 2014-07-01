@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.awt.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
@@ -23,12 +24,12 @@ public class Map extends UnicastRemoteObject implements IMap{
     /**
      * Beinhaltet alle Länder, für die Karte
      */
-    private final ArrayList<ICountry> countries = new ArrayList<ICountry>();
+    private final ArrayList<Country> countries = new ArrayList<Country>();
 
     /**
      * Beinhaltet alle Kontinente für die Karte
      */
-    private final ArrayList<IContinent> continents = new ArrayList<IContinent>();
+    private final ArrayList<Continent> continents = new ArrayList<Continent>();
 
     /**
      * ID der Karte
@@ -115,24 +116,24 @@ public class Map extends UnicastRemoteObject implements IMap{
 
         
         //Australien
-        ICountry ostaustralien  = this.getCountry("Ostaustralien");
+        Country ostaustralien  = this.getCountry("Ostaustralien");
         ostaustralien.connectTo(this.getCountry("Westaustralien"));
         ostaustralien.connectTo(this.getCountry("Neu-Guinea"));
 
-        ICountry indonesien  = this.getCountry("Indonesien");
+        Country indonesien  = this.getCountry("Indonesien");
         indonesien.connectTo(this.getCountry("Siam"));
         indonesien.connectTo(this.getCountry("Westaustralien"));
         indonesien.connectTo(this.getCountry("Philippinen"));
         
-        ICountry Neuguinea = this.getCountry("Neu-Guinea");
+        Country Neuguinea = this.getCountry("Neu-Guinea");
         Neuguinea.connectTo(this.getCountry("Westaustralien"));
         
-        ICountry neuseeland = this.getCountry("Neuseeland");
+        Country neuseeland = this.getCountry("Neuseeland");
         neuseeland.connectTo(this.getCountry("Ostaustralien"));
 
 
         //Asien
-        ICountry China  = this.getCountry("China");
+        Country China  = this.getCountry("China");
         China.connectTo(this.getCountry("Siam"));
         China.connectTo(this.getCountry("Indien"));
         China.connectTo(this.getCountry("Mongolei"));
@@ -140,36 +141,36 @@ public class Map extends UnicastRemoteObject implements IMap{
         China.connectTo(this.getCountry("Sibirien"));
         China.connectTo(this.getCountry("Ural"));
 
-        ICountry mongolei  = this.getCountry("Mongolei");
+        Country mongolei  = this.getCountry("Mongolei");
         mongolei.connectTo(this.getCountry("Japan"));
         mongolei.connectTo(this.getCountry("Irrutsk"));
         mongolei.connectTo(this.getCountry("Sibirien"));
 
-        ICountry jakutsk  = this.getCountry("Jakutsk");
+        Country jakutsk  = this.getCountry("Jakutsk");
         jakutsk.connectTo(this.getCountry("Kamtschatka"));
         jakutsk.connectTo(this.getCountry("Sibirien"));
         jakutsk.connectTo(this.getCountry("Irrutsk"));
         
-        ICountry japan = this.getCountry("Japan");
+        Country japan = this.getCountry("Japan");
         japan.connectTo(this.getCountry("Hawaii"));
         japan.connectTo(this.getCountry("Philippinen"));
         japan.connectTo(this.getCountry("Kamtschatka"));
         
-        ICountry irrutsk = this.getCountry("Irrutsk");
+        Country irrutsk = this.getCountry("Irrutsk");
         irrutsk.connectTo(this.getCountry("Kamtschatka"));
         irrutsk.connectTo(this.getCountry("Sibirien"));
         
-        ICountry Indien = this.getCountry("Indien");
+        Country Indien = this.getCountry("Indien");
         Indien.connectTo(this.getCountry("Siam"));
         Indien.connectTo(this.getCountry("Mittlerer-Osten"));
         Indien.connectTo(this.getCountry("Afghanistan"));
         
-        ICountry ural = this.getCountry("Ural");
+        Country ural = this.getCountry("Ural");
         ural.connectTo(this.getCountry("Sibirien"));
         ural.connectTo(this.getCountry("Afghanistan"));
         ural.connectTo(this.getCountry("Ukraine"));
         
-        ICountry mittlererOsten = this.getCountry("Mittlerer-Osten");
+        Country mittlererOsten = this.getCountry("Mittlerer-Osten");
         mittlererOsten.connectTo(this.getCountry("Afghanistan"));
         mittlererOsten.connectTo(this.getCountry("Ukraine"));
         mittlererOsten.connectTo(this.getCountry("Ägypten"));
@@ -177,45 +178,45 @@ public class Map extends UnicastRemoteObject implements IMap{
         
         
         //Europa
-        ICountry ukraine = this.getCountry("Ukraine");
+        Country ukraine = this.getCountry("Ukraine");
         ukraine.connectTo(this.getCountry("Afghanistan"));
         ukraine.connectTo(this.getCountry("Südeuropa"));
         ukraine.connectTo(this.getCountry("Skandinavien"));
         ukraine.connectTo(this.getCountry("Mitteleuropa"));
         
-        ICountry Skandinavien = this.getCountry("Skandinavien");
+        Country Skandinavien = this.getCountry("Skandinavien");
         Skandinavien.connectTo(this.getCountry("Svalbard"));
         Skandinavien.connectTo(this.getCountry("Island"));
         Skandinavien.connectTo(this.getCountry("Großbritannien"));
         Skandinavien.connectTo(this.getCountry("Mitteleuropa"));
         
-        ICountry gb = this.getCountry("Großbritannien");
+        Country gb = this.getCountry("Großbritannien");
         gb.connectTo(this.getCountry("Island"));
         gb.connectTo(this.getCountry("Mitteleuropa"));
         gb.connectTo(this.getCountry("Westeuropa"));
         
-        ICountry westEu = this.getCountry("Westeuropa");
+        Country westEu = this.getCountry("Westeuropa");
         westEu.connectTo(this.getCountry("Nordwestafrika"));
         westEu.connectTo(this.getCountry("Südeuropa"));
         westEu.connectTo(this.getCountry("Mitteleuropa"));
         
-        ICountry southEu = this.getCountry("Südeuropa");
+        Country southEu = this.getCountry("Südeuropa");
         southEu.connectTo(this.getCountry("Ägypten"));
         southEu.connectTo(this.getCountry("Nordwestafrika"));
         
         //Afrika
-        ICountry noWeAfrika = this.getCountry("Nordwestafrika");
+        Country noWeAfrika = this.getCountry("Nordwestafrika");
         noWeAfrika.connectTo(this.getCountry("Ägypten"));
         noWeAfrika.connectTo(this.getCountry("Ostafrika"));
         noWeAfrika.connectTo(this.getCountry("Kongo"));
         
-        ICountry ostAfrika = this.getCountry("Ostafrika");
+        Country ostAfrika = this.getCountry("Ostafrika");
         ostAfrika.connectTo(this.getCountry("Ägypten"));
         ostAfrika.connectTo(this.getCountry("Kongo"));
         ostAfrika.connectTo(this.getCountry("Südafrika"));
         ostAfrika.connectTo(this.getCountry("Madagaskar"));
         
-        ICountry southAfrika = this.getCountry("Südafrika");
+        Country southAfrika = this.getCountry("Südafrika");
         southAfrika.connectTo(this.getCountry("Madagaskar"));
         southAfrika.connectTo(this.getCountry("Kongo"));
         southAfrika.connectTo(this.getCountry("Falkland-Inseln"));
@@ -223,54 +224,54 @@ public class Map extends UnicastRemoteObject implements IMap{
 
         
         //Süd-Amerika
-        ICountry brasil = this.getCountry("Brasilien");
+        Country brasil = this.getCountry("Brasilien");
         brasil.connectTo(this.getCountry("Nordwestafrika"));
         brasil.connectTo(this.getCountry("Venezuela"));
         brasil.connectTo(this.getCountry("Peru"));
         brasil.connectTo(this.getCountry("Argentinien"));
         
-        ICountry venezuela = this.getCountry("Venezuela");
+        Country venezuela = this.getCountry("Venezuela");
         venezuela.connectTo(this.getCountry("Peru"));
         venezuela.connectTo(this.getCountry("Mittelamerika"));
         
-        ICountry Argentinien = this.getCountry("Argentinien");
+        Country Argentinien = this.getCountry("Argentinien");
         Argentinien.connectTo(this.getCountry("Peru"));
         Argentinien.connectTo(this.getCountry("Falkland-Inseln"));
         Argentinien.connectTo(this.getCountry("Neuseeland"));
         
         
         //Nord-Amerika
-        ICountry mittelamerika = this.getCountry("Mittelamerika");
+        Country mittelamerika = this.getCountry("Mittelamerika");
         mittelamerika.connectTo(this.getCountry("Oststaaten"));
         mittelamerika.connectTo(this.getCountry("Weststaaten"));
 
-        ICountry Weststaaten = this.getCountry("Weststaaten");
+        Country Weststaaten = this.getCountry("Weststaaten");
         Weststaaten.connectTo(this.getCountry("Oststaaten"));
         Weststaaten.connectTo(this.getCountry("Hawaii"));
         Weststaaten.connectTo(this.getCountry("Alberta"));
         Weststaaten.connectTo(this.getCountry("Ontario"));
         
-        ICountry Ontario = this.getCountry("Ontario");
+        Country Ontario = this.getCountry("Ontario");
         Ontario.connectTo(this.getCountry("Quebec"));
         Weststaaten.connectTo(this.getCountry("Oststaaten"));
         Weststaaten.connectTo(this.getCountry("Nunavut"));
         Weststaaten.connectTo(this.getCountry("Nordwest-Territorium"));
         Weststaaten.connectTo(this.getCountry("Alberta"));
 
-        ICountry alaska = this.getCountry("Alaska");
+        Country alaska = this.getCountry("Alaska");
         alaska.connectTo(this.getCountry("Kamtschatka"));
         alaska.connectTo(this.getCountry("Nordwest-Territorium"));
         alaska.connectTo(this.getCountry("Alberta"));
         
-        ICountry Nordwest = this.getCountry("Nordwest-Territorium");
+        Country Nordwest = this.getCountry("Nordwest-Territorium");
         Nordwest.connectTo(this.getCountry("Alberta"));
         Nordwest.connectTo(this.getCountry("Nunavut"));
         
-        ICountry Nunavut = this.getCountry("Nunavut");
+        Country Nunavut = this.getCountry("Nunavut");
         Nunavut.connectTo(this.getCountry("Quebec"));
         Nunavut.connectTo(this.getCountry("Grönland"));
         
-        ICountry groenland = this.getCountry("Grönland");
+        Country groenland = this.getCountry("Grönland");
         groenland.connectTo(this.getCountry("Quebec"));
         groenland.connectTo(this.getCountry("Svalbard"));
         groenland.connectTo(this.getCountry("Island"));
@@ -282,7 +283,14 @@ public class Map extends UnicastRemoteObject implements IMap{
      * Gibt die Liste aller Countries zurück
      * @return Liste aller Counties
      */
-    public ArrayList<ICountry> getCountries() throws RemoteException {
+    public List<? extends ICountry> getCountries() throws RemoteException {
+        return this.countries;
+    }
+    /**
+     * Gibt die Liste aller Countries zurück
+     * @return Liste aller Counties
+     */
+    public ArrayList<Country> getCountriesReal()  {
         return this.countries;
     }
 
@@ -304,8 +312,8 @@ public class Map extends UnicastRemoteObject implements IMap{
      * @param n String (name des zu suchenden Landes)
      * @return das zu suchende Land
      */
-    public ICountry getCountry(String n) throws RemoteException{
-    	for (ICountry c : countries){
+    public Country getCountry(String n) throws RemoteException{
+    	for (Country c : countries){
     		if(c.getName().equals(n)){
     			return c;
     		}
@@ -317,9 +325,22 @@ public class Map extends UnicastRemoteObject implements IMap{
      * @param col Color (Farbe des zu suchenden Landes)
      * @return das zu suchende Land
      */
-    public ICountry getCountry(Color col) throws RemoteException{
-        for (ICountry c : countries){
+    public Country getCountry(Color col) throws RemoteException{
+        for (Country c : countries){
             if(c.getColor().equals(col)){
+                return c;
+            }
+        }
+        return null;
+    }
+    /**
+     * Vergleicht die Farbe mit der übergebenen Farbe
+     * @param otherCountry Color (Farbe des zu suchenden Landes)
+     * @return das zu suchende Land
+     */
+    public Country getCountry(ICountry otherCountry) throws RemoteException{
+        for (Country c : countries){
+            if(c.equals(otherCountry)){
                 return c;
             }
         }
@@ -330,15 +351,34 @@ public class Map extends UnicastRemoteObject implements IMap{
      *
      * @return Alle Kontinente dieser Karte
      */
-    public ArrayList<IContinent> getContinents() throws RemoteException {
-        return continents;
+    public List<? extends IContinent> getContinents() throws RemoteException {
+        return this.continents;
     }
+    /**
+     *
+     * @return Alle Kontinente dieser Karte
+     */
+    public List<Continent> getContinentsReal() {
+        return this.continents;
+    }
+
+
 
     /**
      * Getter für die ID
      */
     public UUID getId() throws RemoteException{
         return id;
+    }
+
+    /**
+     * ToString Methode für den Remote zugriff
+     * @return
+     * @throws RemoteException
+     */
+    @Override
+    public String toStringRemote() throws RemoteException {
+       return this.toString();
     }
 }
 

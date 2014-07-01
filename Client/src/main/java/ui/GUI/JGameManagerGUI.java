@@ -1,17 +1,15 @@
 package ui.GUI;
 
-import exceptions.CountryNotInListException;
+import exceptions.GameAllreadyStartedException;
 import exceptions.PersistenceEndpointIOException;
 import exceptions.PlayerNameAlreadyChooseException;
 import exceptions.PlayerNotExsistInGameException;
 import interfaces.IGame;
 import interfaces.IGameManager;
-import interfaces.data.ICountry;
 import interfaces.data.IPlayer;
-import interfaces.data.Orders.IOrder;
-import interfaces.data.cards.ICard;
 import ui.CUI.GameCUI;
-import ui.GUI.menu.JGameLoadMenu;
+import ui.GUI.menu.JGameLoadRunningGameMenu;
+import ui.GUI.menu.JGameLoadSavedGameMenu;
 import ui.GUI.utils.JExceptionDialog;
 import ui.GUI.utils.JModalDialog;
 
@@ -19,11 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Stack;
-import java.util.UUID;
 
 /**
  * Created by Stefan on 23.06.14.
@@ -73,7 +67,8 @@ public class JGameManagerGUI extends JFrame {
         centerPanel.add(this.startGameBtn);
 
         JMenuBar menuBar = new JMenuBar();
-        menuBar.add(new JGameLoadMenu(this.manager,this));
+        menuBar.add(new JGameLoadSavedGameMenu(this.manager,this));
+        menuBar.add(new JGameLoadRunningGameMenu(this.manager,this));
         this.setJMenuBar(menuBar);
 
         this.add(centerPanel,BorderLayout.CENTER);
@@ -129,7 +124,7 @@ public class JGameManagerGUI extends JFrame {
             //Neues Spiel
             try {
                 currentPlayer = game.addPlayer(playerName);
-            }catch (PlayerNameAlreadyChooseException e){
+            }catch (PlayerNameAlreadyChooseException | GameAllreadyStartedException e){
                 new JExceptionDialog(this,e);
                 return;
             }

@@ -50,7 +50,15 @@ public class JMapGUI extends JComponent {
         public void mouseClicked(MouseEvent event) {
             int x = (int) event.getX();
             int y = (int) event.getY();
-            ICountry country = JMapGUI.this.getCountry(x,y);
+            ICountry country;
+
+            try {
+                country = JMapGUI.this.getCountry(x,y);
+            }catch (RemoteException e){
+                new JExceptionDialog(JMapGUI.this,e);
+                return;
+            }
+
             if (country == null){
                 new JExceptionDialog(JMapGUI.this,"Es konnte an dieser Position kein Land gefunden werden");
             }
@@ -63,8 +71,14 @@ public class JMapGUI extends JComponent {
                     new JExceptionDialog(JMapGUI.this,e);
                     return;
                 }
-                JCountryPopupMenu countryGUI= new JCountryPopupMenu(country, currentTurn);
-                countryGUI.show(event.getComponent(),x,y);
+
+                try {
+                    JCountryPopupMenu countryGUI= new JCountryPopupMenu(country, currentTurn);
+                    countryGUI.show(event.getComponent(),x,y);
+                }catch (RemoteException e){
+                    new JExceptionDialog(JMapGUI.this,e);
+                    return;
+                }
 
             }
 
@@ -119,7 +133,17 @@ public class JMapGUI extends JComponent {
 
         //Immer wieder erneut löschen und hinzufügen ist am performantesten und auch am besten Wartbar
         this.removeAll();
-        HashMap<Point,ICountry> postions = this.mapLoader.getCountryInfoCoordinates(this.getWidth(),this.getHeight());
+        HashMap<Point, ICountry> postions;
+        try {
+            postions = this.mapLoader.getCountryInfoCoordinates(this.getWidth(), this.getHeight());
+        }catch (RemoteException e){
+            new JExceptionDialog(e);
+            Window root = SwingUtilities.getWindowAncestor(this);
+            if(root != null){
+                root.dispose();
+            }
+            return;
+        }
         for(java.util.Map.Entry entry : postions.entrySet()){
             ICountry country = (ICountry) entry.getValue();
             Point point = (Point) entry.getKey();
@@ -143,7 +167,7 @@ public class JMapGUI extends JComponent {
      * @param y Position auf der Y-Achse
      * @return Land das sich an der (x,y) Position befindet.
      */
-    public ICountry getCountry(int x, int y){
+    public ICountry getCountry(int x, int y) throws RemoteException{
         return this.mapLoader.getCountry(x,y, this.getWidth(),this.getHeight());
     }
 

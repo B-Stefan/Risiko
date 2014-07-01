@@ -5,6 +5,7 @@ import interfaces.data.ICountry;
 
 import javax.swing.*;
 import java.awt.*;
+import java.rmi.RemoteException;
 
 /**
  * Created by Stefan on 09.06.14.
@@ -15,7 +16,7 @@ public class JCountryPopupMenu extends JPopupMenu{
     private final ICountry country;
     private final ITurn turn;
 
-    public JCountryPopupMenu(ICountry country, ITurn turn){
+    public JCountryPopupMenu(ICountry country, ITurn turn) throws RemoteException{
         super();
         this.country = country;
         this.turn = turn;
@@ -25,7 +26,7 @@ public class JCountryPopupMenu extends JPopupMenu{
         this.add(countryName);
         this.add(new Separator());
         this.add(new JMenuItem("Armies:" + this.country.getNumberOfArmys()));
-        this.add(new JMenuItem("Owner: " + this.country.getOwner().toString()));
+        this.add(new JMenuItem("Owner: " + this.country.getOwner().toStringRemote()));
 
         this.add(new Separator());
 

@@ -67,7 +67,7 @@ public class JFightSide extends Panel {
                     JFightSide.this.fight.attacking(numberOfArmies);
                 }
 
-            }catch (AggessorNotThrowDiceException | NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException |InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException  | NotEnoughArmiesToAttackException| InvalidFightException | NotTheOwnerException | RemoteException e ){
+            }catch (AggessorNotThrowDiceException | NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException |InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException  | NotEnoughArmiesToAttackException| InvalidFightException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException e){
                 new JExceptionDialog(frame,e);
                 return;
             }
@@ -152,18 +152,11 @@ public class JFightSide extends Panel {
 
         }
 
-        final Stack<IDice> dices = new Stack<IDice>();
-        final Stack<IDice> ds;
+        final Stack<? extends IDice> dices;
         if(this.side == sides.AGGRESSOR){
-            ds = this.fight.getAgressorsDice();
-
+            dices = this.fight.getAgressorsDice();
         }else{
-            ds = this.fight.getDefendersDice();
-
-        }
-        //Copy entries
-        for(IDice d: ds){
-            dices.push(d);
+            dices = this.fight.getDefendersDice();
         }
 
         String str = "";

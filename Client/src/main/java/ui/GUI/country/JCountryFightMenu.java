@@ -26,14 +26,14 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
          * @param event
          */
         @Override
-        public void actionPerformed(ActionEvent event) {
+        public void actionPerformed(ActionEvent event){
             if(event.getActionCommand() == "onCountryClick"){
                 ICountry from    =  JCountryFightMenu.this.country;
                 ICountry to      =  JCountryFightMenu.this.getSelectedNeighborsMenuItem().getCountry();
                 IFight fight;
                 try {
                     fight = JCountryFightMenu.this.turn.fight(from, to);
-                }catch (TurnNotInCorrectStepException | TurnNotAllowedStepException | ToManyNewArmysException | NotTheOwnerException | RemoteException e ){
+                }catch (TurnNotInCorrectStepException | TurnNotAllowedStepException | ToManyNewArmysException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException e ){
                     new JExceptionDialog(JCountryFightMenu.this,e);
                     return;
                 }
@@ -48,7 +48,7 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
             }
         }
     }
-    public JCountryFightMenu(final ICountry country, final ITurn turn){
+    public JCountryFightMenu(final ICountry country, final ITurn turn) throws RemoteException{
         super("Fight",country);
         this.country = country;
         this.turn = turn;

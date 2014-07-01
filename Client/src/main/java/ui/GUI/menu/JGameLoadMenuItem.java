@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
  * Created by Stefan on 25.06.14.
  */
 public class JGameLoadMenuItem extends JMenuItem {
-    private final  IGame game;
+    private final IGame game;
     private final JGameManagerGUI gameManagerGUI;
 
     private class OnItemClickedListener implements ActionListener {
@@ -32,8 +32,8 @@ public class JGameLoadMenuItem extends JMenuItem {
             }
         }
     }
-    public JGameLoadMenuItem (IGame game, JGameManagerGUI gameManagerGUI){
-        super(game.toString());
+    public JGameLoadMenuItem (IGame game, JGameManagerGUI gameManagerGUI) throws RemoteException{
+        super(game.toStringRemote());
         this.gameManagerGUI = gameManagerGUI;
         this.game = game;
         this.addActionListener(new OnItemClickedListener());

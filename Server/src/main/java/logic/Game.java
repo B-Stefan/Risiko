@@ -1,5 +1,6 @@
 package logic;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -41,12 +42,12 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * Representiert die Karte des Spiels
      */
-    private final IMap map;
+    private final Map map;
 
     /**
      * Listet alle Spieler auf, die aktiv am Spiel teilnehmen.
      */
-    private final List<IPlayer> players = new ArrayList<IPlayer>();
+    private final List<Player> players = new ArrayList<Player>();
 
     /**
      * The current gamePanels state, default => WAITING
@@ -56,7 +57,7 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * Contains the current round , default null
      */
-    private  IRound currentRound;
+    private  Round currentRound;
 
     /**
      * Name für das SPiel, erstmal aktuelles Datum
@@ -71,18 +72,18 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * Der GameManager, der für die Persistenz verwendet werden soll.
      */
-    private final PersistenceEndpoint<IGame> persistenceEndpoint;
+    private final PersistenceEndpoint<Game> persistenceEndpoint;
     /**
      *
      * @param persistenceEndpoint - Der Manager, der zur Speicherung des Spiels verwnedet werden soll
      */
-    private ICardDeck deck;
+    private CardDeck deck;
 
     /**
      * Konstruktor
      * @param persistenceEndpoint Endpunkt zum speichern des spiels
      */
-    public Game(PersistenceEndpoint<IGame> persistenceEndpoint) throws RemoteException{
+    public Game(PersistenceEndpoint<Game> persistenceEndpoint) throws RemoteException{
         this(persistenceEndpoint,new Map());
     }
 
@@ -91,7 +92,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      * @param persistenceEndpoint
      * @param map
      */
-    public Game(PersistenceEndpoint<IGame> persistenceEndpoint, IMap map) throws RemoteException{
+    public Game(PersistenceEndpoint<Game> persistenceEndpoint, Map map) throws RemoteException{
     	this.map= map;
         this.persistenceEndpoint = persistenceEndpoint;
         this.id = UUID.randomUUID();
@@ -100,7 +101,7 @@ public class Game extends UnicastRemoteObject implements IGame {
         this.color.add(Color.ORANGE);
         this.color.add(Color.RED);
         this.color.add(Color.MAGENTA);
-        this.deck = new CardDeck(this.map.getCountries());
+        this.deck = new CardDeck(this.map.getCountriesReal());
     }
 
     public ICardDeck getDeck(){
@@ -130,11 +131,12 @@ public class Game extends UnicastRemoteObject implements IGame {
 
         //Spielstart
         this.distributeCountries();
+        this.distributeColors();
         this.setDefaultArmys();
-        OrderManager.createOrdersForPlayers(this.getPlayers(),this);
+        OrderManager.createOrdersForPlayers(this.players,this,this.map);
 
         this.currentGameState = IGame.gameStates.RUNNING;
-        this.setCurrentRound(new Round(this.deck, players, map, ITurn.getDefaultStepsFirstRound()));
+        this.setCurrentRound(new Round(this.deck, players, map, Turn.getDefaultStepsFirstRound()));
 
 
     }
@@ -171,7 +173,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      * @return
      * @throws GameNotStartedException
      */
-    public IRound getCurrentRound() throws GameNotStartedException,RemoteException {
+    public Round getCurrentRound() throws GameNotStartedException,RemoteException {
         if (this.getCurrentGameState() == IGame.gameStates.WAITING) {
             throw new GameNotStartedException();
         }
@@ -182,11 +184,28 @@ public class Game extends UnicastRemoteObject implements IGame {
      * Gibt den aktuellen Status des Spiels zurück
      * @return Status des Spiels
      */
-    public IGame.gameStates getCurrentGameState() throws RemoteException{
+    public Game.gameStates getCurrentGameState() throws RemoteException{
         return this.currentGameState;
     }
 
 
+    /**
+     * Verteilt die Farben an die Spiler
+     */
+
+    private void distributeColors() throws RemoteException{
+
+        for(Player player : this.players){
+            if(player.getColor() == null){
+                if(this.color.peek() != null ) {
+                    player.setColor(this.color.pop());
+                }
+                else {
+                    throw new RuntimeException("Nicht geünügt Farben für alle Spieler vorhanden");
+                }
+            }
+        }
+    }
     /**
      * Verteilt die Länder beim Spielstart an alle angemeldeten Spieler.
      *
@@ -195,8 +214,8 @@ public class Game extends UnicastRemoteObject implements IGame {
         /**
          * Stack, der die Länder beinhaltet, die noch zu verteilen sind
          */
-        Stack<ICountry> countriesStack = new Stack<ICountry>();
-        countriesStack.addAll(this.map.getCountries());
+        Stack<Country> countriesStack = new Stack<Country>();
+        countriesStack.addAll(this.map.getCountriesReal());
         Collections.shuffle(countriesStack); // Durchmischen der Länder
 
         /**
@@ -205,7 +224,7 @@ public class Game extends UnicastRemoteObject implements IGame {
          */
         while (!countriesStack.empty()) {
 
-            for (IPlayer p : players) {
+            for (Player p : players) {
                 if(!countriesStack.empty()){
                     p.addCountry(countriesStack.pop());
                 }
@@ -223,11 +242,11 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      */
     private void setDefaultArmys()throws RemoteException {
-        for (IPlayer player : players) {
-            for (ICountry country : player.getCountries()) {
+        for (Player player : players) {
+            for (Country country : player.getCountriesReal()) {
                 //Nur machen, wenn noch keine Armee auf dem Land sitzt
-                if (country.getArmyList().size() == 0) {
-                    IArmy a = new Army(player);
+                if (country.getArmySize() == 0) {
+                    Army a = new Army(player);
                     try {
                         country.addArmy(a);
                     } catch (CountriesNotConnectedException e) {
@@ -256,21 +275,6 @@ public class Game extends UnicastRemoteObject implements IGame {
 
 
     /**
-     * Wird ausgelöst, sobald über die GUI ein neuer Spieler hinzugefügt wird.
-     *
-     * @param name - Der Name des neuen Spielers
-     */
-    public void onPlayerAdd(final String name) throws GameAllreadyStartedException,RemoteException {
-
-        if (this.getCurrentGameState() != IGame.gameStates.WAITING) {
-            throw new GameAllreadyStartedException();
-        } else {
-            IPlayer newPlayer = new Player(name, this.color.pop());
-            this.addPlayer(newPlayer);
-        }
-    }
-
-    /**
      * Pürft, ob das Spiel gewonnen wurde
      * @return Wenn gewonnen true
      */
@@ -290,8 +294,8 @@ public class Game extends UnicastRemoteObject implements IGame {
      * Wenn keiner gewonnen hat gibt die Methode null zurück
      * @return Sieger des Spiels
      */
-    public IPlayer getWinner () throws RemoteException{
-        for(IPlayer player : players){
+    public Player getWinner () throws RemoteException{
+        for(Player player : players){
             if(player.getOrder().isCompleted()){
                 return player;
             }
@@ -306,8 +310,8 @@ public class Game extends UnicastRemoteObject implements IGame {
      * @throws PlayerNotExsistInGameException Wenn Spieler nicht gefunden wird
      * @throws RemoteException
      */
-    public IPlayer getPlayer(final String name) throws PlayerNotExsistInGameException, RemoteException{
-        for (IPlayer player: players){
+    public Player getPlayer(final String name) throws PlayerNotExsistInGameException, RemoteException{
+        for (Player player: players){
             if(player.getName().equals(name)){
                 return player;
             }
@@ -320,7 +324,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      * @param r
      */
-    public void setCurrentRound(IRound r) {
+    public void setCurrentRound(Round r) {
         this.currentRound = r;
     }
 
@@ -338,7 +342,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      * @param players
      */
-    public void addPlayers(List<IPlayer> players) {
+    public void addPlayers(List<Player> players) {
         this.players.addAll(players);
     }
 
@@ -347,21 +351,8 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      * @return
      */
-    public IMap getMap() throws RemoteException{
+    public Map getMap() throws RemoteException{
         return map;
-    }
-
-
-    /**
-     * Für dem Spiel einen neuen Spieler hinzu
-     *
-     * @param player - neuer Spieler
-     */
-    private void addPlayer(final IPlayer player)throws RemoteException {
-        if (player.getColor() == null){
-            player.setColor(this.color.pop());
-        }
-        this.players.add(player);
     }
 
     /**
@@ -369,14 +360,18 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      * @param name
      */
-    public IPlayer addPlayer(String name) throws PlayerNameAlreadyChooseException,RemoteException{
+    public Player addPlayer(String name) throws GameAllreadyStartedException, PlayerNameAlreadyChooseException,RemoteException{
+        if (this.getCurrentGameState() != IGame.gameStates.WAITING) {
+            throw new GameAllreadyStartedException();
+        }
 
-        for (IPlayer player: this.getPlayers()){
+        for (Player player: this.players){
             if (player.getName().equals(name)){
                 throw new PlayerNameAlreadyChooseException(name);
             }
         }
-        IPlayer player = new Player(name);
+
+        Player player = new Player(name);
         this.players.add(player);
         return player;
     }
@@ -384,7 +379,14 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * @return Liste der Spieler
      */
-    public List<IPlayer> getPlayers() throws RemoteException{
+    public List<? extends IPlayer> getPlayers() throws RemoteException{
+        return this.players;
+    }
+
+    /**
+     * @return Liste der Spieler
+     */
+    public List<Player> getPlayersReal(){
         return this.players;
     }
 
@@ -411,5 +413,12 @@ public class Game extends UnicastRemoteObject implements IGame {
      */
     public boolean save () throws PersistenceEndpointIOException,RemoteException{
         return this.persistenceEndpoint.save(this);
+    }
+
+    /**
+     * ToString Methode
+     */
+    public String toStringRemote() throws RemoteException{
+        return this.toString();
     }
 }

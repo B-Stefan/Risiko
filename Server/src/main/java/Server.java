@@ -4,6 +4,7 @@ import persistence.PersistenceManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
 
 /**
  * Diese Server Klasse startet den Server und stellt den GameManagerService über RMI bereit
@@ -26,7 +27,6 @@ public class Server {
 
             System.out.println("Risiko-Server läuft...");
         } catch (final RemoteException e) {
-
             e.printStackTrace();
         }
     }

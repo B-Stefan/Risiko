@@ -142,11 +142,11 @@ public class JCurrentStateInfoGUI extends JPanel {
                         IPlayer currentPlayer = currentTurn.getPlayer();
                         switch (currentTurn.getCurrentStep()){
                             case DISTRIBUTE:
-                                textAreaMsg = String.format(currentPlayer + " %n %n du musst noch " +currentTurn.getNewArmysSize() + " Einheiten verteilen.");break;
+                                textAreaMsg = String.format(currentPlayer.toStringRemote() + " %n %n du musst noch " +currentTurn.getNewArmysSize() + " Einheiten verteilen.");break;
                             case FIGHT:
-                                textAreaMsg = currentPlayer + "Du darfst angreifen ";break;
+                                textAreaMsg = currentPlayer.toStringRemote() + "Du darfst angreifen ";break;
                             case MOVE:
-                                textAreaMsg = currentPlayer + "du darfst nur noch Einheiten bewegen";break;
+                                textAreaMsg = currentPlayer.toStringRemote() + "du darfst nur noch Einheiten bewegen";break;
                         }
                     }
                 }catch (GameNotStartedException e) {

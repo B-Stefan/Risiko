@@ -1,21 +1,23 @@
 package interfaces.data;
 
+import interfaces.IToStringRemote;
+
 import java.awt.*;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface IMap extends Remote, Serializable {
+public interface IMap extends Remote, Serializable, IToStringRemote {
     /**
      * Gibt die Liste aller Countries zurück
      * @return Liste aller Counties
      */
-    public ArrayList<ICountry> getCountries() throws RemoteException;
+    public List<? extends ICountry> getCountries() throws RemoteException;
 
     /**
      * Berechnet den Benous, den ein Spieler an Einheiten bekommt f�r die komplette Einnahme des jeweilligen Kontinents
@@ -43,7 +45,7 @@ public interface IMap extends Remote, Serializable {
      *
      * @return Alle Kontinente dieser Karte
      */
-    public ArrayList<IContinent> getContinents()throws RemoteException;
+    public List<? extends IContinent> getContinents()throws RemoteException;
 
     /**
      * Getter für die ID

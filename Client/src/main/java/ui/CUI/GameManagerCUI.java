@@ -40,15 +40,14 @@ public class GameManagerCUI extends CUI {
             int i = 0;
             List<IGame> gameList;
             try {
-                gameList = gameManager.getGameList();
+                gameList = gameManager.getSavedGameList();
+                for(IGame game: gameList){
+                    i++;
+                    IO.println(i + ". "+game.toStringRemote());
+                }
             }catch (PersistenceEndpointIOException | RemoteException e ){
                 IO.println(e.getMessage());
                 return;
-            }
-
-            for(IGame game: gameList){
-                i++;
-                IO.println(i + ". "+game);
             }
         }
 
@@ -78,39 +77,7 @@ public class GameManagerCUI extends CUI {
 
     }
 
-    /**
-     * Listener, um ein Spiel zu speichern.
-     */
-    public class SaveGameCommandListener extends CommandListener {
 
-        public SaveGameCommandListener() {
-            super("save","Speichert ein Spiel");
-            this.addArgument(new CommandListenerArgument("listNumberOfGameToSave"));
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-
-            int index;
-            try {
-                index = this.getArgument("listNumberOfGameToSave").toInt();
-            }catch (InvalidCommandListernArgumentException e){
-                IO.println(e.getMessage());
-                return;
-            }
-
-            index--;
-
-            try {
-                gameManager.saveGame(index);
-            }catch (PersistenceEndpointIOException | RemoteException e){
-                IO.println(e.getMessage());
-                return;
-            }
-            IO.println("Game wurde gespeichert");
-        }
-
-    }
 
 
     /**
@@ -122,7 +89,6 @@ public class GameManagerCUI extends CUI {
         this.gameManager = gameManager;
         this.addCommandListener(new ShowGamesCommandListener());
         this.addCommandListener(new NewGameCommandListener());
-        this.addCommandListener(new SaveGameCommandListener());
 
     }
 
@@ -144,7 +110,7 @@ public class GameManagerCUI extends CUI {
         }
         List<IGame> games;
         try {
-            games = this.gameManager.getGameList();
+            games = this.gameManager.getSavedGameList();
         }catch (PersistenceEndpointIOException | RemoteException e){
             IO.println(e.getMessage());
             return;

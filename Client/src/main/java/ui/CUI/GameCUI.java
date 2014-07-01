@@ -28,14 +28,35 @@ public class GameCUI extends CUI implements Runnable {
     private final IGame game;
 
     /**
+     * Listener, um ein Spiel zu speichern.
+     */
+    public class SaveGameCommandListener extends CommandListener {
+
+        public SaveGameCommandListener() {
+            super("save","Speichert ein Spiel");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            try {
+                GameCUI.this.game.save();
+            }catch (PersistenceEndpointIOException | RemoteException e){
+                IO.println(e.getMessage());
+                return;
+            }
+            IO.println("Game wurde gespeichert");
+        }
+
+    }
+    /**
      * Klasse für Event-Listener zum hinzufügen eines Spielers
      */
-    public class addPlayerCommand extends CommandListener {
+    public class AddPlayerCommand extends CommandListener {
 
         /**
          * Konstruktor, der Name und Argumente des Befehls festlegen
          */
-        public addPlayerCommand() {
+        public AddPlayerCommand() {
             super("addPlayer","Fügt einen Spieler dem Spiel hinzu");
             this.addArgument(new CommandListenerArgument("playerName"));
         }
@@ -61,9 +82,9 @@ public class GameCUI extends CUI implements Runnable {
             }
 
             try {
-                GameCUI.this.game.onPlayerAdd(name);
+                GameCUI.this.game.addPlayer(name);
             }
-            catch (GameAllreadyStartedException | RemoteException e ){
+            catch (GameAllreadyStartedException | PlayerNameAlreadyChooseException | RemoteException e ){
                 IO.println(e.getMessage());
                 return;
             }
@@ -108,7 +129,7 @@ public class GameCUI extends CUI implements Runnable {
 
                try {
                    IO.printHeadline("");
-                   IO.printHeadline(game.getWinner().toString());
+                   IO.printHeadline(game.getWinner().toStringRemote());
                    IO.printHeadline("");
                }catch (RemoteException ex){
                    IO.println(ex.getMessage());
@@ -124,12 +145,12 @@ public class GameCUI extends CUI implements Runnable {
     /**
      * Klasse für Event-Listenerz zum Starten des Spiels
      */
-    public class startGameCommand extends CommandListener {
+    public class StartGameCommand extends CommandListener {
 
         /**
          * Legt den Befehl fest, der zum starten des Spiels verwendet wird
          */
-        public startGameCommand() {
+        public StartGameCommand() {
             super("startGame", "Started das Spiel");
 
         }
@@ -140,7 +161,7 @@ public class GameCUI extends CUI implements Runnable {
         private void printPlayers () throws RemoteException{
             for (IPlayer player : GameCUI.this.game.getPlayers()) {
                 int index = (GameCUI.this.game.getPlayers().indexOf(player) + 1);
-                IO.println(index + ". Player: " + player.toString());
+                IO.println(index + ". Player: " + player.toStringRemote());
             }
         }
 
@@ -199,9 +220,10 @@ public class GameCUI extends CUI implements Runnable {
         this.game = game;
 
         //Hinzufügen der Listener
-        this.addCommandListener(new addPlayerCommand());
-        this.addCommandListener(new startGameCommand());
+        this.addCommandListener(new AddPlayerCommand());
+        this.addCommandListener(new StartGameCommand());
         this.addCommandListener(new NextRoundCommandListener());
+        this.addCommandListener(new SaveGameCommandListener());
     }
 
     /**

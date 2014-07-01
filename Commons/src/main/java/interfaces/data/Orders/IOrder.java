@@ -1,5 +1,6 @@
 package interfaces.data.Orders;
 
+import interfaces.IToStringRemote;
 import interfaces.data.IPlayer;
 
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import java.rmi.RemoteException;
  * sehr geringe Gemeinsamkeiten in der implementierung besitzten.
  *
  */
-public interface IOrder extends Remote, Serializable {
+public interface IOrder extends Remote, Serializable, IToStringRemote {
     /**
      *
      * @return Wenn die Order komplett ist => True

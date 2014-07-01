@@ -1,7 +1,9 @@
 package ui.GUI.gamePanels;
 
 import java.awt.GridLayout;
+import java.rmi.RemoteException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 
 import javax.swing.JButton;
@@ -18,7 +20,7 @@ public class JCardInfo extends JFrame{
 	private JPanel context;
 	private JButton exchange;
 	
-	public JCardInfo(IPlayer player){
+	public JCardInfo(IPlayer player) throws RemoteException{
 		this.player = player;
 		this.context = new JPanel();
 		this.context.setLayout(new GridLayout(2,1));
@@ -28,21 +30,21 @@ public class JCardInfo extends JFrame{
 		setContext();
 	}
 	
-	private void setContext(){
+	private void setContext() throws RemoteException{
 		update();
 		setExchange();
 		this.context.add(this.cardInfo);
 		this.context.add(this.exchange);
 	}
 	
-	public void update(){
-		Stack<ICard> cards = this.player.getCards();
+	public void update() throws RemoteException{
+		List<? extends ICard> cards = this.player.getCards();
 
         String msg = "";
-        Iterator<ICard> iter = cards.iterator();
+        Iterator<? extends ICard> iter = cards.iterator();
         while (iter.hasNext()){
             ICard currentCard = iter.next();
-            msg += String.format(currentCard + "%n");
+            msg += String.format(currentCard.toStringRemote() + "%n");
         }
 
 		this.cardInfo.setText(msg);

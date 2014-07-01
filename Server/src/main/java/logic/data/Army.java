@@ -16,20 +16,20 @@ public class Army extends UnicastRemoteObject implements IArmy{
     /**
      * Der Owner beschreibt wem diese Armee im Spiel zugeordnet wird.
      */
-	private final IPlayer owner;
+	private final Player owner;
 
 
     /**
      * Die Position spiegelt dabei immer die aktuelle Position dieser Armee da
      */
-	private ICountry position;
+	private Country position;
 
 
     /**
      * Erstellt eine Armee für das Spiel, der Besitzer kann nachträglich nicht geändert werden
      * @param player Besitzer dieser Armee
      */
-	public Army(final IPlayer player) throws RemoteException{
+	public Army(final Player player) throws RemoteException{
 		this.owner = player;
 	}
 
@@ -43,9 +43,9 @@ public class Army extends UnicastRemoteObject implements IArmy{
      *
 	 * @param country Übergiebt die (neue) Position der Armee
 	 *
-     * @see Country#addArmy(Army)
+     * @see Country#(Army)
      */
-	public void setPosition(ICountry country)  throws CountriesNotConnectedException, RemoteException{
+	public void setPosition(final Country country)  throws CountriesNotConnectedException, RemoteException{
 
         //Armee sitzt bereits auf der Position
         if(country == this.position){
@@ -78,7 +78,7 @@ public class Army extends UnicastRemoteObject implements IArmy{
      * Gibt den Besitzer der Armee wieder
      * @return  Besitzer der Armee
      */
-    public IPlayer getOwner() throws RemoteException{
+    public Player getOwner() throws RemoteException{
         return this.owner;
     }
 
@@ -87,7 +87,7 @@ public class Army extends UnicastRemoteObject implements IArmy{
 	 * Getter für die Position
 	 * @return position Aktuelle Position der Armee, kann null zurückgeben.
 	 */
-	public ICountry getPosition()throws RemoteException{
+	public Country getPosition()throws RemoteException{
 		return this.position;
 	}
 	

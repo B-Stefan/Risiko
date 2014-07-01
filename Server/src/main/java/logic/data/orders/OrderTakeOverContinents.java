@@ -13,11 +13,11 @@ public class OrderTakeOverContinents extends AbstractOrder implements IOrder {
 	/**
 	 * Erster Kontinent, der erobert werden soll
 	 */
-	private IContinent continentOne;
+	private final Continent continentOne;
 	/**
 	 * zweiter Kontinent, der erobert werden soll
 	 */
-	private IContinent continentTwo;
+	private final Continent continentTwo;
 
 	/**
 	 * der zweite Constructor ist für die Erstellung einer Order, bei der nur zwei bestimmte Kontinente übernommen werden müssen
@@ -26,11 +26,10 @@ public class OrderTakeOverContinents extends AbstractOrder implements IOrder {
 	 * @param continent2 zweiter zu übernehmender Kontinent
 	 * @param agend Spieler, dem die Order zugewiesen ist
 	 */
-	public OrderTakeOverContinents(IContinent continent1, IContinent continent2, IPlayer agend)throws RemoteException {
+	public OrderTakeOverContinents(final Continent continent1, final Continent continent2, Player agend)throws RemoteException {
         super(agend);
 		this.continentOne = continent1;
 		this.continentTwo = continent2;
-
 	}
 	
 	/**

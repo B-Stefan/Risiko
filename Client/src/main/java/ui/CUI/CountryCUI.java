@@ -9,6 +9,7 @@ import ui.CUI.utils.CommandListener;
 import ui.CUI.utils.CommandListenerArgument;
 import ui.CUI.utils.IO;
 import ui.CUI.exceptions.InvalidCommandListernArgumentException;
+import ui.GUI.utils.JExceptionDialog;
 
 
 import java.awt.event.ActionEvent;
@@ -31,10 +32,16 @@ public class CountryCUI extends CUI {
 
         @Override
         public void actionPerformed(final ActionEvent actionEvent) {
-            IO.println("Das Land gehört " + country.getOwner() + " und ist mit: " + country.getNumberOfArmys() + " Armeen besetzt");
-            IO.println("Nachfolgend die Nachbarn des Landes");
-            for(ICountry c : country.getNeighbors()){
-                IO.println(c.toString());
+            try {
+                IO.println("Das Land gehört " + country.getOwner() + " und ist mit: " + country.getNumberOfArmys() + " Armeen besetzt");
+                IO.println("Nachfolgend die Nachbarn des Landes");
+                for(ICountry c : country.getNeighbors()){
+                    IO.println(c.toStringRemote());
+                }
+            }catch (RemoteException e){
+                e.printStackTrace();
+                IO.println(e.getMessage());
+                return;
             }
         }
     }
@@ -59,19 +66,33 @@ public class CountryCUI extends CUI {
                 try {
                     turn.placeNewArmy(country);
                 }catch (NotEnoughNewArmysException e){
-                    IO.println("Es konnten leider nur " + i + " Armeen auf dem Land (" + country + ") gesetzt werden");
+                    String name;
+                    try {
+                        name = country.toStringRemote();
+                    }catch (RemoteException ex){
+                        ex.printStackTrace();
+                        IO.println(ex.getMessage());
+                        return;
+                    }
+                    IO.println("Es konnten leider nur " + i + " Armeen auf dem Land (" + name + ") gesetzt werden");
                     return;
                 }
                 catch (TurnNotAllowedStepException e ){
                     IO.println(e.getMessage());
                     return;
                 }
-                catch (ToManyNewArmysException | TurnNotInCorrectStepException | NotTheOwnerException | RemoteException e ){
+                catch (ToManyNewArmysException | TurnNotInCorrectStepException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException e ){
                     IO.println(e.getMessage());
                     return;
                 }
             }
-            IO.println("Es wurden " + numberOfArmys + " Armeen auf (" + country + ") gesetzt");
+
+            try{
+                IO.println("Es wurden " + numberOfArmys + " Armeen auf (" + country.toStringRemote() + ") gesetzt");
+            }catch (RemoteException e){
+                e.printStackTrace();
+                IO.println(e.getMessage());
+            }
         }
     }
     public class FightListener extends CommandListener {
@@ -93,9 +114,16 @@ public class CountryCUI extends CUI {
                 IO.println(e.getMessage());
                 return;
             }
+            IFight fight;
+            ICountry found;
+            try{
+                found = country.getNeighbor(target);
+            }catch (RemoteException e){
+                e.printStackTrace();
+                IO.println(e.getMessage());
+                return;
+            }
 
-            IFight fight = null;
-            ICountry found = country.getNeighbor(target);
             if (found == null){
                 IO.println("Leider konnte Ihr Land " + target + " nicht gefunden werden");
                 return;
@@ -108,7 +136,7 @@ public class CountryCUI extends CUI {
                 }catch (TurnNotInCorrectStepException e){
                     IO.println(e.getMessage());
                     return;
-                }catch (ToManyNewArmysException | NotTheOwnerException | RemoteException e) {
+                }catch (ToManyNewArmysException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException e) {
                     IO.println(e.getMessage());
                     return;
                 }

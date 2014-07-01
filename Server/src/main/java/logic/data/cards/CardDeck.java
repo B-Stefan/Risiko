@@ -1,8 +1,5 @@
 package logic.data.cards;
 
-import interfaces.data.ICountry;
-import interfaces.data.IPlayer;
-import interfaces.data.cards.ICard;
 import interfaces.data.cards.ICardDeck;
 
 import java.rmi.RemoteException;
@@ -14,15 +11,15 @@ import logic.data.Player;
 import exceptions.NotEnoughCardsToExchangeException;
 
 public class CardDeck extends UnicastRemoteObject implements ICardDeck {
-	private Stack<ICard> deck = new Stack<ICard>();
+	private Stack<Card> deck = new Stack<Card>();
 	private Stack<Integer> bonus = new Stack<Integer>();
 	
-	public CardDeck(ArrayList<ICountry> arrayList) throws RemoteException{
+	public CardDeck(ArrayList<Country> arrayList) throws RemoteException{
 		builtDeck(arrayList);
 	}
 	
-	private void builtDeck(ArrayList<ICountry> cos) throws RemoteException{
-		for(ICountry c : cos){
+	private void builtDeck(ArrayList<Country> cos) throws RemoteException{
+		for(Country c : cos){
 			if(deck.isEmpty()||this.deck.size() == 1){
 				this.deck.add(new Card(c, "Joker"));
 			}else if(this.deck.lastElement().getType() == "Kanone"){
@@ -49,30 +46,30 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 		}
 		return bo;
 	}
-	public void drawCard(IPlayer pl) throws RemoteException{
+	public void drawCard(Player pl) throws RemoteException{
 		pl.drawNewCard(deck.pop());
 	}
-	public boolean exchangeCards(IPlayer pl) throws NotEnoughCardsToExchangeException, RemoteException{
+	public boolean exchangeCards(Player pl) throws NotEnoughCardsToExchangeException, RemoteException{
 		if(pl.getCards().size()<3){
 			throw new NotEnoughCardsToExchangeException();
 		}
 		int i = pl.getCards().size() - 1;
-		Stack<ICard> kanonen = new Stack<ICard>();
-		Stack<ICard> reiter = new Stack<ICard>();
-		Stack<ICard> soldaten = new Stack<ICard>();
-		Stack<ICard> joker = new Stack<ICard>();
+		Stack<Card> kanonen     = new Stack<Card>();
+		Stack<Card> reiter      = new Stack<Card>();
+		Stack<Card> soldaten    = new Stack<Card>();
+		Stack<Card> joker       = new Stack<Card>();
 		while(i>=0){
 			if(pl.getCards().get(i).getType() == "Kanone"){
-				kanonen.push(pl.getCards().get(i));
+				kanonen.push(pl.getCardsReal().get(i));
 			}
 			if(pl.getCards().get(i).getType() == "Reiter"){
-				reiter.push(pl.getCards().get(i));
+				reiter.push(pl.getCardsReal().get(i));
 			}
 			if(pl.getCards().get(i).getType() == "Soldat"){
-				soldaten.push(pl.getCards().get(i));
+				soldaten.push(pl.getCardsReal().get(i));
 			}
 			if(pl.getCards().get(i).getType() == "Joker"){
-				joker.push(pl.getCards().get(i));
+				joker.push(pl.getCardsReal().get(i));
 			}
 			i--;
 		}
@@ -126,17 +123,23 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 		}
 		return false;
 	}
-	private void putBackCard(IPlayer pl, ICard c) throws RemoteException{
+	private void putBackCard(Player pl, Card c) throws RemoteException{
 		pl.removeCard(c);
 	}
-	public Stack<ICard> getCards()throws RemoteException{
-		return this.deck;
+	public Stack<Card> getCards()throws RemoteException{
+        Stack<Card> reStack = new Stack<Card>();
+		Iterator<Card> iter = this.deck.iterator();
+        while (iter.hasNext()){
+            reStack.push(iter.next());
+        }
+        Collections.reverse(reStack);
+        return reStack;
 	}
 	public Stack<Integer> getBonusList() throws RemoteException{
 		return this.bonus;
 	}
 	
-	public void returnCards(ICard card1, ICard card2, ICard card3, IPlayer pl) throws RemoteException{
+	public void returnCards(Card card1, Card card2, Card card3, Player pl) throws RemoteException{
 		this.deck.push(card1);
 		putBackCard(pl, card1);
 		this.deck.push(card2);

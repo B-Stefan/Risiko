@@ -1,4 +1,5 @@
 package interfaces.data;
+import interfaces.IToStringRemote;
 import interfaces.data.IArmy;
 import interfaces.data.IPlayer;
 
@@ -7,26 +8,15 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import exceptions.CountriesNotConnectedException;
 import exceptions.CountryNotInListException;
 
 
-public interface ICountry extends Remote, Serializable {
+public interface ICountry extends Remote, Serializable, IToStringRemote {
 
-    /**
-     * Verbindet 2 Länder bidirektional
-     *
-     * @param connectTo Das Land zu dem eine Verbindung hergestellt werden soll
-     */
-    public void connectTo(ICountry connectTo) throws RemoteException;
-    /**
-     * Prüft, ob das Land mit dem aktuellen Land verbunden ist
-     * @param countryToCheck Land das geprüft werden soll
-     * @return True wenn das Land verbunden ist
-     */
-    public boolean isConnected(ICountry countryToCheck) throws RemoteException;
     /**
      * Gibt den das Land mit der entsprechenden UUID zurück
      * @param id UUID des Landes was benötigt wird
@@ -43,30 +33,7 @@ public interface ICountry extends Remote, Serializable {
      * Gibt alle Nachbarn des Landes zurück
      * @return Nachbarn des Landes
      */
-    public ArrayList<ICountry> getNeighbors () throws RemoteException;
-    /**
-     * Setzt den aktuellen Besitzer des Lands
-     *
-     * @param p Spieler, der als Owener gesetzt werden soll
-     */
-    public void setOwner(IPlayer p) throws RemoteException;
-    /**
-     * Ändert den Owner des Landes und entfehrnt gleichzeitig das Land aus der Liste des urspr�nglichen Owners
-     * @param newOwner
-     * @throws CountryNotInListException
-     */
-    public void changeOwner(IPlayer newOwner) throws CountryNotInListException, RemoteException;
-    /**
-     *Fügt die Armee a in die Liste des Spielers hin zu
-     * @param a in die Liste der Armeen einzuf�gende Armee
-     */
-    public void addArmy(IArmy a) throws CountriesNotConnectedException, RemoteException;
-    /**
-     * Löscht die Armee auf dem Land
-     * @param army Armee, die Gelöscht werden soll
-     * @throws CountriesNotConnectedException
-     */
-    public void removeArmy(IArmy army) throws CountriesNotConnectedException, RemoteException;
+    public List<? extends ICountry> getNeighbors () throws RemoteException;
     /**
     *
     * @return Anzahl der Armeen auf dem Land
@@ -88,11 +55,11 @@ public interface ICountry extends Remote, Serializable {
      * @return Die Farbe des Countrys
      */
     public Color getColor() throws RemoteException;
+
     /**
-     * Getter ArmyList des Spielers
-     * @return armyList. Liste der Armeen des Spielers
+     * @return DIe Anzahl der Armeen auf dem Land
      */
-    public ArrayList<IArmy> getArmyList() throws RemoteException;
-    
-    
+    public int getArmySize() throws RemoteException;
+
+
 }

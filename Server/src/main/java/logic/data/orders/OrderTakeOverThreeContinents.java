@@ -1,7 +1,5 @@
 package logic.data.orders;
 
-import interfaces.data.IContinent;
-import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
 
 import java.rmi.RemoteException;
@@ -15,19 +13,16 @@ public class OrderTakeOverThreeContinents extends AbstractOrder implements IOrde
 	/**
 	 * Liste alle Kontoinente zur Prüfung des dritten Kontinents
 	 */
-	private List<IContinent> continents = new ArrayList<IContinent>();
+	private final List<Continent> continents;
 	/**
 	 * Erster Kontinent, der erobert werden soll
 	 */
-	private IContinent continentOne;
+	private final Continent continentOne;
 	/**
 	 * zweiter Kontinent, der erobert werden soll
 	 */
-	private IContinent continentTwo;
-	/**
-	 * Der Spieler, dem die Order zugewiesen ist
-	 */
-	private IPlayer agent;
+	private final Continent continentTwo;
+
 	
 	/**
 	 * der erste Constructor ist für die Erstellung von Orders, bei denen nicht nur zwei Kontinente erobert werden sollen, sondern noch ein zusätzlicher 
@@ -36,7 +31,7 @@ public class OrderTakeOverThreeContinents extends AbstractOrder implements IOrde
 	 * @param agend Spieler, dem die Order zugewiesen ist
 	 * @param arrayList die Liste aller Kontinente
 	 */
-	public OrderTakeOverThreeContinents(IContinent contigent1, IContinent contigent2, IPlayer agend, ArrayList<IContinent> arrayList)throws RemoteException{
+	public OrderTakeOverThreeContinents(final Continent contigent1,final Continent contigent2,final Player agend, final List<Continent> arrayList)throws RemoteException{
 		super(agend);
         this.continentOne = contigent1;
 		this.continentTwo = contigent2;
@@ -48,7 +43,7 @@ public class OrderTakeOverThreeContinents extends AbstractOrder implements IOrde
 	 * @return True, wenn ein dritter Kontinent übernommen wurde, Flase wenn nicht
 	 */
 	private boolean thirdContinent()throws RemoteException{
-		for(IContinent c : this.continents){
+		for(Continent c : this.continents){
 			if(c != this.continentOne && c != this.continentTwo && c != null){
 				if(c.getCurrentOwner() == this.agent){
 					return true;

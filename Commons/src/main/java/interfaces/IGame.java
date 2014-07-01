@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface IGame extends Remote, Serializable {
+public interface IGame extends Remote, Serializable, IToStringRemote {
 
     public static enum gameStates {
         WAITING, // Wait for start input
@@ -64,14 +64,6 @@ public interface IGame extends Remote, Serializable {
     public void onPlayerDelete(final IPlayer player) throws PlayerNotExsistInGameException,RemoteException;
 
 
-
-    /**
-     * Wird ausgelöst, sobald über die GUI ein neuer Spieler hinzugefügt wird.
-     *
-     * @param name - Der Name des neuen Spielers
-     */
-    public void onPlayerAdd(final String name) throws GameAllreadyStartedException,RemoteException;
-
     /**
      * Gibt den Gewinner zurück, der das Spiel gewonnen hat
      * Wenn keiner gewonnen hat gibt die Methode null zurück
@@ -94,7 +86,7 @@ public interface IGame extends Remote, Serializable {
      * @throws PlayerNameAlreadyChooseException
      * @throws RemoteException
      */
-    public IPlayer addPlayer(final String name) throws PlayerNameAlreadyChooseException,RemoteException;
+    public IPlayer addPlayer(final String name) throws GameAllreadyStartedException,PlayerNameAlreadyChooseException,RemoteException;
 
     /**
      * Gibt den Spieler zum angegebenen Namen zurück
@@ -108,7 +100,7 @@ public interface IGame extends Remote, Serializable {
     /**
      * @return Liste der Spieler
      */
-    public List<IPlayer> getPlayers() throws RemoteException;
+    public List<? extends IPlayer> getPlayers() throws RemoteException;
 
 
     /**

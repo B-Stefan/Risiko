@@ -14,15 +14,6 @@ import exceptions.NotEnoughCardsToExchangeException;
  * Created by Stefan on 29.06.14.
  */
 public interface ICardDeck extends Remote, Serializable {
-	public int calculateBonus()throws RemoteException;
-	
-	public void drawCard(IPlayer p) throws RemoteException;
-	
-	public boolean exchangeCards(IPlayer pl) throws NotEnoughCardsToExchangeException, RemoteException;
 
-	public Stack<ICard> getCards()throws RemoteException;
-	
-	public Stack<Integer> getBonusList()throws RemoteException;
-	
-	public void returnCards(ICard card1, ICard card2, ICard card3, IPlayer pl)throws RemoteException;
+
 }

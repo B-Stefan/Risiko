@@ -23,7 +23,7 @@ public class ServerConfiguration {
      *             [1] - PORT
      *             [2] - GAME_SERVICE_NAME
      * @return
-     * @throws InvalidArgumentException
+     * @throws IllegalArgumentException
      * @throws ClassCastException
      */
     public static ServerConfiguration fromArgs(String[] args) throws IllegalArgumentException, ClassCastException{

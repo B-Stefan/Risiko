@@ -7,6 +7,7 @@ import org.magicwerk.brownies.collections.GapList; //Sehr schnelle Implementeiru
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,16 +44,16 @@ public class MapLoader {
        Dimension dim = new Dimension(400,400); // Dimension für die Background Bilder ‚
 
        //Load Userinterface Bild
-       this.frontImage = (new ImageIcon(getClass().getResource("/resources/Map_Vg.png"))).getImage();
+       this.frontImage = (new ImageIcon(getClass().getResource("/Map_Vg.png"))).getImage();
 
        //Load Border Background
        this.backgroundCountryBorderImg = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_INT_ARGB);
-       this.backgroundCountryBorderImg.getGraphics().drawImage(new ImageIcon(getClass().getResource("/resources/Map_Bg.png")).getImage(), 0, 0, dim.width, dim.height, null);
+       this.backgroundCountryBorderImg.getGraphics().drawImage(new ImageIcon(getClass().getResource("/Map_Bg.png")).getImage(), 0, 0, dim.width, dim.height, null);
 
 
        //Load Point
        this.backgroundCountryInfoImg = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_INT_ARGB);
-       this.backgroundCountryInfoImg.getGraphics().drawImage(new ImageIcon(getClass().getResource("/resources/Map_Bg_Info.png")).getImage(), 0, 0, dim.width, dim.height, null);
+       this.backgroundCountryInfoImg.getGraphics().drawImage(new ImageIcon(getClass().getResource("/Map_Bg_Info.png")).getImage(), 0, 0, dim.width, dim.height, null);
     }
 
     /**
@@ -61,7 +62,7 @@ public class MapLoader {
      * @param height Breite auf die die Punkte skaliert werden sollen
      * @return Pro Punkt ein Land
      */
-    public HashMap<Point,ICountry> getCountryInfoCoordinates(int width, int height){
+    public HashMap<Point,ICountry> getCountryInfoCoordinates(int width, int height) throws RemoteException{
         BufferedImage img = this.backgroundCountryInfoImg;
         HashMap<Point,ICountry> positions = new HashMap<Point,ICountry>();
         List colorList = GapList.create(); //Sehr schnelle Implementeirung für eine Array-List
@@ -114,7 +115,7 @@ public class MapLoader {
      * @param height Höhe auf dem der Y Wert bassiert
      * @return Land das sich an diesen Koordinaten in Relation zur width und height befindet
      */
-    public ICountry getCountry(int x, int y, int width, int height){
+    public ICountry getCountry(int x, int y, int width, int height) throws RemoteException{
 
         //Faktoren für Berechung der globalen x,y Koordinaten ermitteln
         double xFactor = width / (double)this.backgroundCountryBorderImg.getWidth()  ;

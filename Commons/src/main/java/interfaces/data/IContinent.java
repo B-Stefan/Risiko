@@ -1,13 +1,20 @@
 package interfaces.data;
 
+import interfaces.IToStringRemote;
+
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Map;
 import java.util.UUID;
 
-public interface IContinent extends Remote, Serializable {
+public interface IContinent extends Remote, Serializable, IToStringRemote {
 
+    /**
+     * Gibt den Namen des Kontinents zurück
+     * @return
+     * @throws RemoteException
+     */
 	public String getName() throws RemoteException;
 
 
@@ -17,19 +24,12 @@ public interface IContinent extends Remote, Serializable {
      */
     public IPlayer getCurrentOwner() throws RemoteException;
 
-	/**
-	 * Fügt dem Kontinent ein Land hinzu
-	 * @param player Der Land, der dem Kontinent hinzugefügt werden soll
-	 */
-	public void addCountry(ICountry player) throws RemoteException;
 
     /**
-     * Löscht aus dem Kontinent ein Land
-     * @param countryToDelete Land das gelöscht werden soll
+     * Holt den Bonus des Kontinents
      * @return
+     * @throws RemoteException
      */
-    public boolean removeCountry (ICountry countryToDelete) throws RemoteException;
-
     public int getBonus() throws RemoteException;
 
 }

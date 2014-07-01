@@ -1,5 +1,6 @@
 package interfaces;
 
+import exceptions.GameNotFoundException;
 import exceptions.PersistenceEndpointIOException;
 
 import java.io.Serializable;
@@ -10,14 +11,21 @@ import java.util.List;
 /**
  * Created by Stefan on 29.06.14.
  */
-public interface IGameManager extends Remote, Serializable {
+public interface IGameManager extends Remote, Serializable, IToStringRemote {
 
     /**
      *
      * @return Gibt die Liste aller gespeicherten Spiele zurück
      * @throws exceptions.PersistenceEndpointIOException
      */
-    public List<IGame> getGameList() throws PersistenceEndpointIOException, RemoteException;
+    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException;
+
+    /**
+     *
+     * @return Gibt eine Liste aller aktuell laufenden Spiele zurück, laufend bedeutet zur Laufzeit des Server erzeugten
+     * @throws exceptions.PersistenceEndpointIOException
+     */
+    public List<IGame> getRunningGameList() throws PersistenceEndpointIOException, RemoteException;
 
 
     /**
@@ -32,7 +40,7 @@ public interface IGameManager extends Remote, Serializable {
      * @param g  Spiel das gespeichert werden soll
      * @throws PersistenceEndpointIOException
      */
-    public void saveGame(IGame g) throws PersistenceEndpointIOException, RemoteException;
+    public void saveGame(IGame g) throws PersistenceEndpointIOException, GameNotFoundException,RemoteException;
 
 
     /**
@@ -42,6 +50,5 @@ public interface IGameManager extends Remote, Serializable {
      * @throws IndexOutOfBoundsException
      */
     public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException;
-
 
     }

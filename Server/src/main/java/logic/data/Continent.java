@@ -24,12 +24,12 @@ public class Continent extends UnicastRemoteObject implements IContinent{
 	 * Eine ArrayLsit mit den Ländern, die sich auf dem Kontinent befinden Länder
      * @return Gibt die Liste der Länder zurück, die disem Kontinent zugeordnet wurden
 	 */
-	private HashMap<UUID,ICountry> countrys = new HashMap<UUID, ICountry>();
+	private final HashMap<UUID,Country> countrys = new HashMap<UUID, Country>();
 
 	/**
 	 * der Bonus, der die Kontrolle des jeweiligen Kontinents einbringt für die neuen Armeen
 	 */
-	private int bonus;
+	private final int bonus;
 
     /**
      * Erstellt ein Kontinent
@@ -55,12 +55,12 @@ public class Continent extends UnicastRemoteObject implements IContinent{
      * Ermittelt den aktuellen Besitzter des Kontinents, prüft ob alle Länder den gleichen Player als owner haben
      * @return Gibt den Player zurück, der alle Länder auf diesem Kontinent besitzt, wenn der Kontinent geteilt wird wird null zurück gegeben.
      */
-    public IPlayer getCurrentOwner () throws RemoteException{
+    public Player getCurrentOwner () throws RemoteException{
         boolean playerChange = false;
-        IPlayer ruler = null;
+        Player ruler = null;
 
-        for (Map.Entry<UUID,ICountry> entry : countrys.entrySet()){
-            ICountry currentCountry = entry.getValue();
+        for (Map.Entry<UUID,Country> entry : countrys.entrySet()){
+            Country currentCountry = entry.getValue();
 
             if(ruler != null && ruler!= currentCountry.getOwner()){
                 playerChange = true;
@@ -82,7 +82,7 @@ public class Continent extends UnicastRemoteObject implements IContinent{
 	 * Fügt dem Kontinent ein Land hinzu
 	 * @param player Der Land, der dem Kontinent hinzugefügt werden soll
 	 */
-	public void addCountry(ICountry player) throws RemoteException{
+	public void addCountry(Country player) throws RemoteException{
 		if(!countrys.containsKey(player.getId())){
             countrys.put(player.getId(), player);
         }
@@ -114,6 +114,15 @@ public class Continent extends UnicastRemoteObject implements IContinent{
 			e.printStackTrace();
 			return "";
 		}
+    }
+
+    /**
+     * ToString methode, die Remote aufgerufen werden kann
+     * @return
+     * @throws RemoteException
+     */
+    public String toStringRemote() throws RemoteException{
+        return this.toString();
     }
 
 }

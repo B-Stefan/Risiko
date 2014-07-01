@@ -55,13 +55,13 @@ public class TurnCUI extends CUI {
             IPlayer currentPlayer;
             try{
                 currentPlayer = turn.getPlayer();
+                for(ICountry c : currentPlayer.getCountries()){
+                    IO.println(c.toStringRemote());
+                }
             }catch (RemoteException e){
                 e.printStackTrace();
                 IO.println(e.getMessage());
                 return;
-            }
-             for(ICountry c : currentPlayer.getCountries()){
-                IO.println(c.toString());
             }
 
         }
@@ -203,16 +203,17 @@ public class TurnCUI extends CUI {
             return;
         }
 
+        ICountry found;
 
         try {
             currentPlayer = this.turn.getPlayer();
+            found = currentPlayer.getCountry(countryName);
         }catch (RemoteException e){
             e.printStackTrace();
             IO.println(e.getMessage());
             return;
         }
         //Versuch das Land zu finden
-        ICountry found = currentPlayer.getCountry(countryName);
         if(found == null){
             IO.println("Ihr Land " + countryName + " konnte nicht gefunden werden.");
         }

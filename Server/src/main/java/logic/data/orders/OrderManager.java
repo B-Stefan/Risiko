@@ -1,13 +1,12 @@
 package logic.data.orders;
 
-import logic.data.Continent;
-import logic.data.Player;
-import exceptions.PlayerAlreadyHasAnOrderException;
-import interfaces.IGame;
-import interfaces.data.IContinent;
-import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
 import interfaces.data.Orders.IOrderManager;
+import logic.Game;
+import logic.data.Continent;
+import logic.data.Map;
+import logic.data.Player;
+import exceptions.PlayerAlreadyHasAnOrderException;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -91,8 +90,8 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
      * @param exclude Auszuschließendes Kontinent
      * @return Zufälliges Kontinent, außer das exclude
      */
-    private static IContinent getRandomContinent(final List<IContinent> allContinents,final IContinent exclude){
-        return (IContinent) getRandomFromList(allContinents,exclude);
+    private static Continent getRandomContinent(final List<Continent> allContinents,final Continent exclude){
+        return (Continent) getRandomFromList(allContinents,exclude);
     }
 
     /**
@@ -100,8 +99,8 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
      * @param allContinents Liste aller Kontinente
      * @return Zufälliges Kontinent
      */
-    private static IContinent getRandomContinent(List<IContinent> allContinents){
-        return (IContinent) getRandomFromList(allContinents);
+    private static Continent getRandomContinent(List<Continent> allContinents){
+        return (Continent) getRandomFromList(allContinents);
     }
 
 
@@ -111,8 +110,8 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
      * @param exclude Spieler der nicht ausgewählt werden darf
      * @return Zufälliger Spieler der nicht exclude entspricht
      */
-    private static IPlayer getRandomPlayer(final List<IPlayer> allPlayers,final  IPlayer exclude){
-        return (IPlayer) getRandomFromList(allPlayers,exclude);
+    private static Player getRandomPlayer(final List<Player> allPlayers,final  Player exclude){
+        return (Player) getRandomFromList(allPlayers,exclude);
     }
 
     /**
@@ -120,8 +119,8 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
      * @param allPlayers Liste aller Spieler
      * @return Zufälligen Spieler
      */
-    private static IPlayer getRandomPlayer(List<IPlayer> allPlayers){
-        return (IPlayer) getRandomFromList(allPlayers);
+    private static Player getRandomPlayer(List<Player> allPlayers){
+        return (Player) getRandomFromList(allPlayers);
     }
 
     /**
@@ -131,18 +130,18 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
      * @return Auftrag für den Spieler
      * @throws PlayerAlreadyHasAnOrderException
      */
-    public static IOrder createRandomOrder(final IPlayer agend, final IGame game) throws RemoteException{
+    public static IOrder createRandomOrder(final Player agend,final Game game, final Map map) throws RemoteException{
 
         try {
-            int randIndex = new Random().nextInt(orderTypes.length);
-            Class randOrderType = orderTypes[randIndex];
+            final int randIndex = new Random().nextInt(orderTypes.length);
+            final Class randOrderType = orderTypes[randIndex];
 
 
 
             if(randOrderType == OrderTakeOverContinents.class){
 
-                IContinent contigent1  = getRandomContinent(game.getMap().getContinents());
-                IContinent contigent2  = getRandomContinent(game.getMap().getContinents(), contigent1);
+                final Continent contigent1  = getRandomContinent(map.getContinentsReal());
+                final Continent contigent2  = getRandomContinent(map.getContinentsReal(), contigent1);
 
                 return new OrderTakeOverContinents(contigent1,contigent2,agend);
             }
@@ -152,13 +151,13 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
             }
 
             else if(randOrderType == OrderTerminatePlayer.class){
-                IPlayer playerToTerminate = getRandomPlayer(game.getPlayers(),agend);
+                final Player playerToTerminate = getRandomPlayer(game.getPlayersReal(),agend);
                 return new OrderTerminatePlayer(playerToTerminate,agend);
             }else if(randOrderType == OrderTakeOverThreeContinents.class){
-                IContinent contigent1  = getRandomContinent(game.getMap().getContinents());
-                IContinent contigent2  = getRandomContinent(game.getMap().getContinents(), contigent1);
+                final Continent contigent1  = getRandomContinent(map.getContinentsReal());
+                final Continent contigent2  = getRandomContinent(map.getContinentsReal(), contigent1);
 
-                return new OrderTakeOverThreeContinents(contigent1,contigent2,agend, game.getMap().getContinents());
+                return new OrderTakeOverThreeContinents(contigent1,contigent2,agend, map.getContinentsReal());
             }
         }catch (RemoteException e){
             //Kann nicht auftreten, da keine Netzwerkommunikation stattfinet
@@ -168,16 +167,16 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
 
     }
 
-    public static void createOrdersForPlayers(final List<IPlayer> players, final  IGame game) throws PlayerAlreadyHasAnOrderException, RemoteException{
-        List<PlayerAlreadyHasAnOrderException> exceptions = new ArrayList<PlayerAlreadyHasAnOrderException>();
+    public static void createOrdersForPlayers(final List<Player> players, final  Game game, final Map map) throws PlayerAlreadyHasAnOrderException, RemoteException{
+        final List<PlayerAlreadyHasAnOrderException> exceptions = new ArrayList<PlayerAlreadyHasAnOrderException>();
 
         //Für jeden Spieler eine Order setzten, exceptions sammeln, da die Player danach eventuell ja funktionieren könnten.
-        for(IPlayer player : players){
+        for(final Player player : players){
             if (player.getOrder() != null){
                 exceptions.add(new PlayerAlreadyHasAnOrderException(player));
             }
             else {
-                IOrder newOrder = createRandomOrder(player, game);
+                IOrder newOrder = createRandomOrder(player, game,map);
                 player.setOrder(newOrder);
             }
         }

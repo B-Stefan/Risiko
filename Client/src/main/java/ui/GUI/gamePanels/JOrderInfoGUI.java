@@ -24,7 +24,7 @@ public class JOrderInfoGUI extends JTextArea {
 
 		if(this.game.getCurrentGameState() == IGame.gameStates.RUNNING){
 
-                this.setText(this.player.getOrder().toString());
+                this.setText(this.player.getOrder().toStringRemote());
 		}
 	}
 	
