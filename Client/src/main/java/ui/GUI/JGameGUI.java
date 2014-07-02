@@ -79,7 +79,7 @@ public class JGameGUI extends JFrame {
 
 
     public JGameGUI(IGame game, IPlayer player, ClientEventProcessor remoteEventProcessor) throws RemoteException{
-		super("Risiko");
+		super("Risiko" + player.getName());
 		this.game = game;
 		this.player = player;
 		this.map = new JMapGUI(game,remoteEventProcessor);

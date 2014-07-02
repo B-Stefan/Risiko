@@ -114,6 +114,7 @@ public class JCurrentStateInfoGUI extends JPanel {
     }
 	
 	public JCurrentStateInfoGUI(final IGame game, final IPlayer player, final JGameGUI gameGUI) throws RemoteException{
+        super();
 		//Konstruktor bearbeiten (Update entfehrnen)
 		this.setLayout(new GridLayout(2, 1));
 		this.stepInfo.setWrapStyleWord(true);

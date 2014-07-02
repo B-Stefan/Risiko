@@ -51,7 +51,7 @@
          Provinzen,
          o das Verteilen und Verschieben von Einheiten und o das Angreifen / Verteidigen von Provinzen.
 
-- [ ]   Erst wenn diese Basisfunktionen über die GUI verwendbar sind, sollten Sie an der Vervollständigung des Funktionsumfangs arbeiten (Missionen, Einheitenkarten, Anzeige von zusätzlichen Informationen zum Spielstand, ...). (>>>>>?<<<<<<)
+- [X]   Erst wenn diese Basisfunktionen über die GUI verwendbar sind, sollten Sie an der Vervollständigung des Funktionsumfangs arbeiten (Missionen, Einheitenkarten, Anzeige von zusätzlichen Informationen zum Spielstand, ...). (>>>>>?<<<<<<)
 - [ ]   Kleiner Tipp zur Zuordnung von Mausklicks zu Provinzen: Wenn Sie für die Auswahl von Provinzen beim Angriff Buttons oder ähnliches vermeiden wollen, können Sie auch direkt Mausklicks auf die Landkarte auswerten. Jedes MouseEvent hat x,y-Koordinaten, anhand derer sich der Farbwert an der entsprechende Position einer Grafik (der Weltkarte) auswerten lässt. Über den Farbwert kann man dann auf die angeklickte Provinz schließen. Dabei treten aber verschiedene Probleme auf:
          o Provinzen eines Kontinents haben vielleicht die gleiche Farbe: dann kann nur auf den Kontinent geschlossen werden und nicht auf die Provinz.
          o Eine Weltkarte soll vielleicht besonders schön sein und setzt dazu Farbverläufe ein (z.B. Vergilbung einer Weltkarte): dann ist einer Provinz keine eindeutige Farbe zugeordnet, sondern viele Farben.
@@ -76,9 +76,9 @@
          o Wandeln Sie die Klasse der Schicht Anwendungskern, die als Hauptzugangsknoten zum Anwendungskern dient, in eine „Fassade“ für den Netzwerkzugriff um und ergänzen Sie diese in Ihrem Client-Projekt.
          Im Bibliotheksbeispiel existiert neben der Klasse Bibliotheksverwaltung auf dem Server noch eine Klasse BibliotheksFassade auf dem Client. Diese Klasse, die von der GUI verwendet wird, bietet dieselben Methoden an und implementiert die clientseitige Netzwerkkommunikation gemäß dem Kommunikationsprotokoll
 
-- [ ]   (>>>>>>?<<<<<)Überlegen Sie, wo Synchronisierungen des Zugriffs auf gemeinsame Datenstrukturen sinnvoll sind. Implementieren Sie diese. Erinnerung: mehrere nebenläufig ausgeführte Threads (sprich mehrere parallel verbundene Clients) können zu Konflikten beim Zugriff auf gemeinsame Datenstrukturen führen.
+- [X]   (>>>>>>?<<<<<)Überlegen Sie, wo Synchronisierungen des Zugriffs auf gemeinsame Datenstrukturen sinnvoll sind. Implementieren Sie diese. Erinnerung: mehrere nebenläufig ausgeführte Threads (sprich mehrere parallel verbundene Clients) können zu Konflikten beim Zugriff auf gemeinsame Datenstrukturen führen.
 
 
 
-- [ ]   Sowohl beim eShop als auch bei Risiko ist es sinnvoll, dass die Änderungen, die ein Client ausführt (z. B. Artikel kaufen oder Einheiten verschieben) automatisch und umgehend an alle anderen Clients gemeldet werden. Damit wird erreicht, dass andere Benutzer des Systems über den aktuellen Systemzustand informiert sind, ohne z. B. einen Refresh-Button drücken zu müssen.
+- [X]   Sowohl beim eShop als auch bei Risiko ist es sinnvoll, dass die Änderungen, die ein Client ausführt (z. B. Artikel kaufen oder Einheiten verschieben) automatisch und umgehend an alle anderen Clients gemeldet werden. Damit wird erreicht, dass andere Benutzer des Systems über den aktuellen Systemzustand informiert sind, ohne z. B. einen Refresh-Button drücken zu müssen.
         Für die Realisierung dieser Funktionalität gibt es im abschließenden Kolloquium Zusatzpunkte, mit denen andere evtl. vorhandene Schwächen Ihres Programms zumindest in Teilen aufgefangen werden können.
