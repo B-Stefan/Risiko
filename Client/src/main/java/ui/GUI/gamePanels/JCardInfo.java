@@ -54,7 +54,6 @@ public class JCardInfo extends JFrame{
 	
 	private void setContext() throws RemoteException{
 		update();
-		setExchange();
 		this.context.add(this.cardInfo);
 		this.context.add(this.exchange);
 	}
@@ -71,10 +70,7 @@ public class JCardInfo extends JFrame{
 
 		this.cardInfo.setText(msg);
 	}
-	
-	private void setExchange(){
-	}
-	
+		
 	public JPanel getContext(){
 		return this.context;
 	}
