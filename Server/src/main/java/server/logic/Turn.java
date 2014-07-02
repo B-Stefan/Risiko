@@ -443,6 +443,50 @@ public class Turn extends UnicastRemoteObject implements ITurn{
             }
         }
 	}
+    
+    /**
+     * Versetzt die übergebenen Armeen von dem Country from zu dem Country to
+     * Die Methode wird nur für den Step FIGHT verwendet, um einen Takeover zu vollziehen
+     * @param from
+     * @param to
+     * @param armys
+     * @throws RemoteException
+     * @throws NotTheOwnerException
+     * @throws RemoteCountryNotFoundException
+     * @throws ToManyNewArmysException
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
+     * @throws NotEnoughArmysToMoveException
+     * @throws CountriesNotConnectedException
+     */
+    public synchronized void moveArmyForTakeover(Country from, Country to, Stack<Army> armys) throws RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException{
+    	 if(from == null || to == null ){
+             throw new RemoteCountryNotFoundException();
+         }
+         else if (from.getOwner() != this.getPlayer())
+         {
+             throw  new NotTheOwnerException(this.getPlayer(), from);
+         }
+         else if (to.getOwner() != this.getPlayer()){
+             throw  new NotTheOwnerException(this.getPlayer(), to);
+         }
+
+         if(this.isStepAllowed(steps.FIGHT)){
+             if(!from.isConnected(to)){
+                 throw new CountriesNotConnectedException(from,to);
+             }
+             else if(from.getNumberOfArmys() == 1){
+                 throw new NotEnoughArmysToMoveException(from);
+             }
+             else {
+                for(Army army: armys){ 
+			         from.removeArmy(army);
+			         army.setPosition(to);
+			         addMovedArmy(army);
+             	}
+             }	
+         }   
+    }
 
     /**
      * Überprüft, ob der Turn abgeschlossen wurde.

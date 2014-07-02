@@ -219,7 +219,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 				if(this.to.getArmyList().isEmpty()){
 					this.currentTurn.setTakeOverSucess(true);
 					this.to.setOwner(this.agressor);
-					this.currentTurn.moveArmy(this.from,this.to, this.agressorsArmies.size());
+					this.currentTurn.moveArmyForTakeover(this.from,this.to, this.agressorsArmies);
 					res[2] = 1;
 				}
 			}
