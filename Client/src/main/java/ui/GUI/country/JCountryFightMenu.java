@@ -40,6 +40,7 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
                 JPopupMenu menu = (JPopupMenu) JCountryFightMenu.this.getParent();
                 try {
                     JModalDialog modal = new JFightGUI(menu.getInvoker(),fight);
+                    SwingUtilities.invokeLater(modal);
                 }catch (RemoteException e){
                     new JExceptionDialog(JCountryFightMenu.this,e);
                     return;

@@ -65,7 +65,8 @@ public class JGameGUI extends JFrame {
         @Override
         public void actionPerformed(IFight fight) {
             try{
-                new JFightGUI(JGameGUI.this,fight);
+                SwingUtilities.invokeLater(new JFightGUI(JGameGUI.this.map,fight));
+
             }catch (RemoteException e){
                 new JExceptionDialog(JGameGUI.this,e);
             }

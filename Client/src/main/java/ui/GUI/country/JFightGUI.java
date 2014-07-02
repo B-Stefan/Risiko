@@ -44,10 +44,6 @@ public class JFightGUI extends JModalDialog {
         closeBtn.addActionListener(new CloseBtnListener());
         this.add(closeBtn,BorderLayout.SOUTH);
 
-        this.setVisible(true);
-        this.pack();
-
-
     }
 
 

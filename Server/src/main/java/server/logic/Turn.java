@@ -374,7 +374,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      */
-    public  void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException {
+    public void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException {
 
         Country from = this.map.getCountry(fromClientCountry);
         Country to = this.map.getCountry(toClientCounty);

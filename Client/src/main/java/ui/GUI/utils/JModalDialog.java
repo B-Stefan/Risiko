@@ -11,7 +11,7 @@ import java.awt.*;
  *
  * @see javax.swing.JDialog
  */
-public class JModalDialog extends JDialog {
+public class JModalDialog extends JDialog implements Runnable {
 
     /**
      *
@@ -88,10 +88,25 @@ public class JModalDialog extends JDialog {
         Window root = SwingUtilities.getWindowAncestor(parent);
         Dimension dim = this.getSize();
         if(root != null){
+            Point pos = root.getLocationOnScreen();
             //Center positions
-            int width = (int) (root.getWidth()/2-dim.getWidth()/2);
-            int height = (int) (root.getHeight()/2-dim.getHeight()/2);
+            int width = (int) (pos.getX()+root.getWidth()/2-dim.getWidth()/2);
+            int height = (int)(pos.getY()+root.getHeight()/2-dim.getHeight()/2);
             this.setLocation(width,height);
         }
+    }
+
+    /**
+     * When an object implementing interface <code>Runnable</code> is used to create a thread, starting the thread
+     * causes the object's <code>run</code> method to be called in that separately executing thread.
+     * <p>
+     * The general contract of the method <code>run</code> is that it may take any action whatsoever.
+     *
+     * @see Thread#run()
+     */
+    @Override
+    public void run() {
+        this.pack();
+        this.setVisible(true);
     }
 }
