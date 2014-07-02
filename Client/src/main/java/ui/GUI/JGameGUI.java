@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 
 import javax.swing.*;
 
+import exceptions.GameNotStartedException;
 import interfaces.IClient;
 import interfaces.IFight;
 import interfaces.IGame;
@@ -45,7 +46,7 @@ public class JGameGUI extends JFrame {
         public void actionPerformed(ActionEvent event) {
             try {
                 JGameGUI.this.update();
-            }catch (RemoteException e){
+            }catch (RemoteException | GameNotStartedException e){
                 new JExceptionDialog(JGameGUI.this,e);
             }
         }
@@ -85,7 +86,7 @@ public class JGameGUI extends JFrame {
         this.update = new JButton("Update");
         this.menuBar = new JMenuBar();
         this.playersInfo = new JPLayerInfoGUI(this.game);
-        this.orderInfo = new JOrderInfoGUI(this.game, this.player);
+        this.orderInfo = new JOrderInfoGUI(this.game);
         this.currentStateInfoGUI =   new JCurrentStateInfoGUI(this.game, this.player, this);
         this.cardInfo =  new JCardInfo(this.player, this.game.getDeck());
         this.remoteEventProcessor = remoteEventProcessor;
@@ -133,7 +134,7 @@ public class JGameGUI extends JFrame {
         return south;
 	}
 
-    public void update () throws RemoteException{
+    public void update () throws RemoteException, GameNotStartedException{
         playersInfo.update();
         orderInfo.update();
         currentStateInfoGUI.update();

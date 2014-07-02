@@ -32,7 +32,7 @@ public class JCurrentStateInfoGUI extends JPanel {
         public void actionPerformed(ActionEvent event) {
             try {
                 JCurrentStateInfoGUI.this.gameGUI.update();
-            }catch (RemoteException e){
+            }catch (RemoteException | GameNotStartedException e){
                 new JExceptionDialog(JCurrentStateInfoGUI.this,e);
             }
 
