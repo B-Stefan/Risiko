@@ -75,7 +75,9 @@ public class Round extends UnicastRemoteObject implements IRound {
             if(!this.getCurrentTurn().isComplete()){
                 throw new TurnNotCompleteException(this.getCurrentTurn());
             }
-            this.deck.drawCard(this.currentTurn.getPlayer());
+            if(this.currentTurn.getTakeOverSucess()){
+            	this.deck.drawCard(this.currentTurn.getPlayer());
+            }
         }
         
         this.setCurrentPlayer();

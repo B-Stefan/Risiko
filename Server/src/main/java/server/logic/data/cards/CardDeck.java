@@ -26,8 +26,8 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 	
 	private void builtDeck(List<Country> cos) throws RemoteException{
 		for(Country c : cos){
-			if(globalDeck.isEmpty()||this.globalDeck.size() == 1){
-				this.globalDeck.add(new Card(c, "Joker"));
+			if(globalDeck.isEmpty()){
+				this.globalDeck.add(new Card(c, "Kanone"));
 			}else if(this.globalDeck.lastElement().getType() == "Kanone"){
 				this.globalDeck.add(new Card(c, "Soldat"));
 			}else if(this.globalDeck.lastElement().getType() == "Soldat"){
@@ -36,6 +36,8 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 				this.globalDeck.add(new Card(c, "Kanone"));
 			}
 		}
+		this.globalDeck.add(new Card("Joker"));
+		this.globalDeck.add(new Card("Joker"));
 		Collections.shuffle(this.globalDeck);
 		this.bonus.push(20);
 		this.bonus.push(15);
