@@ -348,7 +348,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
             this.isComplete();
             //Einmal ein Land angegriffen ändert den step des Turns
             this.setCurrentStep(steps.FIGHT);
-            Fight newFight = new Fight(from, to, this);
+            Fight newFight = new Fight(from, to, this,clientManager);
 
             this.clientManager.broadcastFight(newFight);
             return newFight;
@@ -457,10 +457,8 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws CountriesNotConnectedException
      */
     public synchronized void moveArmyForTakeover(Country from, Country to, Stack<Army> armys) throws RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException{
-    	 if(from == null || to == null ){
-             throw new RemoteCountryNotFoundException();
-         }
-         else if (from.getOwner() != this.getPlayer())
+
+         if (from.getOwner() != this.getPlayer())
          {
              throw  new NotTheOwnerException(this.getPlayer(), from);
          }

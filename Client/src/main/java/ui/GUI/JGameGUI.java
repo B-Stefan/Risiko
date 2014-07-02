@@ -57,6 +57,7 @@ public class JGameGUI extends JFrame {
      */
     private class OpenFightUIListener implements IFightActionListener{
 
+        private JFightGUI fightGUI;
         /**
          * Invoked when an action occurs.
          *
@@ -65,12 +66,13 @@ public class JGameGUI extends JFrame {
         @Override
         public void actionPerformed(IFight fight) {
             try{
-                SwingUtilities.invokeLater(new JFightGUI(JGameGUI.this.map,fight));
+                fightGUI = new JFightGUI(JGameGUI.this.map,fight,remoteEventProcessor);
+                SwingUtilities.invokeLater(fightGUI);
 
             }catch (RemoteException e){
                 new JExceptionDialog(JGameGUI.this,e);
-            }
 
+            }
         }
     }
 
@@ -79,7 +81,7 @@ public class JGameGUI extends JFrame {
 		super("Risiko");
 		this.game = game;
 		this.player = player;
-		this.map = new JMapGUI(game);
+		this.map = new JMapGUI(game,remoteEventProcessor);
         this.update = new JButton("Update");
         this.menuBar = new JMenuBar();
         this.playersInfo = new JPLayerInfoGUI(this.game);

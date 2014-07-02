@@ -2,6 +2,7 @@ package ui.GUI.country;
 import interfaces.IFight;
 import interfaces.ITurn;
 import interfaces.data.ICountry;
+import server.logic.ClientEventProcessor;
 import ui.GUI.utils.JExceptionDialog;
 import ui.GUI.utils.JModalDialog;
 import exceptions.*;
@@ -18,6 +19,7 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
 
     private final ITurn turn;
     private final ICountry country;
+    private final ClientEventProcessor remoteEventProcessor;
     public class NeighborActionListener implements ActionListener{
 
         /**
@@ -39,7 +41,7 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
                 }
                 JPopupMenu menu = (JPopupMenu) JCountryFightMenu.this.getParent();
                 try {
-                    JModalDialog modal = new JFightGUI(menu.getInvoker(),fight);
+                    JModalDialog modal = new JFightGUI(menu.getInvoker(),fight,JCountryFightMenu.this.remoteEventProcessor);
                     SwingUtilities.invokeLater(modal);
                 }catch (RemoteException e){
                     new JExceptionDialog(JCountryFightMenu.this,e);
@@ -49,10 +51,11 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
             }
         }
     }
-    public JCountryFightMenu(final ICountry country, final ITurn turn) throws RemoteException{
+    public JCountryFightMenu(final ICountry country, final ITurn turn, final ClientEventProcessor remoteEventProcessor) throws RemoteException{
         super("Fight",country);
         this.country = country;
         this.turn = turn;
+        this.remoteEventProcessor = remoteEventProcessor;
         this.addActionListener(new NeighborActionListener());
 
     }

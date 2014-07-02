@@ -15,7 +15,7 @@ import server.logic.data.Player;
 import exceptions.NotEnoughCardsToExchangeException;
 
 public class CardDeck extends UnicastRemoteObject implements ICardDeck {
-	private final Stack<Card> deck = new Stack<Card>();
+	private final Stack<Card> globalDeck = new Stack<Card>();
 	private final Stack<Integer> bonus = new Stack<Integer>();
 	private final Game game;
 	public CardDeck(final List<Country> arrayList, final Game game) throws RemoteException{
@@ -26,17 +26,17 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 	
 	private void builtDeck(List<Country> cos) throws RemoteException{
 		for(Country c : cos){
-			if(deck.isEmpty()||this.deck.size() == 1){
-				this.deck.add(new Card(c, "Joker"));
-			}else if(this.deck.lastElement().getType() == "Kanone"){
-				this.deck.add(new Card(c, "Soldat"));
-			}else if(this.deck.lastElement().getType() == "Soldat"){
-				this.deck.add(new Card(c, "Reiter"));
-			}else if(this.deck.lastElement().getType() == "Reiter"){
-				this.deck.add(new Card(c, "Kanone"));
+			if(globalDeck.isEmpty()||this.globalDeck.size() == 1){
+				this.globalDeck.add(new Card(c, "Joker"));
+			}else if(this.globalDeck.lastElement().getType() == "Kanone"){
+				this.globalDeck.add(new Card(c, "Soldat"));
+			}else if(this.globalDeck.lastElement().getType() == "Soldat"){
+				this.globalDeck.add(new Card(c, "Reiter"));
+			}else if(this.globalDeck.lastElement().getType() == "Reiter"){
+				this.globalDeck.add(new Card(c, "Kanone"));
 			}
 		}
-		Collections.shuffle(this.deck);
+		Collections.shuffle(this.globalDeck);
 		this.bonus.push(20);
 		this.bonus.push(15);
 		this.bonus.push(12);
@@ -53,7 +53,7 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 		return bo;
 	}
 	public void drawCard(Player pl) throws RemoteException{
-		pl.drawNewCard(deck.pop());
+		pl.drawNewCard(globalDeck.pop());
 	}
 	public boolean exchangeCards(IPlayer player) throws NotEnoughCardsToExchangeException, RemoteException{
         Player pl;
@@ -142,13 +142,13 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 
 
 	public void returnCards(Card card1, Card card2, Card card3, Player pl) throws RemoteException{
-		this.deck.push(card1);
+		this.globalDeck.push(card1);
 		putBackCard(pl, card1);
-		this.deck.push(card2);
+		this.globalDeck.push(card2);
 		putBackCard(pl, card2);
-		this.deck.push(card3);
+		this.globalDeck.push(card3);
 		putBackCard(pl, card3);
-		Collections.shuffle(this.deck);
+		Collections.shuffle(this.globalDeck);
 	}
 	
 }

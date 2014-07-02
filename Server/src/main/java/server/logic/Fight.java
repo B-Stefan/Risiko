@@ -3,6 +3,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
+import interfaces.IClient;
 import interfaces.IFight;
 import interfaces.data.utils.IDice;
 import exceptions.AlreadyDicedException;
@@ -13,6 +14,7 @@ import exceptions.InvalidFightException;
 import exceptions.NotEnoughArmiesToAttackException;
 import exceptions.TurnNotAllowedStepException;
 import exceptions.TurnNotInCorrectStepException;
+import server.ClientManager;
 import server.logic.data.Army;
 import server.logic.data.Country;
 import server.logic.data.Player;
@@ -61,6 +63,11 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	 * Der Zug, in dem sich der Fight befindet
 	 */
 	private Turn currentTurn;
+
+    /**
+     * Client Manager um nachrichten an die Clients zu verteilen
+     */
+    private final ClientManager clientManager;
 	
 	
 	/**
@@ -68,11 +75,12 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	 * @param from
 	 * @param to
 	 */
-	public Fight(final Country from, final Country to, final Turn turn) throws RemoteException{
+	public Fight(final Country from, final Country to, final Turn turn, final ClientManager clientManager) throws RemoteException{
 		this.to = to;
 		this.from = from;
 		this.currentTurn = turn;
         this.agressor = from.getOwner();
+        this.clientManager = clientManager;
 	}
 
 	
@@ -93,6 +101,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 			agArmies.push((Army)from.getArmyList().get(i));
 		}
 		attacking(agArmies);
+        this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.FIGHT);
 	}
 	
 	/**
@@ -157,6 +166,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 			defArmies.push((Army)to.getArmyList().get(i));
 		}
 		defending(defArmies);
+        this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.FIGHT);
 	}
 	
 	/**
@@ -219,7 +229,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 				if(this.to.getArmyList().isEmpty()){
 					this.currentTurn.setTakeOverSucess(true);
 					this.to.setOwner(this.agressor);
-					this.currentTurn.moveArmyForTakeover(this.from,this.to, this.agressorsArmies);
+					this.currentTurn.moveArmyForTakeover(this.from, this.to, this.agressorsArmies);
 					res[2] = 1;
 				}
 			}

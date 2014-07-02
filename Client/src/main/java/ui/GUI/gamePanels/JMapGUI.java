@@ -7,6 +7,7 @@ import interfaces.IGame;
 import interfaces.ITurn;
 import interfaces.data.ICountry;
 import interfaces.data.IMap;
+import server.logic.ClientEventProcessor;
 import ui.GUI.country.JCountryInfo;
 import ui.GUI.country.JCountryPopupMenu;
 import ui.GUI.utils.JExceptionDialog;
@@ -41,6 +42,11 @@ public class JMapGUI extends JComponent {
     private final MapLoader mapLoader;
 
     /**
+     * Dient zum empfangen von Server events
+     */
+    private final ClientEventProcessor remoteEventProcessor;
+
+    /**
      * Klasse, die beim Anklicken der Karte ausgelöst wird
      * @see java.awt.event.ActionListener
      */
@@ -73,7 +79,7 @@ public class JMapGUI extends JComponent {
                 }
 
                 try {
-                    JCountryPopupMenu countryGUI= new JCountryPopupMenu(country, currentTurn);
+                    JCountryPopupMenu countryGUI= new JCountryPopupMenu(country, currentTurn,remoteEventProcessor);
                     countryGUI.show(event.getComponent(),x,y);
                 }catch (RemoteException e){
                     new JExceptionDialog(JMapGUI.this,e);
@@ -92,10 +98,11 @@ public class JMapGUI extends JComponent {
      * @param game Spiel des der GameEngine
      *             @see interfaces.IGame
      */
-    public JMapGUI(IGame game) throws RemoteException{
+    public JMapGUI(IGame game,final ClientEventProcessor remoteEventProcessor) throws RemoteException{
         super();
         this.game = game;
         this.map = game.getMap();
+        this.remoteEventProcessor = remoteEventProcessor;
         this.mapLoader = new MapLoader(this.map);
         inititize();
     }
