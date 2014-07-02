@@ -349,11 +349,8 @@ public class Turn extends UnicastRemoteObject implements ITurn{
             //Einmal ein Land angegriffen ändert den step des Turns
             this.setCurrentStep(steps.FIGHT);
             Fight newFight = new Fight(from, to, this);
-            try {
-                this.clientManager.broadcastFight(newFight, newFight.getDefender());
-            }catch (ClientNotFoundException e){
-                //this.clientManager.broadcastMessage("Es konnt kein Client für den Spieler " );
-            }
+
+            this.clientManager.broadcastFight(newFight);
             return newFight;
 
 

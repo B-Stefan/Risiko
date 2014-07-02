@@ -104,6 +104,7 @@ public class Game extends UnicastRemoteObject implements IGame {
         this.color.add(Color.MAGENTA);
         this.deck = new CardDeck(this.map.getCountriesReal(),this);
         this.clientManager = new ClientManager();
+        ClientManager.startWatchBroadcast(this.clientManager);
         Thread t = new Thread(this.clientManager);
         t.start();
 

@@ -4,31 +4,53 @@ import exceptions.ClientNotFoundException;
 import interfaces.IClient;
 import interfaces.IFight;
 import interfaces.data.IPlayer;
+import server.logic.Fight;
 import server.logic.data.Player;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by Stefan on 01.07.14.
  */
-public class ClientManager implements Runnable  {
+public  class ClientManager implements Runnable  {
 
-    private final List<IClient> clients = new ArrayList<IClient>();
+    /**
+     * Creates a new Thread and start the Clint Manager, to Broadcast all messages
+     * @param manager
+     * @return
+     */
+    public  static Thread startWatchBroadcast(ClientManager manager){
+        Thread t = new Thread(manager);
+        t.start();
+        return t;
+    }
+    private final Object lock = new Object();
+    private static volatile boolean running = true;
+
+
+    private  final List<IClient> clients = new ArrayList<IClient>();
+    private final List<IClient.UIUpdateTypes> updatesUIToBroadcast= new ArrayList<IClient.UIUpdateTypes>();
+    private final List<IFight> fightsToBroadcast= new ArrayList<IFight>();
+    private final List<String> messagesToBroadcast= new ArrayList<String>();
     public ClientManager(){
 
     }
-    public void addClient(IClient client){
+    public synchronized void addClient(IClient client){
         this.clients.add(client);
     }
-    public void removeClient(IClient client){
+    public synchronized void removeClient(IClient client){
         this.clients.remove(client);
     }
-    public void broadcastMessage(String msg) {
+    private synchronized void broadcastMessageToClients() {
+        if(messagesToBroadcast.isEmpty()){
+            return;
+        }
         for(IClient client:this.clients){
             try {
-                client.receiveMessage(msg);
+                client.receiveMessage(messagesToBroadcast);
             }catch (RemoteException e){
                 //Remove if Problem
                 this.clients.remove(client);
@@ -38,28 +60,33 @@ public class ClientManager implements Runnable  {
 
     /**
      * Gibt dem player die Anweisung das Fight menü zu öffnen
-     * @param fight Der fight um den es geht
-     * @param player Der Spieler bei dem das Fenster aufgemacht werden soll
      * @throws ClientNotFoundException
      * @throws RemoteException
      */
-    public void broadcastFight(IFight fight, IPlayer player) throws ClientNotFoundException,RemoteException{
+    private synchronized void broadcastFightToClients() throws ClientNotFoundException,RemoteException{
         Player realPlayer;
-        try {
-            realPlayer = (Player) fight.getDefender();
-        }catch (RemoteException | ClassCastException e){
-            throw new RuntimeException(e);
+        for(IFight fight : this.fightsToBroadcast){
+            try {
+                realPlayer = (Player) fight.getDefender();
+            }catch (RemoteException | ClassCastException e){
+                throw new RuntimeException(e);
+            }
+            IClient client = realPlayer.getClient();
+            if(client != null){
+                client.receiveFightEvent(fight);
+            }
+            else {
+                throw new ClientNotFoundException(realPlayer);
+            }
         }
-        IClient client = realPlayer.getClient();
-        if(client != null){
-            client.receiveFightEvent(fight);
-        }
-        else {
-            throw new ClientNotFoundException(player);
-        }
+        this.fightsToBroadcast.clear();
+
 
     }
-    public void broadcastUIUpdate(IClient.UIUpdateTypes type) {
+    private synchronized void broadcastUIUpdateToClients() {
+        if(this.updatesUIToBroadcast.isEmpty()){
+            return;
+        }
         for(IClient client : this.clients){
             try{
                 client.receiveUIUpdateEvent();
@@ -67,7 +94,33 @@ public class ClientManager implements Runnable  {
                 this.clients.remove(client);
             }
         }
+        this.updatesUIToBroadcast.clear();
     }
+
+
+
+
+
+    public synchronized void broadcastUIUpdate(IClient.UIUpdateTypes type) {
+        if(!updatesUIToBroadcast.contains(type) && !updatesUIToBroadcast.contains(IClient.UIUpdateTypes.ALL)){
+            if(type == IClient.UIUpdateTypes.ALL){
+                updatesUIToBroadcast.clear();
+            }
+            updatesUIToBroadcast.add(type);
+        }
+    }
+
+    public synchronized void broadcastFight(Fight fight) {
+        if(!updatesUIToBroadcast.contains(fight)){
+            fightsToBroadcast.add(fight);
+        }
+    }
+
+    public synchronized void broadcastMessage(String msg) {
+            messagesToBroadcast.add(msg);
+
+    }
+
 
     /**
      * When an object implementing interface <code>Runnable</code> is used to create a thread, starting the thread
@@ -79,6 +132,22 @@ public class ClientManager implements Runnable  {
      */
     @Override
     public void run() {
+        while (!Thread.currentThread().isInterrupted()){
+            try{
+                this.broadcastFightToClients();
+            }catch (ClientNotFoundException | RemoteException e){
+                e.printStackTrace();
+            }
+            this.broadcastMessageToClients();
+            this.broadcastUIUpdateToClients();
+            try{
+                    Thread.sleep(1000);
+
+            }catch (InterruptedException e){
+                throw new RuntimeException(e);
+            }
+        }
+
 
     }
 }

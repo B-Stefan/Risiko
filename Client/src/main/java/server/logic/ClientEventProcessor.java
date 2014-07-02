@@ -92,14 +92,26 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
 
     /**
      * WIrd vom Server aufgerufen
-     * @param msg - Nachricht vom Servers
+     * @param msges - Nachrichtem vom Servers
+     * @throws RemoteException
+     */
+    public void receiveMessage(List<String> msges)throws RemoteException{
+        for (String msg: msges){
+            receiveMessage(msg);
+        }
+    }
+
+    /**
+     * WIrd vom Server aufgerufen
+     * @param msg - Nachrichtem vom Servers
      * @throws RemoteException
      */
     public void receiveMessage(String msg)throws RemoteException{
         for(ActionListener e : this.messageListeners){
-            e.actionPerformed(new ActionEvent("Server",86769,msg));
+                e.actionPerformed(new ActionEvent("Server",86769,msg));
         }
     }
+
 
     /**
      * Wird vom Server aufgerufen
@@ -108,6 +120,7 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
      */
     public void receiveFightEvent(IFight fight) throws RemoteException{
         for(IFightActionListener e : this.fightUiListeners){
+
             e.actionPerformed(fight);
         }
     }
