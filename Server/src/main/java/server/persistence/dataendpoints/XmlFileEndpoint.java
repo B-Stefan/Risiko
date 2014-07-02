@@ -38,10 +38,6 @@ public class XmlFileEndpoint<T> extends AbstractFileEndpoint<T> {
             catch (FileNotFoundException e){
                 this.writeFile(); // File erstellen, wenn nicht vorhanden
             }
-            catch (IOException e){
-                //@Todo Besseres Exception Handling
-                e.printStackTrace();
-            }
             if(fileData != null){
                 this.chachedObjects = fileData;
             }
