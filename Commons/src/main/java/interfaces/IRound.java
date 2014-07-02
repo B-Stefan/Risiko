@@ -1,5 +1,6 @@
 package interfaces;
 
+import exceptions.NotYourTurnException;
 import exceptions.RoundCompleteException;
 import exceptions.ToManyNewArmysException;
 import exceptions.TurnNotCompleteException;
@@ -33,7 +34,7 @@ public interface IRound  extends Remote, Serializable, IToStringRemote {
      * @throws exceptions.TurnNotCompleteException
      * @throws RoundCompleteException
      */
-    public void setNextTurn() throws ToManyNewArmysException, TurnNotCompleteException, RoundCompleteException,RemoteException;
+    public void setNextTurn(IPlayer clientPlayer) throws ToManyNewArmysException, NotYourTurnException, TurnNotCompleteException, RoundCompleteException,RemoteException;
 
 
     /**

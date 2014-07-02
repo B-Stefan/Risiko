@@ -20,6 +20,7 @@ public class JCurrentStateInfoGUI extends JPanel {
     private final JGameGUI gameGUI;
 	private final JTextArea stepInfo = new JTextArea("");
 	private final JButton nextButton = new JButton("");
+	private final IPlayer clientPlayer;
 
     private class UpdateActionListener implements ActionListener{
 
@@ -92,8 +93,8 @@ public class JCurrentStateInfoGUI extends JPanel {
             }
             //Holen des Aktuellen Turns
             try {
-                currentRound.setNextTurn();
-            }catch (ToManyNewArmysException | TurnNotCompleteException | RemoteException e){
+                currentRound.setNextTurn(clientPlayer);
+            }catch (ToManyNewArmysException | NotYourTurnException | TurnNotCompleteException | RemoteException e){
                 new JExceptionDialog(JCurrentStateInfoGUI.this,e);
                 return;
             }catch (RoundCompleteException unused){
@@ -113,10 +114,11 @@ public class JCurrentStateInfoGUI extends JPanel {
         }
     }
 	
-	public JCurrentStateInfoGUI(final IGame game, final IPlayer player, final JGameGUI gameGUI) throws RemoteException{
+	public JCurrentStateInfoGUI(final IGame game, final IPlayer player, final JGameGUI gameGUI, IPlayer cPlayer) throws RemoteException{
         super();
 		//Konstruktor bearbeiten (Update entfehrnen)
 		this.setLayout(new GridLayout(2, 1));
+		this.clientPlayer = cPlayer;
 		this.stepInfo.setWrapStyleWord(true);
 		this.stepInfo.setLineWrap(true);
 		this.game = game;

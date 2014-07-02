@@ -28,8 +28,8 @@ public class JCountryInfo extends JLabel{
 	
 	public void paint(final Graphics g){
 		// Vom LayoutManager zugewiesene Größe des Buttons ermitteln
-		final int width = 30;
-		final int height = 30;
+		final int width = 40;
+		final int height = 40;
 		// Farbe entsprechend des besetzenden Spielers setzten
 		final Color col;
         try {
@@ -60,7 +60,7 @@ public class JCountryInfo extends JLabel{
 	private void writeLabel(final Graphics g, final int width, final int height) throws RemoteException{
 		final String amountArmies = String.format(this.country.getArmySize() + " " + this.country.getShortName());
         // Font einstellen
-        final Font myFont = new Font(Font.SANS_SERIF, Font.BOLD, 16);
+        final Font myFont = new Font(Font.SANS_SERIF, Font.BOLD, 11);
         g.setFont(myFont);
         // Beschriftung anbringen
         final FontMetrics fm = g.getFontMetrics();

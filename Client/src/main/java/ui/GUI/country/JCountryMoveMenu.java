@@ -1,11 +1,13 @@
 package ui.GUI.country;
 import interfaces.ITurn;
 import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
 import exceptions.*;
 import ui.GUI.utils.JExceptionDialog;
 import ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +19,7 @@ import java.rmi.RemoteException;
 public class JCountryMoveMenu extends JCountryNeighborsMenu {
 
     private final ITurn turn;
+	private final IPlayer clientPlayer;
     public class NeighborActionListener implements ActionListener{
 
         /**
@@ -53,8 +56,8 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
 
 
                 try {
-                    turn.moveArmy(from,to,numberOfArmyies);
-                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException  | RemoteCountryNotFoundException | RemoteException e ){
+                    turn.moveArmy(from,to,numberOfArmyies, clientPlayer);
+                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  NotYourTurnException |TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException  | RemoteCountryNotFoundException | RemoteException e ){
                    new JExceptionDialog(JCountryMoveMenu.this,e);
                    return;
                 }
@@ -62,9 +65,10 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
             }
         }
     }
-    public JCountryMoveMenu (final ICountry country, final ITurn turn) throws RemoteException{
+    public JCountryMoveMenu (final ICountry country, final ITurn turn, IPlayer cPlayer) throws RemoteException{
         super("Move",country);
         this.turn = turn;
+        this.clientPlayer = cPlayer;
         this.addActionListener(new NeighborActionListener());
 
     }

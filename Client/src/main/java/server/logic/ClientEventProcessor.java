@@ -106,8 +106,8 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
      * @param msg - Nachrichtem vom Servers
      * @throws RemoteException
      */
-    public void receiveMessage(String msg)throws RemoteException{
-        for(ActionListener e : this.messageListeners){
+    public void receiveMessage(final String msg)throws RemoteException{
+        for(final ActionListener e : this.messageListeners){
             Thread t = new Thread(new Runnable() {
                 public void run()
                 {
@@ -125,8 +125,8 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
      * @param fight Der Kampf der angezeigt werden soll
      * @throws RemoteException
      */
-    public void receiveFightEvent(IFight fight) throws RemoteException{
-        for(IFightActionListener e : this.fightUiListeners){
+    public void receiveFightEvent(final IFight fight) throws RemoteException{
+        for(final IFightActionListener e : this.fightUiListeners){
             Thread t = new Thread(new Runnable() {
                 public void run()
                 {
@@ -143,7 +143,7 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
      * @throws RemoteException
      */
     public void receiveUIUpdateEvent() throws RemoteException{
-        for(ActionListener e : this.updateUiListeners){
+        for(final ActionListener e : this.updateUiListeners){
             Thread t = new Thread(new Runnable() {
                 public void run()
                 {

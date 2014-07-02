@@ -2,9 +2,11 @@ package ui.GUI.country;
 
 import interfaces.ITurn;
 import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
 import server.logic.ClientEventProcessor;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.rmi.RemoteException;
 
@@ -13,15 +15,16 @@ import java.rmi.RemoteException;
  */
 public class JCountryPopupMenu extends JPopupMenu{
 
-
+	private final IPlayer clientPlayer;
     private final ICountry country;
     private final ITurn turn;
     private final ClientEventProcessor remoteEventProcessor;
 
-    public JCountryPopupMenu(final ICountry country, final ITurn turn,final ClientEventProcessor remoteEventProcessor) throws RemoteException{
+    public JCountryPopupMenu(final ICountry country, final ITurn turn,final ClientEventProcessor remoteEventProcessor, IPlayer cPlayer) throws RemoteException{
         super();
         this.country = country;
         this.turn = turn;
+        this.clientPlayer = cPlayer;
         this.remoteEventProcessor = remoteEventProcessor;
 
 
@@ -34,8 +37,8 @@ public class JCountryPopupMenu extends JPopupMenu{
 
         this.add(new Separator());
 
-        this.add(new JCountryPlaceMenuItem(country,turn));
-        this.add(new JCountryFightMenu(country,turn,remoteEventProcessor));
-        this.add(new JCountryMoveMenu(country,turn));
+        this.add(new JCountryPlaceMenuItem(country,turn, this.clientPlayer));
+        this.add(new JCountryFightMenu(country,turn,remoteEventProcessor, this.clientPlayer));
+        this.add(new JCountryMoveMenu(country,turn, this.clientPlayer));
     }
 }

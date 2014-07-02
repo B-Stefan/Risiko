@@ -67,7 +67,7 @@ public class JGameGUI extends JFrame {
         @Override
         public void actionPerformed(IFight fight) {
             try{
-                fightGUI = new JFightGUI(JGameGUI.this.map,fight,remoteEventProcessor);
+                fightGUI = new JFightGUI(JGameGUI.this.map,fight,remoteEventProcessor, player);
                 SwingUtilities.invokeLater(fightGUI);
 
             }catch (RemoteException e){
@@ -82,12 +82,12 @@ public class JGameGUI extends JFrame {
 		super("Risiko - " + player.getName());
 		this.game = game;
 		this.player = player;
-		this.map = new JMapGUI(game,remoteEventProcessor);
+		this.map = new JMapGUI(game,remoteEventProcessor, player);
         this.update = new JButton("Update");
         this.menuBar = new JMenuBar();
         this.playersInfo = new JPLayerInfoGUI(this.game);
         this.orderInfo = new JOrderInfoGUI(this.game);
-        this.currentStateInfoGUI =   new JCurrentStateInfoGUI(this.game, this.player, this);
+        this.currentStateInfoGUI =   new JCurrentStateInfoGUI(this.game, this.player, this, this.player);
         this.cardInfo =  new JCardInfo(this.player, this.game.getDeck());
         this.remoteEventProcessor = remoteEventProcessor;
 
@@ -103,9 +103,6 @@ public class JGameGUI extends JFrame {
 	}
 	
 	private void initialize() {
-		//this.setSize(600, 400);
-		//this.setPreferredSize(this.getSize());
-
         // Klick auf Kreuz (Fenster schließen) behandeln lassen:
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container pane = this.getContentPane();
@@ -115,7 +112,9 @@ public class JGameGUI extends JFrame {
 		// Fenster anzeigen
         this.menuBar.add(new JGameMenu(this.game));
         this.setJMenuBar(menuBar);
-		this.pack();
+		this.setSize(1200, 1000);
+		this.setPreferredSize(this.getSize());
+        this.pack();
         this.setVisible(true);
 		
 	}

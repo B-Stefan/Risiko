@@ -2,11 +2,13 @@ package ui.GUI.country;
 
 import interfaces.ITurn;
 import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
 import exceptions.*;
 import ui.GUI.utils.JExceptionDialog;
 import ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,9 +18,7 @@ import java.rmi.RemoteException;
  * Created by Stefan on 11.06.14.
  */
 public class JCountryPlaceMenuItem extends JMenuItem {
-
-
-
+	private final IPlayer clientPlayer;
     private final ICountry country;
     private final ITurn turn;
 
@@ -60,17 +60,18 @@ public class JCountryPlaceMenuItem extends JMenuItem {
             }
 
             try {
-                turn.placeNewArmy(to,numberOfArmyies);
-            }catch (TurnNotAllowedStepException | ToManyNewArmysException | TurnNotInCorrectStepException | NotEnoughNewArmysException | RemoteException | RemoteCountryNotFoundException | NotTheOwnerException e ){
+                turn.placeNewArmy(to,numberOfArmyies, clientPlayer);
+            }catch (TurnNotAllowedStepException | ToManyNewArmysException | NotYourTurnException | TurnNotInCorrectStepException | NotEnoughNewArmysException | RemoteException | RemoteCountryNotFoundException | NotTheOwnerException e ){
                 new JExceptionDialog(JCountryPlaceMenuItem.this,e);
                 return;
             }
 
         }
     }
-    public JCountryPlaceMenuItem(ICountry country, ITurn turn){
+    public JCountryPlaceMenuItem(ICountry country, ITurn turn, IPlayer clientPlayer){
         super("Place");
         this.country = country;
+        this.clientPlayer = clientPlayer;
         this.turn = turn;
         this.addActionListener(new MoveClickListener());
     }

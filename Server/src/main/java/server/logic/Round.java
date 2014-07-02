@@ -1,10 +1,12 @@
 package server.logic;
 import interfaces.IClient;
 import interfaces.IRound;
+import interfaces.data.IPlayer;
 import server.ClientManager;
 import server.logic.data.*;
 import server.logic.data.Map;
 import server.logic.data.cards.CardDeck;
+import exceptions.NotYourTurnException;
 import exceptions.RoundCompleteException;
 import exceptions.ToManyNewArmysException;
 import exceptions.TurnNotCompleteException;
@@ -70,9 +72,33 @@ public class Round extends UnicastRemoteObject implements IRound {
      * @throws ToManyNewArmysException
      * @throws TurnNotCompleteException
      * @throws RoundCompleteException
+     * @throws NotYourTurnException 
      */
-	public void setNextTurn() throws ToManyNewArmysException, TurnNotCompleteException, RoundCompleteException,RemoteException{
-        if(this.getCurrentTurn() != null){
+	public void setNextTurn(IPlayer clientPlayer) throws ToManyNewArmysException, TurnNotCompleteException, RoundCompleteException,RemoteException, NotYourTurnException{
+        if(!this.getCurrentPlayer().getColor().equals(clientPlayer.getColor())){
+        	throw new NotYourTurnException();
+        }
+		if(this.getCurrentTurn() != null){
+            if(!this.getCurrentTurn().isComplete()){
+                throw new TurnNotCompleteException(this.getCurrentTurn());
+            }
+            if(this.currentTurn.getTakeOverSucess()){
+            	this.deck.drawCard(this.currentTurn.getPlayer());
+            }
+        }
+        
+        this.setCurrentPlayer();
+        this.currentTurn = new Turn(this.currentPlayer, this.map, this.turnSteps, this.deck,clientManager );
+        this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.PLAYER);
+	}
+    /**
+     * Erzeugt und setzt den nächsten Turn, wenn erlaubt
+     * @throws ToManyNewArmysException
+     * @throws TurnNotCompleteException
+     * @throws RoundCompleteException 
+     */
+	public void setNextTurn() throws ToManyNewArmysException, RoundCompleteException,RemoteException, TurnNotCompleteException{
+		if(this.getCurrentTurn() != null){
             if(!this.getCurrentTurn().isComplete()){
                 throw new TurnNotCompleteException(this.getCurrentTurn());
             }

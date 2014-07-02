@@ -7,6 +7,7 @@ import interfaces.IGame;
 import interfaces.ITurn;
 import interfaces.data.ICountry;
 import interfaces.data.IMap;
+import interfaces.data.IPlayer;
 import server.logic.ClientEventProcessor;
 import ui.GUI.country.JCountryInfo;
 import ui.GUI.country.JCountryPopupMenu;
@@ -50,6 +51,9 @@ public class JMapGUI extends JComponent {
      * Klasse, die beim Anklicken der Karte ausgelöst wird
      * @see java.awt.event.ActionListener
      */
+    
+	private final IPlayer clientPlayer;
+	
     public class OnCountryClickActionListener extends MouseAdapter  {
 
         @Override
@@ -79,7 +83,7 @@ public class JMapGUI extends JComponent {
                 }
 
                 try {
-                    JCountryPopupMenu countryGUI= new JCountryPopupMenu(country, currentTurn,remoteEventProcessor);
+                    JCountryPopupMenu countryGUI= new JCountryPopupMenu(country, currentTurn,remoteEventProcessor, clientPlayer);
                     countryGUI.show(event.getComponent(),x,y);
                 }catch (RemoteException e){
                     new JExceptionDialog(JMapGUI.this,e);
@@ -98,9 +102,10 @@ public class JMapGUI extends JComponent {
      * @param game Spiel des der GameEngine
      *             @see interfaces.IGame
      */
-    public JMapGUI(IGame game,final ClientEventProcessor remoteEventProcessor) throws RemoteException{
+    public JMapGUI(IGame game,final ClientEventProcessor remoteEventProcessor, IPlayer cPlayer) throws RemoteException{
         super();
         this.game = game;
+        this.clientPlayer = cPlayer;
         this.map = game.getMap();
         this.remoteEventProcessor = remoteEventProcessor;
         this.mapLoader = new MapLoader(this.map);

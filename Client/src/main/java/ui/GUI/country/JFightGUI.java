@@ -2,6 +2,7 @@ package ui.GUI.country;
 
 //import com.sun.codemodel.internal.JMod;
 import interfaces.IFight;
+import interfaces.data.IPlayer;
 import server.logic.ClientEventProcessor;
 import server.logic.IFightActionListener;
 import ui.CUI.FightCUI;
@@ -9,6 +10,7 @@ import ui.GUI.utils.JExceptionDialog;
 import ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +25,7 @@ public class JFightGUI extends JModalDialog {
     private final JFightSide defenderSide;
     private final ClientEventProcessor remoteEventsProcessor;
     private final ActionListener fightUpdateUIListener;
+	private final IPlayer clientPlayer;
 
     private class UpdateUIFightListener implements ActionListener{
 
@@ -94,12 +97,13 @@ public class JFightGUI extends JModalDialog {
         }
 
     }
-    public JFightGUI(final Component parent, final IFight fight, final ClientEventProcessor remoteEventsProcessor) throws RemoteException {
+    public JFightGUI(final Component parent, final IFight fight, final ClientEventProcessor remoteEventsProcessor, IPlayer clientPlayer) throws RemoteException {
         super(parent,"Fight",ModalityType.APPLICATION_MODAL);
         this.fight = fight;
+        this.clientPlayer = clientPlayer;
         this.setLayout(new BorderLayout(5,5));
-        this.aggressorSide  = new JFightSide(this.fight, JFightSide.sides.AGGRESSOR);
-        this.defenderSide  = new JFightSide(this.fight, JFightSide.sides.DEFENDER);
+        this.aggressorSide  = new JFightSide(this.fight, JFightSide.sides.AGGRESSOR, this.clientPlayer);
+        this.defenderSide  = new JFightSide(this.fight, JFightSide.sides.DEFENDER, this.clientPlayer);
         this.remoteEventsProcessor = remoteEventsProcessor;
         this.fightUpdateUIListener = new UpdateUIFightListener();
         this.remoteEventsProcessor.addUpdateUIListener(fightUpdateUIListener);

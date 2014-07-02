@@ -3,6 +3,7 @@ package ui.GUI.country;
 import configuration.FightConfiguration;
 import interfaces.IFight;
 import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
 import interfaces.data.utils.IDice;
 import exceptions.*;
 import ui.GUI.JGameGUI;
@@ -10,6 +11,7 @@ import ui.GUI.utils.JExceptionDialog;
 import ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +32,7 @@ public class JFightSide extends Panel {
     private final sides side;
     private final JTextField numberOfArmiesText;
     private final JTextArea thrownDiceText;
+	private final IPlayer clientPlayer;
 
     private class ThrowDiceListener implements ActionListener {
 
@@ -64,13 +67,13 @@ public class JFightSide extends Panel {
 
             try {
                 if (JFightSide.this.side == sides.DEFENDER) {
-                    JFightSide.this.fight.defending(numberOfArmies);
+                    JFightSide.this.fight.defending(numberOfArmies, clientPlayer);
 
                 } else if (JFightSide.this.side == sides.AGGRESSOR) {
-                    JFightSide.this.fight.attacking(numberOfArmies);
+                    JFightSide.this.fight.attacking(numberOfArmies, clientPlayer);
                 }
 
-            } catch (AggessorNotThrowDiceException | NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException | InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException | NotEnoughArmiesToAttackException | InvalidFightException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException e) {
+            } catch (AggessorNotThrowDiceException | YouCannotAttackException | YouCannotDefendException | NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException | InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException | NotEnoughArmiesToAttackException | InvalidFightException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException e) {
                 new JExceptionDialog(frame, e);
                 return;
             }
@@ -87,10 +90,11 @@ public class JFightSide extends Panel {
         }
     }
 
-    public JFightSide(IFight fight, sides side) throws RemoteException {
+    public JFightSide(IFight fight, sides side, IPlayer cPlayer) throws RemoteException {
         super();
         this.fight = fight;
         this.side = side;
+        this.clientPlayer = cPlayer;
         this.numberOfArmiesText = new JTextField(SwingConstants.RIGHT);
         this.thrownDiceText = new JTextArea();
         this.setLayout(new GridLayout(5, 1));

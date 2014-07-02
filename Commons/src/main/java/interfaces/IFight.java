@@ -24,7 +24,7 @@ public interface IFight extends Remote, Serializable,IToStringRemote {
      * @throws exceptions.AlreadyDicedException
      * @throws exceptions.InvalidFightException
      */
-    public void attacking(int agressorsArmies) throws NotEnoughArmiesToAttackException, InvalidAmountOfArmiesException, AlreadyDicedException, InvalidFightException, RemoteException;
+    public void attacking(int agressorsArmies, IPlayer clientPlayer) throws NotEnoughArmiesToAttackException, YouCannotAttackException, InvalidAmountOfArmiesException, AlreadyDicedException, InvalidFightException, RemoteException;
 
     /**
      * Defending überschrieben für CUI
@@ -39,7 +39,7 @@ public interface IFight extends Remote, Serializable,IToStringRemote {
      * @throws InvalidFightException
      * @throws exceptions.AggessorNotThrowDiceException
      */
-    public void defending(int defendersArmies) throws RemoteCountryNotFoundException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, RemoteException, InvalidFightException, NotTheOwnerException;
+    public void defending(int defendersArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, YouCannotDefendException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, RemoteException, InvalidFightException, NotTheOwnerException;
 
     /**
      * Gibt das Ergebnis des Fights komprimiert zurück

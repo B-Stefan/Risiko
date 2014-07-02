@@ -6,6 +6,7 @@ import java.util.*;
 import configuration.FightConfiguration;
 import interfaces.IClient;
 import interfaces.IFight;
+import interfaces.data.IPlayer;
 import interfaces.data.utils.IDice;
 import exceptions.AlreadyDicedException;
 import exceptions.ArmyAlreadyMovedException;
@@ -15,6 +16,8 @@ import exceptions.InvalidFightException;
 import exceptions.NotEnoughArmiesToAttackException;
 import exceptions.TurnNotAllowedStepException;
 import exceptions.TurnNotInCorrectStepException;
+import exceptions.YouCannotAttackException;
+import exceptions.YouCannotDefendException;
 import server.ClientManager;
 import server.logic.data.Army;
 import server.logic.data.Country;
@@ -92,8 +95,12 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	 * @throws InvalidAmountOfArmiesException
 	 * @throws AlreadyDicedException 
 	 * @throws InvalidFightException 
+	 * @throws YouCannotAttackException 
 	 */
-	public void attacking(int agressorsArmies) throws NotEnoughArmiesToAttackException, InvalidAmountOfArmiesException, AlreadyDicedException, InvalidFightException, RemoteException{
+	public void attacking(int agressorsArmies, IPlayer clientPlayer) throws NotEnoughArmiesToAttackException, InvalidAmountOfArmiesException, AlreadyDicedException, InvalidFightException, RemoteException, YouCannotAttackException{
+		if(!this.agressor.getColor().equals(clientPlayer.getColor())){
+			throw new YouCannotAttackException();
+		}
 		Stack<Army> agArmies = new Stack<Army>();
 		for (int i = 0; i<agressorsArmies; i++){
 			if (this.from.getArmyList().size()<agressorsArmies){
@@ -154,8 +161,12 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	 * @throws TurnNotAllowedStepException 
 	 * @throws InvalidFightException
      * @throws AggessorNotThrowDiceException
+	 * @throws YouCannotDefendException 
 	 */
-	public void defending(int defendersArmies) throws RemoteCountryNotFoundException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException{
+	public void defending(int defendersArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException, YouCannotDefendException{
+		if(!this.to.getOwner().getColor().equals(clientPlayer.getColor())){
+			throw new YouCannotDefendException();
+		}
 		if(this.agressorsDice.isEmpty()){
             throw new AggessorNotThrowDiceException();
         }

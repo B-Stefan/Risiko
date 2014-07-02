@@ -75,7 +75,6 @@ public class Country extends UnicastRemoteObject implements ICountry {
         this.continent = continent;
         this.continent.addCountry(this);
         this.color = color;
-        System.out.print(this.shortName);
     }
 
     /**

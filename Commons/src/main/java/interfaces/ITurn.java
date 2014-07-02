@@ -63,7 +63,7 @@ public interface ITurn extends Remote, Serializable, IToStringRemote {
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(ICountry position, int numberOfArmys) throws RemoteCountryNotFoundException,ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughNewArmysException, NotTheOwnerException, RemoteException ;
+    public void placeNewArmy(ICountry position, int numberOfArmys, IPlayer clientPlayer) throws RemoteCountryNotFoundException, NotYourTurnException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughNewArmysException, NotTheOwnerException, RemoteException ;
 
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
@@ -73,7 +73,7 @@ public interface ITurn extends Remote, Serializable, IToStringRemote {
      * @throws NotTheOwnerException
      * @throws NotEnoughNewArmysException
      */
-    public void placeNewArmy(ICountry position) throws  RemoteCountryNotFoundException,ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException, RemoteException;
+    public void placeNewArmy(ICountry position, IPlayer clientPlayer) throws  RemoteCountryNotFoundException, NotYourTurnException, ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException, RemoteException;
 
 
     /**
@@ -89,7 +89,7 @@ public interface ITurn extends Remote, Serializable, IToStringRemote {
      * @throws NotTheOwnerException
      * @throws ToManyNewArmysException
      */
-    public IFight fight (ICountry from, ICountry to) throws RemoteCountryNotFoundException,TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException;
+    public IFight fight (ICountry from, ICountry to, IPlayer clientPlayer) throws RemoteCountryNotFoundException,NotYourTurnException,TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException;
 
     /**
      * Bewegt eine Einheit von einem Land in ein anderes Land.
@@ -103,7 +103,7 @@ public interface ITurn extends Remote, Serializable, IToStringRemote {
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      */
-    public void moveArmy(ICountry from,ICountry to, int numberOfArmies) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException;
+    public void moveArmy(ICountry from,ICountry to, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,NotYourTurnException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException;
 
     /**
      * Überprüft, ob der Turn abgeschlossen wurde.
@@ -130,7 +130,7 @@ public interface ITurn extends Remote, Serializable, IToStringRemote {
      * @throws ToManyNewArmysException
      */
 
-    public void setNextStep() throws TurnCompleteException, ToManyNewArmysException, RemoteException ;
+    public void setNextStep(IPlayer clientPlayer) throws TurnCompleteException,NotYourTurnException, ToManyNewArmysException, RemoteException ;
 
     /**
      * Gibt die Anzahl der noch zu verteilenden Armeen zurück
