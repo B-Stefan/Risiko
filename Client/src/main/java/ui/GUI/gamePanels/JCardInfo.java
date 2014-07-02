@@ -41,6 +41,7 @@ public class JCardInfo extends JFrame{
 	}
 	
 	public JCardInfo(IPlayer player, ICardDeck deck) throws RemoteException{
+        super();
 		this.player = player;
 		this.deck = deck;
 		this.context = new JPanel();

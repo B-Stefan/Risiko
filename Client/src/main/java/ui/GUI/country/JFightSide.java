@@ -27,6 +27,7 @@ public class JFightSide extends Panel {
     private final sides side;
     private final JTextField numberOfArmiesText;
     private final JTextArea thrownDiceText;
+    private final JFightGUI parent;
     private class ThrowDiceListener implements ActionListener {
 
         /**
@@ -83,33 +84,14 @@ public class JFightSide extends Panel {
 
 
             if(JFightSide.this.side == sides.DEFENDER){
-                int[] result;
-                try {
-                    result = JFightSide.this.fight.getResult();
-                }catch (RemoteException e){
-                    new JExceptionDialog(JFightSide.this,e);
-                    return;
-                }
-                int defenderLostArmies = result[1];
-                int aggressorLostArmies = result[0];
-                int aggresorWon = result[2];
-                if (aggresorWon == 1){
-                    JModalDialog.showInfoDialog(JFightSide.this, "Angriff erfolgreich", "Der Angreifer hat das Land übernommen");
-                    //Close Window
-                    Window JDialogRoot = SwingUtilities.getWindowAncestor(JFightSide.this);
-                    JDialogRoot.dispose();
-                }else{
-                    String str = String.format("Der Angreifer hat " + aggressorLostArmies + "Armeen verloren %n");
-                    str  += String.format("Der Verteidiger hat " + defenderLostArmies + "Armeen verloren %n");
-                    str  += "Der Kampf geht weiter ";
-                    JModalDialog.showInfoDialog(JFightSide.this, "Erfolgreich verteidigt", str);
-                }
-
+                JFightSide.this.parent.showResult();
             }
         }
     }
 
-    public JFightSide(IFight fight, sides side ) throws RemoteException{
+    public JFightSide(IFight fight, sides side, JFightGUI fightGUI ) throws RemoteException{
+        super();
+        this.parent =fightGUI;
         this.fight = fight;
         this.side = side;
         this.numberOfArmiesText = new JTextField(SwingConstants.RIGHT);
@@ -136,6 +118,9 @@ public class JFightSide extends Panel {
         throwDice.addActionListener(new ThrowDiceListener());
         this.add(throwDice);
 
+    }
+    private void showResult(){
+        this.parent.showResult();
     }
     public void update () throws RemoteException{
 

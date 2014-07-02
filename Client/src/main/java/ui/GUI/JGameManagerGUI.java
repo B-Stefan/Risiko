@@ -51,6 +51,7 @@ public class JGameManagerGUI extends JFrame {
     }
 
     public JGameManagerGUI(IGameManager manager) throws RemoteException{
+        super("Risiko-Spielerauswahl");
         this.manager = manager;
         this.remoteEventProcessor = new ClientEventProcessor();
         initialize();

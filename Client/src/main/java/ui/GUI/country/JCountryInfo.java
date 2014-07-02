@@ -18,6 +18,7 @@ public class JCountryInfo extends JLabel{
 	private static final int BORDER = 4;
 	
 	public JCountryInfo(ICountry country){
+        super();
 		this.country = country;
 		
 		setMinimumSize(new Dimension(20,20));
