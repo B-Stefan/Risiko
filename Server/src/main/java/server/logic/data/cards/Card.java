@@ -17,6 +17,10 @@ public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard
 		this.country = c;
 		this.type = ty;
 	}
+	public Card(String ty) throws RemoteException{
+		this.type = ty;
+		this.country = null;
+	}
 	public Country getCountry() throws RemoteException{
 		return this.country;
 	}
