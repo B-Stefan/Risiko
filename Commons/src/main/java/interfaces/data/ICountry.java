@@ -60,6 +60,11 @@ public interface ICountry extends Remote, Serializable, IToStringRemote {
      * @return DIe Anzahl der Armeen auf dem Land
      */
     public int getArmySize() throws RemoteException;
-
+    
+    /**
+     * Getter für das Kürzel
+     * @return Kürzel
+     */
+    public String getShortName() throws RemoteException;
 
 }

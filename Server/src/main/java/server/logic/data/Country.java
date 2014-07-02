@@ -70,12 +70,12 @@ public class Country extends UnicastRemoteObject implements ICountry {
      */
     public Country(final String name, final Continent continent, final Color color) throws RemoteException {
         this.name = name;
-        this.shortName = name.substring(3)+".";
+        this.shortName = this.name.substring(0, 2)+ ".";
         this.id = UUID.nameUUIDFromBytes(name.getBytes()); // statische UUID bassierend auf dem Namen, da die Karte im Moment nicht dynamisch ist
         this.continent = continent;
         this.continent.addCountry(this);
         this.color = color;
-
+        System.out.print(this.shortName);
     }
 
     /**
@@ -273,5 +273,13 @@ public class Country extends UnicastRemoteObject implements ICountry {
 			}
         }
         throw new RuntimeException("Die Equals methode wird nicht korrekt ausgeführt" + otherCountry);
+    }
+    
+    /**
+     * Getter für das Kürzel
+     * @return Kürzel
+     */
+    public String getShortName()throws RemoteException{
+    	return this.shortName;
     }
 }

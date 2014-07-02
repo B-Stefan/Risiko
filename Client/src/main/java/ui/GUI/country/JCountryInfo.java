@@ -57,7 +57,7 @@ public class JCountryInfo extends JLabel{
 	}
 	
 	private void writeLabel(final Graphics g, final int width, final int height) throws RemoteException{
-		final String amountArmies = "" + this.country.getArmySize();
+		final String amountArmies = String.format(this.country.getArmySize() + " " + this.country.getShortName());
         // Font einstellen
         final Font myFont = new Font(Font.SANS_SERIF, Font.BOLD, 16);
         g.setFont(myFont);
