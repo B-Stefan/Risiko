@@ -82,8 +82,8 @@ public class JGameManagerGUI extends JFrame {
         this.setPreferredSize(new Dimension(300,300));
         // Fenster anzeigen
         this.centreWindow();
-        this.setVisible(true);
         this.pack();
+        this.setVisible(true);
 
 
     }

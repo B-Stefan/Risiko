@@ -115,8 +115,8 @@ public class JGameGUI extends JFrame {
 		// Fenster anzeigen
         this.menuBar.add(new JGameMenu(this.game));
         this.setJMenuBar(menuBar);
-		this.setVisible(true);
 		this.pack();
+        this.setVisible(true);
 		
 	}
 	
