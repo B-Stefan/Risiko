@@ -1,4 +1,5 @@
 package server.logic;
+import interfaces.IClient;
 import interfaces.IRound;
 import server.ClientManager;
 import server.logic.data.*;
@@ -82,7 +83,7 @@ public class Round extends UnicastRemoteObject implements IRound {
         
         this.setCurrentPlayer();
         this.currentTurn = new Turn(this.currentPlayer, this.map, this.turnSteps, this.deck,clientManager );
-
+        this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.PLAYER);
 	}
 
 

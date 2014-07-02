@@ -90,5 +90,11 @@ public interface IFight extends Remote, Serializable,IToStringRemote {
     public ICountry getTo() throws RemoteException;
 
 
+    /**
+     * Pürft, ob der Kampf in diesem Status abgebrochen werden darf
+     * @return
+     * @throws RemoteException
+     */
+    public boolean isValidToClose() throws RemoteException;
 
 }

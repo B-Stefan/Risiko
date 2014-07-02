@@ -51,15 +51,24 @@ public class JFightGUI extends JModalDialog {
         /**
          * Invoked when an action occurs.
          *
-         * @param e
+         * @param event
          */
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent event) {
 
+            boolean isValid;
+            try{
+                isValid = JFightGUI.this.fight.isValidToClose();
+            }catch (RemoteException e){
+                new JExceptionDialog(JFightGUI.this,e);
+                return;
+            }
 
-            JFightGUI.this.remoteEventsProcessor.removeUpdateUIListener(JFightGUI.this.fightUpdateUIListener);
-            JFightGUI.this.dispose();
-
+            if(isValid) {
+                JFightGUI.this.dispose();
+            }else {
+                JModalDialog.showInfoDialog(JFightGUI.this,"Info", "Der Fight ist noch nicht abgeschlossen");
+            }
         }
     }
     public void showResult(){
@@ -76,11 +85,10 @@ public class JFightGUI extends JModalDialog {
         if (aggresorWon == 1){
             JModalDialog.showInfoDialog(JFightGUI.this, "Angriff erfolgreich", "Der Angreifer hat das Land übernommen");
             //Close Window
-            Window JDialogRoot = SwingUtilities.getWindowAncestor(JFightGUI.this);
-            JDialogRoot.dispose();
+            JFightGUI.this.dispose();
         }else{
-            String str = String.format("Der Angreifer hat " + aggressorLostArmies + "Armeen verloren %n");
-            str  += String.format("Der Verteidiger hat " + defenderLostArmies + "Armeen verloren %n");
+            String str = String.format("Der Angreifer hat " + aggressorLostArmies + " Armeen verloren %n");
+            str  += String.format("Der Verteidiger hat " + defenderLostArmies + " Armeen verloren %n");
             str  += "Der Kampf geht weiter ";
             JModalDialog.showInfoDialog(JFightGUI.this, "Erfolgreich verteidigt", str);
         }
@@ -90,8 +98,8 @@ public class JFightGUI extends JModalDialog {
         super(parent,"Fight",ModalityType.APPLICATION_MODAL);
         this.fight = fight;
         this.setLayout(new BorderLayout(5,5));
-        this.aggressorSide  = new JFightSide(this.fight, JFightSide.sides.AGGRESSOR, this);
-        this.defenderSide  = new JFightSide(this.fight, JFightSide.sides.DEFENDER,this);
+        this.aggressorSide  = new JFightSide(this.fight, JFightSide.sides.AGGRESSOR);
+        this.defenderSide  = new JFightSide(this.fight, JFightSide.sides.DEFENDER);
         this.remoteEventsProcessor = remoteEventsProcessor;
         this.fightUpdateUIListener = new UpdateUIFightListener();
         this.remoteEventsProcessor.addUpdateUIListener(fightUpdateUIListener);
@@ -115,5 +123,13 @@ public class JFightGUI extends JModalDialog {
         this.defenderSide.update();
     }
 
+    /**
+     * Override the dispose method
+     */
+    @Override
+    public void dispose(){
+        this.remoteEventsProcessor.removeUpdateUIListener(this.fightUpdateUIListener);
+        super.dispose();
+    }
 
 }

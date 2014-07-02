@@ -3,6 +3,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
+import configuration.FightConfiguration;
 import interfaces.IClient;
 import interfaces.IFight;
 import interfaces.data.utils.IDice;
@@ -123,7 +124,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 			throw new AlreadyDicedException();
 		}
 		//Der Angreifer muss mit mindestens mit einer und höchstens mit drei Armeen angreifen 
-		if(this.agressorsArmies.size() >3 || this.agressorsArmies.size()<1){
+		if(this.agressorsArmies.size() > FightConfiguration.AGGRESSOR_MAX_NUMBER_OF_ARMIES_TO_ATTACK || this.agressorsArmies.size()< FightConfiguration.NUMBER_OF_ARMIES_EXCLUDE_FROM_FIGHT){
 			throw new InvalidAmountOfArmiesException(this.agressorsArmies.size(), "1 & 3");
 		}
 		//Es kann nur angegriffen werden, wenn sich mehr als eine Armee auf dem Ursprungsland befindet
@@ -190,7 +191,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 		this.defendersArmies.clear();
 		this.defendersArmies.addAll(defendersArmies);
 		//Der Verteidiger muss mindestens mit einer und höchstens mit zwei Armeen verteidigen
-		if(this.defendersArmies.size() >2 || this.defendersArmies.size()<1){
+		if(this.defendersArmies.size() > FightConfiguration.DEFENDER_MAX_NUMBER_OF_ARMIES_TO_DEFEND || this.defendersArmies.size()< FightConfiguration.NUMBER_OF_ARMIES_EXCLUDE_FROM_FIGHT){
 			throw new InvalidAmountOfArmiesException(this.defendersArmies.size(), "1 & 2");
 		}
 		//füllt die Liste mit so vielen Würfeln, wie es Armeen gibt
@@ -274,8 +275,20 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	public Country getTo() throws RemoteException{
 		return this.to;
 	}
-	
-	/**
+
+    /**
+     * Pürft, ob der Kampf in diesem Status abgebrochen werden darf
+     *
+     * @return
+     *
+     * @throws java.rmi.RemoteException
+     */
+    @Override
+    public boolean isValidToClose() throws RemoteException {
+        return false;
+    }
+
+    /**
 	 * Getter für das From Land
 	 * @return
 	 */

@@ -3,14 +3,12 @@ package server;
 import exceptions.ClientNotFoundException;
 import interfaces.IClient;
 import interfaces.IFight;
-import interfaces.data.IPlayer;
 import server.logic.Fight;
 import server.logic.data.Player;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Created by Stefan on 01.07.14.
@@ -25,13 +23,12 @@ public  class ClientManager implements Runnable  {
     public  static Thread startWatchBroadcast(ClientManager manager){
         Thread t = new Thread(manager);
         t.start();
+        t.setName("ClientManager-Watch");
         return t;
     }
-    private final Object lock = new Object();
-    private static volatile boolean running = true;
 
 
-    private  final List<IClient> clients = new ArrayList<IClient>();
+    private final List<IClient> clients = new ArrayList<IClient>();
     private final List<IClient.UIUpdateTypes> updatesUIToBroadcast= new ArrayList<IClient.UIUpdateTypes>();
     private final List<IFight> fightsToBroadcast= new ArrayList<IFight>();
     private final List<String> messagesToBroadcast= new ArrayList<String>();
@@ -89,6 +86,7 @@ public  class ClientManager implements Runnable  {
         }
         for(IClient client : this.clients){
             try{
+
                 client.receiveUIUpdateEvent();
             }catch (RemoteException e){
                 this.clients.remove(client);
@@ -131,15 +129,17 @@ public  class ClientManager implements Runnable  {
      * @see Thread#run()
      */
     @Override
-    public void run() {
+    public  void run() {
         while (!Thread.currentThread().isInterrupted()){
-            try{
-                this.broadcastFightToClients();
-            }catch (ClientNotFoundException | RemoteException e){
-                e.printStackTrace();
+            synchronized (new Object()){
+                try{
+                    this.broadcastFightToClients();
+                }catch (ClientNotFoundException | RemoteException e){
+                    e.printStackTrace();
+                }
+                this.broadcastMessageToClients();
+                this.broadcastUIUpdateToClients();
             }
-            this.broadcastMessageToClients();
-            this.broadcastUIUpdateToClients();
             try{
                     Thread.sleep(1000);
 

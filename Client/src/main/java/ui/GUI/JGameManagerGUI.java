@@ -109,11 +109,9 @@ public class JGameManagerGUI extends JFrame {
 
         String playerName = JGameManagerGUI.this.playerNameTxt.getText();
         if (playerName.length() < 4 ){
-            playerName = JModalDialog.showInputDialog(this,"Bitte geben Sie einen Spielernamen mit mindestens 4 Buchstaben ein", "Spielername");
-            JGameManagerGUI.this.playerNameTxt.setText(playerName);
+            new JExceptionDialog(JGameManagerGUI.this,"Bitte geben Sie einen Spielernamen ein, der mindestens 4 Zeichen lang ist");
+            return;
         }
-
-
         IPlayer currentPlayer;
 
 

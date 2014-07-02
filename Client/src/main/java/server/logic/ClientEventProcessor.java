@@ -108,7 +108,14 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
      */
     public void receiveMessage(String msg)throws RemoteException{
         for(ActionListener e : this.messageListeners){
-                e.actionPerformed(new ActionEvent("Server",86769,msg));
+            Thread t = new Thread(new Runnable() {
+                public void run()
+                {
+                    e.actionPerformed(new ActionEvent("Server",86769,msg));
+                }
+            });
+            t.start();
+
         }
     }
 
@@ -120,8 +127,14 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
      */
     public void receiveFightEvent(IFight fight) throws RemoteException{
         for(IFightActionListener e : this.fightUiListeners){
+            Thread t = new Thread(new Runnable() {
+                public void run()
+                {
+                    e.actionPerformed(fight);
+                }
+            });
+            t.start();
 
-            e.actionPerformed(fight);
         }
     }
 
@@ -131,7 +144,14 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
      */
     public void receiveUIUpdateEvent() throws RemoteException{
         for(ActionListener e : this.updateUiListeners){
-            e.actionPerformed(new ActionEvent("Server",99999,"Update the UI"));
+            Thread t = new Thread(new Runnable() {
+                public void run()
+                {
+                    e.actionPerformed(new ActionEvent("Server",99999,"Update the UI"));
+                }
+            });
+            t.start();
+
         }
     }
 

@@ -11,12 +11,40 @@
 - [x]   Angriff: Eingabe, mit welcher Teilarmee (wie viele Einheiten) von welchem eigenen Land aus welches andere Land angegriffen wird. Ein Spieler kann mit maximal drei Einheiten zurzeit angreifen. Mindestens eine Einheit muss im eigenen Land verbleiben und darf nicht für den Angriff genutzt werden.
 
 - [X]   Verteidigung: Eingabe, mit welcher Teilarmee (wie vielen Einheiten) das angegriffene Land verteidigt wird. Ein Spieler kann sein Land mit maximal zwei Einheiten zurzeit verteidigen.
-- [ ]   Auswertung von Kämpfen: Jede Einheit der Angriffsarmee „würfelt“ gegen den Wurf einer zufälligen(>>>>>>>?<<<<<<<<) Verteidigungseinheit. Bei echt(>>>>>>>?<<<<<<<<)  größerer Zahl ist die Verteidigungseinheit vernichtet, sonst die Angriffseinheit.
+- [ ]   Bei echt(wenn gleich gewinnt Verteidiger) größerer Zahl ist die Verteidigungseinheit vernichtet, sonst die Angriffseinheit.
         Der Angreifer kann seine Angriffe bis zur endgültigen Eroberung des Landes fortsetzen oder abbrechen.
-- [ ]   (>>>>>>>?<<<<<<<<) Einrücken: Wenn die Verteidigungsarmee vernichtet ist, muss mindestens eine Angriffseinheit in das eroberte Land einrücken. Wichtig ist, dass mindestens eine Einheit im Land des Angreifers verbleibt.(>>>>>>>?<<<<<<<<)
-        Der Angreifer kann beliebige(>>>>>>>?<<<<<<<<)  andere Länder angreifen oder aber seine Eroberungsaktionen für diese Spielrunde(in unserem Fall Turn) beenden.
-- [ ]   Verschieben von Einheiten: Eingabe, wie viele bisher unbeteiligte(!)(>>>>>>>?<<<<<<<<)  Einheiten von welchem eigenen Land in welches eigene Nachbarland verschoben werden sollen. Dabei muss immer mind. eine Einheit in dem Land zurückbleiben. Eine Einheit darf nur einmal pro Runde verschoben werden.
-- [X]   Darüber hinaus können Informationen über die Länder abgefragt werden (Besitzer, Einheiten auf Land, vielleicht auch benachbarte Länder, ...).
+
+
+        da sich bei den Zwischenpräsentationen gezeigt hat, dass
+        der genaue Ablauf beim Angriff im Risiko-Spiel noch Klärung
+        bedarf, möchte ich heute die Regeln bzgl. Reihenfolge von
+        Würfelwahl und Zufallszahlbestimmung konkretisieren (vgl.
+        Regelheft im Ordner mit den Übungsaufgaben):
+        1. Der Angreifer wählt die Anzahl der Armeen, mit denen er
+        angreifen möchte (daraus ergibt sich, wie viele Würfel er
+        verwendet, nämlich 1 bis 3).
+        2. Die Werte der Würfel des Angreifers werden bestimmt und
+        Angreifer und Verteidiger bekanntgegeben.
+        3. Der Verteidiger entscheidet, ob er mit einem oder zwei
+        Würfeln verteidigt (wobei zwei Würfel nur zulässig sind,
+        wenn er auch über mindestens zwei Armeen in dem angegriffen
+        Land verfügt).
+        4. Die Werte der Würfel des Verteidigers werden bestimmt
+        und bekanntgegeben.
+        5. Die Würfel werden miteinander verglichen usw.
+        ... Bei einem efolgreichen Angriff (d.h., wenn der
+        Verteidiger seine letzte Armee in diesem Land verloren hat),
+        muss der Angreifer mit mindestens so vielen Armeen in das
+        Land einziehen, wie er beim letzten Angriff verwendet hat;
+        darf aber auch beliebig viele weitere nachziehen, sofern
+        noch mindestens eine zurückbleibt).
+
+
+- [ ]   Einrücken: Wenn die Verteidigungsarmee vernichtet ist, muss mindestens eine Angriffseinheit in das eroberte Land einrücken. Wichtig ist, dass mindestens eine Einheit im Land des Angreifers verbleibt.
+        Der Angreifer kann nur benachbarten Länder angreifen oder aber seine Eroberungsaktionen für diese Spielrunde(in unserem Fall Turn) beenden.
+        Dabei wird sich nach den Regeln gerichtet
+- [ ]   Verschieben von Einheiten: Eingabe, wie viele bisher unbeteiligte(nicht an einem Kampf beteiligt)  Einheiten von welchem eigenen Land in welches eigene Nachbarland verschoben werden sollen. Dabei muss immer mind. eine Einheit in dem Land zurückbleiben. Eine Einheit darf nur einmal pro Runde verschoben werden.
+- [X]   Darüber hinaus können Informationen über die Länder abgefragt werden (Besitzer, Einheiten auf Land, vielleicht auch benachbarte Länder,) Rein Programmtechnisch.
 
 - [X]   Damit der Anwendungskern getestet werden kann, soll zudem eine CUI („Command Line User Interface“) entwickelt werden, d.h. eine Möglichkeit zum Spielen von Risiko über die Kommandozeile. Das wird zugegebenermaßen kein schönes Spielen, ist aber zum Testen des Anwendungskerns unerlässlich.
 
@@ -51,32 +79,33 @@
          Provinzen,
          o das Verteilen und Verschieben von Einheiten und o das Angreifen / Verteidigen von Provinzen.
 
-- [X]   Erst wenn diese Basisfunktionen über die GUI verwendbar sind, sollten Sie an der Vervollständigung des Funktionsumfangs arbeiten (Missionen, Einheitenkarten, Anzeige von zusätzlichen Informationen zum Spielstand, ...). (>>>>>?<<<<<<)
+- [X]   Erst wenn diese Basisfunktionen über die GUI verwendbar sind, sollten Sie an der Vervollständigung des Funktionsumfangs arbeiten (Missionen, Einheitenkarten, Anzeige von zusätzlichen Informationen zum Spielstand, (Keine Anzeige von Anzeige der Kontinente)).
 - [ ]   Kleiner Tipp zur Zuordnung von Mausklicks zu Provinzen: Wenn Sie für die Auswahl von Provinzen beim Angriff Buttons oder ähnliches vermeiden wollen, können Sie auch direkt Mausklicks auf die Landkarte auswerten. Jedes MouseEvent hat x,y-Koordinaten, anhand derer sich der Farbwert an der entsprechende Position einer Grafik (der Weltkarte) auswerten lässt. Über den Farbwert kann man dann auf die angeklickte Provinz schließen. Dabei treten aber verschiedene Probleme auf:
          o Provinzen eines Kontinents haben vielleicht die gleiche Farbe: dann kann nur auf den Kontinent geschlossen werden und nicht auf die Provinz.
          o Eine Weltkarte soll vielleicht besonders schön sein und setzt dazu Farbverläufe ein (z.B. Vergilbung einer Weltkarte): dann ist einer Provinz keine eindeutige Farbe zugeordnet, sondern viele Farben.
-         o Die Weltkarte ist mit den Namen von Kontinenten und Provinzen beschriftet(>>>>>>?<<<<<): was ist, wenn der Klick nun genau auf einen Schriftzug zielte?
+         o Die Weltkarte ist mit den Namen von Kontinenten und Provinzen beschriftet(Tooltip oder Kontextmenü ist eine Beschriftung) : was ist, wenn der Klick nun genau auf einen Schriftzug zielte?
          Lösungsidee: Verwenden Sie einfach eine zweite Weltkarte, die niemals angezeigt wird und nur intern zur Auswertung von Mausklicks eingesetzt wird. Diese zweite Weltkarte enthält keinerlei Beschriftungen und jeder Provinz ist eine eindeutige Farbe zugeordnet. Dass das eine eher „hässliche“ Weltkarte wird, ist unwichtig – sieht ja keiner!
          Noch eine Anmerkung: es ist nicht zwingend erforderlich, dass Sie diesem Vorgehen folgen. Eine Weltkarte, bei der man die Provinzen über gesonderte Buttons oder andere Dialogelemente auswählt, tut’s auch.
 
 
 #Aufgabenblatt 4
 
-- [ ]   Implementieren Sie den Server.(>>>>>>?<<<<<)
+- [ ]   Implementieren Sie den Server.
          Hinweis für die Socket-Variante (wenn Sie sich bislang am groben Aufbau der
          Bibliotheksanwendung orientiert haben): Orientieren Sie sich am Bibliotheksserver
          o Übertragen Sie die Schichten Anwendungskern und Persistenz sowie die Datenstrukturen (Objekte, die von GUI, Anwendungskern und Persistenz benötigt werden) in ein gesondertes Server-Projekt
          o Ergänzen Sie eine Klasse XYServer, die Verbindungswünsche von Clients entgegennimmt (XY = eShop oder Risiko oder ...).
          o Ergänzen Sie eine Klasse ClientRequestProcessor, die für die Verarbeitung von Client-Anfragen gemäß dem Kommunikationsprotokoll zuständig ist und diese durch Methodenaufrufe auf dem Anwendungskern ausführt. Für jede Verbindung des Servers zu einem Client wird eine Instanz der Klasse erzeugt und als Thread gestartet.
 
-- [ ]   Implementieren Sie den Client. (>>>>>>?<<<<<)
+- [ ]   Implementieren Sie den Client.
          Hinweis für die Socket-Variante (wenn Sie sich bislang am groben Aufbau der
          Bibliotheksanwendung orientiert haben): Orientieren Sie sich am Bibliotheksclient
          o Übertragen Sie die Schicht Benutzungsschnittstelle sowie die Datenstrukturen (s. o.) unverändert in ein gesondertes Client-Projekt
          o Wandeln Sie die Klasse der Schicht Anwendungskern, die als Hauptzugangsknoten zum Anwendungskern dient, in eine „Fassade“ für den Netzwerkzugriff um und ergänzen Sie diese in Ihrem Client-Projekt.
          Im Bibliotheksbeispiel existiert neben der Klasse Bibliotheksverwaltung auf dem Server noch eine Klasse BibliotheksFassade auf dem Client. Diese Klasse, die von der GUI verwendet wird, bietet dieselben Methoden an und implementiert die clientseitige Netzwerkkommunikation gemäß dem Kommunikationsprotokoll
+        Analog dazu die RMI Varriante
 
-- [X]   (>>>>>>?<<<<<)Überlegen Sie, wo Synchronisierungen des Zugriffs auf gemeinsame Datenstrukturen sinnvoll sind. Implementieren Sie diese. Erinnerung: mehrere nebenläufig ausgeführte Threads (sprich mehrere parallel verbundene Clients) können zu Konflikten beim Zugriff auf gemeinsame Datenstrukturen führen.
+- [X]   Überlegen Sie, wo Synchronisierungen des Zugriffs auf gemeinsame Datenstrukturen sinnvoll sind. Implementieren Sie diese. Erinnerung: mehrere nebenläufig ausgeführte Threads (sprich mehrere parallel verbundene Clients) können zu Konflikten beim Zugriff auf gemeinsame Datenstrukturen führen.
 
 
 
