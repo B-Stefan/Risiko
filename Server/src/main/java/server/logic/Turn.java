@@ -397,7 +397,9 @@ public class Turn extends UnicastRemoteObject implements ITurn{
         }
 
         List<Army> armies = new ArrayList<Army>();
-        Collections.copy(armies,from.getArmyList());
+        for(Army a : from.getArmyList()){
+        		armies.add(a);
+        }
 
         //Löschen aller Armeen, die bereits bewegt wurden, somit können nur die Armen versucht werden zu bwegen, die noch nicht bewegt wurde.
         for(Army army : armies){
