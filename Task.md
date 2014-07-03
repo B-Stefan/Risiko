@@ -90,6 +90,7 @@
 
 #Aufgabenblatt 4
 
+
 - [ ]   Implementieren Sie den Server.
          Hinweis für die Socket-Variante (wenn Sie sich bislang am groben Aufbau der
          Bibliotheksanwendung orientiert haben): Orientieren Sie sich am Bibliotheksserver
