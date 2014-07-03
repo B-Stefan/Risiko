@@ -12,6 +12,7 @@ import interfaces.data.IPlayer;
 import interfaces.data.Orders.IOrder;
 import interfaces.data.cards.ICard;
 import server.logic.data.cards.Card;
+
 import java.util.UUID;
 
 public class Player extends UnicastRemoteObject implements IPlayer{
@@ -78,11 +79,16 @@ public class Player extends UnicastRemoteObject implements IPlayer{
     /**
      * Fügt ein Land der Liste des Spielers hinzu
      * @param c
+     * @throws RemoteException
      */
     public void addCountry(final Country c)throws RemoteException{
         c.setOwner(this);
     	countries.add(c);
     }
+    public void addCountryAfterTakeover(final Country c)throws RemoteException{
+    	countries.add(c);
+    }
+
     /**
      * Getter für die Länderliste des Spielers
      * @return

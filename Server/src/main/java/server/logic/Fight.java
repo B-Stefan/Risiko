@@ -11,6 +11,7 @@ import interfaces.data.utils.IDice;
 import exceptions.AlreadyDicedException;
 import exceptions.ArmyAlreadyMovedException;
 import exceptions.CountriesNotConnectedException;
+import exceptions.CountryNotInListException;
 import exceptions.InvalidAmountOfArmiesException;
 import exceptions.InvalidFightException;
 import exceptions.NotEnoughArmiesToAttackException;
@@ -162,8 +163,9 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	 * @throws InvalidFightException
      * @throws AggessorNotThrowDiceException
 	 * @throws YouCannotDefendException 
+	 * @throws CountryNotInListException 
 	 */
-	public void defending(int defendersArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException, YouCannotDefendException{
+	public void defending(int defendersArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException, YouCannotDefendException, CountryNotInListException{
 		if(!this.to.getOwner().getColor().equals(clientPlayer.getColor())){
 			throw new YouCannotDefendException();
 		}
@@ -191,8 +193,9 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	 * @throws TurnNotInCorrectStepException 
 	 * @throws TurnNotAllowedStepException 
 	 * @throws InvalidFightException 
+	 * @throws CountryNotInListException 
 	 */
-	public void defending(Stack<Army> defendersArmies)throws RemoteCountryNotFoundException, ToManyNewArmysException,InvalidAmountOfArmiesException, NotEnoughArmysToMoveException,CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException{
+	public void defending(Stack<Army> defendersArmies)throws RemoteCountryNotFoundException, ToManyNewArmysException,InvalidAmountOfArmiesException, NotEnoughArmysToMoveException,CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException, CountryNotInListException{
 		if (this.from.getOwner() == this.to.getOwner()){
 			throw new InvalidFightException();
 		}
@@ -222,8 +225,9 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	 * @throws ArmyAlreadyMovedException 
 	 * @throws TurnNotInCorrectStepException 
 	 * @throws TurnNotAllowedStepException 
+	 * @throws CountryNotInListException 
 	 */
-	private int[] result() throws RemoteCountryNotFoundException, ToManyNewArmysException, CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException{
+	private int[] result() throws RemoteCountryNotFoundException, ToManyNewArmysException, CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException, CountryNotInListException{
 		int[] res = new int[3];
 		for(IDice di : this.defendersDice){
 			//Wenn der Würfel des Verteidigers höher oder gleich ist, dann wird eine Armee des Angreifers zerstört
@@ -240,7 +244,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 				//Möglicherweise eigene Methode?
 				if(this.to.getArmyList().isEmpty()){
 					this.currentTurn.setTakeOverSucess(true);
-					this.to.setOwner(this.agressor);
+					this.to.setOwnerTakeOver(this.agressor);
 					this.currentTurn.moveArmyForTakeover(this.from, this.to, this.agressorsArmies);
 					res[2] = 1;
 				}
@@ -260,7 +264,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	}
 
 
-	private void setResult() throws RemoteCountryNotFoundException, ToManyNewArmysException,CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException{
+	private void setResult() throws RemoteCountryNotFoundException, ToManyNewArmysException,CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException, CountryNotInListException{
 		this.result = result();
 	}
 

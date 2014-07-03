@@ -1,12 +1,13 @@
 package server.persistence.dataendpoints;
 
+import exceptions.CountryNotInListException;
 import exceptions.PersistenceEndpointIOException;
 import server.persistence.PersistenceManager;
 import server.persistence.objects.PersitenceObject;
 
 import javax.management.InstanceNotFoundException;
-import java.io.*;
 
+import java.io.*;
 import java.util.*;
 import java.lang.reflect.*;
 
@@ -132,9 +133,10 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * @param id Die ID des Spiels
      * @return
      * @throws PersistenceEndpointIOException
+     * @throws CountryNotInListException 
      */
     @Override
-    public T get(UUID id) throws PersistenceEndpointIOException{
+    public T get(UUID id) throws PersistenceEndpointIOException, CountryNotInListException{
         PersitenceObject<T> result = this.chachedObjects.get(id);
         if(result == null){
             this.readFile();
@@ -147,9 +149,10 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * @param id String, der eine UUID enthält
      * @return
      * @throws PersistenceEndpointIOException
+     * @throws CountryNotInListException 
      */
     @Override
-    public T get(String id) throws PersistenceEndpointIOException {
+    public T get(String id) throws PersistenceEndpointIOException, CountryNotInListException {
         return this.get(UUID.fromString(id));
     }
 
@@ -157,9 +160,10 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * Gibt alle SourceObjects aus, die in der Datei gespeichert wurden
      * @return Liste aller  SourceObjects
      * @throws PersistenceEndpointIOException
+     * @throws CountryNotInListException 
      */
     @Override
-    public List<T> getAll() throws PersistenceEndpointIOException{
+    public List<T> getAll() throws PersistenceEndpointIOException, CountryNotInListException{
         this.readFile();
         List<T> list = new ArrayList<T>();
         for(Map.Entry<UUID,PersitenceObject<T>> entry : this.chachedObjects.entrySet()){
@@ -212,8 +216,9 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * @param obj
      * @return
      * @throws PersistenceEndpointIOException
+     * @throws CountryNotInListException 
      */
-    private T convertToSourceType(PersitenceObject obj) throws PersistenceEndpointIOException{
+    private T convertToSourceType(PersitenceObject obj) throws PersistenceEndpointIOException, CountryNotInListException{
         if(obj == null){
             return null;
         }

@@ -136,8 +136,14 @@ public class Country extends UnicastRemoteObject implements ICountry {
      * Setzt den aktuellen Besitzer des Lands
      *
      * @param p Spieler, der als Owener gesetzt werden soll
+     * @throws CountryNotInListException 
      */
     public void setOwner(Player p) throws RemoteException{
+    	this.owner = p;
+    }
+    public void setOwnerTakeOver(Player p) throws RemoteException, CountryNotInListException{
+    	p.addCountryAfterTakeover(this);
+    	this.owner.removeCountry(this);
     	this.owner = p;
     }
 

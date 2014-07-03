@@ -73,7 +73,7 @@ public class JFightSide extends Panel {
                     JFightSide.this.fight.attacking(numberOfArmies, clientPlayer);
                 }
 
-            } catch (AggessorNotThrowDiceException | YouCannotAttackException | YouCannotDefendException | NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException | InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException | NotEnoughArmiesToAttackException | InvalidFightException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException e) {
+            } catch (AggessorNotThrowDiceException | YouCannotAttackException | YouCannotDefendException | NotEnoughArmysToMoveException | ToManyNewArmysException | NotEnoughArmiesToDefendException | InvalidAmountOfArmiesException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException | NotEnoughArmiesToAttackException | InvalidFightException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException | CountryNotInListException e) {
                 new JExceptionDialog(frame, e);
                 return;
             }

@@ -1,5 +1,6 @@
 package interfaces;
 
+import exceptions.CountryNotInListException;
 import exceptions.GameNotFoundException;
 import exceptions.PersistenceEndpointIOException;
 
@@ -17,8 +18,9 @@ public interface IGameManager extends Remote, Serializable, IToStringRemote {
      *
      * @return Gibt die Liste aller gespeicherten Spiele zurück
      * @throws exceptions.PersistenceEndpointIOException
+     * @throws CountryNotInListException 
      */
-    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException;
+    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException, CountryNotInListException;
 
     /**
      *
@@ -48,7 +50,8 @@ public interface IGameManager extends Remote, Serializable, IToStringRemote {
      * @param index Index aus der Liste von @see #getGameList
      * @throws PersistenceEndpointIOException
      * @throws IndexOutOfBoundsException
+     * @throws CountryNotInListException 
      */
-    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException;
+    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException, CountryNotInListException;
 
     }

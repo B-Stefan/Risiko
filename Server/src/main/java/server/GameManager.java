@@ -1,5 +1,6 @@
 package server;
 
+import exceptions.CountryNotInListException;
 import exceptions.GameNotFoundException;
 import exceptions.PersistenceEndpointIOException;
 import interfaces.IGame;
@@ -37,8 +38,9 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      *
      * @return Gibt die Liste aller gespeicherten Spiele zurück
      * @throws PersistenceEndpointIOException
+     * @throws CountryNotInListException 
      */
-    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException{
+    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException, CountryNotInListException{
         return this.handler.getAll();
     }
 
@@ -86,8 +88,9 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      * @param index Index aus der Liste von @see #getGameList
      * @throws PersistenceEndpointIOException
      * @throws IndexOutOfBoundsException
+     * @throws CountryNotInListException 
      */
-    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException{
+    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException, CountryNotInListException{
         List<Game> gameList = this.handler.getAll();
         Game gameToSave =  gameList.get(index);
         this.handler.save(gameToSave);

@@ -34,9 +34,7 @@ public class JCountryPopupMenu extends JPopupMenu{
         this.add(new Separator());
         this.add(new JMenuItem("Armies:" + this.country.getNumberOfArmys()));
         this.add(new JMenuItem("Owner: " + this.country.getOwner().toStringRemote()));
-
         this.add(new Separator());
-
         this.add(new JCountryPlaceMenuItem(country,turn, this.clientPlayer));
         this.add(new JCountryFightMenu(country,turn,remoteEventProcessor, this.clientPlayer));
         this.add(new JCountryMoveMenu(country,turn, this.clientPlayer));

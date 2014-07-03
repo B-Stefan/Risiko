@@ -13,13 +13,10 @@ public class JCountryNeighborsMenuItem extends JMenuItem {
 
     private final ICountry country;
     public JCountryNeighborsMenuItem (final ICountry country) throws RemoteException{
-        super(country.getName());
+        super(country.getName() + " (" + country.getShortName() + ")");
         this.country = country;
     }
     public ICountry getCountry() {
         return country;
     }
-
-
-
 }

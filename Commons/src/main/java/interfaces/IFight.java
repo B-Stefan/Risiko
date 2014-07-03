@@ -38,8 +38,9 @@ public interface IFight extends Remote, Serializable,IToStringRemote {
      * @throws exceptions.TurnNotAllowedStepException
      * @throws InvalidFightException
      * @throws exceptions.AggessorNotThrowDiceException
+     * @throws CountryNotInListException 
      */
-    public void defending(int defendersArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, YouCannotDefendException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, RemoteException, InvalidFightException, NotTheOwnerException;
+    public void defending(int defendersArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, YouCannotDefendException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, RemoteException, InvalidFightException, NotTheOwnerException, CountryNotInListException;
 
     /**
      * Gibt das Ergebnis des Fights komprimiert zurück

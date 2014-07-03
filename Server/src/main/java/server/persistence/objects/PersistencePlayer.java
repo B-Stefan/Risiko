@@ -1,5 +1,6 @@
 package server.persistence.objects;
 
+import exceptions.CountryNotInListException;
 import exceptions.PersistenceEndpointIOException;
 import server.logic.data.Army;
 import server.logic.data.Country;
@@ -39,7 +40,7 @@ public class PersistencePlayer extends PersitenceObject<Player> {
     }
 
     @Override
-    public Player convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
+    public Player convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException, CountryNotInListException{
 
         Map defaultMap = manager.getMapHandler().get(Map.DEFAULT_MAP_UUID);
         if(defaultMap == null){

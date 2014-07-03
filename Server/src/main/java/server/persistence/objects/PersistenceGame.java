@@ -8,7 +8,6 @@ import server.logic.data.Player;
 import server.persistence.PersistenceManager;
 import server.persistence.dataendpoints.PersistenceEndpoint;
 
-
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class PersistenceGame extends PersitenceObject<Game> {
     }
 
     @Override
-    public Game convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
+    public Game convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException, CountryNotInListException{
         try {
             Map storedMap = manager.getMapHandler().get(this.map);
             Game newGame = new Game(manager.getGameHandler(),storedMap);

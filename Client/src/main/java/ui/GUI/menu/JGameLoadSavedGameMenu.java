@@ -1,5 +1,6 @@
 package ui.GUI.menu;
 
+import exceptions.CountryNotInListException;
 import exceptions.PersistenceEndpointIOException;
 import interfaces.IGame;
 import interfaces.IGameManager;
@@ -7,6 +8,7 @@ import ui.GUI.JGameManagerGUI;
 import ui.GUI.utils.JExceptionDialog;
 
 import javax.swing.*;
+
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -26,7 +28,10 @@ public class JGameLoadSavedGameMenu extends JMenu{
         }catch (PersistenceEndpointIOException e){
             new JExceptionDialog(this,e);
             return;
-        }
+        } catch (CountryNotInListException e) {
+        	new JExceptionDialog(this,e);
+            return;
+		}
 
         //Add saved games to Meue
         for(IGame savedGame : savedGames){
