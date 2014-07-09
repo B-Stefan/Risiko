@@ -50,7 +50,7 @@ public class PersistenceGame extends PersitenceObject<Game> {
     }
 
     @Override
-    public Game convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException, CountryNotInListException{
+    public Game convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
         try {
             Map storedMap = manager.getMapHandler().get(this.map);
             Game newGame = new Game(manager.getGameHandler(),storedMap);

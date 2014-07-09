@@ -1,6 +1,5 @@
 package server.persistence.dataendpoints;
 
-import exceptions.CountryNotInListException;
 import exceptions.PersistenceEndpointIOException;
 import server.persistence.PersistenceManager;
 import server.persistence.objects.PersitenceObject;
@@ -69,24 +68,21 @@ public abstract class PersistenceEndpoint<T> {
      * @param id UUID des Objects
      * @return Objekt, null wenn nicht gefunden
      * @throws PersistenceEndpointIOException
-     * @throws CountryNotInListException 
      */
-    public abstract T get(UUID id) throws PersistenceEndpointIOException, CountryNotInListException;
+    public abstract T get(UUID id) throws PersistenceEndpointIOException;
 
     /**
      * Gibt die sourceClass einer bestimmten UUID zurück, dabei wird die UUID als String übergeben
      * @param id UUID als String
      * @return Objekt oder null, wenn nicht gefunden
      * @throws PersistenceEndpointIOException
-     * @throws CountryNotInListException 
      */
-    public abstract T get(String id) throws PersistenceEndpointIOException, CountryNotInListException;
+    public abstract T get(String id) throws PersistenceEndpointIOException;
 
     /**
      * Gibt alle Instancen des sourceClass zurück als Liste
      * @return Liste aller Instanzen der sourceCLass
      * @throws PersistenceEndpointIOException
-     * @throws CountryNotInListException 
      */
-    public abstract List<T> getAll() throws PersistenceEndpointIOException, CountryNotInListException;
+    public abstract List<T> getAll() throws PersistenceEndpointIOException;
 }
