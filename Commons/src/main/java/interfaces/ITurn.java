@@ -14,7 +14,8 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Created by Stefan on 29.06.14.
+ * Beschreibt das Interface für einen einzelnen Spielzug eines Spielers mit den verscheiedenen stufen
+ *
  */
 public interface ITurn extends Remote, Serializable, IToStringRemote {
 
@@ -65,43 +66,56 @@ public interface ITurn extends Remote, Serializable, IToStringRemote {
      */
     public void placeNewArmy(ICountry position, int numberOfArmys, IPlayer clientPlayer) throws RemoteCountryNotFoundException, NotYourTurnException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughNewArmysException, NotTheOwnerException, RemoteException ;
 
+
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
      * @param position - Das Land auf welches die neue Armee plaziert werden soll
+     * @param clientPlayer Der Spieler, der die Funktion ausgelöst hat
+     * @throws RemoteCountryNotFoundException
+     * @throws NotYourTurnException
+     * @throws ToManyNewArmysException
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
-     * @throws NotTheOwnerException
      * @throws NotEnoughNewArmysException
+     * @throws NotTheOwnerException
+     * @throws RemoteException
      */
     public void placeNewArmy(ICountry position, IPlayer clientPlayer) throws  RemoteCountryNotFoundException, NotYourTurnException, ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException, RemoteException;
-
 
     /**
      * Angreifen eines Landes mit einer definierten Anzahl von einheiten
      * @param from - Von diesem Land wird angegriffen
-     * @param to - Dieses land soll angegrifffen werden
+     * @param to - Dieses land soll angegrifffen werd
+     * @param clientPlayer Der Spieler, der die Funktion ausgelöst hat
+     * @return den fight zwischen den beiden ländern
+     * @throws RemoteCountryNotFoundException
+     * @throws NotYourTurnException
+     * @throws TurnNotInCorrectStepException
      * @throws TurnNotAllowedStepException
-     * @throws CountriesNotConnectedException
-     * @throws InvalidPlayerException
-     * @throws InvalidAmountOfArmiesException
-     * @throws NotEnoughArmiesToDefendException
-     * @throws NotEnoughArmiesToAttackException
-     * @throws NotTheOwnerException
      * @throws ToManyNewArmysException
+     * @throws NotTheOwnerException
+     * @throws RemoteException
      */
     public IFight fight (ICountry from, ICountry to, IPlayer clientPlayer) throws RemoteCountryNotFoundException,NotYourTurnException,TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException;
 
+
     /**
+     *
      * Bewegt eine Einheit von einem Land in ein anderes Land.
      * @param from Land von dem aus sich die Einheit bewegen soll
      * @param to Zielland
      * @param numberOfArmies Anzahl der Armeen
+     * @param clientPlayer Der Spieler, der die Funktion ausgelöst hat
+     * @throws RemoteCountryNotFoundException
+     * @throws NotYourTurnException
+     * @throws ToManyNewArmysException
      * @throws NotEnoughArmysToMoveException
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
      * @throws CountriesNotConnectedException
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
+     * @throws RemoteException
      */
     public void moveArmy(ICountry from,ICountry to, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,NotYourTurnException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException;
 
@@ -123,18 +137,21 @@ public interface ITurn extends Remote, Serializable, IToStringRemote {
      */
 
     public steps getNextStep () throws RemoteException;
-    /**
-     * Versetzt den Turn in die nächste Stufe.
-     *
-     * @throws TurnCompleteException
-     * @throws ToManyNewArmysException
-     */
 
+    /**
+     *
+     * @param clientPlayer Der Spieler, der die Funktion ausgelöst hat
+     * @throws TurnCompleteException
+     * @throws NotYourTurnException
+     * @throws ToManyNewArmysException
+     * @throws RemoteException
+     */
     public void setNextStep(IPlayer clientPlayer) throws TurnCompleteException,NotYourTurnException, ToManyNewArmysException, RemoteException ;
 
     /**
      * Gibt die Anzahl der noch zu verteilenden Armeen zurück
      * @return - Anzahl der noch zu verteilenden Armeen
+     *
      */
     public int getNewArmysSize() throws RemoteException;
 

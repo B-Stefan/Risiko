@@ -11,7 +11,7 @@ import java.util.Stack;
 import exceptions.NotEnoughCardsToExchangeException;
 
 /**
- * Created by Stefan on 29.06.14.
+ * Interface für das alle Karten im Spiel
  */
 public interface ICardDeck extends Remote, Serializable {
 

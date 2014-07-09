@@ -118,6 +118,11 @@ public interface IGame extends Remote, Serializable, IToStringRemote {
     public boolean save () throws PersistenceEndpointIOException, RemoteException;
 
 
+    /**
+     * Gibt das CardDeck zurück
+     * @return
+     * @throws RemoteException
+     */
     public ICardDeck getDeck() throws RemoteException;
 
     }

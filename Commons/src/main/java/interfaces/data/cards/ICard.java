@@ -8,7 +8,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * Created by Stefan on 29.06.14.
+ * Interface für eine Karte
  */
 public interface ICard extends Remote, Serializable, IToStringRemote {
 

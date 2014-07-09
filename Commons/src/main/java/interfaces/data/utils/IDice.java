@@ -7,7 +7,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * Created by Stefan on 29.06.14.
+ * Interface für einen würfel
  */
 public interface IDice extends Serializable, Remote, IToStringRemote {
 
@@ -16,10 +16,6 @@ public interface IDice extends Serializable, Remote, IToStringRemote {
      * @return
      */
     public int getDiceNumber() throws RemoteException;
-    /**
-     *  throw the dice
-     */
-    public void throwDice()  throws RemoteException;
-	public boolean isDiceHigherOrEqual(IDice iDice)  throws RemoteException;
+
 
 }

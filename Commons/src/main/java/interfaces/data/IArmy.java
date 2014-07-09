@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 /**
- * Created by Stefan on 29.06.14.
+ * Für eine einzelne Armee geminsame Methoden für Client und Server werden in diesem Interface beschrieben
  */
 public interface IArmy extends Remote, Serializable {
     /**

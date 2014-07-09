@@ -9,9 +9,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-/**
- * Created by Stefan on 29.06.14.
- */
+
 public interface IGameManager extends Remote, Serializable, IToStringRemote {
 
     /**
