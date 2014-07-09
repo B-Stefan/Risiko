@@ -1,19 +1,17 @@
 package configuration;
 
-
-
 /**
- * Created by Stefan on 29.06.14.
+ * Konfigurationsklasse für den Server
  */
 public class ServerConfiguration {
 
     /**
      * Default Server Konfiguration
+     * port
+     * host
+     * serviceName
      */
-    public final static ServerConfiguration DEFAULT = new ServerConfiguration(
-            6789,
-            "localhost",
-            "GameManagerService");
+    public final static ServerConfiguration DEFAULT = new ServerConfiguration(6789,"localhost","GameManagerService");
 
 
     /**
@@ -34,10 +32,27 @@ public class ServerConfiguration {
 
     }
 
+    /**
+     * Die Portnummer auf der der Server läuft
+     */
     public final int     PORT;
+
+    /**
+     * Der Host unter der dem der Server erreichbar ist
+     */
     public final String  SERVER_HOST;
+
+    /**
+     * Der ServiceName für den GameManager
+     */
     public final String  SERVICE_NAME;
 
+    /**
+     *
+     * @param PORT Port für den Server
+     * @param SERVER_HOST Host für den Server bsp.: localhost
+     * @param SERVICE_NAME Name des Service für den GameManager
+     */
     public ServerConfiguration(int PORT, String SERVER_HOST, String SERVICE_NAME){
         this.PORT = PORT;
         this.SERVER_HOST = SERVER_HOST;

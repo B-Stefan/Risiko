@@ -1,8 +1,5 @@
 package exceptions;
 
-/**
- * Created by Stefan on 29.04.14.
- */
 public class GameAllreadyStartedException extends Exception {
 
     public  GameAllreadyStartedException (){
