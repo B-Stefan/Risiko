@@ -5,9 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 import server.logic.data.Player;
 
-/**
- * Created by Stefan on 30.06.14.
- */
+
 public class AbstractOrder extends UnicastRemoteObject{
 
     /**

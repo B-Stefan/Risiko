@@ -20,7 +20,7 @@ public interface IGameManager extends Remote, Serializable, IToStringRemote {
      * @throws exceptions.PersistenceEndpointIOException
      * @throws CountryNotInListException 
      */
-    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException, CountryNotInListException;
+    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException;
 
     /**
      *
@@ -52,6 +52,6 @@ public interface IGameManager extends Remote, Serializable, IToStringRemote {
      * @throws IndexOutOfBoundsException
      * @throws CountryNotInListException 
      */
-    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException, CountryNotInListException;
+    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException;
 
     }

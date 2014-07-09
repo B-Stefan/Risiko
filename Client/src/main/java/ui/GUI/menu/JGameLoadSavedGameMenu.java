@@ -25,13 +25,10 @@ public class JGameLoadSavedGameMenu extends JMenu{
         List<IGame> savedGames;
         try {
             savedGames = this.manager.getSavedGameList();
-        }catch (PersistenceEndpointIOException e){
-            new JExceptionDialog(this,e);
+        }catch (PersistenceEndpointIOException e) {
+            new JExceptionDialog(this, e);
             return;
-        } catch (CountryNotInListException e) {
-        	new JExceptionDialog(this,e);
-            return;
-		}
+        }
 
         //Add saved games to Meue
         for(IGame savedGame : savedGames){
