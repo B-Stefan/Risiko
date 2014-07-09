@@ -3,6 +3,8 @@ package ui.CUI;
 /**
  * Created by Stefan on 30.04.14.
  */
+import exceptions.NotYourTurnException;
+import exceptions.PlayerNotExsistInGameException;
 import interfaces.ITurn;
 import interfaces.data.ICountry;
 import interfaces.data.IPlayer;
@@ -34,6 +36,12 @@ public class TurnCUI extends CUI {
     private  final ITurn turn;
 
     /**
+     * Der Spieler der die Konsole steuert
+     */
+    private final IPlayer player;
+
+    /**
+     *
      * Event-Listener für das darstellen der Spielerkarte
      */
     public class ShowCountriesCommandListener extends CommandListener {
@@ -87,9 +95,9 @@ public class TurnCUI extends CUI {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             try {
-                turn.setNextStep();
+                turn.setNextStep(TurnCUI.this.player);
             }
-            catch (RemoteException e){
+            catch (RemoteException | NotYourTurnException e){
                 e.printStackTrace();
                 IO.println(e.getMessage());
                 return;
@@ -174,8 +182,9 @@ public class TurnCUI extends CUI {
      * @param parent Die übergeordnete CUI Instanz
      */
 
-    public TurnCUI(ITurn turn, CUI parent){
+    public TurnCUI(ITurn turn, CUI parent, IPlayer player){
         super(turn,parent);
+        this.player = player;
         this.turn = turn;
 
         //Hinzufügen der Listener
@@ -219,7 +228,7 @@ public class TurnCUI extends CUI {
         }
         else {
             //Erzeugen des Child
-            CUI child = new CountryCUI(turn,found, this);
+            CUI child = new CountryCUI(turn,found, this, this.player);
             super.goIntoChildContext(child);
         }
     }

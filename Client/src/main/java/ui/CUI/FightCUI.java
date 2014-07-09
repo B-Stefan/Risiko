@@ -7,6 +7,7 @@ import java.util.List;
 
 import exceptions.*;
 import interfaces.IFight;
+import interfaces.data.IPlayer;
 import interfaces.data.utils.IDice;
 import ui.CUI.exceptions.InvalidCommandListernArgumentException;
 import ui.CUI.utils.CUI;
@@ -21,6 +22,11 @@ public class FightCUI extends CUI {
 	 * Der momentane Fight
 	 */
 	private final IFight fight;
+
+    /**
+     * Der Spieler der die Konsole steuert
+     */
+    private final IPlayer player;
 	
 	public class attackingCommandListener extends CommandListener{
 		/**
@@ -48,8 +54,8 @@ public class FightCUI extends CUI {
             }
 
 			try{
-				fight.attacking(noOfArmies);
-			}catch (NotEnoughArmiesToAttackException | InvalidFightException | InvalidAmountOfArmiesException | AlreadyDicedException | RemoteException e)
+				fight.attacking(noOfArmies, FightCUI.this.player);
+			}catch (NotEnoughArmiesToAttackException | InvalidFightException | InvalidAmountOfArmiesException | AlreadyDicedException | RemoteException | YouCannotAttackException e)
             {
                 IO.println(e.getMessage());
                 return;
@@ -96,7 +102,7 @@ public class FightCUI extends CUI {
             }
 			
 			try{
-				fight.defending(noOfArmies);
+				fight.defending(noOfArmies,FightCUI.this.player);
 			}catch (NotEnoughArmiesToDefendException e){
                 IO.println(e.getMessage());
                 return;
@@ -125,7 +131,7 @@ public class FightCUI extends CUI {
 			} catch (InvalidFightException e) {
 				IO.println(e.getMessage());
 				return;
-			}catch (NotTheOwnerException | ToManyNewArmysException | AggessorNotThrowDiceException | RemoteException | RemoteCountryNotFoundException e) {
+			}catch (NotTheOwnerException | ToManyNewArmysException | AggessorNotThrowDiceException | RemoteException | RemoteCountryNotFoundException | CountryNotInListException | YouCannotDefendException e) {
                 IO.println(e.getMessage());
                 return;
             }
@@ -161,9 +167,10 @@ public class FightCUI extends CUI {
 	 * @param parent
 	 */
 	
-	protected FightCUI(IFight fight, CUI parent) {
+	protected FightCUI(IFight fight, CUI parent,IPlayer player) {
 		super(fight, parent);
 		this.fight = fight;
+        this.player = player;
 		this.addCommandListener(new defendingCommandListener());
 		this.addCommandListener(new attackingCommandListener());		
 	}

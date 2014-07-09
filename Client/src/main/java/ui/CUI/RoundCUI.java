@@ -1,6 +1,8 @@
 package ui.CUI;
 
+import exceptions.NotYourTurnException;
 import interfaces.IRound;
+import interfaces.data.IPlayer;
 import ui.CUI.utils.CUI;
 import ui.CUI.utils.CommandListener;
 import ui.CUI.utils.CommandListenerArgument;
@@ -14,7 +16,16 @@ import java.rmi.RemoteException;
 import java.util.LinkedHashMap;
 
 public class RoundCUI extends CUI {
+    /**
+     * Round from server
+     */
 	private final IRound round;
+
+    /**
+     * You as Palyer
+     */
+    private final IPlayer player;
+
 
     public class NextPlayerCommandListener extends CommandListener {
 
@@ -25,8 +36,8 @@ public class RoundCUI extends CUI {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             try {
-                round.setNextTurn();
-            }catch (TurnNotCompleteException | RemoteException e){
+                round.setNextTurn(RoundCUI.this.player);
+            }catch (TurnNotCompleteException | NotYourTurnException | RemoteException e){
                 IO.println(e.getMessage());
                 return;
             }catch (ToManyNewArmysException e){
@@ -43,9 +54,16 @@ public class RoundCUI extends CUI {
         }
     }
 
-	public RoundCUI(IRound fight, CUI parent){
-		super(fight, parent);
-		this.round= fight;
+    /**
+     * Verwaltet die Eingaben einer Runde
+     * @param round - Server Objekt
+     * @param parent - Für CUI, der übergeordnete Punkt
+     * @param player - Der Spieler der gerade vor der Konsole sitzt
+     */
+	public RoundCUI(IRound round, CUI parent,IPlayer player){
+		super(round, parent);
+        this.player = player;
+		this.round= round;
         this.addCommandListener(new NextPlayerCommandListener());
 
 	}
@@ -54,7 +72,7 @@ public class RoundCUI extends CUI {
     protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args) {
         TurnCUI turn;
         try {
-            turn = new TurnCUI(round.getCurrentTurn(), this);
+            turn = new TurnCUI(round.getCurrentTurn(), this,this.player);
         }catch (RemoteException e){
             IO.println(e.getMessage());
             return;

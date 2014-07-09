@@ -134,7 +134,7 @@ public class JGameManagerGUI extends JFrame {
             }
         }
         JGameGUI    gui = new JGameGUI(game,currentPlayer,this.remoteEventProcessor);
-        GameCUI     cui = new GameCUI(game, null);
+        GameCUI     cui = new GameCUI(game, null,currentPlayer);
 
         Thread t = new Thread(cui);
         t.start();

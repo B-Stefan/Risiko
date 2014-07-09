@@ -37,6 +37,12 @@ public class GameCUI extends CUI implements Runnable {
     /**
      * Listener, um ein Spiel zu speichern.
      */
+
+    private final IPlayer player;
+
+    /**
+     * Listener um ein Spiel zu speichern
+     */
     public class SaveGameCommandListener extends CommandListener {
 
         public SaveGameCommandListener() {
@@ -222,8 +228,9 @@ public class GameCUI extends CUI implements Runnable {
      * @param game - Das spiel, das die GUI betrifft
      * @throws Exception
      */
-    public GameCUI(final IGame game,CUI parent) throws RemoteException{
+    public GameCUI(final IGame game,CUI parent, IPlayer youPlayer) throws RemoteException{
         super(game,parent);
+        this.player = youPlayer;
         this.game = game;
         this.remoteEventProcessor = new ClientEventProcessor();
 
@@ -284,7 +291,7 @@ public class GameCUI extends CUI implements Runnable {
             return;
         }
 
-        RoundCUI roundCUI = new RoundCUI(round, this);
+        RoundCUI roundCUI = new RoundCUI(round, this, this.player);
         super.goIntoChildContext(roundCUI);
     }
 

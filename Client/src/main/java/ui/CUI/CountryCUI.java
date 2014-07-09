@@ -4,6 +4,7 @@ import exceptions.*;
 import interfaces.IFight;
 import interfaces.ITurn;
 import interfaces.data.ICountry;
+import interfaces.data.IPlayer;
 import ui.CUI.utils.CUI;
 import ui.CUI.utils.CommandListener;
 import ui.CUI.utils.CommandListenerArgument;
@@ -21,8 +22,12 @@ import java.util.LinkedHashMap;
  * Created by Stefan on 30.04.14.
  */
 public class CountryCUI extends CUI {
-    private ITurn turn;
-    private ICountry country;
+    private final ITurn turn;
+    private final ICountry country;
+    /**
+     * Der Spieler der das Spiel steuert
+     */
+    private final IPlayer player;
 
     public class ShowListener extends CommandListener {
 
@@ -64,7 +69,7 @@ public class CountryCUI extends CUI {
 
             for (int i = 0; i < numberOfArmys; i++){
                 try {
-                    turn.placeNewArmy(country);
+                    turn.placeNewArmy(country,CountryCUI.this.player);
                 }catch (NotEnoughNewArmysException e){
                     String name;
                     try {
@@ -81,7 +86,7 @@ public class CountryCUI extends CUI {
                     IO.println(e.getMessage());
                     return;
                 }
-                catch (ToManyNewArmysException | TurnNotInCorrectStepException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException e ){
+                catch (ToManyNewArmysException | TurnNotInCorrectStepException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException | NotYourTurnException e ){
                     IO.println(e.getMessage());
                     return;
                 }
@@ -129,24 +134,25 @@ public class CountryCUI extends CUI {
                 return;
             } else {
                 try {
-                    fight = turn.fight(country,found);
+                    fight = turn.fight(country,found,CountryCUI.this.player);
                 }catch (TurnNotAllowedStepException e){
                     IO.println(e.getMessage());
                     return;
                 }catch (TurnNotInCorrectStepException e){
                     IO.println(e.getMessage());
                     return;
-                }catch (ToManyNewArmysException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException e) {
+                }catch (ToManyNewArmysException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException | NotYourTurnException e) {
                     IO.println(e.getMessage());
                     return;
                 }
             }
-            CUI fightCUI = new FightCUI(fight, CountryCUI.this);
+            CUI fightCUI = new FightCUI(fight, CountryCUI.this,CountryCUI.this.player);
             goIntoChildContext(fightCUI);
         }
     }
-    public CountryCUI(ITurn turn, ICountry context, CUI parent) {
+    public CountryCUI(final ITurn turn, final ICountry context,final CUI parent, final IPlayer player) {
         super(context, parent);
+        this.player = player;
         this.turn = turn;
         this.country = context;
         this.addCommandListener(new ShowListener());

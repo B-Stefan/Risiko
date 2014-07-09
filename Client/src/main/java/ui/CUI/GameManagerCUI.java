@@ -3,6 +3,7 @@ package ui.CUI;
 import exceptions.PersistenceEndpointIOException;
 import interfaces.IGame;
 import interfaces.IGameManager;
+import interfaces.data.IPlayer;
 import ui.CUI.exceptions.InvalidCommandListernArgumentException;
 import ui.CUI.utils.CUI;
 import ui.CUI.utils.CommandListener;
@@ -25,6 +26,11 @@ public class GameManagerCUI extends CUI {
      * Bildet das Spiel ab für die die CUI erstellt wird
      */
     private final IGameManager gameManager;
+
+    /**
+     * Der Spieler der gerade vor dem Bildschirm sitzt
+     */
+    private final IPlayer player;
 
     public class ShowGamesCommandListener extends CommandListener {
 
@@ -73,7 +79,7 @@ public class GameManagerCUI extends CUI {
                 return;
             }
             try {
-                goIntoChildContext(new GameCUI(newGame,GameManagerCUI.this));
+                goIntoChildContext(new GameCUI(newGame,GameManagerCUI.this,GameManagerCUI.this.player));
             }catch (RemoteException e){
                 IO.println(e.getMessage());
                 return;
@@ -89,10 +95,12 @@ public class GameManagerCUI extends CUI {
     /**
      * Verwaltet die Benutzerschnittstelle
      * @param gameManager - Der Manager den die CUI verwalten soll
+     * @param player - Der Spieler der vor der Konsole sitzt
      */
-    public GameManagerCUI(final IGameManager gameManager) {
+    public GameManagerCUI(final IGameManager gameManager, final IPlayer player) {
         super(gameManager);
         this.gameManager = gameManager;
+        this.player = player;
         this.addCommandListener(new ShowGamesCommandListener());
         this.addCommandListener(new NewGameCommandListener());
 
@@ -132,7 +140,7 @@ public class GameManagerCUI extends CUI {
         }
         GameCUI gameCUI;
         try {
-            gameCUI = new GameCUI(game,this);
+            gameCUI = new GameCUI(game,this,this.player);
         }catch (RemoteException e){
             e.printStackTrace();
             return;
