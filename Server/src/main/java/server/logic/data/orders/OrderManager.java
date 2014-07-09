@@ -1,3 +1,32 @@
+
+/*
+ * RISIKO-JAVA - Game, Copyright 2014  Jennifer Theloy, Stefan Bieliauskas  -  All Rights Reserved.
+ * Hochschule Bremen - University of Applied Sciences
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Contact:
+ *     Jennifer Theloy: jTheloy@stud.hs-bremen.de
+ *     Stefan Bieliauskas: sBieliauskas@stud.hs-bremen.de
+ *
+ * Web:
+ *     https://github.com/B-Stefan/Risiko
+ *
+ */
+
 package server.logic.data.orders;
 
 import interfaces.data.Orders.IOrder;
@@ -15,7 +44,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 /**
- * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
+ * @author Jennifer Theloy,  Stefan Bieliauskas
  *
  * Diese Klasse bildet die Funktionen zum zufälligen generieren der Orders ab
  */
@@ -167,6 +196,14 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
 
     }
 
+    /**
+     * Erstllt für die übergebenen Spieler entsprechende Orders und weist diesen Spielern den Auftrag zu
+     * @param players Spieler für die Aufträge erstellt werden sollen
+     * @param game Spiel auf das sich das erstellen der Aufträge beziehgt
+     * @param map Karte auf die sich die Aufträge beziehen
+     * @throws PlayerAlreadyHasAnOrderException
+     * @throws RemoteException
+     */
     public static void createOrdersForPlayers(final List<Player> players, final  Game game, final Map map) throws PlayerAlreadyHasAnOrderException, RemoteException{
         final List<PlayerAlreadyHasAnOrderException> exceptions = new ArrayList<PlayerAlreadyHasAnOrderException>();
 
@@ -188,6 +225,11 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
             }
         }
     }
+
+    /**
+     * Erstellt einen Order-Manager s
+     * @throws RemoteException
+     */
     protected OrderManager() throws RemoteException {
 		super();
 	}

@@ -1,5 +1,32 @@
-package server.logic;
 
+/*
+ * RISIKO-JAVA - Game, Copyright 2014  Jennifer Theloy, Stefan Bieliauskas  -  All Rights Reserved.
+ * Hochschule Bremen - University of Applied Sciences
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Contact:
+ *     Jennifer Theloy: jTheloy@stud.hs-bremen.de
+ *     Stefan Bieliauskas: sBieliauskas@stud.hs-bremen.de
+ *
+ * Web:
+ *     https://github.com/B-Stefan/Risiko
+ *
+ */
+package server.logic;
 import java.lang.Thread;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -20,7 +47,7 @@ import server.logic.data.orders.OrderManager;
 import server.persistence.dataendpoints.PersistenceEndpoint;
 
 /**
- * @author Jennifer Theloy, Thu Nguyen, Stefan Bieliauskas
+ * @author Jennifer Theloy,  Stefan Bieliauskas
  *
  * Klasse für ein eizelnes Spiel. Diese dient zur Spielverwaltung.
  */
@@ -109,6 +136,11 @@ public class Game extends UnicastRemoteObject implements IGame {
 
     }
 
+    /**
+     * Gibt das Card-Deck des Spiel zurück
+     * @return Das Karten-Deck, das die Funktion für die Ereigniskarten bereitstellt
+     * @throws RemoteException
+     */
     public ICardDeck getDeck() throws RemoteException{
     	return this.deck;
     }
@@ -199,7 +231,6 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * Verteilt die Farben an die Spiler
      */
-
     private void distributeColors() throws RemoteException{
 
         for(Player player : this.players){
