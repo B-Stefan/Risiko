@@ -40,7 +40,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      * @throws PersistenceEndpointIOException
      * @throws CountryNotInListException 
      */
-    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException, CountryNotInListException{
+    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException{
         return this.handler.getAll();
     }
 
@@ -90,7 +90,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      * @throws IndexOutOfBoundsException
      * @throws CountryNotInListException 
      */
-    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException, CountryNotInListException{
+    public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException{
         List<Game> gameList = this.handler.getAll();
         Game gameToSave =  gameList.get(index);
         this.handler.save(gameToSave);

@@ -279,7 +279,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws NotYourTurnException 
      */
     public synchronized void placeNewArmy(ICountry position, int numberOfArmys, IPlayer clientPlayer) throws RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException, RemoteException, NotYourTurnException {
-        if(!this.player.getColor().equals(clientPlayer.getColor())){
+        if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }
     	for(int i = 0; i!= numberOfArmys; i++){
@@ -299,7 +299,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws NotYourTurnException 
      */
     public void placeNewArmy(ICountry positionFromClient, IPlayer clientPlayer) throws  RemoteCountryNotFoundException,ToManyNewArmysException,TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException, NotTheOwnerException, RemoteException, NotYourTurnException{
-        if(!this.player.getColor().equals(clientPlayer.getColor())){
+        if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }
     	Country position = this.map.getCountry(positionFromClient);
@@ -343,7 +343,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws NotYourTurnException 
      */
     public  IFight fight (ICountry fromClientCountry, ICountry toClientCountry, IPlayer clientPlayer) throws RemoteCountryNotFoundException, TurnNotInCorrectStepException, TurnNotAllowedStepException, ToManyNewArmysException, NotTheOwnerException, RemoteException, NotYourTurnException{
-        if(!this.player.getColor().equals(clientPlayer.getColor())){
+        if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }
     	Country from = this.map.getCountry(fromClientCountry);
@@ -386,7 +386,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws NotYourTurnException 
      */
     public void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException, NotYourTurnException {
-        if(!this.player.getColor().equals(clientPlayer.getColor())){
+        if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }
         Country from = this.map.getCountry(fromClientCountry);
@@ -539,7 +539,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws NotYourTurnException 
      */
     public void setNextStep(IPlayer clientPlayer) throws TurnCompleteException, ToManyNewArmysException, RemoteException, NotYourTurnException{
-        if(!this.player.getColor().equals(clientPlayer.getColor())){
+        if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }
     	if(this.isComplete()){
@@ -559,7 +559,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
 
     /**
      * Gibt die Anzahl der noch zu verteilenden Armeen zurück
-     * @see #placeNewArmy(interfaces.data.ICountry)
+     * @see #placeNewArmy(interfaces.data.ICountry, int, interfaces.data.IPlayer)
      * @return - Anzahl der noch zu verteilenden Armeen
      */
     public int getNewArmysSize() throws RemoteException {

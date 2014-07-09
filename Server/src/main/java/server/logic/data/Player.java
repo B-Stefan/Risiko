@@ -226,6 +226,25 @@ public class Player extends UnicastRemoteObject implements IPlayer{
         this.client = client;
     }
 
+    /**
+     * Check player by id
+     * @return
+     */
+    @Override
+    public boolean equals(Object otherObject){
+        if(otherObject instanceof IPlayer){
+            IPlayer otherPlayer = (IPlayer) otherObject;
+            boolean check;
+            try {
+                check = otherPlayer.getId().equals(this.getId());
+            }catch (RemoteException e){
+                e.printStackTrace();
+                return false;
+            }
+            return check;
+        }
+        return false;
+    }
 
 
 }
