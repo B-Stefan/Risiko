@@ -61,6 +61,13 @@ public interface IClient extends Remote,Serializable{
     public void receiveFightEvent(IFight fight) throws RemoteException;
 
     /**
+     * Gibt an den Client eine Nachricht weiter
+     * @param msg Nachricht
+     * @throws RemoteException
+     */
+    public void receiveMessage(String msg) throws RemoteException;
+
+    /**
      * Wenn ein Update des UI notwendig ist
      * @throws RemoteException
      */
