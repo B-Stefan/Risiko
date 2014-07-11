@@ -129,11 +129,13 @@ public class Continent extends UnicastRemoteObject implements IContinent{
         return  false;
 
     }
-
+    /**
+     * @return bonus Der Bonus, den der Besitz des kompletten Continents einbringt
+     */
     public int getBonus() throws RemoteException{
     	return this.bonus;
     }
-
+    
     @Override
     public String toString() {
         try {

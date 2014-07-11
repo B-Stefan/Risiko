@@ -39,24 +39,52 @@ import interfaces.data.cards.ICard;
 import server.logic.data.*;
 
 public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard> {
+	/**
+	 * Der Spieler, in dessen besitz die Karte ist
+	 */
 	private IPlayer belongsTo;
+	/**
+	 * Der Typ der Karte (Joker, Reiter, Soldat, Kanone)
+	 */
 	private String type;
+	/**
+	 * Das Land, dem die Karte zugewiesen ist
+	 */
 	private Country country;
-	
+	/**
+	 * Constructor
+	 * @param c Das Land, dem die Karte zugewiesen wrden soll
+	 * @param ty Der Typ, der der Karte zugewiesen werden soll
+	 * @throws RemoteException
+	 */
 	public Card(Country c, String ty) throws RemoteException{
 		this.country = c;
 		this.type = ty;
 	}
+	/**
+	 * Constructor
+	 * @param ty Der Typ, der der Karte zugewiesen werden soll
+	 * @throws RemoteException
+	 */
 	public Card(String ty) throws RemoteException{
 		this.type = ty;
 		this.country = null;
 	}
+	/**
+	 * Gibt das Land aus, welches der Karte zugewiesen ist
+	 */
 	public Country getCountry() throws RemoteException{
 		return this.country;
 	}
+	/**
+	 * Gibt den Typ der Karte aus
+	 */
 	public String getType() throws RemoteException{
 		return this.type;
 	}
+	/**
+	 * Hilfe zur Sortierung der Karte nach Alphabet
+	 */
 	public int compareTo(ICard otherCard){
         try {
             if(otherCard.getType() == this.getType()){
@@ -82,6 +110,9 @@ public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard
             throw new RuntimeException(e);
         }
 	}
+	/**
+	 * Wandelt die Informationen der Karte in einen String
+	 */
     public String toString(){
 
         ICountry country = null;

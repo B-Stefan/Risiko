@@ -178,7 +178,7 @@ public class Country extends UnicastRemoteObject implements ICountry {
 
     /**
      * Ändert den Owner des Landes und entfehrnt gleichzeitig das Land aus der Liste des urspr�nglichen Owners
-     * @param newOwner
+     * @param newOwner Der neue Besitzer des Landes
      * @throws CountryNotInListException
      */
     public void changeOwner(Player newOwner) throws CountryNotInListException, RemoteException{
@@ -188,7 +188,7 @@ public class Country extends UnicastRemoteObject implements ICountry {
 
 
     /**
-     * F�gt die Armee a in die Liste der Armeen des Spielers hinzu
+     * Fügt Armee a in die Liste der Armeen des Landes hinzu
      * @param a in die Liste der Armeen einzuf�gende Armee
      */
     public void addArmy(Army a) throws CountriesNotConnectedException, RemoteException{
@@ -255,7 +255,7 @@ public class Country extends UnicastRemoteObject implements ICountry {
 
     /**
      * Gibt die Anzahl der Armeen auf dem Land zurück
-     * @return
+     * @return Die Anzahl der Armeen auf diesem Land
      */
     public int getArmySize(){
         return this.armyList.size();
@@ -310,7 +310,7 @@ public class Country extends UnicastRemoteObject implements ICountry {
     
     /**
      * Getter für das Kürzel
-     * @return Kürzel
+     * @return Kürzel Die Abkürzung des Namens des Landes
      */
     public String getShortName()throws RemoteException{
     	return this.shortName;

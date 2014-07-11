@@ -138,11 +138,17 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @see #(Player, server.logic.data.Map, java.util.Queue)
      */
     private steps currentStep;
-    
+    /**
+     * Der Kartenstapel an unvergebenen Karten
+     */
     private CardDeck deck;
-    
+    /**
+     * Gibt an, ob in dem Zug ein ein erfolgreicher Twkeover stattgefunden hat
+     */
     private boolean takeOverSucess;
-
+    /**
+     * Clientmanager
+     */
     private final ClientManager clientManager;
 
 
@@ -520,7 +526,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * Die Methode wird nur für den Step FIGHT verwendet, um einen Takeover zu vollziehen
      * @param from
      * @param to
-     * @param armys
+     * @param armys zu bewegende Armeen
      * @throws RemoteException
      * @throws NotTheOwnerException
      * @throws RemoteCountryNotFoundException

@@ -44,21 +44,50 @@ import server.logic.data.cards.Card;
 import java.util.UUID;
 
 public class Player extends UnicastRemoteObject implements IPlayer{
-
+	/**
+	 * Name des Spielers
+	 */
     private final String name;
+    /**
+     * Liste der Länder in Besitz des Spielers
+     */
     private final List<Country> countries = new ArrayList<Country>();
+    /**
+     * Liste der Karte in Besitz des Spielers
+     */
     private final List<Card> deck = new ArrayList<Card>();
+    /**
+     * UUID
+     */
     private final UUID id;
+    /**
+     * Zum Spieler gehörender Client
+     */
     private IClient client;
+    /**
+     * Dem Spieler zugewiesene Order
+     */
     private IOrder order;
+    /**
+     * Dem Spieler zugewiesene Farbe
+     */
     private Color color;
-
+    /**
+     * Constructor
+     * @param name Name des Spielers
+     * @throws RemoteException
+     */
     public Player(final String name) throws RemoteException{
         this.name = name;
         this.id = UUID.randomUUID();
 
     }
-    
+    /**
+     * Constructor
+     * @param name Name des Spielers
+     * @param color Farbe des Spielers
+     * @throws RemoteException
+     */
     public Player(final String name, final Color color)throws RemoteException {
         this(name);
         this.color = color;
@@ -72,23 +101,23 @@ public class Player extends UnicastRemoteObject implements IPlayer{
         return this.name;
     }
     /**
-     * Sortiert das eigene Deck und gibt es aus
-     * @return
+     * Gibt das Deck des Spielers aus
+     * @return Alle Karten des Spielers
      */
     public List<? extends ICard> getCards()throws RemoteException{
     	return this.deck;
     }
 
     /**
-     * Sortiert das eigene Deck und gibt es aus
-     * @return
+     * Gibt das Deck des Spielers aus
+     * @return Alle Karten des Spielers
      */
     public List<Card> getCardsReal(){
         return this.deck;
     }
     /**
      * entfernt eine Karte aus dem eigenen Deck
-     * @param c
+     * @param c Die zu entfehrnende Karte
      */
     public void removeCard(Card c)throws RemoteException{
     	this.deck.remove(c);
@@ -96,7 +125,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
 
     /**
      * Eine neue Karte wird zum Deck hinzugefügt
-     * @param c
+     * @param c Die gezogene Karte
      */
     public void drawNewCard(Card c)throws RemoteException{
     	if(this.deck.size() <= 5){
@@ -106,27 +135,32 @@ public class Player extends UnicastRemoteObject implements IPlayer{
 
     /**
      * Fügt ein Land der Liste des Spielers hinzu
-     * @param c
+     * @param c Das zu hinzuzufügende Land
      * @throws RemoteException
      */
     public void addCountry(final Country c)throws RemoteException{
         c.setOwner(this);
     	countries.add(c);
     }
+    /**
+     * Funktion zum hinzufügen eines Landes zu der Länderliste nach einem Takeover
+     * @param c Das zu hinzufügende Land
+     * @throws RemoteException
+     */
     public void addCountryAfterTakeover(final Country c)throws RemoteException{
     	countries.add(c);
     }
 
     /**
      * Getter für die Länderliste des Spielers
-     * @return
+     * @return Alle Länder eines Spielers
      */
     public List<? extends ICountry> getCountries()throws RemoteException{
         return this.countries;
     }
     /**
      * Getter für die Länderliste des Spielers
-     * @return
+     * @return Alle Länder eines Spielers
      */
     public List<Country> getCountriesReal(){
         return this.countries;
@@ -134,7 +168,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
     
     /**
      * Setter für die Order des Spielers
-     * @param order
+     * @param order Die Order des Spielers
      */
     public void setOrder(IOrder order)throws RemoteException{
     	this.order = order;
@@ -142,7 +176,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
     
     /**
      * Getter für die Order des Spielers
-     * @return
+     * @return Die Order des Spielers
      */
     public IOrder getOrder()throws RemoteException{
     	return this.order;
@@ -162,7 +196,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
     }
     /**
      * ToString methode, die Remote aufgerufen werden kann
-     * @return
+     * @return 
      * @throws RemoteException
      */
     public String toStringRemote() throws RemoteException{
@@ -171,8 +205,8 @@ public class Player extends UnicastRemoteObject implements IPlayer{
 
     /**
      * Gibt ein Land aus der Liste der Länder des Spielers aus
-     * @param n
-     * @return
+     * @param n Name des Landes
+     * @return Das Land als ICountry
      */
     public ICountry getCountry(String n) throws RemoteException{
     	for (Country c : countries){
@@ -185,8 +219,8 @@ public class Player extends UnicastRemoteObject implements IPlayer{
     }
     /**
      * Gibt ein Land aus der Liste der Länder des Spielers aus
-     * @param country
-     * @return
+     * @param country Das zu suchende Land als ICountry
+     * @return Das Land als Country
      */
     public Country getCountry(ICountry country){
         for (Country c : countries){
@@ -199,7 +233,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
 
     /**
      * Entfernt ein land aus der Liste der Länder des Spielers
-     * @param c
+     * @param c Zu entfehrnendes Land
      * @throws CountryNotInListException
      */
     public void removeCountry(Country c) throws CountryNotInListException, RemoteException{
@@ -212,14 +246,14 @@ public class Player extends UnicastRemoteObject implements IPlayer{
 
     /**
      * Getter für die ID des Spielers
-     * @return
+     * @return UUID des Spielers
      */
     public UUID getId ()throws RemoteException {
         return this.id;
     }
     /**
      * Getter für die Farbe des Spielers
-     * @return
+     * @return Farbe des Spielers
      */
     
     public Color getColor()throws RemoteException{
@@ -227,7 +261,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
     }
     /**
      * Setter für die Farbe des Spielers
-     * @param col
+     * @param col Farbe des Spielers
      */
     public void setColor(Color col)throws RemoteException{
         this.color = col;
