@@ -45,15 +45,34 @@ import server.logic.data.Player;
 import exceptions.NotEnoughCardsToExchangeException;
 
 public class CardDeck extends UnicastRemoteObject implements ICardDeck {
+	/**
+	 * das Deck mit allen Karten im Spiel
+	 */
 	private final Stack<Card> globalDeck = new Stack<Card>();
+	/**
+	 * Eine Liste, in der die jeweiligen Boni stehen, die man dafür bekommt Karten einzutauschen
+	 */
 	private final Stack<Integer> bonus = new Stack<Integer>();
+	/**
+	 * das aktuelle Game
+	 */
 	private final Game game;
+	/**
+	 * Konstruktor
+	 * @param arrayList Liste alle Länder
+	 * @param game das aktuelle Spiel
+	 * @throws RemoteException
+	 */
 	public CardDeck(final List<Country> arrayList, final Game game) throws RemoteException{
 		this.game = game;
         builtDeck(arrayList);
 
 	}
-	
+	/**
+	 * Das Deck wird aufgefüllt mit Karten und die Bonusliste wird gesetzt
+	 * @param cos Liste aller Länder
+	 * @throws RemoteException
+	 */
 	private void builtDeck(List<Country> cos) throws RemoteException{
 		for(Country c : cos){
 			if(globalDeck.isEmpty()){
@@ -77,6 +96,11 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 		this.bonus.push(6);
 		this.bonus.push(4);
 	}
+	/**
+	 * Der nächste Bonus wird ausgegeben
+	 * @return
+	 * @throws RemoteException
+	 */
 	public int calculateBonus() throws RemoteException{
 		int bo = this.bonus.pop();
 		if(this.bonus.isEmpty()){
@@ -84,9 +108,18 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 		}
 		return bo;
 	}
+	/**
+	 * Zum ziehen einer Karte aus dem Deck
+	 * @param pl der Spieler, der die Karte zieht
+	 * @throws RemoteException
+	 */
+	
 	public void drawCard(Player pl) throws RemoteException{
 		pl.drawNewCard(globalDeck.pop());
 	}
+	/**
+	 * Zum Austauschen der Karten gegen einen Armeen Bonus
+	 */
 	public boolean exchangeCards(IPlayer player) throws NotEnoughCardsToExchangeException, RemoteException{
         Player pl;
         try {
@@ -172,7 +205,14 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 		pl.removeCard(c);
 	}
 
-
+	/**
+	 * legt die jeweilligen Karten zurück ins Deck
+	 * @param card1
+	 * @param card2
+	 * @param card3
+	 * @param pl
+	 * @throws RemoteException
+	 */
 	public void returnCards(Card card1, Card card2, Card card3, Player pl) throws RemoteException{
 		this.globalDeck.push(card1);
 		putBackCard(pl, card1);

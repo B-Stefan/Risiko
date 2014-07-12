@@ -50,10 +50,25 @@ import interfaces.data.cards.ICard;
 import interfaces.data.cards.ICardDeck;
 
 public class JCardInfo extends JFrame{
+	/**
+	 * Der Spieler de jeweiligen Clients
+	 */
 	private final IPlayer player;
+	/**
+	 * Der Infotext zu den Karten
+	 */
 	private JTextArea cardInfo = new JTextArea("");
+	/**
+	 *
+	 */
 	private JPanel context;
+	/**
+	 * Der Button zum eintauschen der Karten
+	 */
 	private JButton exchange;
+	/**
+	 * Das Kartendeck
+	 */
 	private ICardDeck deck;
 	
 	private class ExchangeActionListener implements ActionListener{
@@ -69,7 +84,12 @@ public class JCardInfo extends JFrame{
 		}
 		
 	}
-	
+	/**
+	 * Konstruktor
+	 * @param player Der spielen des jeweilligen Clients
+	 * @param deck das Karten Deck
+	 * @throws RemoteException
+	 */
 	public JCardInfo(IPlayer player, ICardDeck deck) throws RemoteException{
         super();
 		this.player = player;
@@ -82,13 +102,19 @@ public class JCardInfo extends JFrame{
 		this.exchange.addActionListener(new ExchangeActionListener());
 		setContext();
 	}
-	
+	/**
+	 * Setzt den Kontext des Panels
+	 * @throws RemoteException
+	 */
 	private void setContext() throws RemoteException{
 		update();
 		this.context.add(this.cardInfo);
 		this.context.add(this.exchange);
 	}
-	
+	/**
+	 * Zum Updaten des Panels
+	 * @throws RemoteException
+	 */
 	public void update() throws RemoteException{
 		List<? extends ICard> cards = this.player.getCards();
 
@@ -101,7 +127,10 @@ public class JCardInfo extends JFrame{
 
 		this.cardInfo.setText(msg);
 	}
-		
+	/**
+	 * 
+	 * @return context
+	 */
 	public JPanel getContext(){
 		return this.context;
 	}
