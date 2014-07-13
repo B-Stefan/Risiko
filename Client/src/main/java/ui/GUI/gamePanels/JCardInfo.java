@@ -87,6 +87,7 @@ public class JCardInfo extends JFrame{
 		public void actionPerformed(ActionEvent event) {
 			try {
 				game.getCurrentRound().getCurrentTurn().exchangeCards(player);
+				update();
 			} catch (RemoteException | NotEnoughCardsToExchangeException | ToManyNewArmysException | ExchangeNotPossibleException | TurnNotAllowedStepException | TurnNotInCorrectStepException | GameNotStartedException e) {
 				new JExceptionDialog(e);
 				return;
