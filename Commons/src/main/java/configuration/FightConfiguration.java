@@ -45,4 +45,9 @@ public class FightConfiguration {
      * Maximale Anzahl der Armeen mit denen man angreifen kann
      */
     public static int AGGRESSOR_MAX_NUMBER_OF_ARMIES_TO_ATTACK = 3;
+
+    /**
+     * Anzahl der Armeen die mindestens auf ein neu erobertes Land gezogen werden müssen
+     */
+    public static int NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY = 1;
 }

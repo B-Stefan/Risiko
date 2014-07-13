@@ -71,6 +71,21 @@ public interface IFight extends Remote, Serializable,IToStringRemote {
     public void defending(int defendersArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, YouCannotDefendException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, RemoteException, InvalidFightException, NotTheOwnerException, CountryNotInListException;
 
     /**
+     * Bewegt die Armeen nach einem Kampf
+     * @param number Anzahl der Armeen die bewegt werden sollen
+     * @throws FightMoveMinimumOneArmy
+     * @throws FightNotWonException
+     * @throws RemoteException
+     * @throws NotTheOwnerException
+     * @throws RemoteCountryNotFoundException
+     * @throws ToManyNewArmysException
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
+     * @throws NotEnoughArmysToMoveException
+     * @throws CountriesNotConnectedException
+     */
+    public void moveArmiesAfterTakeover(int number) throws FightMoveMinimumOneArmy, FightNotWonException, RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException;
+    /**
      * Gibt das Ergebnis des Fights komprimiert zurück
      *
      *  @return Zeile 1: Anzahl der verlorenen Einheiten des Angreifers

@@ -452,17 +452,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
             throw new RemoteCountryNotFoundException();
         }
 
-        List<Army> armies = new ArrayList<Army>();
-        for(Army a : from.getArmyList()){
-        		armies.add(a);
-        }
-
-        //Löschen aller Armeen, die bereits bewegt wurden, somit können nur die Armen versucht werden zu bwegen, die noch nicht bewegt wurde.
-        for(Army army : armies){
-            if(this.movedArmies.contains(army)){
-                armies.remove(army);
-            }
-        }
+        List<Army> armies = this.getNotMovedArmies(from.getArmyList());
 
         for(int i = 0; i!= numberOfArmies; i++){
             Army army = armies.get(armies.size()-1);
@@ -514,13 +504,33 @@ public class Turn extends UnicastRemoteObject implements ITurn{
             }
         }
 	}
-    
+
+    /**
+     * Gibt eine Liste der Armeen zurück, die auf dem Land noch nicht bewegt wurden, Differenzmenge von this.movedArmies && @param allArmies
+     * @param allArmies Liste aller Armeen die gerüft werden soll
+     * @return
+     * @throws RemoteException
+     */
+    private List<Army> getNotMovedArmies(List<Army> allArmies) throws RemoteException{
+        List<Army> armies = new ArrayList<Army>();
+        for(Army a : allArmies){
+            armies.add(a);
+        }
+
+        //Löschen aller Armeen, die bereits bewegt wurden, somit können nur die Armen versucht werden zu bwegen, die noch nicht bewegt wurde.
+        for(Army army : armies){
+            if(this.movedArmies.contains(army)){
+                armies.remove(army);
+            }
+        }
+        return  armies;
+    }
     /**
      * Versetzt die übergebenen Armeen von dem Country from zu dem Country to
      * Die Methode wird nur für den Step FIGHT verwendet, um einen Takeover zu vollziehen
      * @param from
      * @param to
-     * @param armys
+     * @param numberOfArmies
      * @throws RemoteException
      * @throws NotTheOwnerException
      * @throws RemoteCountryNotFoundException
@@ -530,7 +540,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws NotEnoughArmysToMoveException
      * @throws CountriesNotConnectedException
      */
-    public synchronized void moveArmyForTakeover(Country from, Country to, Stack<Army> armys) throws RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException{
+    public synchronized void moveArmyForTakeover(Country from, Country to, int numberOfArmies) throws RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException{
 
          if (from.getOwner() != this.getPlayer())
          {
@@ -548,11 +558,14 @@ public class Turn extends UnicastRemoteObject implements ITurn{
                  throw new NotEnoughArmysToMoveException(from);
              }
              else {
-                for(Army army: armys){ 
-			         from.removeArmy(army);
-			         army.setPosition(to);
-			         addMovedArmy(army);
-             	}
+                 List<Army> armies = this.getNotMovedArmies(from.getArmyList());
+
+                 for(int i = 0; i!= numberOfArmies; i++){
+                     Army army = armies.get(armies.size()-1); // Minus eins da einer noch auf dem Land bleiben muss
+                     from.removeArmy(army);
+                     army.setPosition(to);
+                     //Nicht der Moved Armies hinzufügen, da dies ein Sonderfall ist indem dies nicht stattfindet
+                 }
              }	
          }   
     }

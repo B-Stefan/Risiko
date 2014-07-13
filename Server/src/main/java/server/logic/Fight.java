@@ -274,7 +274,6 @@ public class Fight extends UnicastRemoteObject implements IFight {
 				if(this.to.getArmyList().isEmpty()){
 					this.currentTurn.setTakeOverSucess(true);
 					this.to.setOwnerTakeOver(this.agressor);
-					this.currentTurn.moveArmyForTakeover(this.from, this.to, this.agressorsArmies);
 					res[2] = 1;
 				}
 			}
@@ -283,7 +282,18 @@ public class Fight extends UnicastRemoteObject implements IFight {
 		// muss geelehrt werden nachdem die wwürfel ausgegeben wurden aber nicht am Anfang des 
 		return res;
 	}
-	
+
+    public void moveArmiesAfterTakeover(int number) throws FightMoveMinimumOneArmy, FightNotWonException, RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException{
+
+        if(this.from.getOwner() != this.to.getOwner()){
+            throw new FightNotWonException();
+        }
+        if(number < FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY ){
+            throw new FightMoveMinimumOneArmy();
+        }
+        this.currentTurn.moveArmyForTakeover(this.from, this.to, number);
+
+    }
 	/**
 	 * getter für das Result
 	 * @return
