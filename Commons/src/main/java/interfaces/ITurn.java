@@ -31,7 +31,6 @@ package interfaces;
 import exceptions.*;
 import interfaces.data.IArmy;
 import interfaces.data.IPlayer;
-
 import interfaces.data.ICountry;
 import interfaces.data.cards.ICardDeck;
 
@@ -144,8 +143,9 @@ public interface ITurn extends Remote, Serializable, IToStringRemote {
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      * @throws RemoteException
+     * @throws NotEoughUnmovedArmiesException 
      */
-    public void moveArmy(ICountry from,ICountry to, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,NotYourTurnException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException;
+    public void moveArmy(ICountry from,ICountry to, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,NotYourTurnException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException, NotEoughUnmovedArmiesException;
 
     /**
      * Überprüft, ob der Turn abgeschlossen wurde.

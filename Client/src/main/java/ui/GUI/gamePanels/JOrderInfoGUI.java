@@ -51,41 +51,30 @@ public class JOrderInfoGUI extends JTextArea {
 	 * Spieler des jeweilligen Clients
 	 */
 	private final IPlayer cPlayer;
-	/**
-	 * Text über die Order des jeweilligen Spielers
-	 */
-	private final JTextArea info = new JTextArea("");
 
 	/**
 	 * Konstruktor
 	 * @param game aktuelles Spiel
 	 * @param cPlayer Spieler des jeweilligen Clients
+	 * @throws RemoteException 
 	 */
 	
-	public JOrderInfoGUI(IGame game, IPlayer cPlayer){
+	public JOrderInfoGUI(IGame game, IPlayer cPlayer) throws RemoteException{
 		super();
 		this.cPlayer = cPlayer;
-		this.info.setWrapStyleWord(true);
-		this.setLayout(new GridLayout(2,1));
-		this.info.setLineWrap(true);
 		this.game = game;
 		setContext();
 	}
 	/**
-	 * Setzt den Infotext
-	 * @throws RemoteException
-	 * @throws GameNotStartedException
-	 */
-	private void setInfo() throws RemoteException, GameNotStartedException{
-		if(this.game.getCurrentGameState() == IGame.gameStates.RUNNING){
-                this.info.setText(this.cPlayer.getOrder().toStringRemote());
-		}
-	}
-	/**
 	 * setzt den Kontext
+	 * @throws RemoteException 
 	 */
-	private void setContext(){
-		this.add(this.info);
+	private void setContext() throws RemoteException{
+		if(this.game.getCurrentGameState() == IGame.gameStates.RUNNING){
+			this.setLineWrap(true);
+	        this.setWrapStyleWord(true);
+			this.setText(this.cPlayer.getOrder().toStringRemote());
+		}
 	}
 	/**
 	 * Updatefunktion

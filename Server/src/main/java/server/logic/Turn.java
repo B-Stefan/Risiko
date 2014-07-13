@@ -446,8 +446,9 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      * @throws NotYourTurnException 
+     * @throws NotEoughUnmovedArmiesException 
      */
-    public void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException, NotYourTurnException {
+    public void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException, NotYourTurnException, NotEoughUnmovedArmiesException {
         if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }
@@ -459,21 +460,27 @@ public class Turn extends UnicastRemoteObject implements ITurn{
         }
 
         List<Army> armies = new ArrayList<Army>();
-        for(Army a : from.getArmyList()){
+        List<Army> fromC = from.getArmyList();
+        for(Army a : fromC){
         		armies.add(a);
         }
 
         //Löschen aller Armeen, die bereits bewegt wurden, somit können nur die Armen versucht werden zu bwegen, die noch nicht bewegt wurde.
-        for(Army army : armies){
-            if(this.movedArmies.contains(army)){
-                armies.remove(army);
+        for(int i = armies.size()-1; i>=0; i--){
+            if(this.movedArmies.contains(armies.get(i))){
+                armies.remove(armies.remove(i));
             }
         }
-
-        for(int i = 0; i!= numberOfArmies; i++){
-            Army army = armies.get(armies.size()-1);
-            this.moveArmy(from, to, army);
+        if(numberOfArmies>armies.size()){
+        	throw new NotEoughUnmovedArmiesException(armies.size());
         }
+
+	    for(int i = 0; i!= numberOfArmies; i++){
+	        Army army = armies.get(armies.size()-1);
+	        armies.remove(armies.size()-1);
+	        this.moveArmy(from, to, army);
+	    }
+	    
         this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.COUNtRY);
     }
     /**

@@ -87,7 +87,7 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
 
                 try {
                     turn.moveArmy(from,to,numberOfArmyies, clientPlayer);
-                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  NotYourTurnException |TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException  | RemoteCountryNotFoundException | RemoteException e ){
+                }catch ( ToManyNewArmysException | NotEnoughArmysToMoveException |  NotYourTurnException |TurnNotAllowedStepException | TurnNotInCorrectStepException | CountriesNotConnectedException | ArmyAlreadyMovedException | NotTheOwnerException  | RemoteCountryNotFoundException | RemoteException | NotEoughUnmovedArmiesException e ){
                    new JExceptionDialog(JCountryMoveMenu.this,e);
                    return;
                 }
