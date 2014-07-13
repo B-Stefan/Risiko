@@ -46,10 +46,25 @@ import ui.GUI.JGameGUI;
 import ui.GUI.utils.JExceptionDialog;
 
 public class JCurrentStateInfoGUI extends JPanel {
+	/**
+	 * Aktuelles Spiel
+	 */
 	private final IGame game;
+	/**
+	 * GameGui
+	 */
     private final JGameGUI gameGUI;
+    /**
+     * Der Text mit der Info über den aktuellen Zug
+     */
 	private final JTextArea stepInfo = new JTextArea("");
+	/**
+	 * Button für den nächsten Zug/Spielstarten
+	 */
 	private final JButton nextButton = new JButton("");
+	/**
+	 * der Spieler des jeweilligen Clients
+	 */
 	private final IPlayer clientPlayer;
 
     private class UpdateActionListener implements ActionListener{
@@ -143,8 +158,14 @@ public class JCurrentStateInfoGUI extends JPanel {
             }
         }
     }
-	
-	public JCurrentStateInfoGUI(final IGame game, final IPlayer player, final JGameGUI gameGUI, IPlayer cPlayer) throws RemoteException{
+	/**
+	 * Konstruktor
+	 * @param game aktuelles Spiel
+	 * @param gameGUI 
+	 * @param cPlayer Spieler des jeweilligen Clients 
+	 * @throws RemoteException
+	 */
+	public JCurrentStateInfoGUI(final IGame game, final JGameGUI gameGUI, IPlayer cPlayer) throws RemoteException{
         super();
 		//Konstruktor bearbeiten (Update entfehrnen)
 		this.setLayout(new GridLayout(2, 1));
@@ -158,7 +179,10 @@ public class JCurrentStateInfoGUI extends JPanel {
         this.nextButton.addActionListener(new NextTurnOrRoundActionListener());
 		update();
 	}
-	
+	/**
+	 * Zum updaten des Panels
+	 * @throws RemoteException
+	 */
 	public void update() throws RemoteException{
         String textAreaMsg = "";
         String btnMsg = "";

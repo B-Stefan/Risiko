@@ -97,7 +97,7 @@ public class OrderTakeOverCountries extends AbstractOrder implements IOrder {
     }
     @Override
     public String toString() {
-        return this.agent + " hat die Aufgabe " + this.numberOfCounties + " zu erobertn und mit " + (this.withTwoArmies ? "2":"1") + " Armeen zu besetzten ";
+        return this.agent + " hat die Aufgabe " + this.numberOfCounties + " Länder zu erobertn und mit " + (this.withTwoArmies ? "2 Armeen":"1 Armee") + " zu besetzten ";
     }
 }
 

@@ -302,7 +302,19 @@ public class Fight extends UnicastRemoteObject implements IFight {
 		return this.result;
 	}
 
-
+	/**
+	 * Setzt das Ergebnis des Spiels Durch aufruf der Result Methode
+	 * @throws RemoteCountryNotFoundException
+	 * @throws ToManyNewArmysException
+	 * @throws CountriesNotConnectedException
+	 * @throws NotEnoughArmysToMoveException
+	 * @throws TurnNotAllowedStepException
+	 * @throws TurnNotInCorrectStepException
+	 * @throws ArmyAlreadyMovedException
+	 * @throws NotTheOwnerException
+	 * @throws RemoteException
+	 * @throws CountryNotInListException
+	 */
 	private void setResult() throws RemoteCountryNotFoundException, ToManyNewArmysException,CountriesNotConnectedException,NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException, CountryNotInListException{
 		this.result = result();
 	}

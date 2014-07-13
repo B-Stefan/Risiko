@@ -142,8 +142,8 @@ public class JGameGUI extends JFrame {
         this.update = new JButton("Update");
         this.menuBar = new JMenuBar();
         this.playersInfo = new JPLayerInfoGUI(this.game);
-        this.orderInfo = new JOrderInfoGUI(this.game);
-        this.currentStateInfoGUI =   new JCurrentStateInfoGUI(this.game, this.player, this, this.player);
+        this.orderInfo = new JOrderInfoGUI(this.game, this.player);
+        this.currentStateInfoGUI =   new JCurrentStateInfoGUI(this.game, this, this.player);
         this.cardInfo =  new JCardInfo(this.player, this.game.getDeck());
         this.remoteEventProcessor = remoteEventProcessor;
 

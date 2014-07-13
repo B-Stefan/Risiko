@@ -67,8 +67,6 @@ public class Army extends UnicastRemoteObject implements IArmy{
      * Dabei wird gleichzeigt der die 1:1 Zuordnung zum Country beachtet, sodass eine Armee immer nur auf einem Country steht.
      * Auf der anderen Seite sind auch alle Armeen, die einem Country zugewiesen wurden auf dieser Position gesetzt.
      * Dies erhöht die Datenintegrität
-     *
-     *
 	 * @param country Übergiebt die (neue) Position der Armee
 	 *
      * @see Country#(Army)

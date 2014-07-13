@@ -42,11 +42,24 @@ import ui.GUI.utils.tableModels.PlayerInfoTableModel;
 
 
 public class JPLayerInfoGUI extends JScrollPane{
+	/**
+	 * aktuelles Spiel
+	 */
 	private final IGame game;
+	/**
+	 * Model der Tabelle mit Spielern
+	 */
 	private PlayerInfoTableModel tModel;
+	/**
+	 * Tabelle mit Spielern
+	 */
     private final JTable playersTable;
 	
-	
+	/**
+	 * Konstruktor
+	 * @param game aktuelles Spiel
+	 * @throws RemoteException
+	 */
 	public JPLayerInfoGUI(IGame game) throws RemoteException{
         super();
 		this.game = game;
@@ -61,7 +74,10 @@ public class JPLayerInfoGUI extends JScrollPane{
         this.getViewport().add(playersTable);
         this.setPreferredSize(new Dimension(150, 105));
 	}
-
+	/**
+	 * Zum Updaten der Tabelle
+	 * @throws RemoteException
+	 */
 	public void update() throws RemoteException{
 		this.tModel.setDataVector(game.getPlayers());
 	}

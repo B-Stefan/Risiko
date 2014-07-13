@@ -138,11 +138,17 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @see #(Player, server.logic.data.Map, java.util.Queue)
      */
     private steps currentStep;
-    
+    /**
+     * Der Kartenstapel an unvergebenen Karten
+     */
     private CardDeck deck;
-    
+    /**
+     * Gibt an, ob in dem Zug ein ein erfolgreicher Twkeover stattgefunden hat
+     */
     private boolean takeOverSucess;
-
+    /**
+     * Clientmanager
+     */
     private final ClientManager clientManager;
 
 
@@ -440,8 +446,9 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws ArmyAlreadyMovedException
      * @throws NotTheOwnerException
      * @throws NotYourTurnException 
+     * @throws NotEoughUnmovedArmiesException 
      */
-    public void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException, NotYourTurnException {
+    public void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException, NotYourTurnException, NotEoughUnmovedArmiesException {
         if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }
@@ -454,10 +461,16 @@ public class Turn extends UnicastRemoteObject implements ITurn{
 
         List<Army> armies = this.getNotMovedArmies(from.getArmyList());
 
-        for(int i = 0; i!= numberOfArmies; i++){
-            Army army = armies.get(armies.size()-1);
-            this.moveArmy(from, to, army);
+        if(numberOfArmies>armies.size()){
+        	throw new NotEoughUnmovedArmiesException(armies.size());
         }
+
+	    for(int i = 0; i!= numberOfArmies; i++){
+	        Army army = armies.get(armies.size()-1);
+	        armies.remove(armies.size()-1);
+	        this.moveArmy(from, to, army);
+	    }
+	    
         this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.COUNtRY);
     }
     /**

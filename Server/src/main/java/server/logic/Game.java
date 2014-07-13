@@ -209,7 +209,7 @@ public class Game extends UnicastRemoteObject implements IGame {
 
     /**
      * Gibt die Aktelle Runde des Spielers zurück
-     * @return
+     * @return Aktuelle Runde
      * @throws GameNotStartedException
      */
     public Round getCurrentRound() throws GameNotStartedException,RemoteException {
@@ -274,10 +274,7 @@ public class Game extends UnicastRemoteObject implements IGame {
     }
 
     /**
-     *
      * Wird beim Spielstart aufgerufen und setzt für alle Länder genau 1 Armee
-     *
-     *
      */
     private void setDefaultArmys()throws RemoteException {
         for (Player player : players) {
@@ -375,8 +372,7 @@ public class Game extends UnicastRemoteObject implements IGame {
 
     /**
      * Setzt die aktuelle Runde
-     *
-     * @param r
+     * @param r aktuelle Runde
      */
     public void setCurrentRound(Round r) {
         this.currentRound = r;
@@ -385,7 +381,7 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * Setzt den aktuellen gameState
      *
-     * @param s
+     * @param s aktueller GameState
      */
     public void setCurrentGameState(IGame.gameStates s) {
         this.currentGameState = s;
@@ -394,7 +390,7 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * Für alle Spieler der Spielerliste hinzu
      *
-     * @param players
+     * @param players Liste von Spielern
      */
     public void addPlayers(List<Player> players) {
         this.players.addAll(players);
@@ -412,7 +408,8 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * Fügt einen neuen Spieler aufgrund des namens hinzu
      *
-     * @param name
+     * @param name Name des zu hinzuüfügenden Spielers
+     * @param client Zu dem Namen dazugehöriger Client
      */
     public Player addPlayer(String name, IClient client) throws GameAllreadyStartedException, PlayerNameAlreadyChooseException,RemoteException{
         if (this.getCurrentGameState() != IGame.gameStates.WAITING) {

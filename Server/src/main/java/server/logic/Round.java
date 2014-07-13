@@ -78,8 +78,6 @@ public class Round extends UnicastRemoteObject implements IRound {
      * Aktueller Zug den ein Spieler ausführt
      */
     private Turn currentTurn;
-
-
     /**
      * Bildet eine Runde im Spiel ab.
      * Eine Runde besteht darin, dass jeder Spieler seinen Turn vollendet.
