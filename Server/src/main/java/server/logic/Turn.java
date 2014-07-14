@@ -318,10 +318,10 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughCardsToExchangeException
      */
-    public synchronized void exchangeCards() throws ToManyNewArmysException, RemoteException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException{
+    public synchronized void exchangeCards(IPlayer player) throws ToManyNewArmysException, RemoteException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException{
     	if(this.isStepAllowed(steps.DISTRIBUTE)){
     		if(this.determineAmountOfNewArmies() == this.getNewArmysSize()){
-    			if(this.deck.exchangeCards(this.player)){
+    			if(this.deck.exchangeCards(player)){
     				this.createNewArmies(this.deck.calculateBonus());
     			}
     		}else{

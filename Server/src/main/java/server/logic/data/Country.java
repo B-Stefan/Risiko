@@ -98,7 +98,7 @@ public class Country extends UnicastRemoteObject implements ICountry {
      */
     public Country(final String name, final Continent continent, final Color color) throws RemoteException {
         this.name = name;
-        this.shortName = this.name.substring(0, 2)+ ".";
+        this.shortName = this.name.substring(0, 3);
         this.id = UUID.nameUUIDFromBytes(name.getBytes()); // statische UUID bassierend auf dem Namen, da die Karte im Moment nicht dynamisch ist
         this.continent = continent;
         this.continent.addCountry(this);

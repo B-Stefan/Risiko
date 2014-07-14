@@ -44,12 +44,22 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import ui.GUI.utils.JExceptionDialog;
+import exceptions.ExchangeNotPossibleException;
+import exceptions.GameNotStartedException;
 import exceptions.NotEnoughCardsToExchangeException;
+import exceptions.ToManyNewArmysException;
+import exceptions.TurnNotAllowedStepException;
+import exceptions.TurnNotInCorrectStepException;
+import interfaces.IGame;
 import interfaces.data.IPlayer;
 import interfaces.data.cards.ICard;
 import interfaces.data.cards.ICardDeck;
 
 public class JCardInfo extends JFrame{
+	/**
+	 * Aktuelles Spiel
+	 */
+	private final IGame game;
 	/**
 	 * Der Spieler de jeweiligen Clients
 	 */
@@ -76,8 +86,9 @@ public class JCardInfo extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			try {
-				deck.exchangeCards(player);
-			} catch (RemoteException | NotEnoughCardsToExchangeException e) {
+				game.getCurrentRound().getCurrentTurn().exchangeCards(player);
+				update();
+			} catch (RemoteException | NotEnoughCardsToExchangeException | ToManyNewArmysException | ExchangeNotPossibleException | TurnNotAllowedStepException | TurnNotInCorrectStepException | GameNotStartedException e) {
 				new JExceptionDialog(e);
 				return;
 			}
@@ -90,10 +101,11 @@ public class JCardInfo extends JFrame{
 	 * @param deck das Karten Deck
 	 * @throws RemoteException
 	 */
-	public JCardInfo(IPlayer player, ICardDeck deck) throws RemoteException{
+	public JCardInfo(IPlayer player, IGame game) throws RemoteException{
         super();
+        this.game = game;
 		this.player = player;
-		this.deck = deck;
+		this.deck = this.game.getDeck();
 		this.context = new JPanel();
 		this.context.setLayout(new GridLayout(2,1));
 		this.cardInfo.setWrapStyleWord(true);

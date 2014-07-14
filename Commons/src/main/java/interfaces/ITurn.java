@@ -80,7 +80,7 @@ public interface ITurn extends Remote, Serializable, IToStringRemote {
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughCardsToExchangeException
      */
-    public void exchangeCards() throws ToManyNewArmysException, RemoteException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException;
+    public void exchangeCards(IPlayer player) throws ToManyNewArmysException, RemoteException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException;
 
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.

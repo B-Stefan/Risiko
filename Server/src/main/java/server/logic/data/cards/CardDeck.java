@@ -201,6 +201,12 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 		}
 		return false;
 	}
+	/**
+	 * entfehrnt die jeweillige Karze aus dem Deck des Spielers
+	 * @param pl der Spieler
+	 * @param c die Karte, die zurück gegeben werden soll
+	 * @throws RemoteException
+	 */
 	private void putBackCard(Player pl, Card c) throws RemoteException{
 		pl.removeCard(c);
 	}
