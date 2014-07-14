@@ -180,7 +180,7 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
             }
 
             else if(randOrderType == OrderTerminatePlayer.class){
-                final Player playerToTerminate = getRandomPlayer(game.getPlayersReal(),agend);
+                final Player playerToTerminate = getRandomPlayer(game.getPlayers(),agend);
                 return new OrderTerminatePlayer(playerToTerminate,agend);
             }else if(randOrderType == OrderTakeOverThreeContinents.class){
                 final Continent contigent1  = getRandomContinent(map.getContinentsReal());

@@ -37,6 +37,7 @@ import java.util.concurrent.ThreadFactory;
 import interfaces.IClient;
 import interfaces.IGame;
 import interfaces.data.IPlayer;
+import interfaces.data.Orders.IOrder;
 import interfaces.data.cards.ICardDeck;
 import server.ClientManager;
 import server.logic.data.*;
@@ -331,7 +332,9 @@ public class Game extends UnicastRemoteObject implements IGame {
      */
     public Player getWinner () throws RemoteException{
         for(Player player : players){
-            if(player.getOrder().isCompleted()){
+            IOrder order = player.getOrder();
+
+            if(order.isCompleted()){
                 return player;
             }
         }
@@ -433,14 +436,7 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * @return Liste der Spieler
      */
-    public List<? extends IPlayer> getPlayers() throws RemoteException{
-        return this.players;
-    }
-
-    /**
-     * @return Liste der Spieler
-     */
-    public List<Player> getPlayersReal(){
+    public List<Player> getPlayers() throws RemoteException{
         return this.players;
     }
 
