@@ -43,9 +43,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
-/**
- * Created by Stefan on 09.06.14.
- */
 public class JCountryMoveMenu extends JCountryNeighborsMenu {
 
     private final ITurn turn;

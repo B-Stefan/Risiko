@@ -40,9 +40,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
 
-/**
- * Created by Stefan on 09.06.14.
- */
+
 public class JCountryPopupMenu extends JPopupMenu{
 
 	private final IPlayer clientPlayer;

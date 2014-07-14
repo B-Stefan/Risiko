@@ -48,9 +48,7 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Stack;
 
-/**
- * Created by Stefan on 18.06.14.
- */
+
 public class JFightSide extends Panel {
 
     public static enum sides {
