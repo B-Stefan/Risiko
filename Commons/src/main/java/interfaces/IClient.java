@@ -40,6 +40,7 @@ import java.util.List;
 public interface IClient extends Remote,Serializable{
 
     public static enum UIUpdateTypes {
+        RUNNING_GAME_LIST,
         PLAYER,
         COUNtRY,
         FIGHT,
