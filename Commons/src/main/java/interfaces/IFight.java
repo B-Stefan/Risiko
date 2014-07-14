@@ -84,7 +84,7 @@ public interface IFight extends Remote, Serializable,IToStringRemote {
      * @throws NotEnoughArmysToMoveException
      * @throws CountriesNotConnectedException
      */
-    public void moveArmiesAfterTakeover(int number) throws FightMoveMinimumOneArmy, FightNotWonException, RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException;
+    public void moveArmiesAfterTakeover(int number) throws FightMoveMinimumOneArmy,ArmyAlreadyMovedException, FightNotWonException, RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException;
     /**
      * Gibt das Ergebnis des Fights komprimiert zurück
      *
