@@ -28,9 +28,11 @@
 
 package server.persistence;
 
+import com.sun.jdi.ClassNotPreparedException;
 import interfaces.IGame;
 import interfaces.data.IMap;
 import interfaces.data.IPlayer;
+import javafx.print.PageLayout;
 import server.logic.Game;
 import server.logic.data.Map;
 import server.logic.data.Player;
@@ -64,16 +66,16 @@ public class PersistenceManager {
      */
     private PersistenceEndpoint<?> createHandler (Class type){
 
-        if (type == IGame.class){
+        if (type == Game.class){
                 return new SerializableFileEndpoint<Game>(Game.class,PersistenceGame.class, this);
         }
-        else if (type == IPlayer.class ){
+        else if (type == Player.class ){
                 return new SerializableFileEndpoint<Player>(Player.class,PersistencePlayer.class, this);
         }
-        else if (type == IMap.class){
+        else if (type == Map.class){
             return new SerializableFileEndpoint<Map>(Map.class,PersistenceMap.class, this);
         }
-        return null;
+        throw new ClassNotPreparedException("Für die Klasse " + type + " konnte keine Speicherklasse gefudnen werden ");
     }
 
     /**
@@ -93,7 +95,7 @@ public class PersistenceManager {
      * @return PersistenceEndpoint für Game
      */
     public PersistenceEndpoint<Game> getGameHandler(){
-        return (PersistenceEndpoint<Game>)this.getHandler(IGame.class);
+        return (PersistenceEndpoint<Game>)this.getHandler(Game.class);
     }
     /**
      * Gibt einen PersistenceEndpoint für die Logik-Klasse Player zurück
@@ -107,7 +109,7 @@ public class PersistenceManager {
      * @return PersistenceEndpoint für Map
      */
     public PersistenceEndpoint<Map> getMapHandler(){
-        return (PersistenceEndpoint<Map>)this.getHandler(IMap.class);
+        return (PersistenceEndpoint<Map>)this.getHandler(Map.class);
     }
 
 

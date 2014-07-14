@@ -33,6 +33,7 @@ import interfaces.data.IPlayer;
 import server.logic.Game;
 import server.logic.data.Map;
 import server.logic.data.Player;
+import server.logic.data.orders.OrderManager;
 import server.persistence.PersistenceManager;
 import server.persistence.dataendpoints.PersistenceEndpoint;
 
@@ -124,13 +125,28 @@ public class PersistenceGame extends PersitenceObject<Game> {
             List<Player> players= new ArrayList<Player>();
             PersistenceEndpoint<Player> playerHandler =  manager.getPlayerHandler();
 
+            /**
+             * Spieler wiederherstellen
+             */
             for(String uuid : this.players) {
                 players.add(playerHandler.get(uuid));
             }
             newGame.addPlayers(players);
             newGame.setCurrentGameState(this.gameState);
 
-            //IGame waiting for players
+            /**
+             * Order für Spieler
+             */
+            try{
+                OrderManager.createOrdersForPlayers(newGame.getPlayers(),newGame,newGame.getMap());
+            }catch (PlayerAlreadyHasAnOrderException e){
+                throw  new PersistenceEndpointIOException(e);
+            }
+
+
+            /**
+             * Runde setzten, wenn es Spieler gibt
+             */
             if (newGame.getPlayers().size() > 0 ) {
                 try {
                     newGame.setNextRound();

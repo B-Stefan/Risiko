@@ -66,6 +66,7 @@ public class PersistencePlayer extends PersitenceObject<Player> {
 	        for (Country c : player.getCountriesReal()){
 	            countries.put(c.getId(),c.getNumberOfArmys());
 	        }
+
         }catch (RemoteException e){
         	throw new PersistenceEndpointIOException(e);
         }
