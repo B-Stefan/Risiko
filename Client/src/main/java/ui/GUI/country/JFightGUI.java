@@ -187,7 +187,7 @@ public class JFightGUI extends JModalDialog {
                      */
                     try {
                         JFightGUI.this.fight.moveArmiesAfterTakeover(numberOfArmiesToMove);
-                    } catch (FightMoveMinimumOneArmy | FightNotWonException | RemoteException | NotTheOwnerException | RemoteCountryNotFoundException | ToManyNewArmysException | TurnNotAllowedStepException | TurnNotInCorrectStepException | NotEnoughArmysToMoveException | CountriesNotConnectedException e) {
+                    } catch (FightMoveMinimumOneArmy | ArmyAlreadyMovedException| FightNotWonException | RemoteException | NotTheOwnerException | RemoteCountryNotFoundException | ToManyNewArmysException | TurnNotAllowedStepException | TurnNotInCorrectStepException | NotEnoughArmysToMoveException | CountriesNotConnectedException  e) {
                         new JExceptionDialog(JFightGUI.this, e);
                     }
                 }

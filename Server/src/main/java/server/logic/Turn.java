@@ -467,8 +467,8 @@ public class Turn extends UnicastRemoteObject implements ITurn{
 
 	    for(int i = 0; i!= numberOfArmies; i++){
 	        Army army = armies.get(armies.size()-1);
-	        armies.remove(armies.size()-1);
-	        this.moveArmy(from, to, army);
+	        armies.remove(army);
+	        this.moveArmy(from, to, army,true);
 	    }
 	    
         this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.COUNtRY);
@@ -480,10 +480,11 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @param from - Ausgangsland
      * @param to - Neues Land
      * @param army - Die Armee, die bewegt werden soll
+     * @param addArmyFromTakeover Besagt, ob diese Armee beim verschieben auch als verschoben gelten soll, dient zum bewegen nach dem Fight
      * @throws CountriesNotConnectedException
      * @throws ArmyAlreadyMovedException
      */
-    public synchronized void moveArmy(Country from,Country to, Army army) throws RemoteCountryNotFoundException,ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException {
+    public synchronized void moveArmy(Country from,Country to, Army army, boolean addArmyFromTakeover) throws RemoteCountryNotFoundException,ToManyNewArmysException,NotEnoughArmysToMoveException,TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException, NotTheOwnerException, RemoteException {
 
         if(from == null || to == null ){
             throw new RemoteCountryNotFoundException();
@@ -498,9 +499,15 @@ public class Turn extends UnicastRemoteObject implements ITurn{
 
         if(this.isStepAllowed(steps.MOVE)){
 
-            this.allowedSteps.clear(); // Alle steps löschen, da nach einmak move nichts anderes mehr erlaubt ist
-            //Einmal eine Einheit bewegt, ändert den Step des Turns
-            this.setCurrentStep(steps.MOVE);
+            /**
+             * Wenn vom Fight eine Armee bwegt wird soll der Step nicht geändert werden
+             */
+            if(addArmyFromTakeover){
+                this.allowedSteps.clear(); // Alle steps löschen, da nach einmak move nichts anderes mehr erlaubt ist
+                //Einmal eine Einheit bewegt, ändert den Step des Turns
+                this.setCurrentStep(steps.MOVE);
+            }
+
             if(!from.isConnected(to)){
                 throw new CountriesNotConnectedException(from,to);
             }
@@ -511,9 +518,12 @@ public class Turn extends UnicastRemoteObject implements ITurn{
                 throw new NotEnoughArmysToMoveException(from);
             }
             else {
+                //Bewegen der Armee
                 from.removeArmy(army);
                 army.setPosition(to);
-                addMovedArmy(army);
+                if(addArmyFromTakeover){
+                    addMovedArmy(army);
+                }
             }
         }
 	}
@@ -552,8 +562,9 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughArmysToMoveException
      * @throws CountriesNotConnectedException
+     * @throws ArmyAlreadyMovedException
      */
-    public synchronized void moveArmyForTakeover(Country from, Country to, int numberOfArmies) throws RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException{
+    public synchronized void moveArmyForTakeover(Country from, Country to, int numberOfArmies) throws RemoteException,ArmyAlreadyMovedException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException{
 
          if (from.getOwner() != this.getPlayer())
          {
@@ -561,25 +572,20 @@ public class Turn extends UnicastRemoteObject implements ITurn{
          }
          else if (to.getOwner() != this.getPlayer()){
              throw  new NotTheOwnerException(this.getPlayer(), to);
+         }else if (!from.isConnected(to)){
+             throw new CountriesNotConnectedException(from,to);
          }
 
          if(this.isStepAllowed(steps.FIGHT)){
-             if(!from.isConnected(to)){
-                 throw new CountriesNotConnectedException(from,to);
-             }
-             else if(from.getNumberOfArmys() == 1){
-                 throw new NotEnoughArmysToMoveException(from);
-             }
-             else {
-                 List<Army> armies = this.getNotMovedArmies(from.getArmyList());
+             List<Army> armies = this.getNotMovedArmies(from.getArmyList());
 
-                 for(int i = 0; i!= numberOfArmies; i++){
-                     Army army = armies.get(armies.size()-1); // Minus eins da einer noch auf dem Land bleiben muss
-                     from.removeArmy(army);
-                     army.setPosition(to);
-                     //Nicht der Moved Armies hinzufügen, da dies ein Sonderfall ist indem dies nicht stattfindet
-                 }
-             }	
+             //Durchgehen bis Anzahl erreicht
+             for(int i = 0; i!= numberOfArmies; i++){
+                 Army army = armies.get(armies.size()-1); // Minus eins da einer noch auf dem Land bleiben muss
+                 armies.remove(army);
+                 this.moveArmy(from,to,army,false);
+             }
+
          }   
     }
 

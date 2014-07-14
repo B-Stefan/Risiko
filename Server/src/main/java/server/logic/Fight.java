@@ -283,7 +283,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 		return res;
 	}
 
-    public void moveArmiesAfterTakeover(int number) throws FightMoveMinimumOneArmy, FightNotWonException, RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException{
+    public void moveArmiesAfterTakeover(int number) throws FightMoveMinimumOneArmy, ArmyAlreadyMovedException, FightNotWonException, RemoteException, NotTheOwnerException, RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughArmysToMoveException, CountriesNotConnectedException{
 
         if(this.from.getOwner() != this.to.getOwner()){
             throw new FightNotWonException();
