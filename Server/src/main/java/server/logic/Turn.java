@@ -318,10 +318,10 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughCardsToExchangeException
      */
-    public synchronized void exchangeCards(IPlayer player) throws ToManyNewArmysException, RemoteException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException{
+    public synchronized void exchangeCards(IPlayer clientPlayer) throws ToManyNewArmysException, RemoteException, ExchangeNotPossibleException, TurnNotAllowedStepException, TurnNotInCorrectStepException, NotEnoughCardsToExchangeException{
     	if(this.isStepAllowed(steps.DISTRIBUTE)){
     		if(this.determineAmountOfNewArmies() == this.getNewArmysSize()){
-    			if(this.deck.exchangeCards(player)){
+    			if(this.deck.exchangeCards(clientPlayer)){
     				this.createNewArmies(this.deck.calculateBonus());
     			}
     		}else{
@@ -334,17 +334,17 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @see server.logic.Turn.steps
      * @see Turn#getDefaultSteps()
      * @param position - Das Land auf welches die neue Armee plaziert werden soll
-     * @param numberOfArmys - Wieviele Einheiten auf diesem Land plaziert werden sollen.
+     * @param numberOfArmies - Wieviele Einheiten auf diesem Land plaziert werden sollen.
      * @throws TurnNotAllowedStepException
      * @throws TurnNotInCorrectStepException
      * @throws NotEnoughNewArmysException
      * @throws NotYourTurnException 
      */
-    public synchronized void placeNewArmy(ICountry position, int numberOfArmys, IPlayer clientPlayer) throws RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException, RemoteException, NotYourTurnException {
+    public synchronized void placeNewArmy(ICountry position, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException, RemoteException, NotYourTurnException {
         if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }
-    	for(int i = 0; i!= numberOfArmys; i++){
+    	for(int i = 0; i!= numberOfArmies; i++){
             this.placeNewArmy(position, clientPlayer);
         }
 
