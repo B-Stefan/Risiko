@@ -33,13 +33,31 @@ package configuration;
  */
 public class ServerConfiguration {
 
+
+    /**
+     * Der Default Port für den Server
+     */
+    public final static int DEFAULT_PORT = 6789;
+
+    /**
+     * Der Default Host für den Server
+     *
+     */
+    public final static String DEFAULT_HOST = "localhost";
+
+
+    /**
+     * Name des Service für den Risiko Server
+     */
+    public final static String DEFAULT_GAME_SERVICE_NAME = "GameManagerService";
+
     /**
      * Default Server Konfiguration
      * port
      * host
      * serviceName
      */
-    public final static ServerConfiguration DEFAULT = new ServerConfiguration(6789,"localhost","GameManagerService");
+    public final static ServerConfiguration DEFAULT = new ServerConfiguration(DEFAULT_PORT,DEFAULT_HOST,DEFAULT_GAME_SERVICE_NAME);
 
 
     /**
@@ -54,7 +72,7 @@ public class ServerConfiguration {
      */
     public static ServerConfiguration fromArgs(String[] args) throws IllegalArgumentException, ClassCastException{
         if(args.length < 3){
-            throw new IllegalArgumentException(args.toString());
+            throw new IllegalArgumentException("Es müssen 3 argumente übergeben werden. Es waren: " + args.toString());
         }
         return new ServerConfiguration(Integer.parseInt(args[0]),args[1],args[2]);
 
