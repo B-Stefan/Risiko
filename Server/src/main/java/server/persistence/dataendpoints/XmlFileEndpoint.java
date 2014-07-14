@@ -39,11 +39,11 @@ import java.util.UUID;
 
 /**
  * Diese Klasse stellt die Möglichkeit zur Speicherung durch einfache Serialisierung zur Verfügung.
+ *
+ * FUNKTIONIERT NICHt !!!!!
  * @param <T>
  */
 public class XmlFileEndpoint<T> extends AbstractFileEndpoint<T> {
-
-
 
     private XStream xstream;
     public XmlFileEndpoint(Class<T> sourceClass, Class<? extends PersitenceObject<T>> dataClass, PersistenceManager manager) {
@@ -66,9 +66,7 @@ public class XmlFileEndpoint<T> extends AbstractFileEndpoint<T> {
             catch (FileNotFoundException e){
                 this.writeFile(); // File erstellen, wenn nicht vorhanden
             }
-            if(fileData != null){
-                this.chachedObjects = fileData;
-            }
+
         }
     }
 
