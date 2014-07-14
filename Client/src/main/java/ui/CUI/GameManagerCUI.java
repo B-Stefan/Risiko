@@ -72,7 +72,7 @@ public class GameManagerCUI extends CUI {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             int i = 0;
-            List<IGame> gameList;
+            List<? extends IGame> gameList;
             try {
                 gameList = gameManager.getSavedGameList();
                 for(IGame game: gameList){
@@ -101,7 +101,7 @@ public class GameManagerCUI extends CUI {
 
            IGame newGame;
             try {
-                newGame = gameManager.addGame();
+                newGame = gameManager.createGame();
             }catch (PersistenceEndpointIOException | RemoteException e){
                 IO.println(e.getMessage());
                 return;
@@ -150,7 +150,7 @@ public class GameManagerCUI extends CUI {
             IO.println(e.getMessage());
             return;
         }
-        List<IGame> games;
+        List<? extends IGame> games;
         try {
             games = this.gameManager.getSavedGameList();
         }catch (PersistenceEndpointIOException | RemoteException e){

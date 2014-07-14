@@ -30,6 +30,8 @@
 
 package ui.GUI.menu;
 
+import exceptions.GameNotFoundException;
+import exceptions.PersistenceEndpointIOException;
 import interfaces.IGame;
 import ui.GUI.JGameManagerGUI;
 import ui.GUI.utils.JExceptionDialog;
@@ -54,7 +56,7 @@ public class JGameLoadMenuItem extends JMenuItem {
         public void actionPerformed(ActionEvent event) {
             try {
                 JGameLoadMenuItem.this.gameManagerGUI.openGameGUI(JGameLoadMenuItem.this.game);
-            }catch (RemoteException e){
+            }catch (RemoteException | PersistenceEndpointIOException| GameNotFoundException e){
                 new JExceptionDialog(JGameLoadMenuItem.this,e);
             }
         }

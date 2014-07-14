@@ -30,7 +30,7 @@
 
 package server.logic.data.cards;
 
-import exceptions.PlayerNotExsistInGameException;
+import exceptions.PlayerNotExistInGameException;
 import exceptions.RemoteExceptionPlayerNotFound;
 import interfaces.data.IPlayer;
 import interfaces.data.cards.ICardDeck;
@@ -124,7 +124,7 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
         Player pl;
         try {
             pl = game.getPlayer(player.getName());
-        }catch (PlayerNotExsistInGameException e){
+        }catch (PlayerNotExistInGameException e){
             throw new RemoteExceptionPlayerNotFound();
         }
 

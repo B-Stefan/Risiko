@@ -54,10 +54,10 @@ public interface IGame extends Remote, Serializable, IToStringRemote {
      * @throws exceptions.NotEnoughPlayerException
      * @throws exceptions.TooManyPlayerException
      * @throws exceptions.NotEnoughCountriesException
-     * @throws exceptions.GameAllreadyStartedException
+     * @throws exceptions.GameAlreadyStartedException
      * @throws exceptions.PlayerAlreadyHasAnOrderException
      */
-    public void onGameStart() throws RemoteException, NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAllreadyStartedException, PlayerAlreadyHasAnOrderException;
+    public void onGameStart() throws RemoteException, NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAlreadyStartedException, PlayerAlreadyHasAnOrderException;
 
 
 
@@ -88,9 +88,9 @@ public interface IGame extends Remote, Serializable, IToStringRemote {
      *
      * @param player - Player der gelöscht werden soll
      *
-     * @throws exceptions.PlayerNotExsistInGameException
+     * @throws exceptions.PlayerNotExistInGameException
      */
-    public void onPlayerDelete(final IPlayer player) throws PlayerNotExsistInGameException,RemoteException;
+    public void onPlayerDelete(final IPlayer player) throws PlayerNotExistInGameException,RemoteException;
 
 
     /**
@@ -116,16 +116,16 @@ public interface IGame extends Remote, Serializable, IToStringRemote {
      * @throws PlayerNameAlreadyChooseException
      * @throws RemoteException
      */
-    public IPlayer addPlayer(final String name, final IClient client) throws GameAllreadyStartedException,PlayerNameAlreadyChooseException,RemoteException;
+    public IPlayer addPlayer(final String name, final IClient client) throws GameAlreadyStartedException,PlayerNameAlreadyChooseException,RemoteException;
 
     /**
      * Gibt den Spieler zum angegebenen Namen zurück
      * @param name - Name des gesuchten Spielers
      * @return Spieler
-     * @throws PlayerNotExsistInGameException Wenn Spieler nicht gefunden wird
+     * @throws exceptions.PlayerNotExistInGameException Wenn Spieler nicht gefunden wird
      * @throws RemoteException
      */
-    public IPlayer getPlayer(final String name) throws PlayerNotExsistInGameException, RemoteException;
+    public IPlayer getPlayer(final String name) throws PlayerNotExistInGameException, RemoteException;
 
     /**
      * @return Liste der Spieler
@@ -152,5 +152,12 @@ public interface IGame extends Remote, Serializable, IToStringRemote {
      * @throws RemoteException
      */
     public ICardDeck getDeck() throws RemoteException;
+
+    /**
+     * Setzt für einen Spieler den Client
+     * @param player Speiler für den der Client gesetzt werden soll
+     * @param client Client der gesetzt werden soll
+     */
+    public void setClient(IPlayer player, IClient client) throws RemoteException, PlayerNotExistInGameException;
 
     }

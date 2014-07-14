@@ -26,12 +26,19 @@
  *
  */
 
-
 package exceptions;
 
-public class GameAllreadyStartedException extends Exception {
 
-    public  GameAllreadyStartedException (){
-        super("The game was already started");
+import java.rmi.RemoteException;
+
+import interfaces.data.IPlayer;
+
+
+public class PlayerNotExistInGameException extends  Exception{
+    public PlayerNotExistInGameException(IPlayer player) throws RemoteException{
+        super("Dier Spieler " + player.getName() + " exisitiert nicht in diesem Spiel");
+    }
+    public PlayerNotExistInGameException(String name){
+        super("Dier Spieler " + name+ " exisitiert nicht in diesem Spiel");
     }
 }

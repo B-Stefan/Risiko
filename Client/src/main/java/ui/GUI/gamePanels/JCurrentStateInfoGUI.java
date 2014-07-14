@@ -106,7 +106,7 @@ public class JCurrentStateInfoGUI extends JPanel {
             }
             try {
                 JCurrentStateInfoGUI.this.game.onGameStart();
-            }catch ( NotEnoughPlayerException | TooManyPlayerException | NotEnoughCountriesException | GameAllreadyStartedException | PlayerAlreadyHasAnOrderException | RemoteException e ){
+            }catch ( NotEnoughPlayerException | TooManyPlayerException | NotEnoughCountriesException | GameAlreadyStartedException | PlayerAlreadyHasAnOrderException | RemoteException e ){
                 new JExceptionDialog(JCurrentStateInfoGUI.this,e);
                 return;
             }

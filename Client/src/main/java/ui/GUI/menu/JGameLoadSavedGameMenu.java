@@ -82,7 +82,7 @@ public class JGameLoadSavedGameMenu extends JMenu{
      */
     private void update() throws RemoteException{
         this.removeAll();
-        List<IGame> savedGames;
+        List<? extends IGame> savedGames;
         try {
             savedGames = this.manager.getSavedGameList();
         }catch (PersistenceEndpointIOException e) {

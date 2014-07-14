@@ -32,7 +32,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.awt.Color;
-import java.util.concurrent.ThreadFactory;
 
 import interfaces.IClient;
 import interfaces.IGame;
@@ -86,11 +85,6 @@ public class Game extends UnicastRemoteObject implements IGame {
     private  Round currentRound;
 
     /**
-     * Name für das SPiel, erstmal aktuelles Datum
-     */
-    private final String name = new Date().toString();;
-
-    /**
      * Die UUID für das Spiel
      */
     private final UUID id;
@@ -105,25 +99,38 @@ public class Game extends UnicastRemoteObject implements IGame {
      */
     private final CardDeck deck;
 
+    /**
+     * Managed alle Clients des Spiels und damit auch alle Events des Spiels
+     */
     private final ClientManager clientManager;
+
+    /**
+     * Verwaltet alle Clients, die im Moment das GameManagerGUI-Window anzeigen
+     */
+    private  ClientManager allGameManagerClients;
+    /**
+     * Name für das SPiel, erstmal aktuelles Datum
+     */
+    private String name;
 
     /**
      * Konstruktor
      * @param persistenceEndpoint Endpunkt zum speichern des spiels
      */
     public Game(PersistenceEndpoint<Game> persistenceEndpoint) throws RemoteException{
-        this(persistenceEndpoint,new Map());
+        this(persistenceEndpoint,new Map(),UUID.randomUUID());
     }
 
     /**
      * Konstruktor, wennd as Spiel mit einer bestimmten Karte erzeugt werden soll
      * @param persistenceEndpoint
      * @param map
+     * @param id
      */
-    public Game(PersistenceEndpoint<Game> persistenceEndpoint, Map map) throws RemoteException{
+    public Game(PersistenceEndpoint<Game> persistenceEndpoint, Map map, UUID id) throws RemoteException{
     	this.map= map;
         this.persistenceEndpoint = persistenceEndpoint;
-        this.id = UUID.randomUUID();
+        this.id = id;
         this.color.add(Color.BLUE);
         this.color.add(Color.GREEN);
         this.color.add(Color.ORANGE);
@@ -151,10 +158,10 @@ public class Game extends UnicastRemoteObject implements IGame {
      * @throws NotEnoughPlayerException
      * @throws TooManyPlayerException
      * @throws NotEnoughCountriesException
-     * @throws GameAllreadyStartedException
+     * @throws exceptions.GameAlreadyStartedException
      * @throws PlayerAlreadyHasAnOrderException
      */
-    public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAllreadyStartedException, PlayerAlreadyHasAnOrderException,RemoteException {
+    public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAlreadyStartedException, PlayerAlreadyHasAnOrderException,RemoteException {
 
         //Exception-Handling
         if (this.players.size() < Game.minCountPlayers) {
@@ -164,7 +171,7 @@ public class Game extends UnicastRemoteObject implements IGame {
         } else if (this.map.getCountries().size() < this.players.size()) {
             throw new NotEnoughCountriesException(this.map.getCountries().size());
         } else if (this.currentGameState != IGame.gameStates.WAITING) {
-            throw new GameAllreadyStartedException();
+            throw new GameAlreadyStartedException();
         }
 
         //Spielstart
@@ -299,13 +306,13 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      * @param player - Player der gelöscht werden soll
      *
-     * @throws exceptions.PlayerNotExsistInGameException
+     * @throws exceptions.PlayerNotExistInGameException
      */
-    public void onPlayerDelete(final IPlayer player) throws PlayerNotExsistInGameException, RemoteException{
+    public void onPlayerDelete(final IPlayer player) throws PlayerNotExistInGameException, RemoteException{
         try {
             this.players.remove(player);
         } catch (final Exception e) {
-            throw new PlayerNotExsistInGameException(player);
+            throw new PlayerNotExistInGameException(player);
         }
     }
 
@@ -345,32 +352,32 @@ public class Game extends UnicastRemoteObject implements IGame {
      * Gibt den Spieler zum angegebenen Namen zurück
      * @param name - Name des gesuchten Spielers
      * @return Spieler
-     * @throws PlayerNotExsistInGameException Wenn Spieler nicht gefunden wird
+     * @throws exceptions.PlayerNotExistInGameException Wenn Spieler nicht gefunden wird
      * @throws RemoteException
      */
-    public Player getPlayer(final String name) throws PlayerNotExsistInGameException, RemoteException{
+    public Player getPlayer(final String name) throws PlayerNotExistInGameException, RemoteException{
         for (Player player: players){
             if(player.getName().equals(name)){
                 return player;
             }
         }
-        throw new PlayerNotExsistInGameException(name);
+        throw new PlayerNotExistInGameException(name);
     }
 
     /**
      * Gibt den Spieler zum angegebenen IPlayer zurück
      * @param otherPlayer - Name des gesuchten Spielers
      * @return Spieler
-     * @throws PlayerNotExsistInGameException Wenn Spieler nicht gefunden wird
+     * @throws exceptions.PlayerNotExistInGameException Wenn Spieler nicht gefunden wird
      * @throws RemoteException
      */
-    public Player getPlayer(final IPlayer otherPlayer) throws PlayerNotExsistInGameException{
+    public Player getPlayer(final IPlayer otherPlayer) throws PlayerNotExistInGameException {
         for (Player player: players){
             if(player.equals(otherPlayer)){
                 return player;
             }
         }
-        throw new PlayerNotExsistInGameException(name);
+        throw new PlayerNotExistInGameException(name);
     }
 
     /**
@@ -414,9 +421,9 @@ public class Game extends UnicastRemoteObject implements IGame {
      * @param name Name des zu hinzuüfügenden Spielers
      * @param client Zu dem Namen dazugehöriger Client
      */
-    public Player addPlayer(String name, IClient client) throws GameAllreadyStartedException, PlayerNameAlreadyChooseException,RemoteException{
+    public Player addPlayer(String name, IClient client) throws GameAlreadyStartedException, PlayerNameAlreadyChooseException,RemoteException{
         if (this.getCurrentGameState() != IGame.gameStates.WAITING) {
-            throw new GameAllreadyStartedException();
+            throw new GameAlreadyStartedException();
         }
 
         for (Player player: this.players){
@@ -429,9 +436,33 @@ public class Game extends UnicastRemoteObject implements IGame {
         player.setClient(client);
 
         this.players.add(player);
+        /**
+         * Andere bereits diesem Spiel begetretenen Clients aktualsieren
+         */
         this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.PLAYER);
+        /**
+         * Alle UI's aktualisieren die nur die auswahl der Spieler haben weil im namen des Spiels die Spieler stehen
+         */
+        if(this.allGameManagerClients != null){
+            this.allGameManagerClients.broadcastUIUpdate(IClient.UIUpdateTypes.ALL);
+        }
         return player;
     }
+
+    /**
+     * Setzt für einen Spieler einen Client
+     * @param player - Spieler für den der Client gesetzt werden soll
+     * @param client - Der Client der für den Spieler gesetzt werden soll
+     * @throws RemoteException
+     * @throws PlayerNotExistInGameException
+     */
+    public void setClient(final IPlayer player, final IClient client) throws RemoteException, PlayerNotExistInGameException{
+        Player realPlayer = this.getPlayer(player);
+        this.clientManager.addClient(client);
+        realPlayer.setClient(client);
+
+    }
+
 
     /**
      * @return Liste der Spieler
@@ -454,7 +485,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      */
     @Override
     public String toString() {
-        return "Game" + this.name;
+        return "Game: " + this.players.toString();
     }
 
     /**
@@ -470,5 +501,28 @@ public class Game extends UnicastRemoteObject implements IGame {
      */
     public String toStringRemote() throws RemoteException{
         return this.toString();
+    }
+
+    /**
+     * Setter für den namen des Spiels
+     * @param name
+     */
+    public void setName(String name){
+        this.name = name;
+    }
+
+    /**
+     * Getter für name
+     * @return
+     */
+    public String getName(){
+        if(this.name == null ){
+            return this.players.toString();
+        }else {
+            return this.name;
+        }
+    }
+    public void setAllGameManagerClients(ClientManager clientManager){
+        this.allGameManagerClients = clientManager;
     }
 }

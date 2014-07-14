@@ -125,7 +125,7 @@ public class GameCUI extends CUI implements Runnable {
             try {
                 GameCUI.this.game.addPlayer(name,GameCUI.this.remoteEventProcessor);
             }
-            catch (GameAllreadyStartedException | PlayerNameAlreadyChooseException | RemoteException e ){
+            catch (GameAlreadyStartedException | PlayerNameAlreadyChooseException | RemoteException e ){
                 IO.println(e.getMessage());
                 return;
             }
@@ -225,7 +225,7 @@ public class GameCUI extends CUI implements Runnable {
                 IO.println(e.getMessage());
                 return;
             }
-            catch (final GameAllreadyStartedException e ){
+            catch (final GameAlreadyStartedException e ){
                 IO.println(e.getMessage());
                 return;
             }catch (final PlayerAlreadyHasAnOrderException | RemoteException e){

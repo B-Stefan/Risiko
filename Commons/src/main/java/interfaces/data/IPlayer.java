@@ -28,6 +28,7 @@
 
 package interfaces.data;
 
+import interfaces.IClient;
 import interfaces.IToStringRemote;
 import interfaces.data.Orders.IOrder;
 import interfaces.data.cards.*;

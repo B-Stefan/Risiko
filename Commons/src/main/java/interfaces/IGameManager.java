@@ -46,7 +46,7 @@ public interface IGameManager extends Remote, Serializable, IToStringRemote {
      * @throws exceptions.PersistenceEndpointIOException
      * @throws CountryNotInListException 
      */
-    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException;
+    public List<? extends IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException;
 
     /**
      *
@@ -61,7 +61,17 @@ public interface IGameManager extends Remote, Serializable, IToStringRemote {
      * @return Das neu erstellte Spiel
      * @throws PersistenceEndpointIOException Fehler beim Einlesen der Datei oder Speichern
      */
-    public IGame addGame () throws PersistenceEndpointIOException, RemoteException;
+    public IGame createGame() throws PersistenceEndpointIOException, RemoteException;
+
+    /**
+     * Fügt der RunnigGame List das Spiel hinzu, prüft hierzu noch ob das Spiel auch wirklicha uf dem Server exisitert
+     * @param game
+     * @return
+     * @throws PersistenceEndpointIOException
+     * @throws RemoteException
+     * @throws GameNotFoundException
+     */
+    public IGame addGame (IGame game) throws PersistenceEndpointIOException, GameNotFoundException,RemoteException;
 
     /**
      * Speichert ein Spiel ab

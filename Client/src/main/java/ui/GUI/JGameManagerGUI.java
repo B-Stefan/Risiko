@@ -28,11 +28,7 @@
 
 package ui.GUI;
 
-import exceptions.GameAllreadyStartedException;
-import exceptions.PersistenceEndpointIOException;
-import exceptions.PlayerNameAlreadyChooseException;
-import exceptions.PlayerNotExsistInGameException;
-import interfaces.IClient;
+import exceptions.*;
 import interfaces.IGame;
 import interfaces.IGameManager;
 import interfaces.data.IPlayer;
@@ -41,14 +37,11 @@ import ui.CUI.GameCUI;
 import ui.GUI.menu.JGameLoadRunningGameMenu;
 import ui.GUI.menu.JGameLoadSavedGameMenu;
 import ui.GUI.utils.JExceptionDialog;
-import ui.GUI.utils.JModalDialog;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 
 /**
@@ -74,7 +67,7 @@ public class JGameManagerGUI extends JFrame {
         public void actionPerformed(ActionEvent event) {
             try {
                 JGameManagerGUI.this.openGameGUI();
-            }catch (RemoteException e){
+            }catch (RemoteException | PersistenceEndpointIOException | GameNotFoundException e){
                 new JExceptionDialog(JGameManagerGUI.this,e);
             }
         }
@@ -126,17 +119,17 @@ public class JGameManagerGUI extends JFrame {
         int y = (int) ((dimension.getHeight()/2 - this.getHeight()) / 2);
         this.setLocation(x, y);
     }
-    public void openGameGUI() throws RemoteException{
+    public void openGameGUI() throws RemoteException, GameNotFoundException,PersistenceEndpointIOException{
         IGame game;
         try {
-            game = manager.addGame();
+            game = manager.createGame();
         }catch (PersistenceEndpointIOException e){
             new JExceptionDialog(JGameManagerGUI.this,e);
             return;
         }
         openGameGUI(game);
     }
-    public void openGameGUI(IGame game) throws RemoteException{
+    public void openGameGUI(IGame game) throws RemoteException, GameNotFoundException, PersistenceEndpointIOException{
 
 
         String playerName = JGameManagerGUI.this.playerNameTxt.getText();
@@ -148,20 +141,22 @@ public class JGameManagerGUI extends JFrame {
         IPlayer currentPlayer;
         ClientEventProcessor gameRemoteEventProcessor = new ClientEventProcessor(); // Empfängt die Broadcast und wird pro Spiel angelegt
 
+        //Wenn Spiel geladen wird
         if (game.getCurrentGameState() == IGame.gameStates.RUNNING){
-            //Wenn Spiel geladen wird
             try {
                 currentPlayer = game.getPlayer(playerName);
-            }catch (PlayerNotExsistInGameException e){
+                game.setClient(currentPlayer, gameRemoteEventProcessor);
+            }catch (PlayerNotExistInGameException e){
                 new JExceptionDialog(this,e);
                 return;
             }
+            game = manager.addGame(game); // Prüft, ob es sich um ein richtiges Game handelt und gibt das gameObject des Server zurück, außerdem fügt wird das Game der runnig gamelist hinzugefügt
         }
         else{
             //Neues Spiel
             try {
                 currentPlayer = game.addPlayer(playerName,gameRemoteEventProcessor);
-            }catch (PlayerNameAlreadyChooseException | GameAllreadyStartedException e){
+            }catch (PlayerNameAlreadyChooseException | GameAlreadyStartedException e){
                 new JExceptionDialog(this,e);
                 return;
             }

@@ -64,6 +64,11 @@ public class PersistenceGame extends PersitenceObject<Game> {
     private final UUID id;
 
     /**
+     * Name des Spiels
+     */
+    private final String name;
+
+    /**
      * Aktueller Spielstatus
      */
     private final IGame.gameStates gameState;
@@ -85,6 +90,7 @@ public class PersistenceGame extends PersitenceObject<Game> {
             this.id =  game.getId();
             this.map = game.getMap().getId();
             this.gameState = game.getCurrentGameState();
+            this.name = game.getName();
             PersistenceEndpoint<Player> playerHandler = manager.getPlayerHandler();
             for(IPlayer p : game.getPlayers()){
                 Player player;
@@ -120,8 +126,8 @@ public class PersistenceGame extends PersitenceObject<Game> {
     public Game convertToSourceObject(PersistenceManager manager) throws PersistenceEndpointIOException{
         try {
             Map storedMap = manager.getMapHandler().get(this.map);
-            Game newGame = new Game(manager.getGameHandler(),storedMap);
-
+            Game newGame = new Game(manager.getGameHandler(),storedMap, this.id);
+            newGame.setName(this.name);
             List<Player> players= new ArrayList<Player>();
             PersistenceEndpoint<Player> playerHandler =  manager.getPlayerHandler();
 

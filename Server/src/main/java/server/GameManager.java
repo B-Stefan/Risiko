@@ -49,7 +49,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
     /**
      * Handler, der die Interaktion zum File-System oder DB-System verwaltet
      */
-    private final PersistenceEndpoint handler;
+    private final PersistenceEndpoint<Game> handler;
 
     /**
      * verwaltet die Broadcast an die clients
@@ -76,7 +76,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      * @throws PersistenceEndpointIOException
      * @throws CountryNotInListException 
      */
-    public List<IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException{
+    public List<? extends IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException{
         return this.handler.getAll();
     }
 
@@ -99,11 +99,34 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      * @return Das neu erstellte Spiel
      * @throws PersistenceEndpointIOException Fehler beim Einlesen der Datei oder Speichern
      */
-    public Game addGame () throws PersistenceEndpointIOException, RemoteException{
+    public Game createGame() throws PersistenceEndpointIOException, RemoteException{
         Game newGame = new Game(handler);
+        newGame.setAllGameManagerClients(this.clientManager);
         this.runningGames.put(newGame.getId(),newGame);
         this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.ALL);
         return newGame;
+    }
+
+    /**
+     * Versucht das Spiel aus den Gespeicherten spielen zu finden oder aber ob es in der Running game lsit ist
+     * @return Das neu erstellte Spiel
+     * @throws PersistenceEndpointIOException Fehler beim Einlesen der Datei oder Speichern
+     */
+    public Game addGame (IGame game) throws PersistenceEndpointIOException,GameNotFoundException, RemoteException{
+        Game realGame;
+        if(this.runningGames.containsKey(game.getId())){
+            realGame = this.runningGames.get(game.getId());
+        }else {
+            realGame = handler.get(game.getId());
+            if(realGame == null){
+                throw new GameNotFoundException();
+            }else {
+                this.runningGames.put(realGame.getId(),realGame);
+            }
+        }
+        realGame.setAllGameManagerClients(this.clientManager);//Dem Spiel sagen welchen Clients er bescheid geben muss um z.B. den Namen des Spiels bei allen, auch Speilern, die nicht diem Spiel angehöhren, aktualisieren
+        this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.ALL);
+        return realGame;
     }
 
     /**
