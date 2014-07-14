@@ -39,19 +39,49 @@ import ui.GUI.utils.JExceptionDialog;
 
 import javax.swing.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.List;
 
-/**
- * Created by Stefan on 25.06.14.
- */
+
 public class JGameLoadSavedGameMenu extends JMenu{
 
-    private final IGameManager manager;
-    public JGameLoadSavedGameMenu(IGameManager manager, JGameManagerGUI GameManagerGUI) throws RemoteException{
-        super("Spiel laden");
-        this.manager = manager;
 
+    private final JGameManagerGUI gameManagerGUI;
+    /**
+     * Wird augerufen, wenn der Server ein Update sendet
+     */
+    private class UpdateUIListener implements ActionListener {
+
+        /**
+         * Invoked when an action occurs.
+         *
+         * @param event
+         */
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            try{
+                update();
+            }catch (RemoteException e){
+                new JExceptionDialog(JGameLoadSavedGameMenu.this,e);
+            }
+        }
+    }
+    private final IGameManager manager;
+    public JGameLoadSavedGameMenu(IGameManager manager, JGameManagerGUI gameManagerGUI) throws RemoteException{
+        super("Spiel laden");
+        this.gameManagerGUI = gameManagerGUI;
+        this.manager = manager;
+        this.update();
+    }
+
+    /**
+     * Läd die gespeicherten Spiele vom Server und zeigt diese an
+     * @throws RemoteException
+     */
+    private void update() throws RemoteException{
+        this.removeAll();
         List<IGame> savedGames;
         try {
             savedGames = this.manager.getSavedGameList();
@@ -62,7 +92,7 @@ public class JGameLoadSavedGameMenu extends JMenu{
 
         //Add saved games to Meue
         for(IGame savedGame : savedGames){
-            JMenuItem item = new JGameLoadMenuItem(savedGame,GameManagerGUI);
+            JMenuItem item = new JGameLoadMenuItem(savedGame,this.gameManagerGUI);
             this.add(item);
         }
     }

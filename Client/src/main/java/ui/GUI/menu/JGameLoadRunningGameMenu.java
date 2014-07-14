@@ -31,26 +31,64 @@
 package ui.GUI.menu;
 
 import exceptions.PersistenceEndpointIOException;
+import interfaces.IClient;
+import interfaces.IClientManager;
 import interfaces.IGame;
 import interfaces.IGameManager;
+import server.logic.ClientEventProcessor;
 import ui.GUI.JGameManagerGUI;
 import ui.GUI.utils.JExceptionDialog;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-/**
- * Created by Stefan on 30.06.14.
- */
+
 public class JGameLoadRunningGameMenu extends JMenu {
 
     private final IGameManager manager;
+    private final JGameManagerGUI managerGUI;
 
-    public JGameLoadRunningGameMenu(IGameManager manager, JGameManagerGUI GameManagerGUI) throws RemoteException{
+    /**
+     * Wird augerufen, wenn der Server ein Update sendet
+     */
+    private class UpdateUIListener implements ActionListener {
+
+        /**
+         * Invoked when an action occurs.
+         *
+         * @param event
+         */
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            try{
+                update();
+            }catch (RemoteException e){
+                new JExceptionDialog(JGameLoadRunningGameMenu.this,e);
+            }
+        }
+    }
+    public JGameLoadRunningGameMenu(IGameManager manager, JGameManagerGUI GameManagerGUI, ClientEventProcessor clientEventProcessor) throws RemoteException{
         super("Spiel beitreten");
         this.manager = manager;
+        this.managerGUI = GameManagerGUI;
+        clientEventProcessor.addUpdateUIListener(new UpdateUIListener());
+        this.update();
 
+
+    }
+
+    /**
+     * Läd die gerade laufenden Spiele vom Server und zeigt diese an
+     * @throws RemoteException
+     */
+    private void update() throws RemoteException{
+        this.removeAll();
         List<IGame> runningGames;
         try {
             runningGames = this.manager.getRunningGameList();
@@ -58,10 +96,9 @@ public class JGameLoadRunningGameMenu extends JMenu {
             new JExceptionDialog(this,e);
             return;
         }
-
         //Add saved games to Meue
         for(IGame runningGame : runningGames){
-            JMenuItem item = new JGameLoadMenuItem(runningGame,GameManagerGUI);
+            JMenuItem item = new JGameLoadMenuItem(runningGame,this.managerGUI);
             this.add(item);
         }
     }

@@ -2,28 +2,30 @@ package server;
 
 import exceptions.ClientNotFoundException;
 import interfaces.IClient;
+import interfaces.IClientManager;
 import interfaces.IFight;
 import server.logic.Fight;
 import server.logic.data.Player;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Klasse die alle angemeldeten Clients verwaltet um Clients Rückmeldung zu geben (Broadcast)
  */
-public  class ClientManager implements Runnable  {
+public  class ClientManager extends UnicastRemoteObject implements Runnable, IClientManager {
 
     /**
      * Creates a new Thread and start the Clint Manager, to Broadcast all messages
      * @param manager
      * @return
      */
-    public  static Thread startWatchBroadcast(ClientManager manager){
+    public  static Thread startWatchBroadcast(ClientManager manager,String name){
         Thread t = new Thread(manager);
         t.start();
-        t.setName("ClientManager-Watch");
+        t.setName(name);
         return t;
     }
 
@@ -52,7 +54,7 @@ public  class ClientManager implements Runnable  {
     /**
      * Manager, der Clients verwaltet und Methoden zum broadcast bereitstellt
      */
-    public ClientManager(){
+    public ClientManager() throws RemoteException{
 
     }
 
@@ -60,7 +62,7 @@ public  class ClientManager implements Runnable  {
      * Fügt einen Client der Liste hinzu
      * @param client - Hinzuzufügender Client
      */
-    public synchronized void addClient(IClient client){
+    public synchronized void addClient(IClient client) throws RemoteException{
         this.clients.add(client);
     }
 
@@ -68,7 +70,7 @@ public  class ClientManager implements Runnable  {
      * Löscht einen Client
      * @param client Client der zu löschen ist
      */
-    public synchronized void removeClient(IClient client){
+    public synchronized void removeClient(IClient client) throws RemoteException{
         this.clients.remove(client);
     }
 

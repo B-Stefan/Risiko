@@ -26,34 +26,6 @@
  *
  */
 
-/*
- * RISIKO-JAVA - Game, Copyright 2014  Jennifer Theloy, Stefan Bieliauskas  -  All Rights Reserved.
- * Hochschule Bremen - University of Applied Sciences
- *
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * Contact:
- *     Jennifer Theloy: jTheloy@stud.hs-bremen.de
- *     Stefan Bieliauskas: sBieliauskas@stud.hs-bremen.de
- *
- * Web:
- *     https://github.com/B-Stefan/Risiko
- *
- */
-
 package ui.GUI;
 
 import exceptions.GameAllreadyStartedException;
@@ -75,10 +47,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 
 /**
- * Created by Stefan on 23.06.14.
+ *
  */
 public class JGameManagerGUI extends JFrame {
 
@@ -110,6 +84,7 @@ public class JGameManagerGUI extends JFrame {
         super("Risiko-Spielerauswahl");
         this.manager = manager;
         this.remoteEventProcessor = new ClientEventProcessor();
+        this.manager.getClientManager().addClient(this.remoteEventProcessor);
         initialize();
     }
     private void initialize() throws RemoteException {
@@ -129,7 +104,8 @@ public class JGameManagerGUI extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(new JGameLoadSavedGameMenu(this.manager,this));
-        menuBar.add(new JGameLoadRunningGameMenu(this.manager,this));
+        menuBar.add(new JGameLoadRunningGameMenu(this.manager,this,this.remoteEventProcessor));
+
         this.setJMenuBar(menuBar);
 
         this.add(centerPanel,BorderLayout.CENTER);
@@ -168,8 +144,9 @@ public class JGameManagerGUI extends JFrame {
             new JExceptionDialog(JGameManagerGUI.this,"Bitte geben Sie einen Spielernamen ein, der mindestens 4 Zeichen lang ist");
             return;
         }
-        IPlayer currentPlayer;
 
+        IPlayer currentPlayer;
+        ClientEventProcessor gameRemoteEventProcessor = new ClientEventProcessor(); // Empfängt die Broadcast und wird pro Spiel angelegt
 
         if (game.getCurrentGameState() == IGame.gameStates.RUNNING){
             //Wenn Spiel geladen wird
@@ -183,18 +160,23 @@ public class JGameManagerGUI extends JFrame {
         else{
             //Neues Spiel
             try {
-                currentPlayer = game.addPlayer(playerName,this.remoteEventProcessor);
+                currentPlayer = game.addPlayer(playerName,gameRemoteEventProcessor);
             }catch (PlayerNameAlreadyChooseException | GameAllreadyStartedException e){
                 new JExceptionDialog(this,e);
                 return;
             }
         }
-        JGameGUI    gui = new JGameGUI(game,currentPlayer,this.remoteEventProcessor);
+
+        /**
+         * GUI UND CUI Erstellen
+         */
+        JGameGUI    gui = new JGameGUI(game,currentPlayer,gameRemoteEventProcessor);
         GameCUI     cui = new GameCUI(game, null,currentPlayer);
 
         Thread t = new Thread(cui);
         t.start();
 
+        this.manager.getClientManager().removeClient(this.remoteEventProcessor);
         JGameManagerGUI.this.setVisible(false);
         JGameManagerGUI.this.dispose();
     }

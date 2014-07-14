@@ -31,6 +31,7 @@ package server;
 import exceptions.CountryNotInListException;
 import exceptions.GameNotFoundException;
 import exceptions.PersistenceEndpointIOException;
+import interfaces.IClient;
 import interfaces.IGame;
 import interfaces.IGameManager;
 import server.logic.Game;
@@ -51,6 +52,11 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
     private final PersistenceEndpoint handler;
 
     /**
+     * verwaltet die Broadcast an die clients
+     */
+    private final ClientManager clientManager;
+
+    /**
      * Diese Liste beinhaltet alle Spiele, bei denen aktuell Spieler angemeldet sind
      */
     private final Map<UUID,Game> runningGames = new HashMap<UUID,Game>();
@@ -61,6 +67,8 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      */
     public GameManager(final PersistenceManager manager) throws RemoteException{
         this.handler = manager.getGameHandler();
+        this.clientManager =  new ClientManager(); // Verwaltet client, die gerade Daten dieses GameManagers anzeigen, verwaltet KEINE Broadcast der einzelnen gestarteten Spiele.
+        ClientManager.startWatchBroadcast(this.clientManager, "Game-Manager-Broadcast"); // Startet den Broadcast Service
     }
     /**
      *
@@ -94,6 +102,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
     public Game addGame () throws PersistenceEndpointIOException, RemoteException{
         Game newGame = new Game(handler);
         this.runningGames.put(newGame.getId(),newGame);
+        this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.ALL);
         return newGame;
     }
 
@@ -110,6 +119,7 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
         else {
             this.handler.save(gameToSave);
         }
+        this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.ALL);
     }
     /**
      * Speichert ein Spiel ab
@@ -137,4 +147,12 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
         return this.toString();
     }
 
+    /**
+     * Gibt den Client Manager für den game Manger zurück
+     * @return Client Manger,der zum verwalteten aller geöffneten Clients zurständig ist
+     * @throws RemoteException
+     */
+    public ClientManager getClientManager() throws RemoteException{
+        return clientManager;
+    }
 }

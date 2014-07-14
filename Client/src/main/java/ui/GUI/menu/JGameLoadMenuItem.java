@@ -39,9 +39,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
-/**
- * Created by Stefan on 25.06.14.
- */
 public class JGameLoadMenuItem extends JMenuItem {
     private final IGame game;
     private final JGameManagerGUI gameManagerGUI;
@@ -62,6 +59,7 @@ public class JGameLoadMenuItem extends JMenuItem {
             }
         }
     }
+
     public JGameLoadMenuItem (IGame game, JGameManagerGUI gameManagerGUI) throws RemoteException{
         super(game.toStringRemote());
         this.gameManagerGUI = gameManagerGUI;

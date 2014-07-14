@@ -80,4 +80,11 @@ public interface IGameManager extends Remote, Serializable, IToStringRemote {
      */
     public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException;
 
+    /**
+     * Gibt den Client Manager für den GameManager zurück, dieser verwaltet alle geöfneten Clients, die den StartScreen anzeigen
+     * @return Client Manager, der für den Start-Screen events bereitstellt
+     * @throws RemoteException
+     */
+    public IClientManager getClientManager() throws RemoteException;
+
     }
