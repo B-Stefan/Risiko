@@ -156,7 +156,7 @@ public class JFightGUI extends JModalDialog {
                                  * Anzahl der Armeen erfragen, die rübergeschoben werden sollen
                                  */
                                 try {
-                                    numberOfArmiesToMove = JModalDialog.showAskIntegerModal(JFightGUI.this, "Armeen nachziehen", "Bitte geben Sie an wieviele Armeen Sie nachziehen möchten", FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY, numberOfArmiesOnFromCountry);
+                                    numberOfArmiesToMove = JModalDialog.showAskIntegerModal(JFightGUI.this, "Armeen nachziehen", "Bitte geben Sie an wieviele Armeen Sie nachziehen möchten", FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY, numberOfArmiesOnFromCountry - FightConfiguration.NUMBER_OF_ARMIES_EXCLUDE_FROM_FIGHT);
                                 } catch (UserCanceledException e) {
                                     JModalDialog.showInfoDialog(JFightGUI.this, "Benutzer Abbruch", "Sie haben keine Anzahl eingegbene es wurde nun die mindestanzahl von " + FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY + " Armeen in ihr neues Land bewegt");
                                 }
@@ -209,7 +209,6 @@ public class JFightGUI extends JModalDialog {
         @Override
         public void actionPerformed(ActionEvent event) {
             if(JFightGUI.this.leafFight()){
-                JFightGUI.this.remoteEventsProcessor.removeUpdateUIListener(JFightGUI.this.fightUpdateUIListener);
                 JFightGUI.this.dispose();
             }
         }
@@ -221,10 +220,8 @@ public class JFightGUI extends JModalDialog {
         @Override
         public void windowClosing(WindowEvent e) {
             if(JFightGUI.this.leafFight()) {
-                JFightGUI.this.remoteEventsProcessor.removeUpdateUIListener(JFightGUI.this.fightUpdateUIListener);
                 super.windowClosing(e);
             }
-
         }
     }
 
