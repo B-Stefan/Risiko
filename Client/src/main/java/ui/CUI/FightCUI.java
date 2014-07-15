@@ -206,7 +206,7 @@ public class FightCUI extends CUI {
 
 	@Override
 	protected void goIntoChildContext(LinkedHashMap<String, CommandListenerArgument> args) {
-		// TODO Auto-generated method stub
+		this.fireCommandEvent(new HelpListener());
 	}
 
 

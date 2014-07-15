@@ -81,7 +81,7 @@ public class OrderTerminatePlayer extends AbstractOrder implements IOrder{
 
     @Override
     public String toString(){
-        //@todo beschreibung verbessern!
+
         return this.agent + " hat die Aufgabe den Spieler " + this.getVictim() + " zu vernichten"  ;
     }
 }

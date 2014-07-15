@@ -80,7 +80,7 @@
          o das Verteilen und Verschieben von Einheiten und o das Angreifen / Verteidigen von Provinzen.
 
 - [X]   Erst wenn diese Basisfunktionen über die GUI verwendbar sind, sollten Sie an der Vervollständigung des Funktionsumfangs arbeiten (Missionen, Einheitenkarten, Anzeige von zusätzlichen Informationen zum Spielstand, (Keine Anzeige von Anzeige der Kontinente)).
-- [ ]   Kleiner Tipp zur Zuordnung von Mausklicks zu Provinzen: Wenn Sie für die Auswahl von Provinzen beim Angriff Buttons oder ähnliches vermeiden wollen, können Sie auch direkt Mausklicks auf die Landkarte auswerten. Jedes MouseEvent hat x,y-Koordinaten, anhand derer sich der Farbwert an der entsprechende Position einer Grafik (der Weltkarte) auswerten lässt. Über den Farbwert kann man dann auf die angeklickte Provinz schließen. Dabei treten aber verschiedene Probleme auf:
+        Kleiner Tipp zur Zuordnung von Mausklicks zu Provinzen: Wenn Sie für die Auswahl von Provinzen beim Angriff Buttons oder ähnliches vermeiden wollen, können Sie auch direkt Mausklicks auf die Landkarte auswerten. Jedes MouseEvent hat x,y-Koordinaten, anhand derer sich der Farbwert an der entsprechende Position einer Grafik (der Weltkarte) auswerten lässt. Über den Farbwert kann man dann auf die angeklickte Provinz schließen. Dabei treten aber verschiedene Probleme auf:
          o Provinzen eines Kontinents haben vielleicht die gleiche Farbe: dann kann nur auf den Kontinent geschlossen werden und nicht auf die Provinz.
          o Eine Weltkarte soll vielleicht besonders schön sein und setzt dazu Farbverläufe ein (z.B. Vergilbung einer Weltkarte): dann ist einer Provinz keine eindeutige Farbe zugeordnet, sondern viele Farben.
          o Die Weltkarte ist mit den Namen von Kontinenten und Provinzen beschriftet(Tooltip oder Kontextmenü ist eine Beschriftung) : was ist, wenn der Klick nun genau auf einen Schriftzug zielte?
@@ -91,14 +91,14 @@
 #Aufgabenblatt 4
 
 
-- [ ]   Implementieren Sie den Server.
+- [X]   Implementieren Sie den Server.
          Hinweis für die Socket-Variante (wenn Sie sich bislang am groben Aufbau der
          Bibliotheksanwendung orientiert haben): Orientieren Sie sich am Bibliotheksserver
          o Übertragen Sie die Schichten Anwendungskern und Persistenz sowie die Datenstrukturen (Objekte, die von GUI, Anwendungskern und Persistenz benötigt werden) in ein gesondertes Server-Projekt
          o Ergänzen Sie eine Klasse XYServer, die Verbindungswünsche von Clients entgegennimmt (XY = eShop oder Risiko oder ...).
          o Ergänzen Sie eine Klasse ClientRequestProcessor, die für die Verarbeitung von Client-Anfragen gemäß dem Kommunikationsprotokoll zuständig ist und diese durch Methodenaufrufe auf dem Anwendungskern ausführt. Für jede Verbindung des Servers zu einem Client wird eine Instanz der Klasse erzeugt und als Thread gestartet.
 
-- [ ]   Implementieren Sie den Client.
+- [X]   Implementieren Sie den Client.
          Hinweis für die Socket-Variante (wenn Sie sich bislang am groben Aufbau der
          Bibliotheksanwendung orientiert haben): Orientieren Sie sich am Bibliotheksclient
          o Übertragen Sie die Schicht Benutzungsschnittstelle sowie die Datenstrukturen (s. o.) unverändert in ein gesondertes Client-Projekt
