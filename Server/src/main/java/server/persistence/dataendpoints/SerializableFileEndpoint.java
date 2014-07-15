@@ -54,10 +54,9 @@ public class SerializableFileEndpoint<T> extends AbstractFileEndpoint<T> {
     protected void readFile() {
         {
             AbstractFileEndpoint.createDir();
-            HashMap<UUID, PersitenceObject<T>> fileData = null;
             try {
                 ObjectInputStream reader = new ObjectInputStream(new FileInputStream(AbstractFileEndpoint.convertFileNameToPath(this.fileName)));
-                chachedObjects = (HashMap<UUID, PersitenceObject<T>>) reader.readObject();
+                this.chachedObjects = (HashMap<UUID, PersitenceObject<T>>) reader.readObject();
             }catch (ClassNotFoundException | ClassCastException e){
                 throw new RuntimeException(e);
             }
@@ -75,9 +74,7 @@ public class SerializableFileEndpoint<T> extends AbstractFileEndpoint<T> {
                 //@Todo Besseres Exception Handling
                 e.printStackTrace();
             }
-            if(fileData != null){
-                this.chachedObjects = fileData;
-            }
+
         }
     }
 
