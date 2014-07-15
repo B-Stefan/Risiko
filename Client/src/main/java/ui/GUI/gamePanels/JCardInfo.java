@@ -67,7 +67,7 @@ public class JCardInfo extends JFrame{
 	/**
 	 * Der Infotext zu den Karten
 	 */
-	private JTextArea cardInfo = new JTextArea("");
+	private final JTextArea cardInfo = new JTextArea("");
 	/**
 	 *
 	 */

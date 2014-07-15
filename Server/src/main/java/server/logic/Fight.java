@@ -96,7 +96,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	/**
 	 * Der Zug, in dem sich der Fight befindet
 	 */
-	private Turn currentTurn;
+	private final Turn currentTurn;
 
     /**
      * Client Manager um nachrichten an die Clients zu verteilen
@@ -136,7 +136,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 			if (this.from.getArmyList().size()<agressorsArmies){
 				throw new NotEnoughArmiesToAttackException();
 			}
-			agArmies.push((Army)from.getArmyList().get(i));
+			agArmies.push(from.getArmyList().get(i));
 		}
 		attacking(agArmies);
         this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.FIGHT);
@@ -206,7 +206,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 			throw new NotEnoughArmiesToDefendException();
 		}
 		for (int i = 0; i<defendersArmies; i++){
-			defArmies.push((Army)to.getArmyList().get(i));
+			defArmies.push(to.getArmyList().get(i));
 		}
 		defending(defArmies);
         this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.FIGHT);

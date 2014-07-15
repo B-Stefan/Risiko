@@ -141,7 +141,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
     /**
      * Der Kartenstapel an unvergebenen Karten
      */
-    private CardDeck deck;
+    private final CardDeck deck;
     /**
      * Gibt an, ob in dem Zug ein ein erfolgreicher Twkeover stattgefunden hat
      */
@@ -341,6 +341,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws NotYourTurnException 
      */
     public synchronized void placeNewArmy(ICountry position, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, ToManyNewArmysException, TurnNotAllowedStepException, TurnNotInCorrectStepException,NotEnoughNewArmysException,NotTheOwnerException, RemoteException, NotYourTurnException {
+
         if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }
@@ -448,7 +449,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @throws NotYourTurnException 
      * @throws NotEoughUnmovedArmiesException 
      */
-    public void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException, NotYourTurnException, NotEoughUnmovedArmiesException {
+    public synchronized void moveArmy(ICountry fromClientCountry,ICountry toClientCounty, int numberOfArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException,ToManyNewArmysException, NotEnoughArmysToMoveException, TurnNotAllowedStepException, TurnNotInCorrectStepException, CountriesNotConnectedException, ArmyAlreadyMovedException,NotTheOwnerException, RemoteException, NotYourTurnException, NotEoughUnmovedArmiesException {
         if(!this.player.equals(clientPlayer)){
         	throw new NotYourTurnException();
         }

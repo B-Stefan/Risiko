@@ -74,7 +74,7 @@ public class JFightSide extends Panel {
 
             int numberOfArmies;
 
-            Component frame = (Component) JFightSide.this.getParent(); // Der Frame in dem die Exceptions dargestellt werden
+            Component frame =  JFightSide.this.getParent(); // Der Frame in dem die Exceptions dargestellt werden
 
             try {
                 numberOfArmies = Integer.parseInt(JFightSide.this.numberOfArmiesText.getText());

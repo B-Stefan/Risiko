@@ -129,7 +129,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
      */
     public void drawNewCard(Card c)throws RemoteException{
     	if(this.deck.size() <= 5){
-    		this.deck.add((Card)c);
+    		this.deck.add(c);
     	}
     }
 

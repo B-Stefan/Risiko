@@ -36,7 +36,7 @@ import java.io.*;
 
 public class IO {
 
-	public static BufferedReader input
+	public static final BufferedReader input
           = new BufferedReader(new InputStreamReader(System.in));
 	public static String eingabe = "";
 

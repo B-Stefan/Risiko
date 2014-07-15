@@ -76,7 +76,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * @param fileName Name des files
      * @return qualifizierten Pfad
      */
-    public static String convertFileNameToPath(final String fileName){
+    static String convertFileNameToPath(final String fileName){
 
         return DEFAULT_PATH + fileName.replace("/","");     //Falls file name mit "/filename" angegbeen wurde"
     }
@@ -84,7 +84,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
     /**
      * Dateiname für diesen Endpoint
      */
-    protected final String fileName;
+    final String fileName;
 
     /**
      * Hashmap für alle Objekt, die in der Datei gespeichert wurden
@@ -94,7 +94,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
     /**
      * Beinhaltet alle Objekte, die bereits einmal geladen wurden.
      */
-    protected HashMap<UUID, T> chachedSourceObjects = new HashMap<UUID,T>();
+    private final HashMap<UUID, T> chachedSourceObjects = new HashMap<UUID,T>();
 
 
     /**
@@ -161,6 +161,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * @return
      * @throws PersistenceEndpointIOException
      */
+    @SuppressWarnings("JavaDoc")
     @Override
     public T get(UUID id) throws PersistenceEndpointIOException{
         PersitenceObject<T> result = this.chachedObjects.get(id);
@@ -176,6 +177,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * @return
      * @throws PersistenceEndpointIOException
      */
+    @SuppressWarnings("JavaDoc")
     @Override
     public T get(String id) throws PersistenceEndpointIOException {
         return this.get(UUID.fromString(id));
@@ -202,6 +204,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * Speichert ein sourceObject in der chachedObjects Liste
      * @param objectToStore
      */
+    @SuppressWarnings("JavaDoc")
     private void putObjectToHashmap (PersitenceObject<T> objectToStore){
         /**
          * Aus Cache entfernen, wenn vorhanden
@@ -217,6 +220,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * @param obj
      * @return
      */
+    @SuppressWarnings("JavaDoc")
     private PersitenceObject<T> convertToSerializableInstance (T obj){
         if(obj == null){
             return null;
@@ -241,6 +245,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
      * @return
      * @throws PersistenceEndpointIOException
      */
+    @SuppressWarnings("JavaDoc")
     private T convertToSourceType(PersitenceObject obj) throws PersistenceEndpointIOException{
         if(obj == null){
             return null;

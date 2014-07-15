@@ -51,6 +51,7 @@ import java.util.HashMap;
  * Die Klassen im Paket objects dienen zur Serialisierung der Spielklassen, sodass z.B. nicht alle Armeen als einzlene Klasse gespeichert werden sondern nur ein Spieler mit seinen Ländern und die Anzahl der Armeen auf diesem Land.
  *
  */
+
 public class PersistenceManager {
 
     /**
@@ -94,6 +95,7 @@ public class PersistenceManager {
      * Gibt einen PersistenceEndpoint für die Logik-Klasse Game zurück
      * @return PersistenceEndpoint für Game
      */
+    @SuppressWarnings("unchecked")
     public PersistenceEndpoint<Game> getGameHandler(){
         return (PersistenceEndpoint<Game>)this.getHandler(Game.class);
     }
@@ -101,6 +103,7 @@ public class PersistenceManager {
      * Gibt einen PersistenceEndpoint für die Logik-Klasse Player zurück
      * @return PersistenceEndpoint für Player
      */
+    @SuppressWarnings("unchecked")
     public PersistenceEndpoint<Player> getPlayerHandler(){
         return (PersistenceEndpoint<Player>)this.getHandler(Player.class);
     }
@@ -108,6 +111,7 @@ public class PersistenceManager {
      * Gibt einen PersistenceEndpoint für die Logik-Klasse Map zurück
      * @return PersistenceEndpoint für Map
      */
+    @SuppressWarnings("unchecked")
     public PersistenceEndpoint<Map> getMapHandler(){
         return (PersistenceEndpoint<Map>)this.getHandler(Map.class);
     }

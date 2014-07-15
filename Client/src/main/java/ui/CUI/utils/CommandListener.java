@@ -39,7 +39,7 @@ public abstract class CommandListener implements ActionListener {
     /**
      * Befehl, bei dem der Listener ausgelöst werden sill
      */
-    private String command;
+    private final String command;
     /**
      * Hilfe-Text der dem User angezeigt werden kann
      */
@@ -51,7 +51,7 @@ public abstract class CommandListener implements ActionListener {
      * Es wird hier also eine OrderedHashMap verlangt.
      * @see java.util.LinkedHashMap
      */
-    private LinkedHashMap<String, CommandListenerArgument> arguments = new LinkedHashMap<String, CommandListenerArgument>();
+    private final LinkedHashMap<String, CommandListenerArgument> arguments = new LinkedHashMap<String, CommandListenerArgument>();
 
     /**
      * ERzeugt eine Instanz

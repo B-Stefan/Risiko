@@ -70,12 +70,12 @@ public abstract class CUI {
      * Der aktuelle Kontext in dem sich die CUI bewegt
      */
 
-    private IToStringRemote context;
+    private final IToStringRemote context;
 
     /**
      * Enthält alle möglichkeiten, die er User ausführen kann
      */
-    private HashMap<String, CommandListener> commands = new HashMap<String, CommandListener>();
+    private final HashMap<String, CommandListener> commands = new HashMap<String, CommandListener>();
 
 
     /**
@@ -234,8 +234,7 @@ public abstract class CUI {
     protected String[] normalizeArguments(final String rawInput) {
         String[] splits = this.normalizeRawInput(rawInput);
         if (splits.length == 1) {
-            String[] re = new String[1];
-            return re;
+            return new String[1];
         } else {
             return Arrays.copyOfRange(splits, 1, splits.length);
         }
@@ -257,9 +256,9 @@ public abstract class CUI {
         CommandListener currentCommandListener = commands.get(command);
 
         //Set Arguments
-        Iterator requiredArgumentsInterator = currentCommandListener.getArguments().entrySet().iterator();
+        Iterator<Map.Entry<String,CommandListenerArgument>> requiredArgumentsInterator = currentCommandListener.getArguments().entrySet().iterator();
         for (int i = 0;  requiredArgumentsInterator.hasNext(); i++){
-            java.util.Map.Entry<String, CommandListenerArgument> requiredCommandEntry = (java.util.Map.Entry<String,CommandListenerArgument>) requiredArgumentsInterator.next();
+            java.util.Map.Entry<String, CommandListenerArgument> requiredCommandEntry = requiredArgumentsInterator.next();
             CommandListenerArgument requiredCommand  = requiredCommandEntry.getValue();
             //Wenn keine Argumete mehr vorhanden sind
             if(args.length == i ){

@@ -46,11 +46,11 @@ public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard
 	/**
 	 * Der Typ der Karte (Joker, Reiter, Soldat, Kanone)
 	 */
-	private String type;
+	private final String type;
 	/**
 	 * Das Land, dem die Karte zugewiesen ist
 	 */
-	private Country country;
+	private final Country country;
 	/**
 	 * Constructor
 	 * @param c Das Land, dem die Karte zugewiesen wrden soll

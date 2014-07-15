@@ -55,15 +55,15 @@ public class MapLoader {
     /**
      * Karte, die dem Benutzer angezeigt wird
      */
-    private Image frontImage;
+    private final Image frontImage;
     /**
      * Karte die für die klickbaren Bereiche benötigt wird
      */
-    private BufferedImage backgroundCountryBorderImg;
+    private final BufferedImage backgroundCountryBorderImg;
     /**
      * Karte, die für die Anzeigepunkte benötigt wird.
      */
-    private BufferedImage backgroundCountryInfoImg;
+    private final BufferedImage backgroundCountryInfoImg;
 
     /**
      * Klasse zum laden der Map

@@ -85,7 +85,7 @@ public class Army extends UnicastRemoteObject implements IArmy{
                 //Prüfen, ob Länder verbunden sind
                 if(!this.position.isConnected(country)){
                     throw new CountriesNotConnectedException(this.position, country);
-                };
+                }
                 this.position.removeArmy(this);
             }
             this.position = country;

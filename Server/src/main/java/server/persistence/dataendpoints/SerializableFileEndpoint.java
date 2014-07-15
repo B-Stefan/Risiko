@@ -58,7 +58,7 @@ public class SerializableFileEndpoint<T> extends AbstractFileEndpoint<T> {
             try {
                 ObjectInputStream reader = new ObjectInputStream(new FileInputStream(AbstractFileEndpoint.convertFileNameToPath(this.fileName)));
                 chachedObjects = (HashMap<UUID, PersitenceObject<T>>) reader.readObject();
-            }catch (ClassNotFoundException e){
+            }catch (ClassNotFoundException | ClassCastException e){
                 throw new RuntimeException(e);
             }
             catch (EOFException e){

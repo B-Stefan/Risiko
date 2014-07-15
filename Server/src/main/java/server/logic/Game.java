@@ -53,7 +53,7 @@ import server.persistence.dataendpoints.PersistenceEndpoint;
  */
 public class Game extends UnicastRemoteObject implements IGame {
 	
-	private Stack<Color> color = new Stack<Color>();
+	private final Stack<Color> color = new Stack<Color>();
     /**
      * Legt die mindestanzahl an Spielern fest, die für ein Spiel erforderlich sind
      */

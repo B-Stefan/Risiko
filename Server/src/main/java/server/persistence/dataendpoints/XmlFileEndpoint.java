@@ -45,7 +45,7 @@ import java.util.UUID;
  */
 public class XmlFileEndpoint<T> extends AbstractFileEndpoint<T> {
 
-    private XStream xstream;
+    private final XStream xstream;
     public XmlFileEndpoint(Class<T> sourceClass, Class<? extends PersitenceObject<T>> dataClass, PersistenceManager manager) {
         super(sourceClass, dataClass, manager);
         this.xstream = new XStream(new StaxDriver());

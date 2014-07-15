@@ -50,12 +50,8 @@ public class JPLayerInfoGUI extends JScrollPane{
 	 * Model der Tabelle mit Spielern
 	 */
 	private PlayerInfoTableModel tModel;
-	/**
-	 * Tabelle mit Spielern
-	 */
-    private final JTable playersTable;
-	
-	/**
+
+    /**
 	 * Konstruktor
 	 * @param game aktuelles Spiel
 	 * @throws RemoteException
@@ -70,7 +66,10 @@ public class JPLayerInfoGUI extends JScrollPane{
 
         //Spieler Liste
         this.tModel = new PlayerInfoTableModel(this.game, spalten);
-        this.playersTable = new JTable(this.tModel);
+        /*
+        * Tabelle mit Spielern
+	    */
+        JTable playersTable = new JTable(this.tModel);
         this.getViewport().add(playersTable);
         this.setPreferredSize(new Dimension(150, 105));
 	}

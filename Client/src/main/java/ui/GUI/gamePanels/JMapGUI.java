@@ -88,8 +88,8 @@ public class JMapGUI extends JComponent {
 
         @Override
         public void mouseClicked(MouseEvent event) {
-            int x = (int) event.getX();
-            int y = (int) event.getY();
+            int x = event.getX();
+            int y = event.getY();
             ICountry country;
 
             try {

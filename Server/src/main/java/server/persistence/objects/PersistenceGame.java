@@ -102,7 +102,7 @@ public class PersistenceGame extends PersitenceObject<Game> {
                 this.players.add(p.getId().toString());
                 playerHandler.save(player);
             }
-            manager.getMapHandler().save((Map)game.getMap());
+            manager.getMapHandler().save(game.getMap());
         }catch (RemoteException e){
             //Kann nicht auftreten, da keine Netzwerkkommunikation stattfindet
             throw new RuntimeException(e);
