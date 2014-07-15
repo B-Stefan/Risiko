@@ -74,7 +74,7 @@ public class JCountryInfo extends JLabel{
 		g.setColor(col);
 		g.fillArc(0, 0, width, height, 0, 360);
 		g.setColor(Color.white);
-		g.fillArc(this.BORDER, this.BORDER, width - 2 * this.BORDER, height - 2 * this.BORDER, 0, 360);
+		g.fillArc(BORDER, BORDER, width - 2 * BORDER, height - 2 * BORDER, 0, 360);
         try {
             writeLabel(g, width, height);
         }catch (RemoteException e){

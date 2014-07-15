@@ -121,7 +121,7 @@ public class TurnCUI extends CUI {
             try {
                 turn.setNextStep(TurnCUI.this.player);
             }
-            catch (RemoteException | NotYourTurnException e){
+            catch (RemoteException e){
                 e.printStackTrace();
                 IO.println(e.getMessage());
                 return;
@@ -140,6 +140,8 @@ public class TurnCUI extends CUI {
                     return;
                 }
                 IO.println("Sie müssen noch " + newArmySize + " Einheiten verteilen bevor sie in den nächsten step wechseln können ");
+            }catch (NotYourTurnException e){
+                IO.print(e.getMessage());
             }
         }
     }

@@ -36,7 +36,7 @@
                     <additionalJOption>-J-Xmx1024m</additionalJOption>
                     <detectJavaApiLink>true</detectJavaApiLink>
                     <detectLinks>true</detectLinks>
-                    <exclude>*.testing.*</exclude>
+                    <excludePackageNames>*.test.*</excludePackageNames>
                 </configuration>
                 <executions>
                     <execution>
