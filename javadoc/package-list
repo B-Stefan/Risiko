@@ -1,4 +1,5 @@
 Client
+Client.logic
 Client.ui.CUI
 Client.ui.CUI.exceptions
 Client.ui.CUI.utils
