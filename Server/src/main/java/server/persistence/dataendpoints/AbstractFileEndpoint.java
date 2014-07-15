@@ -28,7 +28,7 @@
 
 package server.persistence.dataendpoints;
 
-import exceptions.PersistenceEndpointIOException;
+import commons.exceptions.PersistenceEndpointIOException;
 import server.persistence.PersistenceManager;
 import server.persistence.objects.PersitenceObject;
 

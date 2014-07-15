@@ -28,9 +28,9 @@
 
 package server.logic.data;
 
-import exceptions.CountriesNotConnectedException;
-import exceptions.CountryNotInListException;
-import interfaces.data.ICountry;
+import commons.exceptions.CountriesNotConnectedException;
+import commons.exceptions.CountryNotInListException;
+import commons.interfaces.data.ICountry;
 
 import java.awt.Color;
 import java.rmi.RemoteException;

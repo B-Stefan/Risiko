@@ -27,7 +27,7 @@
  */
 
 package server.persistence.objects;
-import exceptions.PersistenceEndpointIOException;
+import commons.exceptions.PersistenceEndpointIOException;
 import server.logic.data.Country;
 import server.logic.data.Map;
 import server.persistence.PersistenceManager;

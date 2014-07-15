@@ -28,12 +28,12 @@
 
 package server.persistence.objects;
 
-import exceptions.PersistenceEndpointIOException;
+import commons.exceptions.PersistenceEndpointIOException;
 import server.logic.data.Army;
 import server.logic.data.Country;
 import server.logic.data.Map;
 import server.logic.data.Player;
-import exceptions.CountriesNotConnectedException;
+import commons.exceptions.CountriesNotConnectedException;
 import server.persistence.PersistenceManager;
 
 import java.awt.Color;

@@ -33,9 +33,9 @@ package server.logic.data.cards;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import interfaces.data.ICountry;
-import interfaces.data.IPlayer;
-import interfaces.data.cards.ICard;
+import commons.interfaces.data.ICountry;
+import commons.interfaces.data.IPlayer;
+import commons.interfaces.data.cards.ICard;
 import server.logic.data.*;
 
 public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard> {
@@ -84,7 +84,7 @@ public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard
 	}
 	/**
 	 * Hilfe zur Sortierung der Karte nach Alphabet
-     * 
+     *
 	 */
 	public int compareTo(ICard otherCard){
         try {

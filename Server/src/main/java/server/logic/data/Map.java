@@ -29,10 +29,10 @@
 package server.logic.data;
 
 
-import interfaces.data.IContinent;
-import interfaces.data.ICountry;
-import interfaces.data.IMap;
-import interfaces.data.IPlayer;
+import commons.interfaces.data.IContinent;
+import commons.interfaces.data.ICountry;
+import commons.interfaces.data.IMap;
+import commons.interfaces.data.IPlayer;
 import java.rmi.RemoteException;
 
 import java.awt.*;

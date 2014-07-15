@@ -55,15 +55,14 @@
  */
 
 package server.logic;
-import interfaces.IClient;
-import interfaces.IFight;
-import interfaces.ITurn;
-import interfaces.data.IArmy;
-import interfaces.data.ICountry;
-import interfaces.data.IPlayer;
+import commons.interfaces.IClient;
+import commons.interfaces.IFight;
+import commons.interfaces.ITurn;
+import commons.interfaces.data.ICountry;
+import commons.interfaces.data.IPlayer;
 import server.ClientManager;
 import server.logic.data.*;
-import exceptions.*;
+import commons.exceptions.*;
 import server.logic.data.Map;
 import server.logic.data.cards.CardDeck;
 
@@ -648,7 +647,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
 
     /**
      * Gibt die Anzahl der noch zu verteilenden Armeen zurück
-     * @see #placeNewArmy(interfaces.data.ICountry, int, interfaces.data.IPlayer)
+     * @see #placeNewArmy(commons.interfaces.data.ICountry, int, commons.interfaces.data.IPlayer)
      * @return - Anzahl der noch zu verteilenden Armeen
      */
     public int getNewArmysSize() throws RemoteException {

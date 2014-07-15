@@ -30,7 +30,7 @@ package server.logic.data.orders;
 
 import java.rmi.RemoteException;
 
-import interfaces.data.Orders.IOrder;
+import commons.interfaces.data.Orders.IOrder;
 import server.logic.data.Country;
 import server.logic.data.Player;
 

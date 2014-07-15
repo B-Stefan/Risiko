@@ -31,8 +31,8 @@ package server.logic.data;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import interfaces.data.*;
-import exceptions.CountriesNotConnectedException;
+import commons.interfaces.data.*;
+import commons.exceptions.CountriesNotConnectedException;
 
 /**
  * @author Jennifer Theloy,  Stefan Bieliauskas

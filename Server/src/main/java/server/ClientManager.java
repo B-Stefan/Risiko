@@ -1,9 +1,9 @@
 package server;
 
-import exceptions.ClientNotFoundException;
-import interfaces.IClient;
-import interfaces.IClientManager;
-import interfaces.IFight;
+import commons.exceptions.ClientNotFoundException;
+import commons.interfaces.IClient;
+import commons.interfaces.IClientManager;
+import commons.interfaces.IFight;
 import server.logic.Fight;
 import server.logic.data.Player;
 
@@ -65,16 +65,16 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
     }
 
     /**
-     * Fügt einen Client der Liste hinzu
-     * @param client - Hinzuzufügender Client
+     * Fügt einen client der Liste hinzu
+     * @param client - Hinzuzufügender client
      */
     public synchronized void addClient(IClient client) throws RemoteException{
         this.clients.add(client);
     }
 
     /**
-     * Löscht einen Client
-     * @param client Client der zu löschen ist
+     * Löscht einen client
+     * @param client client der zu löschen ist
      */
     public synchronized void removeClient(IClient client) throws RemoteException{
         this.clients.remove(client);

@@ -29,13 +29,13 @@
 
 package server.logic.data.orders;
 
-import interfaces.data.Orders.IOrder;
-import interfaces.data.Orders.IOrderManager;
+import commons.interfaces.data.Orders.IOrder;
+import commons.interfaces.data.Orders.IOrderManager;
 import server.logic.Game;
 import server.logic.data.Continent;
 import server.logic.data.Map;
 import server.logic.data.Player;
-import exceptions.PlayerAlreadyHasAnOrderException;
+import commons.exceptions.PlayerAlreadyHasAnOrderException;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

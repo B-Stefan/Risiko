@@ -32,28 +32,28 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-import configuration.FightConfiguration;
-import interfaces.IClient;
-import interfaces.IFight;
-import interfaces.data.IPlayer;
-import interfaces.data.utils.IDice;
-import exceptions.AlreadyDicedException;
-import exceptions.ArmyAlreadyMovedException;
-import exceptions.CountriesNotConnectedException;
-import exceptions.CountryNotInListException;
-import exceptions.InvalidAmountOfArmiesException;
-import exceptions.InvalidFightException;
-import exceptions.NotEnoughArmiesToAttackException;
-import exceptions.TurnNotAllowedStepException;
-import exceptions.TurnNotInCorrectStepException;
-import exceptions.YouCannotAttackException;
-import exceptions.YouCannotDefendException;
+import commons.configuration.FightConfiguration;
+import commons.interfaces.IClient;
+import commons.interfaces.IFight;
+import commons.interfaces.data.IPlayer;
+import commons.interfaces.data.utils.IDice;
+import commons.exceptions.AlreadyDicedException;
+import commons.exceptions.ArmyAlreadyMovedException;
+import commons.exceptions.CountriesNotConnectedException;
+import commons.exceptions.CountryNotInListException;
+import commons.exceptions.InvalidAmountOfArmiesException;
+import commons.exceptions.InvalidFightException;
+import commons.exceptions.NotEnoughArmiesToAttackException;
+import commons.exceptions.TurnNotAllowedStepException;
+import commons.exceptions.TurnNotInCorrectStepException;
+import commons.exceptions.YouCannotAttackException;
+import commons.exceptions.YouCannotDefendException;
 import server.ClientManager;
 import server.logic.data.Army;
 import server.logic.data.Country;
 import server.logic.data.Player;
 import server.logic.utils.*;
-import exceptions.*;
+import commons.exceptions.*;
 
 public class Fight extends UnicastRemoteObject implements IFight {
 	
@@ -99,7 +99,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	private final Turn currentTurn;
 
     /**
-     * Client Manager um nachrichten an die Clients zu verteilen
+     * client Manager um nachrichten an die Clients zu verteilen
      */
     private final ClientManager clientManager;
 	

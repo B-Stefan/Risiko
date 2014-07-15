@@ -28,7 +28,7 @@
 
 package server.logic.data.orders;
 
-import interfaces.data.Orders.IOrder;
+import commons.interfaces.data.Orders.IOrder;
 
 import java.rmi.RemoteException;
 import java.util.List;

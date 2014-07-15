@@ -28,10 +28,7 @@
 
 package server.logic;
 
-import interfaces.IFight;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import commons.interfaces.IFight;
 
 
 public interface IFightActionListener  {

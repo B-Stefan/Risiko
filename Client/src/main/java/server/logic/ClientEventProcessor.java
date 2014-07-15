@@ -28,9 +28,8 @@
 
 package server.logic;
 
-import interfaces.IClient;
-import interfaces.IFight;
-import ui.CUI.CountryCUI;
+import commons.interfaces.IClient;
+import commons.interfaces.IFight;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

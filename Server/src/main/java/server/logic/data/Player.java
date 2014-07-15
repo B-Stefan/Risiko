@@ -33,12 +33,12 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-import exceptions.*;
-import interfaces.IClient;
-import interfaces.data.ICountry;
-import interfaces.data.IPlayer;
-import interfaces.data.Orders.IOrder;
-import interfaces.data.cards.ICard;
+import commons.exceptions.*;
+import commons.interfaces.IClient;
+import commons.interfaces.data.ICountry;
+import commons.interfaces.data.IPlayer;
+import commons.interfaces.data.Orders.IOrder;
+import commons.interfaces.data.cards.ICard;
 import server.logic.data.cards.Card;
 
 import java.util.UUID;
@@ -61,7 +61,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
      */
     private final UUID id;
     /**
-     * Zum Spieler gehörender Client
+     * Zum Spieler gehörender client
      */
     private IClient client;
     /**
@@ -268,7 +268,7 @@ public class Player extends UnicastRemoteObject implements IPlayer{
     }
 
     /**
-     * Gibt das Client objekt des SPielers zurück, wenn eins vohanden
+     * Gibt das client objekt des SPielers zurück, wenn eins vohanden
      */
     public IClient getClient(){
         return this.client;

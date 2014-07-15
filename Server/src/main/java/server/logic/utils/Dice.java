@@ -29,7 +29,7 @@
 package server.logic.utils;
 
 
-import interfaces.data.utils.IDice;
+import commons.interfaces.data.utils.IDice;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
