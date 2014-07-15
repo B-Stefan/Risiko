@@ -267,7 +267,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
      * @param a Armee, die Überprüft werden soll
      * @return boolean -> true wenn die Armee bereits verschoben wurde, false, wenn sie nioch nicht verschoben wurde
      */
-    private boolean isArmyAlreadyMoved(IArmy a){
+    private boolean isArmyAlreadyMoved(Army a){
     	return movedArmies.contains(a);
     }
 

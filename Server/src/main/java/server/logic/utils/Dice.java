@@ -73,7 +73,7 @@ public class Dice extends UnicastRemoteObject implements IDice,Comparable<IDice>
      * @param otherDice - der andere Würfel der vergleichen werden soll
      * @return - 0 => equals; 1=> greater; -1 => smaller
      */
-
+    @SuppressWarnings("NullableProblems")
     public int compareTo(IDice otherDice){
         try {
             if(this.dicenumber == otherDice.getDiceNumber()){

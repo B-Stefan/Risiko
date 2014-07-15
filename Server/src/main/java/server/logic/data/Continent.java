@@ -121,7 +121,7 @@ public class Continent extends UnicastRemoteObject implements IContinent{
      * @param countryToDelete Land das gelöscht werden soll
      * @return
      */
-    public boolean removeCountry (ICountry countryToDelete) throws RemoteException{
+    public boolean removeCountry (Country countryToDelete) throws RemoteException{
         if(countrys.containsKey(countryToDelete.getId())){
             countrys.remove(countryToDelete);
             return  true;

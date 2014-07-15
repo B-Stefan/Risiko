@@ -84,6 +84,7 @@ public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard
 	}
 	/**
 	 * Hilfe zur Sortierung der Karte nach Alphabet
+     * 
 	 */
 	public int compareTo(ICard otherCard){
         try {

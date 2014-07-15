@@ -309,11 +309,8 @@ public class Game extends UnicastRemoteObject implements IGame {
      * @throws exceptions.PlayerNotExistInGameException
      */
     public void onPlayerDelete(final IPlayer player) throws PlayerNotExistInGameException, RemoteException{
-        try {
-            this.players.remove(player);
-        } catch (final Exception e) {
-            throw new PlayerNotExistInGameException(player);
-        }
+        Player realPlayer  = this.getPlayer(player);
+        this.players.remove(realPlayer);
     }
 
 

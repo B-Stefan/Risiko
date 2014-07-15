@@ -43,7 +43,7 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
     /**
      * Liste der ausstehenden Fights, die noch nicht an die Clients gesendet wurden
      */
-    private final List<IFight> fightsToBroadcast= new ArrayList<IFight>();
+    private final List<Fight> fightsToBroadcast= new ArrayList<Fight>();
 
     /**
      * Liste der ausstehenden Nachrichten, die noch nicht an die Clients gesendet wurden
