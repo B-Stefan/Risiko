@@ -53,7 +53,7 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
          */
         @Override
         public void actionPerformed(ActionEvent event) {
-            if(event.getActionCommand() == "onCountryClick"){
+            if(event.getActionCommand().equals("onCountryClick")){
                 ICountry from    = JCountryMoveMenu.this.getCountry();
                 ICountry to      = JCountryMoveMenu.this.getSelectedNeighborsMenuItem().getCountry();
 

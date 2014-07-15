@@ -35,6 +35,7 @@ public class ServerEngine {
     public IGameManager getGameMangerService () throws RemoteException, NotBoundException{
         final Registry registry = LocateRegistry.getRegistry(serverConf.SERVER_HOST,serverConf.PORT);
         final IGameManager gameManager = (IGameManager) registry.lookup(serverConf.SERVICE_NAME);
+
         return gameManager;
     }
 

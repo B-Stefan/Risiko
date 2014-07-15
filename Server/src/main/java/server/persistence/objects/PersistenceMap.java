@@ -45,6 +45,7 @@ import java.util.*;
  *
  * @see server.persistence.objects.PersitenceObject
  */
+@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class PersistenceMap extends PersitenceObject<Map> {
 
     public final List<String> players = new ArrayList<String>();

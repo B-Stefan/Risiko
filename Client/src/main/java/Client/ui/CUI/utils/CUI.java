@@ -159,7 +159,7 @@ public abstract class CUI {
 
     /**
      * Dient zum wechseln in den untergeordneten Kontext und führt den wechsel auch tatsächlich durch.
-     * @param context
+     * @param context In welchen context er gehen soll
      */
     protected  void goIntoChildContext(CUI context){
         this.setChild(context);
@@ -229,7 +229,7 @@ public abstract class CUI {
     /**
      * Normalisiert die Argumente, sodass nur ein String Array mit den Argumenten zurück gegeben wird
      * @param rawInput - Unformatierter Input
-     * @return
+     * @return Normalisierter Input
      */
     protected String[] normalizeArguments(final String rawInput) {
         String[] splits = this.normalizeRawInput(rawInput);
@@ -244,7 +244,6 @@ public abstract class CUI {
      * Versucht einen Befehl und die Argumente auszuführen.
      * @param command - Der Befehl
      * @param args - Die Argumente als String Array
-     * @throws Exception
      */
     protected void fireCommandEvent(final String command, final String[] args)  {
 
@@ -277,7 +276,6 @@ public abstract class CUI {
     /**
      * Versucht eine Eingabe eines Nutzers zu formatieren.
      * @param rawInput - Unformtierter Input vom User
-     * @throws Exception
      */
     protected void fireCommandEvent(String rawInput)  {
         this.fireCommandEvent(this.normalizeCommand(rawInput), this.normalizeArguments(rawInput));
@@ -286,10 +284,9 @@ public abstract class CUI {
     /**
      * Versucht eine Eingabe eines Nutzers zu formatieren.
      * @param listener - Unformtierter Input vom User
-     * @throws Exception
      */
     protected void fireCommandEvent(CommandListener listener)  {
-        listener.actionPerformed(new ActionEvent(this, new Integer(42), listener.getCommand()));
+        listener.actionPerformed(new ActionEvent(this, 42, listener.getCommand()));
     }
 
     /**
@@ -322,7 +319,7 @@ public abstract class CUI {
 
     /**
      * Gibt den Aktuellen status der CUI zurück
-     * @return
+     * @return Aktueller status der CUI
      */
     public states getCurrentState() {
         return currentState;

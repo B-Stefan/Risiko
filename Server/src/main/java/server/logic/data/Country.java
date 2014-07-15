@@ -263,7 +263,7 @@ public class Country extends UnicastRemoteObject implements ICountry {
 
     /**
      * Gibt das Land als String zurück, Name Owner und Armeestärke
-     * @return
+     * @return Klasse als String
      */
     @Override
     public String toString() {
@@ -281,7 +281,7 @@ public class Country extends UnicastRemoteObject implements ICountry {
     }
     /**
      * ToString methode, die Remote aufgerufen werden kann
-     * @return
+     * @return Klasse als String
      * @throws RemoteException
      */
     public String toStringRemote() throws RemoteException{
@@ -291,8 +291,8 @@ public class Country extends UnicastRemoteObject implements ICountry {
 
     /**
      * Überschreibt die Vergleichsmethode, Vorbereitung auf Persistence
-     * @param otherCountry
-     * @return
+     * @param otherCountry Andere Country das verglichen werden soll
+     * @return True wenn übereinstimmung
      */
     @Override
     public boolean equals(Object otherCountry) {

@@ -57,7 +57,7 @@ public class AbstractOrder extends UnicastRemoteObject{
     }
     /**
      * ToString methode, die Remote aufgerufen werden kann
-     * @return
+     * @return Gibt den Spieler zurück der Angereift
      * @throws RemoteException
      */
     public String toStringRemote() throws RemoteException{

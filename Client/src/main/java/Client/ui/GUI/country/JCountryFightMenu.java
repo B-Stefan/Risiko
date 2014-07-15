@@ -60,7 +60,7 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
          */
         @Override
         public void actionPerformed(ActionEvent event){
-            if(event.getActionCommand() == "onCountryClick"){
+            if(event.getActionCommand().equals("onCountryClick")){
                 ICountry from    =  JCountryFightMenu.this.country;
                 ICountry to      =  JCountryFightMenu.this.getSelectedNeighborsMenuItem().getCountry();
                 IFight fight;

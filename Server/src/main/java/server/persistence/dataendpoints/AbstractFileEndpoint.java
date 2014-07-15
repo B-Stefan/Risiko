@@ -66,6 +66,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
     public static void createDir (){
         if(!AbstractFileEndpoint.isDirCreated){
             File dir = new File(DEFAULT_PATH);
+            //noinspection ResultOfMethodCallIgnored
             dir.mkdirs();
             AbstractFileEndpoint.isDirCreated = true;
         }

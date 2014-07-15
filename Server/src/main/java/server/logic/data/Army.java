@@ -69,7 +69,7 @@ public class Army extends UnicastRemoteObject implements IArmy{
      * Dies erhöht die Datenintegrität
 	 * @param country Übergiebt die (neue) Position der Armee
 	 *
-     * @see Country#(Army)
+     * @see server.logic.data.Country
      */
 	public void setPosition(final Country country)  throws CountriesNotConnectedException, RemoteException{
 

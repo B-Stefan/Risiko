@@ -191,8 +191,8 @@ public class FightCUI extends CUI {
 	
 	/**
 	 * Listener werden registriert und Fight Attribut wird gesetzt
-	 * @param fight
-	 * @param parent
+	 * @param fight Kampf
+	 * @param parent Übergeorndete CUI
 	 */
 	
 	protected FightCUI(IFight fight, CUI parent,IPlayer player) {

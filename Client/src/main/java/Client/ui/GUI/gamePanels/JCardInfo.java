@@ -94,12 +94,13 @@ public class JCardInfo extends JFrame{
 		}
 		
 	}
-	/**
-	 * Konstruktor
-	 * @param player Der spielen des jeweilligen Clients
-	 * @param deck das Karten Deck
-	 * @throws RemoteException
-	 */
+
+    /**
+     *
+     * @param player Der Spieler des jeweilligen Clients
+     * @param game Spiel
+     * @throws RemoteException
+     */
 	public JCardInfo(IPlayer player, IGame game) throws RemoteException{
         super();
         this.game = game;
@@ -130,9 +131,7 @@ public class JCardInfo extends JFrame{
 		List<? extends ICard> cards = this.player.getCards();
 
         String msg = "";
-        Iterator<? extends ICard> iter = cards.iterator();
-        while (iter.hasNext()){
-            ICard currentCard = iter.next();
+        for (ICard currentCard : cards) {
             msg += String.format(currentCard.toStringRemote() + "%n");
         }
 

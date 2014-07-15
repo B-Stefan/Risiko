@@ -62,7 +62,7 @@ public class Dice extends UnicastRemoteObject implements IDice,Comparable<IDice>
 
     /**
      * Gibt die Gewürfelte Zahl aus
-     * @return
+     * @return Zahl des Würfels
      */
 	public int getDiceNumber() {
 		return dicenumber;
@@ -106,8 +106,7 @@ public class Dice extends UnicastRemoteObject implements IDice,Comparable<IDice>
     }
     
     public String toString(){
-    	String s = "" + this.dicenumber;
-    	return s;
+    	return "" + this.dicenumber;
     }
     public String toStringRemote () throws RemoteException{
         return this.toString();

@@ -179,21 +179,27 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	}
 	
 	
-	/**
-	 * Defending überschrieben für CUI
-	 * @param defendersArmies
-	 * @throws NotEnoughArmiesToAttackException
-	 * @throws InvalidAmountOfArmiesException
-	 * @throws CountriesNotConnectedException 
-	 * @throws AlreadyDicedException 
-	 * @throws ArmyAlreadyMovedException 
-	 * @throws TurnNotInCorrectStepException 
-	 * @throws TurnNotAllowedStepException 
-	 * @throws InvalidFightException
+    /**
+     * Verteidigt mit einer bestimmten Anzahl das Land
+     * @param defendersArmies Anzahl der Armeen die verwendet werden soll
+     * @param clientPlayer Spieler der die Aktion auslösen möchte
+     * @throws RemoteCountryNotFoundException
      * @throws AggessorNotThrowDiceException
-	 * @throws YouCannotDefendException 
-	 * @throws CountryNotInListException 
-	 */
+     * @throws ToManyNewArmysException
+     * @throws NotEnoughArmiesToDefendException
+     * @throws NotEnoughArmysToMoveException
+     * @throws InvalidAmountOfArmiesException
+     * @throws CountriesNotConnectedException
+     * @throws AlreadyDicedException
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
+     * @throws ArmyAlreadyMovedException
+     * @throws InvalidFightException
+     * @throws NotTheOwnerException
+     * @throws RemoteException
+     * @throws YouCannotDefendException
+     * @throws CountryNotInListException
+     */
 	public void defending(int defendersArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException, YouCannotDefendException, CountryNotInListException{
 		if(!this.to.getOwner().getColor().equals(clientPlayer.getColor())){
 			throw new YouCannotDefendException();
@@ -346,7 +352,6 @@ public class Fight extends UnicastRemoteObject implements IFight {
     /**
      * Ein Spieler versucht den Kampf zu verlassen
      *
-     * @return
      *
      * @throws java.rmi.RemoteException
      */

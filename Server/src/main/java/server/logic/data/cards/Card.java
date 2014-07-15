@@ -86,20 +86,21 @@ public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard
 	 * Hilfe zur Sortierung der Karte nach Alphabet
      *
 	 */
-	public int compareTo(ICard otherCard){
+	@SuppressWarnings("NullableProblems")
+    public int compareTo(ICard otherCard){
         try {
             if(otherCard.getType() == this.getType()){
                 return 0; //equals
-            }else if(otherCard.getType() == "Soldat"){
+            }else if(otherCard.getType().equals("Soldat")){
                 return 1;
-            }else if(otherCard.getType() == "Kanone"){
-                if(this.getType() == "Soldat" || this.getType() == "Reiter"){
+            }else if(otherCard.getType().equals("Kanone")){
+                if(this.getType().equals("Soldat") || this.getType().equals("Reiter")){
                     return -1;
                 }else{
                     return 1;
                 }
-            }else if(otherCard.getType() == "Reiter"){
-                if(this.getType() == "Soldat"){
+            }else if(otherCard.getType().equals("Reiter")){
+                if(this.getType().equals("Soldat")){
                     return -1;
                 }else{
                     return 1;
@@ -143,7 +144,7 @@ public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard
     }
     /**
      * ToString methode, die Remote aufgerufen werden kann
-     * @return
+     * @return Klasse als String
      * @throws RemoteException
      */
     public String toStringRemote() throws RemoteException{

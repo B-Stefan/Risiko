@@ -47,7 +47,8 @@ public class Client {
 
     /**
      * Öffnet einen client auf Basis einer Serverkonfiguration
-     * @param configuration
+     * @param configuration - Serverkonfiguration
+     * @see commons.configuration.ServerConfiguration
      */
     public Client(ServerConfiguration configuration){
         this.openClient(configuration);
@@ -55,7 +56,7 @@ public class Client {
 
     /**
      * Verbindet den client und öffnet die GameManagerGUI
-     * @param serverConfiguration
+     * @param serverConfiguration Serverkonfiguration
      */
     private void openClient(ServerConfiguration serverConfiguration){
 

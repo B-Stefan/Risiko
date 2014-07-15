@@ -208,11 +208,10 @@ public class Player extends UnicastRemoteObject implements IPlayer{
      * @param n Name des Landes
      * @return Das Land als ICountry
      */
-    public ICountry getCountry(String n) throws RemoteException{
+    public Country getCountry(String n) throws RemoteException{
     	for (Country c : countries){
     		if(c.getName().equals(n)){
-                ICountry iCountry = c;
-    			return iCountry;
+    			return c;
     		}
     	}
     	return null;

@@ -292,10 +292,10 @@ public class Turn extends UnicastRemoteObject implements ITurn{
                 }
 
             }else if (this.getCurrentStep() == steps.FIGHT){
-
+                //Weitere Bedingungen die für das erlauben des Fight nötig sind
 
             }else if (this.getCurrentStep() == steps.MOVE){
-
+                //Weitere Bedingungen die für das erlauben des Move nötig sind
             }
             else {
                 throw new TurnNotInCorrectStepException(stepToCheck,this);

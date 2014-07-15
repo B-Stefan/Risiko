@@ -166,7 +166,7 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
 
     /**
      * fügt der Liste der ausstehenden Update ein Update hinzu
-     * @param type
+     * @param type Beschreibt einen bestimmten bereich,der geupdatet werden soll
      */
     public synchronized void broadcastUIUpdate(IClient.UIUpdateTypes type) {
         if(!updatesUIToBroadcast.contains(type) && !updatesUIToBroadcast.contains(IClient.UIUpdateTypes.ALL)){
@@ -181,7 +181,7 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
 
     /**
      * Fügt der Liste der ausstehenden Fights den Fight hinzu
-     * @param fight
+     * @param fight Fight der an die Clients gegeben werden soll
      */
     public synchronized void broadcastFight(Fight fight) {
         if(!updatesUIToBroadcast.contains(fight)){
@@ -192,7 +192,7 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
 
     /**
      * Fügt der Liste der ausstehenden Nachrichten den String hinzu
-     * @param msg
+     * @param msg MSg die an die Clients gegeben werden soll
      */
     public synchronized void broadcastMessage(String msg) {
             messagesToBroadcast.add(msg);
