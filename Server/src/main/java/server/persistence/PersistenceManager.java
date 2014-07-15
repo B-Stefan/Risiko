@@ -76,9 +76,8 @@ public class PersistenceManager {
         else if (type == Map.class){
             return new SerializableFileEndpoint<Map>(Map.class,PersistenceMap.class, this);
         }
-        throw new ClassNotPreparedException("Für die Klasse " + type + " konnte keine Speicherklasse gefudnen werden ");
+        throw new RuntimeException(new ClassNotFoundException("Für die Klasse " + type + " konnte keine Speicherklasse gefudnen werden "));
     }
-
     /**
      * Erstellt bzw. nimmt den gechachten Handler für die angebene Klasse
      * @param type Logik-Klasse
