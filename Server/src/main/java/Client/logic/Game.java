@@ -26,7 +26,7 @@
  *     https://github.com/B-Stefan/Risiko
  *
  */
-package server.logic;
+package Client.logic;
 import java.lang.Thread;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -39,11 +39,11 @@ import commons.interfaces.data.IPlayer;
 import commons.interfaces.data.Orders.IOrder;
 import commons.interfaces.data.cards.ICardDeck;
 import server.ClientManager;
-import server.logic.data.*;
-import server.logic.data.Map;
+import Client.logic.data.*;
+import Client.logic.data.Map;
 import commons.exceptions.*;
-import server.logic.data.cards.CardDeck;
-import server.logic.data.orders.OrderManager;
+import Client.logic.data.cards.CardDeck;
+import Client.logic.data.orders.OrderManager;
 import server.persistence.dataendpoints.PersistenceEndpoint;
 
 /**

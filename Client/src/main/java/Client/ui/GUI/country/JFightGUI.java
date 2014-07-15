@@ -34,8 +34,8 @@ import commons.configuration.FightConfiguration;
 import commons.exceptions.*;
 import commons.interfaces.IFight;
 import commons.interfaces.data.IPlayer;
-import server.logic.ClientEventProcessor;
-import server.logic.IFightActionListener;
+import Client.logic.ClientEventProcessor;
+import Client.logic.IFightActionListener;
 import Client.ui.GUI.utils.JExceptionDialog;
 import Client.ui.GUI.utils.JModalDialog;
 

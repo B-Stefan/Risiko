@@ -28,8 +28,8 @@
 
 package server.persistence.objects;
 import commons.exceptions.PersistenceEndpointIOException;
-import server.logic.data.Country;
-import server.logic.data.Map;
+import Client.logic.data.Country;
+import Client.logic.data.Map;
 import server.persistence.PersistenceManager;
 
 import java.rmi.RemoteException;

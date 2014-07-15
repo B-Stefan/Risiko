@@ -31,7 +31,7 @@ import commons.interfaces.IFight;
 import commons.interfaces.ITurn;
 import commons.interfaces.data.ICountry;
 import commons.interfaces.data.IPlayer;
-import server.logic.ClientEventProcessor;
+import Client.logic.ClientEventProcessor;
 import Client.ui.GUI.utils.JExceptionDialog;
 import Client.ui.GUI.utils.JModalDialog;
 import commons.exceptions.*;

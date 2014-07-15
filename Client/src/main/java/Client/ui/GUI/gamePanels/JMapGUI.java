@@ -38,7 +38,7 @@ import commons.interfaces.ITurn;
 import commons.interfaces.data.ICountry;
 import commons.interfaces.data.IMap;
 import commons.interfaces.data.IPlayer;
-import server.logic.ClientEventProcessor;
+import Client.logic.ClientEventProcessor;
 import Client.ui.GUI.country.JCountryInfo;
 import Client.ui.GUI.country.JCountryPopupMenu;
 import Client.ui.GUI.utils.JExceptionDialog;

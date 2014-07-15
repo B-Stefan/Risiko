@@ -54,17 +54,17 @@
  *
  */
 
-package server.logic;
+package Client.logic;
 import commons.interfaces.IClient;
 import commons.interfaces.IFight;
 import commons.interfaces.ITurn;
 import commons.interfaces.data.ICountry;
 import commons.interfaces.data.IPlayer;
 import server.ClientManager;
-import server.logic.data.*;
+import Client.logic.data.*;
 import commons.exceptions.*;
-import server.logic.data.Map;
-import server.logic.data.cards.CardDeck;
+import Client.logic.data.Map;
+import Client.logic.data.cards.CardDeck;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -134,7 +134,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
     /**
      * Bildet die aktuelle Stufe des Zuges ab.
      * Diese Varriable kann nie den Wert null haben
-     * @see #(Player, server.logic.data.Map, java.util.Queue)
+     * @see #(Player, Client.logic.data.Map, java.util.Queue)
      */
     private steps currentStep;
     /**
@@ -330,7 +330,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
     }
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
-     * @see server.logic.Turn.steps
+     * @see Client.logic.Turn.steps
      * @see Turn#getDefaultSteps()
      * @param position - Das Land auf welches die neue Armee plaziert werden soll
      * @param numberOfArmies - Wieviele Einheiten auf diesem Land plaziert werden sollen.
@@ -351,7 +351,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
     }
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
-     * @see server.logic.Turn.steps
+     * @see Client.logic.Turn.steps
      * @see Turn#getDefaultSteps()
      * @param positionFromClient - Das Land auf welches die neue Armee plaziert werden soll
      * @throws TurnNotAllowedStepException

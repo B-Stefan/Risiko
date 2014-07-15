@@ -26,7 +26,7 @@
  *
  */
 
-package server.logic;
+package Client.logic;
 
 import commons.interfaces.IClient;
 import commons.interfaces.IFight;

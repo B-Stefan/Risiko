@@ -28,7 +28,7 @@
  *
  */
 
-package server.logic.data.cards;
+package Client.logic.data.cards;
 
 import commons.exceptions.PlayerNotExistInGameException;
 import commons.exceptions.RemoteExceptionPlayerNotFound;
@@ -39,9 +39,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-import server.logic.Game;
-import server.logic.data.Country;
-import server.logic.data.Player;
+import Client.logic.Game;
+import Client.logic.data.Country;
+import Client.logic.data.Player;
 import commons.exceptions.NotEnoughCardsToExchangeException;
 
 public class CardDeck extends UnicastRemoteObject implements ICardDeck {

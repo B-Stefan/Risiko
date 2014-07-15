@@ -33,7 +33,7 @@ package Client.ui.GUI.menu;
 import commons.exceptions.PersistenceEndpointIOException;
 import commons.interfaces.IGame;
 import commons.interfaces.IGameManager;
-import server.logic.ClientEventProcessor;
+import Client.logic.ClientEventProcessor;
 import Client.ui.GUI.JGameManagerGUI;
 import Client.ui.GUI.utils.JExceptionDialog;
 

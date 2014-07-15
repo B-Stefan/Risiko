@@ -26,7 +26,7 @@
  *
  */
 
-package server.logic.utils;
+package Client.logic.utils;
 
 
 import commons.interfaces.data.utils.IDice;

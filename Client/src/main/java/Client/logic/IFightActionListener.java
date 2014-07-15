@@ -26,42 +26,17 @@
  *
  */
 
-package server.logic.data.orders;
+package Client.logic;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-
-import server.logic.data.Player;
+import commons.interfaces.IFight;
 
 
-public class AbstractOrder extends UnicastRemoteObject{
+public interface IFightActionListener  {
 
     /**
-     * Der Spieler, dem die Order zugewiesen ist
+     * Invoked when an action occurs.
+     *
+     * @param fight
      */
-    protected final Player agent;
-
-
-
-    protected AbstractOrder(final Player agent) throws RemoteException{
-        this.agent = agent;
-    }
-
-    /**
-     * Getter für den Agent
-     * @return Player
-     */
-
-    public Player getAgent() {
-        return this.agent;
-    }
-    /**
-     * ToString methode, die Remote aufgerufen werden kann
-     * @return
-     * @throws RemoteException
-     */
-    public String toStringRemote() throws RemoteException{
-
-        return this.toString();
-    }
+    void actionPerformed(IFight fight);
 }

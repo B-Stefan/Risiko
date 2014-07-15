@@ -26,14 +26,14 @@
  *
  */
 
-package server.logic;
+package Client.logic;
 import commons.interfaces.IClient;
 import commons.interfaces.IRound;
 import commons.interfaces.data.IPlayer;
 import server.ClientManager;
-import server.logic.data.*;
-import server.logic.data.Map;
-import server.logic.data.cards.CardDeck;
+import Client.logic.data.*;
+import Client.logic.data.Map;
+import Client.logic.data.cards.CardDeck;
 import commons.exceptions.NotYourTurnException;
 import commons.exceptions.RoundCompleteException;
 import commons.exceptions.ToManyNewArmysException;

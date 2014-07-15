@@ -26,13 +26,13 @@
  *
  */
 
-package server.logic.data.orders;
+package Client.logic.data.orders;
 
 import java.rmi.RemoteException;
 
 import commons.interfaces.data.Orders.IOrder;
-import server.logic.data.Country;
-import server.logic.data.Player;
+import Client.logic.data.Country;
+import Client.logic.data.Player;
 
 public class OrderTakeOverCountries extends AbstractOrder implements IOrder {
 

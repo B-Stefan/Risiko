@@ -32,7 +32,7 @@ import commons.exceptions.*;
 import commons.interfaces.IGame;
 import commons.interfaces.IGameManager;
 import commons.interfaces.data.IPlayer;
-import server.logic.ClientEventProcessor;
+import Client.logic.ClientEventProcessor;
 import Client.ui.CUI.GameCUI;
 import Client.ui.GUI.menu.JGameLoadRunningGameMenu;
 import Client.ui.GUI.menu.JGameLoadSavedGameMenu;

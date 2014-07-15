@@ -33,7 +33,7 @@ import commons.interfaces.IClient;
 import commons.interfaces.IGame;
 import commons.interfaces.IRound;
 import commons.interfaces.data.IPlayer;
-import server.logic.ClientEventProcessor;
+import Client.logic.ClientEventProcessor;
 import Client.ui.CUI.utils.CUI;
 import Client.ui.CUI.utils.CommandListener;
 import Client.ui.CUI.utils.CommandListenerArgument;
