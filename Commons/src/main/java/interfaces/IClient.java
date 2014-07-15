@@ -44,6 +44,7 @@ public interface IClient extends Remote,Serializable{
         PLAYER,
         COUNtRY,
         FIGHT,
+        FIGHT_CLOSE,
         ALL
     }
 
@@ -73,4 +74,10 @@ public interface IClient extends Remote,Serializable{
      * @throws RemoteException
      */
     public void receiveUIUpdateEvent() throws RemoteException;
+
+    /**
+     * Wird ausgeläst wenn der Fight geschlossen werden soll
+     * @param fight - Fight der geschlossen werden soll
+     */
+    public void receiveFightCloseEvent(IFight fight) throws RemoteException;
 }

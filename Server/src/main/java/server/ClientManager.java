@@ -45,6 +45,12 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
      */
     private final List<Fight> fightsToBroadcast= new ArrayList<Fight>();
 
+
+    /**
+     * Liste der ausstehenden Fights, die geschlossen werden sollen und noch nicht gesendet wurden
+     */
+    private final List<Fight> fightsToCloseToBroadcast= new ArrayList<Fight>();
+
     /**
      * Liste der ausstehenden Nachrichten, die noch nicht an die Clients gesendet wurden
      *
@@ -136,6 +142,28 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
     }
 
 
+
+    /**
+     * Meldet alle UI updates an alle Clients
+     */
+    private synchronized void broadcastFightsToCloseToClients() {
+        if(this.fightsToCloseToBroadcast.isEmpty()){
+            return;
+        }
+        for(IFight fight : this.fightsToCloseToBroadcast){
+            for(IClient client : this.clients){
+                try{
+
+                    client.receiveFightCloseEvent(fight);
+                }catch (RemoteException e){
+                    this.clients.remove(client);
+                }
+            }
+        }
+
+        this.fightsToCloseToBroadcast.clear();
+    }
+
     /**
      * fügt der Liste der ausstehenden Update ein Update hinzu
      * @param type
@@ -149,6 +177,8 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
         }
     }
 
+
+
     /**
      * Fügt der Liste der ausstehenden Fights den Fight hinzu
      * @param fight
@@ -159,12 +189,22 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
         }
     }
 
+
     /**
      * Fügt der Liste der ausstehenden Nachrichten den String hinzu
      * @param msg
      */
     public synchronized void broadcastMessage(String msg) {
             messagesToBroadcast.add(msg);
+
+    }
+
+    /**
+     * Fügt der Liste der ausstehenden Nachrichten den String hinzu
+     * @param fight
+     */
+    public synchronized void broadcastFightToClose(Fight fight) {
+        fightsToCloseToBroadcast.add(fight);
 
     }
 
@@ -188,6 +228,7 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
                 }
                 this.broadcastMessageToClients();
                 this.broadcastUIUpdateToClients();
+                this.broadcastFightsToCloseToClients();
             }
             try{
                     Thread.sleep(1000);

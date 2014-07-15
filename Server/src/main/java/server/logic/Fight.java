@@ -292,6 +292,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
             throw new FightMoveMinimumOneArmy();
         }
         this.currentTurn.moveArmyForTakeover(this.from, this.to, number);
+        this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.ALL);
 
     }
 	/**
@@ -343,15 +344,22 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	}
 
     /**
-     * Pürft, ob der Kampf in diesem Status abgebrochen werden darf
+     * Ein Spieler versucht den Kampf zu verlassen
      *
      * @return
      *
      * @throws java.rmi.RemoteException
      */
-    @Override
-    public boolean isValidToClose() throws RemoteException {
-        return false;
+    public void leafFight(IPlayer player) throws RemoteException,AlreadyDicedException,CanNotCloseFightException {
+        if(this.agressor.equals(player)){
+            if(!this.agressorsDice.empty()){
+                throw new AlreadyDicedException();
+            }
+        }
+        else {
+            throw new CanNotCloseFightException(true);
+        }
+        this.clientManager.broadcastFightToClose(this);
     }
 
     /**

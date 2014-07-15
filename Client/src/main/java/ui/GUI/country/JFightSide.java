@@ -85,7 +85,7 @@ public class JFightSide extends Panel {
 
 
             int max = FightConfiguration.DEFENDER_MAX_NUMBER_OF_ARMIES_TO_DEFEND; // Attacker
-            if (JFightSide.this.side == sides.DEFENDER) {
+            if (JFightSide.this.side == sides.AGGRESSOR) {
                 max = FightConfiguration.AGGRESSOR_MAX_NUMBER_OF_ARMIES_TO_ATTACK;
             }
             if (numberOfArmies < FightConfiguration.NUMBER_OF_ARMIES_EXCLUDE_FROM_FIGHT || numberOfArmies > max) {
@@ -176,7 +176,7 @@ public class JFightSide extends Panel {
         }else {
             //If Aggressor
             if(numberOfArmiesOnCountry >= FightConfiguration.DEFENDER_MAX_NUMBER_OF_ARMIES_TO_DEFEND){
-                return FightConfiguration.DEFENDER_MAX_NUMBER_OF_ARMIES_TO_DEFEND;
+                return FightConfiguration.AGGRESSOR_MAX_NUMBER_OF_ARMIES_TO_ATTACK;
             }
             return 1;
         }

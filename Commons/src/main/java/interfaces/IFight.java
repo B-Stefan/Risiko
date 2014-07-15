@@ -135,10 +135,13 @@ public interface IFight extends Remote, Serializable,IToStringRemote {
 
 
     /**
-     * Pürft, ob der Kampf in diesem Status abgebrochen werden darf
+     * Wird vom Client aufgerufen, wenn er den Kampf verlässt
+     * @param player - Speiler den den Kmapf verlaasen möchte
      * @return
      * @throws RemoteException
+     * @throws AlreadyDicedException
+     * @throws CanNotCloseFightException
      */
-    public boolean isValidToClose() throws RemoteException;
+    public void leafFight(IPlayer player) throws RemoteException, AlreadyDicedException,CanNotCloseFightException;
 
 }

@@ -30,6 +30,7 @@ package server.logic;
 
 import interfaces.IClient;
 import interfaces.IFight;
+import ui.CUI.CountryCUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,6 +54,11 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
     private final List<IFightActionListener> fightUiListeners = new Vector<IFightActionListener>();
 
     /**
+     * Listeners für Fight events
+     */
+    private final List<IFightActionListener> fightCloseListeners = new Vector<IFightActionListener>();
+
+    /**
      * Listner für allgemeine Broadcast msg
      */
     private final List<ActionListener> messageListeners = new Vector<ActionListener>();
@@ -73,6 +79,24 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
     public void addUpdateUIListener(ActionListener e){
         this.updateUiListeners.add(e);
     }
+
+    /**
+     * Füg einen neuen Listener hinzu, der sobald ausgefürt wird wenn der Server meint das UI muss ein Update erfahren
+     * @param e
+     */
+    public void addFightCloseListener(IFightActionListener e){
+        this.fightCloseListeners.add(e);
+    }
+
+
+    /**
+     * Enfternt einen neuen Listener hinzu, der sobald ausgefürt wird wenn der Server meint das UI muss ein Update erfahren
+     * @param e
+     */
+    public void removeFightCloseListener(IFightActionListener e){
+        this.fightCloseListeners.remove(e);
+    }
+
 
     /**
      * Löscht einen UI Listener
@@ -168,16 +192,34 @@ public class ClientEventProcessor extends UnicastRemoteObject implements IClient
      */
     public void receiveUIUpdateEvent() throws RemoteException{
         for(final ActionListener e : this.updateUiListeners){
-            Thread t = new Thread(new Runnable() {
+            Runnable r = new Runnable() {
                 public void run()
                 {
                     e.actionPerformed(new ActionEvent("Server",99999,"Update the UI"));
                 }
-            });
+            };
+            Thread t = new Thread(r);
             t.start();
 
         }
     }
 
+    /**
+     * Wird ausglöst, wenn der Fihgt geschlossen werden soll
+     * @param fight - Fight der geschlossen werden soll
+     */
+    public void receiveFightCloseEvent(final IFight fight){
+        for(final IFightActionListener e : this.fightCloseListeners){
+            Runnable r = new Runnable() {
+                public void run()
+                {
+                    e.actionPerformed(fight);
+                }
+            };
+            Thread t = new Thread(r);
+            t.start();
+
+        }
+    }
 
 }

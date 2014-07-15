@@ -36,7 +36,6 @@ import interfaces.IFight;
 import interfaces.data.IPlayer;
 import server.logic.ClientEventProcessor;
 import server.logic.IFightActionListener;
-import ui.CUI.FightCUI;
 import ui.GUI.utils.JExceptionDialog;
 import ui.GUI.utils.JModalDialog;
 
@@ -56,8 +55,24 @@ public class JFightGUI extends JModalDialog {
     private final JFightSide defenderSide;
     private final ClientEventProcessor remoteEventsProcessor;
     private final ActionListener fightUpdateUIListener;
+    private final IFightActionListener fightCloseFromRemoteListener;
 	private final IPlayer clientPlayer;
 
+
+    /**
+     * Wird aufgerufen wennd er Fight vom Server aus geschlossen werden soll
+     */
+    private class CloseFightFromRemoteListener implements IFightActionListener{
+
+
+        @Override
+        public void actionPerformed(IFight fight) {
+            JFightGUI.this.dispose();
+        }
+    }
+    /**
+     * Wenn ein neues Update vom Server kommt
+     */
     private class UpdateUIFightListener  implements ActionListener{
 
 
@@ -81,30 +96,13 @@ public class JFightGUI extends JModalDialog {
         }
 
     }
+
+    /**
+     * Listener für das Schließen über den Btn oder das X
+     */
     private class CloseBtnListener extends WindowAdapter implements ActionListener {
 
 
-        /**
-         * Prüft ob der Kampf geschlossen werden kann
-         * @return
-         */
-        private boolean isValidToClose(){
-            boolean isValid;
-            try{
-                isValid = JFightGUI.this.fight.isValidToClose();
-            }catch (RemoteException e){
-                new JExceptionDialog(JFightGUI.this,e);
-                return false;
-            }
-            return isValid;
-        }
-
-        /**
-         * Zeigt eine Nachricht an wenn
-         */
-        private void showNotValidToCloseMessage(){
-            JModalDialog.showInfoDialog(JFightGUI.this,"Info", "Der Fight ist noch nicht abgeschlossen");
-        }
 
         /**
          * Invoked when an action occurs.
@@ -113,11 +111,9 @@ public class JFightGUI extends JModalDialog {
          */
         @Override
         public void actionPerformed(ActionEvent event) {
-            if(this.isValidToClose()) {
+            if(JFightGUI.this.leafFight()){
                 JFightGUI.this.remoteEventsProcessor.removeUpdateUIListener(JFightGUI.this.fightUpdateUIListener);
                 JFightGUI.this.dispose();
-            }else {
-                this.showNotValidToCloseMessage();
             }
         }
         /**
@@ -127,16 +123,74 @@ public class JFightGUI extends JModalDialog {
          */
         @Override
         public void windowClosing(WindowEvent e) {
-
-            if(this.isValidToClose()){
+            if(JFightGUI.this.leafFight()) {
                 JFightGUI.this.remoteEventsProcessor.removeUpdateUIListener(JFightGUI.this.fightUpdateUIListener);
                 super.windowClosing(e);
             }
-            else {
-                this.showNotValidToCloseMessage();
-            }
+
         }
     }
+    public JFightGUI(final Component parent, final IFight fight, final ClientEventProcessor remoteEventsProcessor, IPlayer clientPlayer) throws RemoteException {
+        super(parent,"Fight",ModalityType.APPLICATION_MODAL);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new CloseBtnListener());
+        this.fight = fight;
+        this.clientPlayer = clientPlayer;
+        this.setLayout(new BorderLayout(5,5));
+        this.aggressorSide  = new JFightSide(this.fight, JFightSide.sides.AGGRESSOR, this.clientPlayer);
+        this.defenderSide  = new JFightSide(this.fight, JFightSide.sides.DEFENDER, this.clientPlayer);
+        this.remoteEventsProcessor = remoteEventsProcessor;
+        this.fightUpdateUIListener = new UpdateUIFightListener();
+        this.fightCloseFromRemoteListener = new CloseFightFromRemoteListener();
+        this.remoteEventsProcessor.addUpdateUIListener(fightUpdateUIListener);
+        this.remoteEventsProcessor.addFightCloseListener(this.fightCloseFromRemoteListener);
+
+        JPanel centerPanel = new JPanel();
+
+        centerPanel.add(this.aggressorSide);
+        centerPanel.add(this.defenderSide);
+
+        centerPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        this.add(centerPanel,BorderLayout.CENTER);
+
+        //Close btn
+        JButton closeBtn = new JButton("Kampf verlassen");
+        closeBtn.addActionListener(new CloseBtnListener());
+        this.add(closeBtn,BorderLayout.SOUTH);
+
+    }
+    public void update() throws RemoteException{
+        this.aggressorSide.update();
+        this.defenderSide.update();
+    }
+
+
+    /**
+     * Prüft ob der Kampf geschlossen werden kann
+     * @return
+     */
+    private boolean leafFight(){
+        boolean isClose = true;
+        try{
+            JFightGUI.this.fight.leafFight(JFightGUI.this.clientPlayer);
+        }catch (RemoteException | CanNotCloseFightException | AlreadyDicedException e){
+            new JExceptionDialog(JFightGUI.this,e);
+            isClose = false;
+        }
+        return isClose;
+
+    }
+
+    /**
+     * Override the dispose method
+     */
+    @Override
+    public void dispose(){
+        this.remoteEventsProcessor.removeUpdateUIListener(this.fightUpdateUIListener);
+        this.remoteEventsProcessor.removeFightCloseListener(this.fightCloseFromRemoteListener);
+        super.dispose();
+    }
+
     public void showResult(){
         int[] result;
         try {
@@ -205,46 +259,6 @@ public class JFightGUI extends JModalDialog {
             JModalDialog.showInfoDialog(JFightGUI.this, "Erfolgreich verteidigt", str);
         }
 
-    }
-    public JFightGUI(final Component parent, final IFight fight, final ClientEventProcessor remoteEventsProcessor, IPlayer clientPlayer) throws RemoteException {
-        super(parent,"Fight",ModalityType.APPLICATION_MODAL);
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(new CloseBtnListener());
-        this.fight = fight;
-        this.clientPlayer = clientPlayer;
-        this.setLayout(new BorderLayout(5,5));
-        this.aggressorSide  = new JFightSide(this.fight, JFightSide.sides.AGGRESSOR, this.clientPlayer);
-        this.defenderSide  = new JFightSide(this.fight, JFightSide.sides.DEFENDER, this.clientPlayer);
-        this.remoteEventsProcessor = remoteEventsProcessor;
-        this.fightUpdateUIListener = new UpdateUIFightListener();
-        this.remoteEventsProcessor.addUpdateUIListener(fightUpdateUIListener);
-
-        JPanel centerPanel = new JPanel();
-
-        centerPanel.add(this.aggressorSide);
-        centerPanel.add(this.defenderSide);
-
-        centerPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        this.add(centerPanel,BorderLayout.CENTER);
-
-        //Close btn
-        JButton closeBtn = new JButton("Kampf verlassen");
-        closeBtn.addActionListener(new CloseBtnListener());
-        this.add(closeBtn,BorderLayout.SOUTH);
-
-    }
-    public void update() throws RemoteException{
-        this.aggressorSide.update();
-        this.defenderSide.update();
-    }
-
-    /**
-     * Override the dispose method
-     */
-    @Override
-    public void dispose(){
-        this.remoteEventsProcessor.removeUpdateUIListener(this.fightUpdateUIListener);
-        super.dispose();
     }
 
 }
