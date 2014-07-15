@@ -44,6 +44,9 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 
+/**
+ * Klasse die zur Anzeige der gespeicherten Speile dient
+ */
 public class JGameLoadSavedGameMenu extends JMenu{
 
 

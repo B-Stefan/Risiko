@@ -41,14 +41,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
+
 /**
- * Created by Stefan on 11.06.14.
+ * Repräsentiert einen Eintrag in dem Menü zum Bewegen einer einheit
+ * Beim Klick wird auf dem Server ein entsprechender Move ausgeführt
+ * @see Client.ui.GUI.country.JCountryPopupMenu
  */
 public class JCountryPlaceMenuItem extends JMenuItem {
+    /**
+     * Spieler der Aktionen ausführen möchte
+     */
 	private final IPlayer clientPlayer;
+
+    /**
+     * Land auf dem Armeen plaziert werden sollen
+     */
     private final ICountry country;
+    /**
+     * Server Objekt zum ausführen der Aktionen
+     */
     private final ITurn turn;
 
+    /**
+     * Wenn auf den Eintrag geklickt wurde
+     */
     public class MoveClickListener implements ActionListener {
         /**
          * Invoked when an action occurs.
@@ -95,6 +111,13 @@ public class JCountryPlaceMenuItem extends JMenuItem {
 
         }
     }
+
+    /**
+     * Dient zum plazieren eines Eintrags
+     * @param country Land auf dem Plaziert werden soll
+     * @param turn Server-Objekt zum ausführen der Aktionen
+     * @param clientPlayer Spieler der die Aktion ausführen möchte
+     */
     public JCountryPlaceMenuItem(ICountry country, ITurn turn, IPlayer clientPlayer){
         super("Place");
         this.country = country;
@@ -102,6 +125,11 @@ public class JCountryPlaceMenuItem extends JMenuItem {
         this.turn = turn;
         this.addActionListener(new MoveClickListener());
     }
+
+    /**
+     * Gibt das Land zurück,
+     * @return Land
+     */
     public ICountry getCountry(){
         return country;
     }

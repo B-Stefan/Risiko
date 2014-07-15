@@ -38,6 +38,9 @@ import commons.interfaces.data.IPlayer;
 
 import java.rmi.RemoteException;
 
+/**
+ * Zeigt die aktuelle Aufgabe des Spielers an
+ */
 public class JOrderInfoGUI extends JTextArea {
 	/**
 	 * Das aktuelle Spiel

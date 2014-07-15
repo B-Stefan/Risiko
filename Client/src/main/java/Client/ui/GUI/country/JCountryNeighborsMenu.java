@@ -36,12 +36,26 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
 /**
- * Created by Stefan on 09.06.14.
+ *  Diese Klasse dient zur Anzeige von Nachbarn eines Landes in einem JMenue
+ *  Dieser wird für das Popup-Menü bei einem Klick aufs Land gebraucht.
+ *  Hierbei wird die Klasse für den Move und den Fight benötigt
+ *  @see Client.ui.GUI.country.JCountryMoveMenu
+ *  @see Client.ui.GUI.country.JCountryFightMenu
  */
 public abstract class JCountryNeighborsMenu extends JMenu {
 
+    /**
+     * Land von dem die Nachbarn angezigt werden sollen
+     */
     private final ICountry country;
+    /**
+     * Wird gesetzt, wenn auf einen Eintrag geklickt wird
+     */
     private JCountryNeighborsMenuItem selectedNeighborsMenuItem = null;
+
+    /**
+     * Wird ausgelöst, wenn auf einen Eintrag geklcikt wird
+     */
     private class NeighborsActionListener implements ActionListener {
         /**
          * Invoked when an action occurs.
@@ -58,12 +72,12 @@ public abstract class JCountryNeighborsMenu extends JMenu {
         }
     }
 
-    public JCountryNeighborsMenuItem getSelectedNeighborsMenuItem(){
-        return this.selectedNeighborsMenuItem;
-    }
-    public void setSelectedNeighborsMenuItem(JCountryNeighborsMenuItem item){
-        this.selectedNeighborsMenuItem = item;
-    }
+    /**
+     * Dient zur Anzeige der Nachbarn eines Landes
+     * @param title Angezeigter titel für den Menüeintrag
+     * @param country Land von dem die Nachbarn angezeigt werden sollen
+     * @throws RemoteException
+     */
     public JCountryNeighborsMenu(final String title, final ICountry country) throws RemoteException{
         super(title);
         this.country = country;
@@ -73,7 +87,27 @@ public abstract class JCountryNeighborsMenu extends JMenu {
             this.add(item);
         }
     }
+    /**
+     * Gibt das Ausgewählte Land zurück
+     * @return Land das ausgewählt wurde, wenn keins dann == null
+     */
+    public JCountryNeighborsMenuItem getSelectedNeighborsMenuItem(){
+        return this.selectedNeighborsMenuItem;
+    }
 
+    /**
+     * Setzt das ausgewählte Item
+     * @param item Land das gesetzt werden soll
+     */
+    public void setSelectedNeighborsMenuItem(JCountryNeighborsMenuItem item){
+        this.selectedNeighborsMenuItem = item;
+    }
+
+
+    /**
+     * Gibt das Land zurück, von dem die Länder angezegit werden sollen
+     * @return Land von dem die Nachbarn angezeigt werden sollen
+     */
     public ICountry getCountry(){
         return this.country;
     }

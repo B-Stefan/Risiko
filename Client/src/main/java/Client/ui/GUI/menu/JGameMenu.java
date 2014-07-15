@@ -41,11 +41,18 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
 /**
- * Created by Stefan on 25.06.14.
+ * Meü eines Spiels
+ * Dient zum speichern des Spiels
  */
 public class JGameMenu extends JMenu{
 
+    /**
+     * Spiel für den Eintrag (Server-Objetk)
+     */
     private final IGame game;
+    /**
+     * Menüeintrag
+     */
     private final JMenuItem saveMenuItem;
 
     private class SaveGameListener implements ActionListener {
@@ -69,6 +76,11 @@ public class JGameMenu extends JMenu{
             }
         }
     }
+
+    /**
+     * Dient zum Speichern des Spiels
+     * @param game Server-Objekt
+     */
     public JGameMenu(IGame game){
         super("Spiel");
         this.game = game;

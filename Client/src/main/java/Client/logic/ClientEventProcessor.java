@@ -38,7 +38,13 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Vector;
 
-
+/**
+ * Diese Klasse dient der verwaltung von Server Events
+ *
+ * Dabei erreichen die Server-Broadcast-Events diese Klasse.
+ * Diese löst wiederum entsprechende Event-Handler aus.
+ *
+ */
 public class ClientEventProcessor extends UnicastRemoteObject implements IClient {
 
     /**

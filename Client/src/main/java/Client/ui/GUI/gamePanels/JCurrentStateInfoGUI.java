@@ -45,6 +45,9 @@ import commons.exceptions.*;
 import Client.ui.GUI.JGameGUI;
 import Client.ui.GUI.utils.JExceptionDialog;
 
+/**
+ * Bereich für aktuelle Meldungen des Spiels
+ */
 public class JCurrentStateInfoGUI extends JPanel {
 	/**
 	 * Aktuelles Spiel

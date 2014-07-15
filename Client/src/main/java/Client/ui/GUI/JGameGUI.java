@@ -46,16 +46,47 @@ import Client.ui.GUI.gamePanels.*;
 import Client.ui.GUI.menu.JGameMenu;
 import Client.ui.GUI.utils.JExceptionDialog;
 
+/**
+ * Hauptfenster für GUI
+ */
 public class JGameGUI extends JFrame {
+    /**
+     * Server-Objekt
+     */
 	private final IGame game;
-	private final JButton update;
+
+    /**
+     * Spieler der den Client bedient
+     */
 	private final IPlayer player;
+    /**
+     * GUI Karten Objekt
+     */
 	private final JMapGUI map;
+    /**
+     * Menübar zum speichern
+     */
     private final JMenuBar menuBar;
+    /**
+     * Liste der Spieler
+     */
     private final JPLayerInfoGUI playersInfo;
+
+    /**
+     * Anzeige des Auftrags
+     */
     private final JOrderInfoGUI orderInfo;
+    /**
+     * Aktueller Spielstatus
+     */
     private final JCurrentStateInfoGUI currentStateInfoGUI;
+    /**
+     * Länderkarten des Spielers
+     */
     private final JCardInfo cardInfo;
+    /**
+     * Ankommende Events für dieses Spiel
+     */
     private final ClientEventProcessor remoteEventProcessor;
 
     /**
@@ -104,12 +135,18 @@ public class JGameGUI extends JFrame {
     }
 
 
+    /**
+     * GUI für ein gesamtes spiel
+     * @param game Spiel (Server-Objekt)
+     * @param player Spieler der vor dem Client sietzt (Server-Objekt)
+     * @param remoteEventProcessor für ankommende Events wird dieses Objejt benötigt
+     * @throws RemoteException
+     */
     public JGameGUI(IGame game, IPlayer player, ClientEventProcessor remoteEventProcessor) throws RemoteException{
 		super("Risiko - " + player.getName());
 		this.game = game;
 		this.player = player;
 		this.map = new JMapGUI(game,remoteEventProcessor, player);
-        this.update = new JButton("Update");
         this.menuBar = new JMenuBar();
         this.playersInfo = new JPLayerInfoGUI(this.game);
         this.orderInfo = new JOrderInfoGUI(this.game, this.player);
@@ -127,7 +164,10 @@ public class JGameGUI extends JFrame {
 
 		initialize();
 	}
-	
+
+    /**
+     * Zeigt das Fenster an
+     */
 	private void initialize() {
         // Klick auf Kreuz (Fenster schließen) behandeln lassen:
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -144,7 +184,11 @@ public class JGameGUI extends JFrame {
         this.setVisible(true);
 		
 	}
-	
+
+    /**
+     * Setzt süd Panel
+     * @return Süd-Panel
+     */
 	private JPanel setSouthPanel() {
 		JPanel south = new JPanel();
         south.setLayout(new GridLayout(1, 4, 10, 0));
@@ -159,6 +203,11 @@ public class JGameGUI extends JFrame {
         return south;
 	}
 
+    /**
+     * Aktualisiert die Gesamte GUI
+     * @throws RemoteException
+     * @throws GameNotStartedException
+     */
     public void update () throws RemoteException, GameNotStartedException{
         playersInfo.update();
         orderInfo.update();
@@ -166,10 +215,11 @@ public class JGameGUI extends JFrame {
         cardInfo.update();
         map.repaint();
     }
-    public IPlayer getPlayer(){
-        return this.player;
-    }
 
+    /**
+     * Gibt das Spiel zurück
+     * @return Spiel
+     */
     public IGame getGame(){
         return this.game;
     }

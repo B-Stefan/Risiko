@@ -49,13 +49,43 @@ import java.awt.event.WindowEvent;
 import java.rmi.RemoteException;
 
 
+/**
+ * Klasse zur Darstellung eines Kampfes
+ *
+ */
 public class JFightGUI extends JModalDialog {
+    /**
+     * Server Objekt
+     */
     private final IFight fight;
+    /**
+     * Angreifer Seite GUI Objekt
+     */
     private final JFightSide aggressorSide;
+    /**
+     * Verteidiger Seite GUI Objekt
+     */
     private final JFightSide defenderSide;
+    /**
+     * Verwaltet die Server-Events die an den Client gesendet werden
+     */
     private final ClientEventProcessor remoteEventsProcessor;
+    /**
+     * Update Listener, wenn der Server ein Update für das UI ist notwendig
+     * @see #remoteEventsProcessor
+     */
     private final ActionListener fightUpdateUIListener;
+
+    /**
+     * Update Listener, wenn der Server sagt, dass der Fight geschlossen werden soll
+     *
+     * #remoteEventsProcessor
+     */
     private final IFightActionListener fightCloseFromRemoteListener;
+
+    /**
+     * Spieler der die Aktionen ausführen möchte
+     */
 	private final IPlayer clientPlayer;
 
 
@@ -86,8 +116,75 @@ public class JFightGUI extends JModalDialog {
             try{
                 update();
 
+                //Wenn der Verteidiger gewürfelt hat
                 if(JFightGUI.this.fight.getDefendersDice().size()>0){
-                    JFightGUI.this.showResult();
+                    int[] result;
+                    try {
+                        result = JFightGUI.this.fight.getResult();
+                    }catch (RemoteException e){
+                        new JExceptionDialog(JFightGUI.this,e);
+                        return;
+                    }
+                    int defenderLostArmies = result[1];
+                    int aggressorLostArmies = result[0];
+                    int aggresorWon = result[2];
+                    if (aggresorWon == 1){
+                        JModalDialog.showInfoDialog(JFightGUI.this, "Angriff erfolgreich", "Der Angreifer hat das Land übernommen");
+
+
+                        /**
+                         * Block für Abfragen nach Armeen zum nachrücken
+                         */
+                        try{
+                            //Nur machen wenn aktueller client auch gewinner ist
+                            if(JFightGUI.this.clientPlayer.getId().equals(JFightGUI.this.fight.getAggressor().getId())) {
+                                /**
+                                 * Max anzahl ermitteln
+                                 */
+                                int numberOfArmiesOnFromCountry;
+                                try {
+                                    numberOfArmiesOnFromCountry = fight.getFrom().getArmySize();
+                                } catch (RemoteException e) {
+                                    new JExceptionDialog(JFightGUI.this, e);
+                                    return;
+                                }
+
+
+                                int numberOfArmiesToMove = FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY;
+
+                                /**
+                                 * Anzahl der Armeen erfragen, die rübergeschoben werden sollen
+                                 */
+                                try {
+                                    numberOfArmiesToMove = JModalDialog.showAskIntegerModal(JFightGUI.this, "Armeen nachziehen", "Bitte geben Sie an wieviele Armeen Sie nachziehen möchten", FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY, numberOfArmiesOnFromCountry);
+                                } catch (UserCanceledException e) {
+                                    JModalDialog.showInfoDialog(JFightGUI.this, "Benutzer Abbruch", "Sie haben keine Anzahl eingegbene es wurde nun die mindestanzahl von " + FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY + " Armeen in ihr neues Land bewegt");
+                                }
+
+
+                                /**
+                                 * Anzahl versuchen zu verschieben
+                                 */
+                                try {
+                                    JFightGUI.this.fight.moveArmiesAfterTakeover(numberOfArmiesToMove);
+                                } catch (FightMoveMinimumOneArmy | ArmyAlreadyMovedException| FightNotWonException | RemoteException | NotTheOwnerException | RemoteCountryNotFoundException | ToManyNewArmysException | TurnNotAllowedStepException | TurnNotInCorrectStepException | NotEnoughArmysToMoveException | CountriesNotConnectedException  e) {
+                                    new JExceptionDialog(JFightGUI.this, e);
+                                }
+                            }
+                        }catch (RemoteException e){
+                            new JExceptionDialog(JFightGUI.this,e);
+                        }
+
+                        //Close Window
+                        JFightGUI.this.dispose();
+
+                    }else{
+                        String str = String.format("Der Angreifer hat " + aggressorLostArmies + " Armeen verloren %n");
+                        str  += String.format("Der Verteidiger hat " + defenderLostArmies + " Armeen verloren %n");
+                        str  += "Der Kampf geht weiter ";
+                        JModalDialog.showInfoDialog(JFightGUI.this, "Erfolgreich verteidigt", str);
+                    }
+
                 }
 
             }catch (RemoteException e){
@@ -130,6 +227,15 @@ public class JFightGUI extends JModalDialog {
 
         }
     }
+
+    /**
+     * Stellt die GUI für den Agriff zur Verfügung
+     * @param parent Übergeordnetes Fenster
+     * @param fight Server-Objet
+     * @param remoteEventsProcessor
+     * @param clientPlayer
+     * @throws RemoteException
+     */
     public JFightGUI(final Component parent, final IFight fight, final ClientEventProcessor remoteEventsProcessor, IPlayer clientPlayer) throws RemoteException {
         super(parent,"Fight",ModalityType.APPLICATION_MODAL);
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -159,6 +265,11 @@ public class JFightGUI extends JModalDialog {
         this.add(closeBtn,BorderLayout.SOUTH);
 
     }
+
+    /**
+     * Methode dient zum aktualisieren der UI
+     * @throws RemoteException
+     */
     public void update() throws RemoteException{
         this.aggressorSide.update();
         this.defenderSide.update();
@@ -191,74 +302,5 @@ public class JFightGUI extends JModalDialog {
         super.dispose();
     }
 
-    public void showResult(){
-        int[] result;
-        try {
-            result = JFightGUI.this.fight.getResult();
-        }catch (RemoteException e){
-            new JExceptionDialog(JFightGUI.this,e);
-            return;
-        }
-        int defenderLostArmies = result[1];
-        int aggressorLostArmies = result[0];
-        int aggresorWon = result[2];
-        if (aggresorWon == 1){
-            JModalDialog.showInfoDialog(JFightGUI.this, "Angriff erfolgreich", "Der Angreifer hat das Land übernommen");
-
-
-            /**
-             * Block für Abfragen nach Armeen zum nachrücken
-             */
-            try{
-                //Nur machen wenn aktueller client auch gewinner ist
-                if(this.clientPlayer.getId().equals(this.fight.getAggressor().getId())) {
-                    /**
-                     * Max anzahl ermitteln
-                     */
-                    int numberOfArmiesOnFromCountry;
-                    try {
-                        numberOfArmiesOnFromCountry = fight.getFrom().getArmySize();
-                    } catch (RemoteException e) {
-                        new JExceptionDialog(JFightGUI.this, e);
-                        return;
-                    }
-
-
-                    int numberOfArmiesToMove = FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY;
-
-                    /**
-                     * Anzahl der Armeen erfragen, die rübergeschoben werden sollen
-                     */
-                    try {
-                        numberOfArmiesToMove = JModalDialog.showAskIntegerModal(JFightGUI.this, "Armeen nachziehen", "Bitte geben Sie an wieviele Armeen Sie nachziehen möchten", FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY, numberOfArmiesOnFromCountry);
-                    } catch (UserCanceledException e) {
-                        JModalDialog.showInfoDialog(JFightGUI.this, "Benutzer Abbruch", "Sie haben keine Anzahl eingegbene es wurde nun die mindestanzahl von " + FightConfiguration.NUMBER_OF_ARMIES_TO_OCCUPIED_COUNTRY + " Armeen in ihr neues Land bewegt");
-                    }
-
-
-                    /**
-                     * Anzahl versuchen zu verschieben
-                     */
-                    try {
-                        JFightGUI.this.fight.moveArmiesAfterTakeover(numberOfArmiesToMove);
-                    } catch (FightMoveMinimumOneArmy | ArmyAlreadyMovedException| FightNotWonException | RemoteException | NotTheOwnerException | RemoteCountryNotFoundException | ToManyNewArmysException | TurnNotAllowedStepException | TurnNotInCorrectStepException | NotEnoughArmysToMoveException | CountriesNotConnectedException  e) {
-                        new JExceptionDialog(JFightGUI.this, e);
-                    }
-                }
-            }catch (RemoteException e){
-                new JExceptionDialog(JFightGUI.this,e);
-            }
-
-            //Close Window
-            JFightGUI.this.dispose();
-
-        }else{
-            String str = String.format("Der Angreifer hat " + aggressorLostArmies + " Armeen verloren %n");
-            str  += String.format("Der Verteidiger hat " + defenderLostArmies + " Armeen verloren %n");
-            str  += "Der Kampf geht weiter ";
-            JModalDialog.showInfoDialog(JFightGUI.this, "Erfolgreich verteidigt", str);
-        }
-
-    }
 
 }

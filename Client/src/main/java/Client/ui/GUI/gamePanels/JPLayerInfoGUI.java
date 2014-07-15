@@ -41,6 +41,9 @@ import commons.interfaces.IGame;
 import Client.ui.GUI.utils.tableModels.PlayerInfoTableModel;
 
 
+/**
+ * Zeigt eine Liste der Spieler an
+ */
 public class JPLayerInfoGUI extends JScrollPane{
 	/**
 	 * aktuelles Spiel

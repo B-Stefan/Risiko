@@ -45,17 +45,34 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
 /**
- *
+ * Fragt den Benutzer nach einem Benutzernamen und stellt ihm die
+ * Liste der gespeicherten und bereits gestartetn
+ * Spiele zur verfügung
  */
 public class JGameManagerGUI extends JFrame {
 
+    /**
+     * Text-Feld für Spielernamen
+     */
     private final JTextField playerNameTxt = new JTextField("");
+    /**
+     * Button um ein neues Spiel zu starten
+     */
     private final JButton startGameBtn = new JButton("Spiel starten");
+
+    /**
+     * Server-Objekt das die Spiele verwaltet
+     */
     private final IGameManager manager;
+    /**
+     * Verwlatet ankommende Server-Events z.B. Erstellen einens neuen Spiels
+     */
     private final ClientEventProcessor remoteEventProcessor;
 
 
-
+    /**
+     * Wird bei klick auf den start Btn ausgelöst
+     */
     private class StartGameActionListener implements ActionListener {
 
         /**
@@ -73,6 +90,11 @@ public class JGameManagerGUI extends JFrame {
         }
     }
 
+    /**
+     * Dient zum Einstiegt oder Erstellen von Spielen
+     * @param manager Server-Objekt
+     * @throws RemoteException
+     */
     public JGameManagerGUI(IGameManager manager) throws RemoteException{
         super("Risiko-Spielerauswahl");
         this.manager = manager;
@@ -80,9 +102,13 @@ public class JGameManagerGUI extends JFrame {
         this.manager.getClientManager().addClient(this.remoteEventProcessor);
         initialize();
     }
+
+    /**
+     * Zeigt das Fenster an
+     * @throws RemoteException
+     */
     private void initialize() throws RemoteException {
-        //this.setSize(600, 400);
-        //this.setPreferredSize(this.getSize());
+
 
         // Klick auf Kreuz (Fenster schließen) behandeln lassen:
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -113,12 +139,23 @@ public class JGameManagerGUI extends JFrame {
 
 
     }
+
+    /**
+     * Zentriert das Fenster
+     */
     private  void centreWindow( ) {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth()/2 - this.getWidth()) / 2);
         int y = (int) ((dimension.getHeight()/2 - this.getHeight()) / 2);
         this.setLocation(x, y);
     }
+
+    /**
+     * Öffnet ein neues Spiel
+     * @throws RemoteException
+     * @throws GameNotFoundException
+     * @throws PersistenceEndpointIOException
+     */
     public void openGameGUI() throws RemoteException, GameNotFoundException,PersistenceEndpointIOException{
         IGame game;
         try {
@@ -129,6 +166,14 @@ public class JGameManagerGUI extends JFrame {
         }
         openGameGUI(game);
     }
+
+    /**
+     * Öffnet bereits bestehendes Spiel
+     * @param game Spiel das geöffnet werden soll
+     * @throws RemoteException
+     * @throws GameNotFoundException
+     * @throws PersistenceEndpointIOException
+     */
     public void openGameGUI(IGame game) throws RemoteException, GameNotFoundException, PersistenceEndpointIOException{
 
 

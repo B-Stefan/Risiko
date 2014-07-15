@@ -43,7 +43,8 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
 /**
- * Created by Stefan on 09.06.14.
+ * Klasse dient zur Auswahl eines Landes das man Angreifen möchte
+ *
  */
 public class JCountryFightMenu extends JCountryNeighborsMenu {
 
@@ -82,6 +83,15 @@ public class JCountryFightMenu extends JCountryNeighborsMenu {
             }
         }
     }
+
+    /**
+     * Klasse dient zur Auswahl des Landes das man angreifen möchte
+     * @param country Land von dem Aus der Angrif ausgeht
+     * @param turn Server-Objekt
+     * @param remoteEventProcessor RemoteManager der die Server events verwaltet
+     * @param clientPlayer Spieler der die Aktion ausführen mlchte
+     * @throws RemoteException
+     */
     public JCountryFightMenu(final ICountry country, final ITurn turn, final ClientEventProcessor remoteEventProcessor, IPlayer clientPlayer) throws RemoteException{
         super("Fight",country);
         this.country = country;

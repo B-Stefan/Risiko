@@ -54,6 +54,9 @@ import commons.interfaces.data.IPlayer;
 import commons.interfaces.data.cards.ICard;
 import commons.interfaces.data.cards.ICardDeck;
 
+/**
+ * Klasse zum Anzeigen der Aktionskarten (Länderkarten)
+ */
 public class JCardInfo extends JFrame{
 	/**
 	 * Aktuelles Spiel

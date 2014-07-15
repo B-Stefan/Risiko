@@ -44,9 +44,18 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 
+/**
+ * Menü für die auf dem Server laufenden Spiele
+ */
 public class JGameLoadRunningGameMenu extends JMenu {
 
+    /**
+     * Server-Objekt für die verwaltung aller Spiele
+     */
     private final IGameManager manager;
+    /**
+     * Game Manager GUI
+     */
     private final JGameManagerGUI managerGUI;
 
     /**
@@ -68,6 +77,14 @@ public class JGameLoadRunningGameMenu extends JMenu {
             }
         }
     }
+
+    /**
+     * Klasse zum Anzeigen des Menüs für alle laufenden Spiele
+     * @param manager Server-Objekt
+     * @param GameManagerGUI Übergeorndte GUI
+     * @param clientEventProcessor Verwaltet alle Events, die vom Server kommen
+     * @throws RemoteException
+     */
     public JGameLoadRunningGameMenu(IGameManager manager, JGameManagerGUI GameManagerGUI, ClientEventProcessor clientEventProcessor) throws RemoteException{
         super("Spiel beitreten");
         this.manager = manager;

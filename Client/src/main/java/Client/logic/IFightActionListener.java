@@ -31,12 +31,17 @@ package Client.logic;
 import commons.interfaces.IFight;
 
 
+/**
+ * Interface für eine Fight Listener,
+ * dieser wird vernwendet, um Nachrichten vom Server auf dem Client an die entsprechenden Klassen zu verteilen
+ * @see Client.logic.ClientEventProcessor
+ */
 public interface IFightActionListener  {
 
     /**
      * Invoked when an action occurs.
      *
-     * @param fight
+     * @param fight Der fight der dem Event übergeben wwerden soll
      */
     void actionPerformed(IFight fight);
 }

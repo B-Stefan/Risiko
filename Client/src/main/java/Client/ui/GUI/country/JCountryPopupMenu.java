@@ -40,21 +40,44 @@ import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
 
-
+/***
+ * Wird aufgerufen, wenn man auf ein Land Klick
+ * Allerdings nur wenn auf der Karte auch ein Land gefunden wurde.
+ *
+ */
 public class JCountryPopupMenu extends JPopupMenu{
 
+    /**
+     * Spieler der die Aktion ausführen möchte
+     */
 	private final IPlayer clientPlayer;
+    /**
+     * Land für das Popup Menü
+     */
     private final ICountry country;
+    /**
+     * Server-Objekt auf dem Aktionen ausgeührt werden
+     */
     private final ITurn turn;
+    /**
+     * EventManager der die Server-Events verwaltet
+     */
     private final ClientEventProcessor remoteEventProcessor;
 
+    /**
+     * Dient zur Anzeige eines Popup menues
+     * @param country Land für das Menü
+     * @param turn Server-Objekt für die Aktionen
+     * @param remoteEventProcessor Client-Manager für RemoteEvents
+     * @param cPlayer Spielder der die Aktionen ausführen möchte
+     * @throws RemoteException
+     */
     public JCountryPopupMenu(final ICountry country, final ITurn turn,final ClientEventProcessor remoteEventProcessor, IPlayer cPlayer) throws RemoteException{
         super();
         this.country = country;
         this.turn = turn;
         this.clientPlayer = cPlayer;
         this.remoteEventProcessor = remoteEventProcessor;
-
 
         JMenuItem countryName = new JMenuItem(this.country.getName());
         countryName.setFont(new Font ("Monospaced", Font.BOLD | Font.ITALIC, 14));

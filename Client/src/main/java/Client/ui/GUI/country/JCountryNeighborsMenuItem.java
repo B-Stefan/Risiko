@@ -35,15 +35,34 @@ import commons.interfaces.data.ICountry;
 import javax.swing.*;
 import java.rmi.RemoteException;
 
-
+/**
+ * Diese Klasse repräsentier einen einzlenen Eintrag
+ * eines JNeighborMenueItem
+ * @see Client.ui.GUI.country.JCountryNeighborsMenu
+ */
 public class JCountryNeighborsMenuItem extends JMenuItem {
 
 
+    /**
+     * Land auf dem dieser Eintrag bassiert
+     */
     private final ICountry country;
+
+    /**
+     * Eine einzelne Zeile in einem JMenue
+     * @see Client.ui.GUI.country.JCountryNeighborsMenu
+     * @param country Land das in der Zeile angezeigt werden soll
+     * @throws RemoteException
+     */
     public JCountryNeighborsMenuItem (final ICountry country) throws RemoteException{
         super(country.getName() + " (" + country.getShortName() + ")");
         this.country = country;
     }
+
+    /**
+     * Land das in der Zeile angezeigt werden soll
+     * @return Land der Zeile
+     */
     public ICountry getCountry() {
         return country;
     }

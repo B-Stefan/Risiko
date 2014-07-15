@@ -40,10 +40,24 @@ import javax.swing.JLabel;
 import commons.interfaces.data.ICountry;
 import Client.ui.CUI.utils.IO;
 
+/**
+ * Diese Klasse dient zur Darstellung der
+ * Anzahl der Armeen und dem Landeskürzel
+ */
 public class JCountryInfo extends JLabel{
-	private final ICountry country;
-	private static final int BORDER = 4;
-	
+    /**
+     * Breite des Ramhens des Kreises in px
+     */
+    private static final int BORDER = 4;
+    /**
+     * Land auf dem das Label beruht
+     */
+    private final ICountry country;
+
+    /**
+     * Dient als Label für ein Land
+     * @param country
+     */
 	public JCountryInfo(ICountry country){
         super();
 		this.country = country;
@@ -52,7 +66,11 @@ public class JCountryInfo extends JLabel{
 		setPreferredSize(new Dimension(20,20));
 		setOpaque(false);
 	}
-	
+
+    /**
+     * Überschreibt die Paint method
+     * @param g Grafik Objekt
+     */
 	public void paint(final Graphics g){
 		// Vom LayoutManager zugewiesene Größe des Buttons ermitteln
 		final int width = 40;
@@ -83,7 +101,14 @@ public class JCountryInfo extends JLabel{
         }
 
 	}
-	
+
+    /**
+     * Beschreibt den kreis
+     * @param g Zeichenstift
+     * @param width Höhe
+     * @param height Breite
+     * @throws RemoteException
+     */
 	private void writeLabel(final Graphics g, final int width, final int height) throws RemoteException{
 		final String amountArmies = String.format(this.country.getArmySize() + " " + this.country.getShortName());
         // Font einstellen

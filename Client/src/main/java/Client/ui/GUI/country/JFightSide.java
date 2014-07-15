@@ -46,20 +46,49 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Stack;
 
-
+/**
+ * Repräsentiert eine Seite der FightGUI
+ *
+ * Diese Klasse wird für den Aggressor und Defender verwendet und passt sich dem entsprechenden an
+ *
+ * @see Client.ui.GUI.country.JFightGUI
+ *
+ */
 public class JFightSide extends Panel {
 
+    /**
+     * Seiten des Fights
+     */
     public static enum sides {
         DEFENDER,
         AGGRESSOR
     }
 
+    /**
+     * Server-Objet für das ausführen der Aktionen
+     */
     private final IFight fight;
+    /**
+     * Seite dieser instanz
+     */
     private final sides side;
+
+    /**
+     * Text-Feld für die Anzahl der Armeen
+     */
     private final JTextField numberOfArmiesText;
+    /**
+     * Bereich für Ergebnis der Seite
+     */
     private final JTextArea thrownDiceText;
+    /**
+     * Spieler der die Aktionen durchführen möchte
+     */
 	private final IPlayer clientPlayer;
 
+    /**
+     * Wenn auf Würfeln geklickt wurde wird dieser Listener ausgeführt
+     */
     private class ThrowDiceListener implements ActionListener {
 
         /**
@@ -116,6 +145,13 @@ public class JFightSide extends Panel {
         }
     }
 
+    /**
+     * Klasse zeigt eine Seite des Kampfes an
+     * @param fight Server-Objekt
+     * @param side Seite für die angezeigt werden soll
+     * @param cPlayer Spieler der die Aktion durchühren möchte
+     * @throws RemoteException
+     */
     public JFightSide(IFight fight, sides side, IPlayer cPlayer) throws RemoteException {
         super();
         this.fight = fight;
@@ -147,6 +183,10 @@ public class JFightSide extends Panel {
 
     }
 
+    /**
+     * Berechnet die Standard-Anzahl der Amreen, die der Spieler setzten würde
+     * @return Standard-Anzahl an Armeen
+     */
     private int calculateDefaultNumberOfArmies() {
         int numberOfArmiesOnCountry;
         ICountry country;
@@ -180,6 +220,10 @@ public class JFightSide extends Panel {
         }
     }
 
+    /**
+     * Aktualsiiert die Ansicht
+     * @throws RemoteException
+     */
     public void update() throws RemoteException {
 
 

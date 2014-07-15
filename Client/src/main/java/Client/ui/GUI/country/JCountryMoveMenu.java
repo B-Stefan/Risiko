@@ -40,10 +40,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
+/**
+ * Menü das zur Verwaltung des Moves zuständig ist
+ *
+ */
 public class JCountryMoveMenu extends JCountryNeighborsMenu {
 
+    /**
+     * Server-Objet für Aktionen
+     */
     private final ITurn turn;
+    /**
+     * Spieler der die Aktionen ausführen möchte
+     */
 	private final IPlayer clientPlayer;
+
+    /**
+     * Klass die beim Klick auf ein Menü-Eintrag ausgelöst wird
+     */
     public class NeighborActionListener implements ActionListener{
 
         /**
@@ -89,6 +103,14 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
             }
         }
     }
+
+    /**
+     * Dient zur Anzeige des Menüs zum Bewegen von Einheiten zwischen Länern
+     * @param country Land von dem aus Einheiteh bewegt werden sollen
+     * @param turn Server-Objekt
+     * @param cPlayer Spieler der die Aktionen ausführne möchte
+     * @throws RemoteException
+     */
     public JCountryMoveMenu (final ICountry country, final ITurn turn, IPlayer cPlayer) throws RemoteException{
         super("Move",country);
         this.turn = turn;
