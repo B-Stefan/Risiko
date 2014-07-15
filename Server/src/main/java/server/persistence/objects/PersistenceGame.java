@@ -30,10 +30,10 @@ package server.persistence.objects;
 import commons.exceptions.*;
 import commons.interfaces.IGame;
 import commons.interfaces.data.IPlayer;
-import Client.logic.Game;
-import Client.logic.data.Map;
-import Client.logic.data.Player;
-import Client.logic.data.orders.OrderManager;
+import server.logic.Game;
+import server.logic.data.Map;
+import server.logic.data.Player;
+import server.logic.data.orders.OrderManager;
 import server.persistence.PersistenceManager;
 import server.persistence.dataendpoints.PersistenceEndpoint;
 

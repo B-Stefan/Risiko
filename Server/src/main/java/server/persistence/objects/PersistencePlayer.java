@@ -29,10 +29,10 @@
 package server.persistence.objects;
 
 import commons.exceptions.PersistenceEndpointIOException;
-import Client.logic.data.Army;
-import Client.logic.data.Country;
-import Client.logic.data.Map;
-import Client.logic.data.Player;
+import server.logic.data.Army;
+import server.logic.data.Country;
+import server.logic.data.Map;
+import server.logic.data.Player;
 import commons.exceptions.CountriesNotConnectedException;
 import server.persistence.PersistenceManager;
 

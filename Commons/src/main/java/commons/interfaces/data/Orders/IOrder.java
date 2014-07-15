@@ -39,7 +39,7 @@ import java.rmi.RemoteException;
  * @author  Stefan Bieliauskas
  * Schnittstelle für einzlene AuftrÃ¤ge, die der Spieler erledigen muss Implementierungen siehe:
  *
- * @see Client.logic.data.orders
+ * @see server.logic.data.orders
  * @version 1.0
  *
  * Hierbei wurde eine Schnittstelle verwendet, da die beiden Auftragsarten keine bzw.

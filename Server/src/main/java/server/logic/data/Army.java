@@ -26,7 +26,7 @@
  *
  */
 
-package Client.logic.data;
+package server.logic.data;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

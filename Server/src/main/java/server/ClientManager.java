@@ -4,8 +4,8 @@ import commons.exceptions.ClientNotFoundException;
 import commons.interfaces.IClient;
 import commons.interfaces.IClientManager;
 import commons.interfaces.IFight;
-import Client.logic.Fight;
-import Client.logic.data.Player;
+import server.logic.Fight;
+import server.logic.data.Player;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

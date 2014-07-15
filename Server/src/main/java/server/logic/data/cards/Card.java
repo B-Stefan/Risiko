@@ -28,7 +28,7 @@
  *
  */
 
-package Client.logic.data.cards;
+package server.logic.data.cards;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -36,7 +36,7 @@ import java.rmi.server.UnicastRemoteObject;
 import commons.interfaces.data.ICountry;
 import commons.interfaces.data.IPlayer;
 import commons.interfaces.data.cards.ICard;
-import Client.logic.data.*;
+import server.logic.data.*;
 
 public class Card extends UnicastRemoteObject implements ICard, Comparable<ICard> {
 	/**

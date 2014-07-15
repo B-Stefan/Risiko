@@ -26,12 +26,12 @@
  *
  */
 
-package Client.logic.data.orders;
+package server.logic.data.orders;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import Client.logic.data.Player;
+import server.logic.data.Player;
 
 
 public class AbstractOrder extends UnicastRemoteObject{

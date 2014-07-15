@@ -28,9 +28,9 @@
 
 package server.persistence;
 
-import Client.logic.Game;
-import Client.logic.data.Map;
-import Client.logic.data.Player;
+import server.logic.Game;
+import server.logic.data.Map;
+import server.logic.data.Player;
 import server.persistence.dataendpoints.PersistenceEndpoint;
 import server.persistence.dataendpoints.SerializableFileEndpoint;
 import server.persistence.objects.*;

@@ -26,7 +26,7 @@
  *
  */
 
-package Client.logic;
+package server.logic;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -49,10 +49,10 @@ import commons.exceptions.TurnNotInCorrectStepException;
 import commons.exceptions.YouCannotAttackException;
 import commons.exceptions.YouCannotDefendException;
 import server.ClientManager;
-import Client.logic.data.Army;
-import Client.logic.data.Country;
-import Client.logic.data.Player;
-import Client.logic.utils.*;
+import server.logic.data.Army;
+import server.logic.data.Country;
+import server.logic.data.Player;
+import server.logic.utils.*;
 import commons.exceptions.*;
 
 public class Fight extends UnicastRemoteObject implements IFight {

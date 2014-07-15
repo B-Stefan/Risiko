@@ -34,7 +34,7 @@ import commons.exceptions.PersistenceEndpointIOException;
 import commons.interfaces.IClient;
 import commons.interfaces.IGame;
 import commons.interfaces.IGameManager;
-import Client.logic.Game;
+import server.logic.Game;
 import server.persistence.PersistenceManager;
 import server.persistence.dataendpoints.PersistenceEndpoint;
 

@@ -26,7 +26,7 @@
  *
  */
 
-package Client.logic.data;
+package server.logic.data;
 
 import java.awt.Color;
 import java.rmi.RemoteException;
@@ -39,7 +39,7 @@ import commons.interfaces.data.ICountry;
 import commons.interfaces.data.IPlayer;
 import commons.interfaces.data.Orders.IOrder;
 import commons.interfaces.data.cards.ICard;
-import Client.logic.data.cards.Card;
+import server.logic.data.cards.Card;
 
 import java.util.UUID;
 

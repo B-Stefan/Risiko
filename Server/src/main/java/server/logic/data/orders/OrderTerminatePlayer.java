@@ -26,13 +26,13 @@
  *
  */
 
-package Client.logic.data.orders;
+package server.logic.data.orders;
 
 import java.rmi.RemoteException;
 
 import commons.interfaces.data.IPlayer;
 import commons.interfaces.data.Orders.IOrder;
-import Client.logic.data.Player;
+import server.logic.data.Player;
 
 /**
  * Created by Stefan on 31.03.2014.

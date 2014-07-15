@@ -27,14 +27,14 @@
  *
  */
 
-package Client.logic.data.orders;
+package server.logic.data.orders;
 
 import commons.interfaces.data.Orders.IOrder;
 import commons.interfaces.data.Orders.IOrderManager;
-import Client.logic.Game;
-import Client.logic.data.Continent;
-import Client.logic.data.Map;
-import Client.logic.data.Player;
+import server.logic.Game;
+import server.logic.data.Continent;
+import server.logic.data.Map;
+import server.logic.data.Player;
 import commons.exceptions.PlayerAlreadyHasAnOrderException;
 
 import java.rmi.RemoteException;
