@@ -37,17 +37,6 @@ import commons.interfaces.IClient;
 import commons.interfaces.IFight;
 import commons.interfaces.data.IPlayer;
 import commons.interfaces.data.utils.IDice;
-import commons.exceptions.AlreadyDicedException;
-import commons.exceptions.ArmyAlreadyMovedException;
-import commons.exceptions.CountriesNotConnectedException;
-import commons.exceptions.CountryNotInListException;
-import commons.exceptions.InvalidAmountOfArmiesException;
-import commons.exceptions.InvalidFightException;
-import commons.exceptions.NotEnoughArmiesToAttackException;
-import commons.exceptions.TurnNotAllowedStepException;
-import commons.exceptions.TurnNotInCorrectStepException;
-import commons.exceptions.YouCannotAttackException;
-import commons.exceptions.YouCannotDefendException;
 import server.ClientManager;
 import server.logic.data.Army;
 import server.logic.data.Country;
@@ -106,8 +95,8 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	
 	/**
 	 * Konstruktor setzt Attribute
-	 * @param from
-	 * @param to
+	 * @param from Ausgehend von dem Land
+	 * @param to Anzugreifendes Land
 	 */
 	public Fight(final Country from, final Country to, final Turn turn, final ClientManager clientManager) throws RemoteException{
 		this.to = to;
@@ -120,7 +109,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	
 	/**
 	 * Attacking überschrieben für CUI
-	 * @param agressorsArmies
+	 * @param agressorsArmies Anzahl der Armeen, die für den Angriff verwendet werden
 	 * @throws NotEnoughArmiesToAttackException
 	 * @throws InvalidAmountOfArmiesException
 	 * @throws AlreadyDicedException 
@@ -144,7 +133,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	
 	/**
 	 * Bestimmt die Würfel mit denen angegriffen werden soll (und setzt die Liste der Angreifer Armeen und der Angreifer Würfel)
-	 * @param agressorsArmies
+	 * @param agressorsArmies Anzahl der Armeen für Verteidigung
 	 * @throws InvalidAmountOfArmiesException
 	 * @throws NotEnoughArmiesToAttackException 
 	 * @throws AlreadyDicedException 
@@ -220,7 +209,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	
 	/**
 	 * Bestimmt die Würfel mit denen verteidigt werden soll (und setzt die Liste der Verteidiger Armeen und der Verteidiger Würfel)
-	 * @param defendersArmies
+	 * @param defendersArmies Armeen die für Verteidigung verwendet werden
 	 * @throws InvalidAmountOfArmiesException
 	 * @throws CountriesNotConnectedException 
 	 * @throws AlreadyDicedException 

@@ -106,11 +106,7 @@ public class CountryCUI extends CUI {
                     IO.println("Es konnten leider nur " + i + " Armeen auf dem Land (" + name + ") gesetzt werden");
                     return;
                 }
-                catch (TurnNotAllowedStepException e ){
-                    IO.println(e.getMessage());
-                    return;
-                }
-                catch (ToManyNewArmysException | TurnNotInCorrectStepException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException | NotYourTurnException e ){
+                catch (TurnNotAllowedStepException | ToManyNewArmysException | TurnNotInCorrectStepException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException | NotYourTurnException e ){
                     IO.println(e.getMessage());
                     return;
                 }
@@ -159,13 +155,7 @@ public class CountryCUI extends CUI {
             } else {
                 try {
                     fight = turn.fight(country,found,CountryCUI.this.player);
-                }catch (TurnNotAllowedStepException e){
-                    IO.println(e.getMessage());
-                    return;
-                }catch (TurnNotInCorrectStepException e){
-                    IO.println(e.getMessage());
-                    return;
-                }catch (ToManyNewArmysException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException | NotYourTurnException e) {
+                }catch (TurnNotAllowedStepException | ToManyNewArmysException | NotTheOwnerException | RemoteException | RemoteCountryNotFoundException | NotYourTurnException | TurnNotInCorrectStepException e){
                     IO.println(e.getMessage());
                     return;
                 }

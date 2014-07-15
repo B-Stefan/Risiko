@@ -53,7 +53,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
     /**
      * Pfad, der zur Speicherung der Dateien verwendet wird
      */
-    public static final String DEFAULT_PATH  = "data/";
+    private static final String DEFAULT_PATH  = "data/";
 
     /**
      * Beinhaltet, ob der Ordner bereits erstellt, bzw. besteht

@@ -57,12 +57,12 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * Legt die mindestanzahl an Spielern fest, die für ein Spiel erforderlich sind
      */
-    public static final int minCountPlayers = 3;
+    private static final int minCountPlayers = 3;
 
     /**
      * Legt die maximalanzahl an Spielern fest, die für ein Spiel erforderlich sind
      */
-    public static final int maxCountPlayers = 5;
+    private static final int maxCountPlayers = 5;
 
     /**
      * Representiert die Karte des Spiels
@@ -365,8 +365,8 @@ public class Game extends UnicastRemoteObject implements IGame {
      * Gibt den Spieler zum angegebenen IPlayer zurück
      * @param otherPlayer - Name des gesuchten Spielers
      * @return Spieler
-     * @throws commons.exceptions.PlayerNotExistInGameException Wenn Spieler nicht gefunden wird
-     * @throws RemoteException
+     * @throws commons.exceptions.PlayerNotExistInGameException Wenn Spieler nicht gefunden wi
+     *
      */
     public Player getPlayer(final IPlayer otherPlayer) throws PlayerNotExistInGameException {
         for (Player player: players){

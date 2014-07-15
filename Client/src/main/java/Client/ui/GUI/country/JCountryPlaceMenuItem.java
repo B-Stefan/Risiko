@@ -65,7 +65,7 @@ public class JCountryPlaceMenuItem extends JMenuItem {
     /**
      * Wenn auf den Eintrag geklickt wurde
      */
-    public class MoveClickListener implements ActionListener {
+    private class MoveClickListener implements ActionListener {
         /**
          * Invoked when an action occurs.
          *

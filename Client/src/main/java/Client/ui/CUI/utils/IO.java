@@ -36,9 +36,9 @@ import java.io.*;
 
 public class IO {
 
-	public static final BufferedReader input
+	private static final BufferedReader input
           = new BufferedReader(new InputStreamReader(System.in));
-	public static String eingabe = "";
+	private static String eingabe = "";
 
 	// Einlesen eines char
 	public static char readChar() {
@@ -68,7 +68,7 @@ public class IO {
 		try {
 			eingabe = input.readLine();
 			Integer string_to_int = new Integer(eingabe);
-			return string_to_int.intValue();
+			return string_to_int;
 		}
 		catch (Exception e) {
 		  return 0;
@@ -80,7 +80,7 @@ public class IO {
 		try {
 			eingabe = input.readLine();
 			Long string_to_long = new Long(eingabe);
-			return string_to_long.longValue();
+			return string_to_long;
 		}
 		catch (Exception e) {
 			return 0L;
@@ -92,7 +92,7 @@ public class IO {
 		try {
 			eingabe = input.readLine();
 			Float string_to_float = new Float(eingabe);
-			return string_to_float.floatValue();
+			return string_to_float;
 		}
 		catch (Exception e) {
 			return 0.0F;
@@ -104,7 +104,7 @@ public class IO {
 		try {
 			eingabe = input.readLine();
 			Double string_to_double = new Double(eingabe);
-			return string_to_double.doubleValue();
+			return string_to_double;
 		}
 		catch (Exception e) {
 			return 0.0;

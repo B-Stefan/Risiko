@@ -79,9 +79,7 @@ public class CommandListenerArgument  {
         int re;
         try {
             re = Integer.parseInt(this.argumentValue);
-        }catch (NumberFormatException e){
-            throw new InvalidCommandListernArgumentException(this, "Int");
-        }catch (NullPointerException e){
+        }catch (NumberFormatException | NullPointerException e){
             throw new InvalidCommandListernArgumentException(this, "Int");
         }
         return re;

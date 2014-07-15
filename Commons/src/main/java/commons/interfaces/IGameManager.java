@@ -28,7 +28,6 @@
 
 package commons.interfaces;
 
-import commons.exceptions.CountryNotInListException;
 import commons.exceptions.GameNotFoundException;
 import commons.exceptions.PersistenceEndpointIOException;
 
@@ -44,7 +43,6 @@ public interface IGameManager extends Remote, Serializable, IToStringRemote {
      *
      * @return Gibt die Liste aller gespeicherten Spiele zurück
      * @throws commons.exceptions.PersistenceEndpointIOException
-     * @throws CountryNotInListException 
      */
     public List<? extends IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException;
 
@@ -86,7 +84,6 @@ public interface IGameManager extends Remote, Serializable, IToStringRemote {
      * @param index Index aus der Liste von @see #getGameList
      * @throws PersistenceEndpointIOException
      * @throws IndexOutOfBoundsException
-     * @throws CountryNotInListException 
      */
     public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException;
 

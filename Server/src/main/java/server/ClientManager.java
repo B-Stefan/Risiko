@@ -19,8 +19,8 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
 
     /**
      * Creates a new Thread and start the Clint Manager, to Broadcast all messages
-     * @param manager
-     * @return
+     * @param manager Manager der gestartet werden soll
+     * @return Thread der gestartet wurde
      */
     public  static Thread startWatchBroadcast(ClientManager manager,String name){
         Thread t = new Thread(manager);
@@ -201,7 +201,7 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
 
     /**
      * Fügt der Liste der ausstehenden Nachrichten den String hinzu
-     * @param fight
+     * @param fight Kampf der angezeigt werden soll 
      */
     public synchronized void broadcastFightToClose(Fight fight) {
         fightsToCloseToBroadcast.add(fight);

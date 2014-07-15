@@ -41,8 +41,6 @@ import commons.interfaces.data.Orders.IOrder;
 import commons.interfaces.data.cards.ICard;
 import server.logic.data.cards.Card;
 
-import java.util.UUID;
-
 public class Player extends UnicastRemoteObject implements IPlayer{
 	/**
 	 * Name des Spielers

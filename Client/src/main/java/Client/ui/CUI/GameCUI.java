@@ -215,20 +215,7 @@ public class GameCUI extends CUI implements Runnable {
             //Error Handling
             try {
                 game.onGameStart();
-            } catch (final   NotEnoughPlayerException e) {
-                IO.println(e.getMessage());
-                return;
-            } catch (final TooManyPlayerException e) {
-                IO.println(e.getMessage());
-                return;
-            } catch (final NotEnoughCountriesException e) {
-                IO.println(e.getMessage());
-                return;
-            }
-            catch (final GameAlreadyStartedException e ){
-                IO.println(e.getMessage());
-                return;
-            }catch (final PlayerAlreadyHasAnOrderException | RemoteException e){
+            } catch (final NotEnoughPlayerException | TooManyPlayerException | NotEnoughCountriesException | GameAlreadyStartedException | PlayerAlreadyHasAnOrderException | RemoteException e) {
                 IO.println(e.getMessage());
                 return;
             }
@@ -253,8 +240,10 @@ public class GameCUI extends CUI implements Runnable {
 
     /**
      * Verwaltet die Benutzerschnittstelle
-     * @param game - Das spiel, das die GUI betrifft
-     * @throws Exception
+     * @param game Spiel
+     * @param parent Übergeornete CUI
+     * @param youPlayer Spieler der an der CUI sitzt
+     * @throws RemoteException
      */
     public GameCUI(final IGame game,CUI parent, IPlayer youPlayer) throws RemoteException{
         super(game,parent);

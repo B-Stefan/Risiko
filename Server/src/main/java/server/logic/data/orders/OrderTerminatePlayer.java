@@ -62,11 +62,7 @@ public class OrderTerminatePlayer extends AbstractOrder implements IOrder{
 	
     @Override
     public boolean isCompleted()throws RemoteException {
-    	if (this.victim.getCountries().isEmpty()) {
-            return true;
-        } else {
-        	return false;
-        }
+        return this.victim.getCountries().isEmpty();
     }
     
     /**

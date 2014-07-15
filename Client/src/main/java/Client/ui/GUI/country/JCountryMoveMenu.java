@@ -58,7 +58,7 @@ public class JCountryMoveMenu extends JCountryNeighborsMenu {
     /**
      * Klass die beim Klick auf ein Menü-Eintrag ausgelöst wird
      */
-    public class NeighborActionListener implements ActionListener{
+    private class NeighborActionListener implements ActionListener{
 
         /**
          * Invoked when an action occurs.

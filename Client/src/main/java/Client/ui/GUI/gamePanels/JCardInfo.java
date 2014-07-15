@@ -34,7 +34,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -52,10 +51,9 @@ import commons.exceptions.TurnNotInCorrectStepException;
 import commons.interfaces.IGame;
 import commons.interfaces.data.IPlayer;
 import commons.interfaces.data.cards.ICard;
-import commons.interfaces.data.cards.ICardDeck;
 
 /**
- * Klasse zum Anzeigen der Aktionskarten (Länderkarten)
+ * Klase
  */
 public class JCardInfo extends JFrame{
 	/**
@@ -78,11 +76,7 @@ public class JCardInfo extends JFrame{
 	 * Der Button zum eintauschen der Karten
 	 */
 	private JButton exchange;
-	/**
-	 * Das Kartendeck
-	 */
-	private ICardDeck deck;
-	
+
 	private class ExchangeActionListener implements ActionListener{
 
 		@Override
@@ -108,7 +102,6 @@ public class JCardInfo extends JFrame{
         super();
         this.game = game;
 		this.player = player;
-		this.deck = this.game.getDeck();
 		this.context = new JPanel();
 		this.context.setLayout(new GridLayout(2,1));
 		this.cardInfo.setWrapStyleWord(true);

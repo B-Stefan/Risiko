@@ -54,8 +54,7 @@ public interface IFight extends Remote, Serializable,IToStringRemote {
 
     /**
      * Defending überschrieben für CUI
-     * @param defendersArmies
-     * @throws NotEnoughArmiesToAttackException
+     * @param defendersArmies Anzahl der Armeen für Verteidigung
      * @throws InvalidAmountOfArmiesException
      * @throws commons.exceptions.CountriesNotConnectedException
      * @throws AlreadyDicedException

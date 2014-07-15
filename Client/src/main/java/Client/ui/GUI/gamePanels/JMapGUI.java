@@ -85,9 +85,9 @@ public class JMapGUI extends JComponent {
 	private final IPlayer clientPlayer;
 
     /**
-     * Wird ausgelöst wenn ein Spieler auf die Karte klickt
+     * Wird ausgeführt beim Klcik auf Land
      */
-    public class OnCountryClickActionListener extends MouseAdapter  {
+    private class OnCountryClickActionListener extends MouseAdapter  {
 
         @Override
         public void mouseClicked(MouseEvent event) {

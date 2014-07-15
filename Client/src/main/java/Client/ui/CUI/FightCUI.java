@@ -131,35 +131,7 @@ public class FightCUI extends CUI {
 			
 			try{
 				fight.defending(noOfArmies,FightCUI.this.player);
-			}catch (NotEnoughArmiesToDefendException e){
-                IO.println(e.getMessage());
-                return;
-            }catch (InvalidAmountOfArmiesException e){
-                IO.println(e.getMessage());
-                return;
-            }catch (NotEnoughArmysToMoveException e){
-                IO.println(e.getMessage());
-                return;
-            }
-            catch (CountriesNotConnectedException e){
-            	IO.println(e.getMessage());
-            	return;
-            } catch (AlreadyDicedException e) {
-				IO.println(e.getMessage());
-				return;
-			} catch (TurnNotAllowedStepException e) {
-				IO.println(e.getMessage());
-				return;
-			} catch (TurnNotInCorrectStepException e) {
-				IO.println(e.getMessage());
-				return;
-			} catch (ArmyAlreadyMovedException e) {
-				IO.println(e.getMessage());
-				return;
-			} catch (InvalidFightException e) {
-				IO.println(e.getMessage());
-				return;
-			}catch (NotTheOwnerException | ToManyNewArmysException | AggessorNotThrowDiceException | RemoteException | RemoteCountryNotFoundException | CountryNotInListException | YouCannotDefendException e) {
+			}catch (NotEnoughArmiesToDefendException | NotEnoughArmysToMoveException | CountriesNotConnectedException | AlreadyDicedException | TurnNotAllowedStepException | TurnNotInCorrectStepException | ArmyAlreadyMovedException | InvalidFightException | NotTheOwnerException | ToManyNewArmysException | AggessorNotThrowDiceException | RemoteException | RemoteCountryNotFoundException | CountryNotInListException | YouCannotDefendException | InvalidAmountOfArmiesException e){
                 IO.println(e.getMessage());
                 return;
             }

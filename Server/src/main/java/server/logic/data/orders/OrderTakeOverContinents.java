@@ -63,11 +63,8 @@ public class OrderTakeOverContinents extends AbstractOrder implements IOrder {
 	 */
 	@Override
 	public boolean isCompleted() throws RemoteException{
-		if(this.agent == this.continentOne.getCurrentOwner() && this.agent == this.continentTwo.getCurrentOwner()){
-			return true;
-		}
-		return false;
-	}
+        return this.agent == this.continentOne.getCurrentOwner() && this.agent == this.continentTwo.getCurrentOwner();
+    }
 
 
     @Override
