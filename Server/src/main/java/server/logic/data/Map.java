@@ -327,10 +327,12 @@ public class Map extends UnicastRemoteObject implements IMap{
      * @param p der aktuelle Spieler
      * @return die Anzahl der Bonus Einheiten
      */
-    public int getBonus(IPlayer p) throws RemoteException{
+    public int getBonus(Player p) throws RemoteException{
     	int bonus = 0;
     	for (IContinent c : this.continents){
-    		if(c.getCurrentOwner()==p){bonus += c.getBonus();}
+    		if(c.getCurrentOwner().equals(p)){
+                bonus += c.getBonus();
+            }
     	}
     	return bonus;
     }
