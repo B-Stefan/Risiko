@@ -330,8 +330,10 @@ public class Map extends UnicastRemoteObject implements IMap{
     public int getBonus(Player p) throws RemoteException{
     	int bonus = 0;
     	for (IContinent c : this.continents){
-    		if(c.getCurrentOwner().equals(p)){
-                bonus += c.getBonus();
+            if(c.getCurrentOwner() != null){
+                if(c.getCurrentOwner().equals(p)){
+                    bonus += c.getBonus();
+                }
             }
     	}
     	return bonus;
