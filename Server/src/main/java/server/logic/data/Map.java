@@ -94,14 +94,14 @@ public class Map extends UnicastRemoteObject implements IMap{
         this.countries.add(new Country("Mittelamerika", northAmerica,           new Color(222,111,111)));
         this.countries.add(new Country("Hawaii", northAmerica,                  new Color(255,222,22)));
         this.countries.add(new Country("Nunavut", northAmerica,                 new Color(222,40,111)));
+        this.countries.add(new Country("Grönland", northAmerica,                new Color(0,255,0)));
         
         this.countries.add(new Country("Venezuela", southAmerica,               new Color(111,111,222)));
         this.countries.add(new Country("Brasilien", southAmerica,               new Color(50,150,50)));
         this.countries.add(new Country("Peru", southAmerica,                    new Color(222,0,111)));
         this.countries.add(new Country("Falkland-Inseln", southAmerica,         new Color(50,150,150)));
         this.countries.add(new Country("Argentinien", southAmerica,             new Color(50,150,100)));
-        
-        this.countries.add(new Country("Grönland", europe,                      new Color(0,255,0)));
+
         this.countries.add(new Country("Island", europe,                        new Color(22,255,123)));
         this.countries.add(new Country("Großbritannien", europe,                new Color(22,111,222)));
         this.countries.add(new Country("Skandinavien", europe,                  new Color(50,120,120)));
