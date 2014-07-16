@@ -29,13 +29,13 @@
 
 package server.logic.data.orders;
 
-import interfaces.data.Orders.IOrder;
-import interfaces.data.Orders.IOrderManager;
+import commons.interfaces.data.Orders.IOrder;
+import commons.interfaces.data.Orders.IOrderManager;
 import server.logic.Game;
 import server.logic.data.Continent;
 import server.logic.data.Map;
 import server.logic.data.Player;
-import exceptions.PlayerAlreadyHasAnOrderException;
+import commons.exceptions.PlayerAlreadyHasAnOrderException;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -157,7 +157,6 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
      * @param agend Spieler, für den ein Auftrag erzeugt werden soll
      * @param game Das dazugehöriege Spiel
      * @return Auftrag für den Spieler
-     * @throws PlayerAlreadyHasAnOrderException
      */
     public static IOrder createRandomOrder(final Player agend,final Game game, final Map map) throws RemoteException{
 
@@ -220,9 +219,7 @@ public class OrderManager extends UnicastRemoteObject implements IOrderManager {
 
         //exceptions ausgeben, auch wenn hierbei nur die erste ausgegeben wird.
         if(!exceptions.isEmpty()){
-            for(PlayerAlreadyHasAnOrderException e : exceptions){
-                throw  e;
-            }
+            throw exceptions.get(exceptions.size()-1);
         }
     }
 

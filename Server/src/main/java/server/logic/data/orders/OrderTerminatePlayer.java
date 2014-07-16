@@ -30,8 +30,8 @@ package server.logic.data.orders;
 
 import java.rmi.RemoteException;
 
-import interfaces.data.IPlayer;
-import interfaces.data.Orders.IOrder;
+import commons.interfaces.data.IPlayer;
+import commons.interfaces.data.Orders.IOrder;
 import server.logic.data.Player;
 
 /**
@@ -62,11 +62,7 @@ public class OrderTerminatePlayer extends AbstractOrder implements IOrder{
 	
     @Override
     public boolean isCompleted()throws RemoteException {
-    	if (this.victim.getCountries().isEmpty()) {
-            return true;
-        } else {
-        	return false;
-        }
+        return this.victim.getCountries().isEmpty();
     }
     
     /**

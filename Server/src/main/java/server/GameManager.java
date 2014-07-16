@@ -28,12 +28,11 @@
 
 package server;
 
-import exceptions.CountryNotInListException;
-import exceptions.GameNotFoundException;
-import exceptions.PersistenceEndpointIOException;
-import interfaces.IClient;
-import interfaces.IGame;
-import interfaces.IGameManager;
+import commons.exceptions.GameNotFoundException;
+import commons.exceptions.PersistenceEndpointIOException;
+import commons.interfaces.IClient;
+import commons.interfaces.IGame;
+import commons.interfaces.IGameManager;
 import server.logic.Game;
 import server.persistence.PersistenceManager;
 import server.persistence.dataendpoints.PersistenceEndpoint;
@@ -74,7 +73,6 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      *
      * @return Gibt die Liste aller gespeicherten Spiele zurück
      * @throws PersistenceEndpointIOException
-     * @throws CountryNotInListException 
      */
     public List<? extends IGame> getSavedGameList() throws PersistenceEndpointIOException, RemoteException{
         return this.handler.getAll();
@@ -149,7 +147,6 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
      * @param index Index aus der Liste von @see #getGameList
      * @throws PersistenceEndpointIOException
      * @throws IndexOutOfBoundsException
-     * @throws CountryNotInListException 
      */
     public void saveGame(int index)throws PersistenceEndpointIOException, IndexOutOfBoundsException, RemoteException{
         List<Game> gameList = this.handler.getAll();
@@ -171,8 +168,8 @@ public class GameManager extends UnicastRemoteObject implements IGameManager {
     }
 
     /**
-     * Gibt den Client Manager für den game Manger zurück
-     * @return Client Manger,der zum verwalteten aller geöffneten Clients zurständig ist
+     * Gibt den client Manager für den game Manger zurück
+     * @return client Manger,der zum verwalteten aller geöffneten Clients zurständig ist
      * @throws RemoteException
      */
     public ClientManager getClientManager() throws RemoteException{

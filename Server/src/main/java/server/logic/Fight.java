@@ -32,28 +32,17 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-import configuration.FightConfiguration;
-import interfaces.IClient;
-import interfaces.IFight;
-import interfaces.data.IPlayer;
-import interfaces.data.utils.IDice;
-import exceptions.AlreadyDicedException;
-import exceptions.ArmyAlreadyMovedException;
-import exceptions.CountriesNotConnectedException;
-import exceptions.CountryNotInListException;
-import exceptions.InvalidAmountOfArmiesException;
-import exceptions.InvalidFightException;
-import exceptions.NotEnoughArmiesToAttackException;
-import exceptions.TurnNotAllowedStepException;
-import exceptions.TurnNotInCorrectStepException;
-import exceptions.YouCannotAttackException;
-import exceptions.YouCannotDefendException;
+import commons.configuration.FightConfiguration;
+import commons.interfaces.IClient;
+import commons.interfaces.IFight;
+import commons.interfaces.data.IPlayer;
+import commons.interfaces.data.utils.IDice;
 import server.ClientManager;
 import server.logic.data.Army;
 import server.logic.data.Country;
 import server.logic.data.Player;
 import server.logic.utils.*;
-import exceptions.*;
+import commons.exceptions.*;
 
 public class Fight extends UnicastRemoteObject implements IFight {
 	
@@ -99,15 +88,15 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	private final Turn currentTurn;
 
     /**
-     * Client Manager um nachrichten an die Clients zu verteilen
+     * client Manager um nachrichten an die Clients zu verteilen
      */
     private final ClientManager clientManager;
 	
 	
 	/**
 	 * Konstruktor setzt Attribute
-	 * @param from
-	 * @param to
+	 * @param from Ausgehend von dem Land
+	 * @param to Anzugreifendes Land
 	 */
 	public Fight(final Country from, final Country to, final Turn turn, final ClientManager clientManager) throws RemoteException{
 		this.to = to;
@@ -120,7 +109,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	
 	/**
 	 * Attacking überschrieben für CUI
-	 * @param agressorsArmies
+	 * @param agressorsArmies Anzahl der Armeen, die für den Angriff verwendet werden
 	 * @throws NotEnoughArmiesToAttackException
 	 * @throws InvalidAmountOfArmiesException
 	 * @throws AlreadyDicedException 
@@ -144,7 +133,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	
 	/**
 	 * Bestimmt die Würfel mit denen angegriffen werden soll (und setzt die Liste der Angreifer Armeen und der Angreifer Würfel)
-	 * @param agressorsArmies
+	 * @param agressorsArmies Anzahl der Armeen für Verteidigung
 	 * @throws InvalidAmountOfArmiesException
 	 * @throws NotEnoughArmiesToAttackException 
 	 * @throws AlreadyDicedException 
@@ -179,21 +168,27 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	}
 	
 	
-	/**
-	 * Defending überschrieben für CUI
-	 * @param defendersArmies
-	 * @throws NotEnoughArmiesToAttackException
-	 * @throws InvalidAmountOfArmiesException
-	 * @throws CountriesNotConnectedException 
-	 * @throws AlreadyDicedException 
-	 * @throws ArmyAlreadyMovedException 
-	 * @throws TurnNotInCorrectStepException 
-	 * @throws TurnNotAllowedStepException 
-	 * @throws InvalidFightException
+    /**
+     * Verteidigt mit einer bestimmten Anzahl das Land
+     * @param defendersArmies Anzahl der Armeen die verwendet werden soll
+     * @param clientPlayer Spieler der die Aktion auslösen möchte
+     * @throws RemoteCountryNotFoundException
      * @throws AggessorNotThrowDiceException
-	 * @throws YouCannotDefendException 
-	 * @throws CountryNotInListException 
-	 */
+     * @throws ToManyNewArmysException
+     * @throws NotEnoughArmiesToDefendException
+     * @throws NotEnoughArmysToMoveException
+     * @throws InvalidAmountOfArmiesException
+     * @throws CountriesNotConnectedException
+     * @throws AlreadyDicedException
+     * @throws TurnNotAllowedStepException
+     * @throws TurnNotInCorrectStepException
+     * @throws ArmyAlreadyMovedException
+     * @throws InvalidFightException
+     * @throws NotTheOwnerException
+     * @throws RemoteException
+     * @throws YouCannotDefendException
+     * @throws CountryNotInListException
+     */
 	public void defending(int defendersArmies, IPlayer clientPlayer) throws RemoteCountryNotFoundException, AggessorNotThrowDiceException, ToManyNewArmysException,NotEnoughArmiesToDefendException,NotEnoughArmysToMoveException, InvalidAmountOfArmiesException, CountriesNotConnectedException, AlreadyDicedException, TurnNotAllowedStepException, TurnNotInCorrectStepException, ArmyAlreadyMovedException, InvalidFightException, NotTheOwnerException, RemoteException, YouCannotDefendException, CountryNotInListException{
 		if(!this.to.getOwner().getColor().equals(clientPlayer.getColor())){
 			throw new YouCannotDefendException();
@@ -214,7 +209,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	
 	/**
 	 * Bestimmt die Würfel mit denen verteidigt werden soll (und setzt die Liste der Verteidiger Armeen und der Verteidiger Würfel)
-	 * @param defendersArmies
+	 * @param defendersArmies Armeen die für Verteidigung verwendet werden
 	 * @throws InvalidAmountOfArmiesException
 	 * @throws CountriesNotConnectedException 
 	 * @throws AlreadyDicedException 
@@ -292,6 +287,7 @@ public class Fight extends UnicastRemoteObject implements IFight {
             throw new FightMoveMinimumOneArmy();
         }
         this.currentTurn.moveArmyForTakeover(this.from, this.to, number);
+        this.clientManager.broadcastUIUpdate(IClient.UIUpdateTypes.ALL);
 
     }
 	/**
@@ -343,15 +339,21 @@ public class Fight extends UnicastRemoteObject implements IFight {
 	}
 
     /**
-     * Pürft, ob der Kampf in diesem Status abgebrochen werden darf
+     * Ein Spieler versucht den Kampf zu verlassen
      *
-     * @return
      *
      * @throws java.rmi.RemoteException
      */
-    @Override
-    public boolean isValidToClose() throws RemoteException {
-        return false;
+    public void leafFight(IPlayer player) throws RemoteException,AlreadyDicedException,CanNotCloseFightException {
+        if(this.agressor.equals(player)){
+            if(!this.agressorsDice.empty()){
+                throw new AlreadyDicedException();
+            }
+        }
+        else {
+            throw new CanNotCloseFightException(true);
+        }
+        this.clientManager.broadcastFightToClose(this);
     }
 
     /**

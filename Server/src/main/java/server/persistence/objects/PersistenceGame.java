@@ -27,9 +27,9 @@
  */
 
 package server.persistence.objects;
-import exceptions.*;
-import interfaces.IGame;
-import interfaces.data.IPlayer;
+import commons.exceptions.*;
+import commons.interfaces.IGame;
+import commons.interfaces.data.IPlayer;
 import server.logic.Game;
 import server.logic.data.Map;
 import server.logic.data.Player;

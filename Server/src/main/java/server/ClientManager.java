@@ -1,9 +1,9 @@
 package server;
 
-import exceptions.ClientNotFoundException;
-import interfaces.IClient;
-import interfaces.IClientManager;
-import interfaces.IFight;
+import commons.exceptions.ClientNotFoundException;
+import commons.interfaces.IClient;
+import commons.interfaces.IClientManager;
+import commons.interfaces.IFight;
 import server.logic.Fight;
 import server.logic.data.Player;
 
@@ -19,8 +19,8 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
 
     /**
      * Creates a new Thread and start the Clint Manager, to Broadcast all messages
-     * @param manager
-     * @return
+     * @param manager Manager der gestartet werden soll
+     * @return Thread der gestartet wurde
      */
     public  static Thread startWatchBroadcast(ClientManager manager,String name){
         Thread t = new Thread(manager);
@@ -45,6 +45,12 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
      */
     private final List<Fight> fightsToBroadcast= new ArrayList<Fight>();
 
+
+    /**
+     * Liste der ausstehenden Fights, die geschlossen werden sollen und noch nicht gesendet wurden
+     */
+    private final List<Fight> fightsToCloseToBroadcast= new ArrayList<Fight>();
+
     /**
      * Liste der ausstehenden Nachrichten, die noch nicht an die Clients gesendet wurden
      *
@@ -59,16 +65,16 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
     }
 
     /**
-     * Fügt einen Client der Liste hinzu
-     * @param client - Hinzuzufügender Client
+     * Fügt einen client der Liste hinzu
+     * @param client - Hinzuzufügender client
      */
     public synchronized void addClient(IClient client) throws RemoteException{
         this.clients.add(client);
     }
 
     /**
-     * Löscht einen Client
-     * @param client Client der zu löschen ist
+     * Löscht einen client
+     * @param client client der zu löschen ist
      */
     public synchronized void removeClient(IClient client) throws RemoteException{
         this.clients.remove(client);
@@ -81,14 +87,17 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
         if(messagesToBroadcast.isEmpty()){
             return;
         }
+        List<IClient> clientsToRemove = new ArrayList<>();
         for(IClient client:this.clients){
             try {
                 client.receiveMessage(messagesToBroadcast);
             }catch (RemoteException e){
                 //Remove if Problem
-                this.clients.remove(client);
+                clientsToRemove.add(client);
             }
         }
+        messagesToBroadcast.clear();
+        clientsToRemove.stream().forEach((x)->this.clients.remove(x));
     }
 
     /**
@@ -115,6 +124,7 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
         this.fightsToBroadcast.clear();
 
 
+
     }
 
     /**
@@ -124,21 +134,47 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
         if(this.updatesUIToBroadcast.isEmpty()){
             return;
         }
+        List<IClient> clientsToRemove = new ArrayList<>();
         for(IClient client : this.clients){
             try{
 
                 client.receiveUIUpdateEvent();
             }catch (RemoteException e){
-                this.clients.remove(client);
+                clientsToRemove.add(client);
             }
         }
         this.updatesUIToBroadcast.clear();
+        clientsToRemove.stream().forEach((x)->this.clients.remove(x));
     }
 
 
+
+    /**
+     * Meldet alle UI updates an alle Clients
+     */
+    private synchronized void broadcastFightsToCloseToClients() {
+        if(this.fightsToCloseToBroadcast.isEmpty()){
+            return;
+        }
+        List<IClient> clientsToRemove = new ArrayList<>();
+        for(IFight fight : this.fightsToCloseToBroadcast){
+            for(IClient client : this.clients){
+                try{
+
+                    client.receiveFightCloseEvent(fight);
+                }catch (RemoteException e){
+                    clientsToRemove.add(client);
+                }
+            }
+        }
+
+        this.fightsToCloseToBroadcast.clear();
+        clientsToRemove.stream().forEach((x)->this.clients.remove(x));
+    }
+
     /**
      * fügt der Liste der ausstehenden Update ein Update hinzu
-     * @param type
+     * @param type Beschreibt einen bestimmten bereich,der geupdatet werden soll
      */
     public synchronized void broadcastUIUpdate(IClient.UIUpdateTypes type) {
         if(!updatesUIToBroadcast.contains(type) && !updatesUIToBroadcast.contains(IClient.UIUpdateTypes.ALL)){
@@ -149,9 +185,11 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
         }
     }
 
+
+
     /**
      * Fügt der Liste der ausstehenden Fights den Fight hinzu
-     * @param fight
+     * @param fight Fight der an die Clients gegeben werden soll
      */
     public synchronized void broadcastFight(Fight fight) {
         if(!updatesUIToBroadcast.contains(fight)){
@@ -159,12 +197,22 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
         }
     }
 
+
     /**
      * Fügt der Liste der ausstehenden Nachrichten den String hinzu
-     * @param msg
+     * @param msg MSg die an die Clients gegeben werden soll
      */
     public synchronized void broadcastMessage(String msg) {
             messagesToBroadcast.add(msg);
+
+    }
+
+    /**
+     * Fügt der Liste der ausstehenden Nachrichten den String hinzu
+     * @param fight Kampf der angezeigt werden soll
+     */
+    public synchronized void broadcastFightToClose(Fight fight) {
+        fightsToCloseToBroadcast.add(fight);
 
     }
 
@@ -188,6 +236,7 @@ public  class ClientManager extends UnicastRemoteObject implements Runnable, ICl
                 }
                 this.broadcastMessageToClients();
                 this.broadcastUIUpdateToClients();
+                this.broadcastFightsToCloseToClients();
             }
             try{
                     Thread.sleep(1000);

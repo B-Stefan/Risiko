@@ -55,15 +55,14 @@
  */
 
 package server.logic;
-import interfaces.IClient;
-import interfaces.IFight;
-import interfaces.ITurn;
-import interfaces.data.IArmy;
-import interfaces.data.ICountry;
-import interfaces.data.IPlayer;
+import commons.interfaces.IClient;
+import commons.interfaces.IFight;
+import commons.interfaces.ITurn;
+import commons.interfaces.data.ICountry;
+import commons.interfaces.data.IPlayer;
 import server.ClientManager;
 import server.logic.data.*;
-import exceptions.*;
+import commons.exceptions.*;
 import server.logic.data.Map;
 import server.logic.data.cards.CardDeck;
 
@@ -293,10 +292,10 @@ public class Turn extends UnicastRemoteObject implements ITurn{
                 }
 
             }else if (this.getCurrentStep() == steps.FIGHT){
-
+                //Weitere Bedingungen die für das erlauben des Fight nötig sind
 
             }else if (this.getCurrentStep() == steps.MOVE){
-
+                //Weitere Bedingungen die für das erlauben des Move nötig sind
             }
             else {
                 throw new TurnNotInCorrectStepException(stepToCheck,this);
@@ -331,7 +330,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
     }
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
-     * @see server.logic.Turn.steps
+     * @see commons.interfaces.ITurn.steps
      * @see Turn#getDefaultSteps()
      * @param position - Das Land auf welches die neue Armee plaziert werden soll
      * @param numberOfArmies - Wieviele Einheiten auf diesem Land plaziert werden sollen.
@@ -352,7 +351,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
     }
     /**
      * Per Default der erste Step, der durchgeführt wird. Diese Methode dient dazu eine Armee auf der angegebenen Position zu plazieren.
-     * @see server.logic.Turn.steps
+     * @see commons.interfaces.ITurn.steps
      * @see Turn#getDefaultSteps()
      * @param positionFromClient - Das Land auf welches die neue Armee plaziert werden soll
      * @throws TurnNotAllowedStepException
@@ -648,7 +647,7 @@ public class Turn extends UnicastRemoteObject implements ITurn{
 
     /**
      * Gibt die Anzahl der noch zu verteilenden Armeen zurück
-     * @see #placeNewArmy(interfaces.data.ICountry, int, interfaces.data.IPlayer)
+     * @see #placeNewArmy(commons.interfaces.data.ICountry, int, commons.interfaces.data.IPlayer)
      * @return - Anzahl der noch zu verteilenden Armeen
      */
     public int getNewArmysSize() throws RemoteException {

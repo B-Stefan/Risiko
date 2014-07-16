@@ -28,7 +28,7 @@
 
 package server.persistence.dataendpoints;
 
-import exceptions.PersistenceEndpointIOException;
+import commons.exceptions.PersistenceEndpointIOException;
 import server.persistence.PersistenceManager;
 import server.persistence.objects.PersitenceObject;
 
@@ -53,7 +53,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
     /**
      * Pfad, der zur Speicherung der Dateien verwendet wird
      */
-    public static final String DEFAULT_PATH  = "data/";
+    private static final String DEFAULT_PATH  = "data/";
 
     /**
      * Beinhaltet, ob der Ordner bereits erstellt, bzw. besteht
@@ -66,6 +66,7 @@ public abstract class AbstractFileEndpoint<T> extends PersistenceEndpoint<T> {
     public static void createDir (){
         if(!AbstractFileEndpoint.isDirCreated){
             File dir = new File(DEFAULT_PATH);
+            //noinspection ResultOfMethodCallIgnored
             dir.mkdirs();
             AbstractFileEndpoint.isDirCreated = true;
         }

@@ -28,7 +28,7 @@
 
 package server.persistence.objects;
 
-import exceptions.PersistenceEndpointIOException;
+import commons.exceptions.PersistenceEndpointIOException;
 import server.persistence.PersistenceManager;
 
 import java.io.Serializable;

@@ -33,15 +33,15 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.awt.Color;
 
-import interfaces.IClient;
-import interfaces.IGame;
-import interfaces.data.IPlayer;
-import interfaces.data.Orders.IOrder;
-import interfaces.data.cards.ICardDeck;
+import commons.interfaces.IClient;
+import commons.interfaces.IGame;
+import commons.interfaces.data.IPlayer;
+import commons.interfaces.data.Orders.IOrder;
+import commons.interfaces.data.cards.ICardDeck;
 import server.ClientManager;
 import server.logic.data.*;
 import server.logic.data.Map;
-import exceptions.*;
+import commons.exceptions.*;
 import server.logic.data.cards.CardDeck;
 import server.logic.data.orders.OrderManager;
 import server.persistence.dataendpoints.PersistenceEndpoint;
@@ -57,12 +57,12 @@ public class Game extends UnicastRemoteObject implements IGame {
     /**
      * Legt die mindestanzahl an Spielern fest, die für ein Spiel erforderlich sind
      */
-    public static final int minCountPlayers = 3;
+    private static final int minCountPlayers = 3;
 
     /**
      * Legt die maximalanzahl an Spielern fest, die für ein Spiel erforderlich sind
      */
-    public static final int maxCountPlayers = 5;
+    private static final int maxCountPlayers = 5;
 
     /**
      * Representiert die Karte des Spiels
@@ -158,7 +158,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      * @throws NotEnoughPlayerException
      * @throws TooManyPlayerException
      * @throws NotEnoughCountriesException
-     * @throws exceptions.GameAlreadyStartedException
+     * @throws commons.exceptions.GameAlreadyStartedException
      * @throws PlayerAlreadyHasAnOrderException
      */
     public void onGameStart() throws NotEnoughPlayerException, TooManyPlayerException, NotEnoughCountriesException, GameAlreadyStartedException, PlayerAlreadyHasAnOrderException,RemoteException {
@@ -306,7 +306,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      *
      * @param player - Player der gelöscht werden soll
      *
-     * @throws exceptions.PlayerNotExistInGameException
+     * @throws commons.exceptions.PlayerNotExistInGameException
      */
     public void onPlayerDelete(final IPlayer player) throws PlayerNotExistInGameException, RemoteException{
         Player realPlayer  = this.getPlayer(player);
@@ -349,7 +349,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      * Gibt den Spieler zum angegebenen Namen zurück
      * @param name - Name des gesuchten Spielers
      * @return Spieler
-     * @throws exceptions.PlayerNotExistInGameException Wenn Spieler nicht gefunden wird
+     * @throws commons.exceptions.PlayerNotExistInGameException Wenn Spieler nicht gefunden wird
      * @throws RemoteException
      */
     public Player getPlayer(final String name) throws PlayerNotExistInGameException, RemoteException{
@@ -365,8 +365,8 @@ public class Game extends UnicastRemoteObject implements IGame {
      * Gibt den Spieler zum angegebenen IPlayer zurück
      * @param otherPlayer - Name des gesuchten Spielers
      * @return Spieler
-     * @throws exceptions.PlayerNotExistInGameException Wenn Spieler nicht gefunden wird
-     * @throws RemoteException
+     * @throws commons.exceptions.PlayerNotExistInGameException Wenn Spieler nicht gefunden wi
+     *
      */
     public Player getPlayer(final IPlayer otherPlayer) throws PlayerNotExistInGameException {
         for (Player player: players){
@@ -416,7 +416,7 @@ public class Game extends UnicastRemoteObject implements IGame {
      * Fügt einen neuen Spieler aufgrund des namens hinzu
      *
      * @param name Name des zu hinzuüfügenden Spielers
-     * @param client Zu dem Namen dazugehöriger Client
+     * @param client Zu dem Namen dazugehöriger client
      */
     public Player addPlayer(String name, IClient client) throws GameAlreadyStartedException, PlayerNameAlreadyChooseException,RemoteException{
         if (this.getCurrentGameState() != IGame.gameStates.WAITING) {
@@ -447,9 +447,9 @@ public class Game extends UnicastRemoteObject implements IGame {
     }
 
     /**
-     * Setzt für einen Spieler einen Client
-     * @param player - Spieler für den der Client gesetzt werden soll
-     * @param client - Der Client der für den Spieler gesetzt werden soll
+     * Setzt für einen Spieler einen client
+     * @param player - Spieler für den der client gesetzt werden soll
+     * @param client - Der client der für den Spieler gesetzt werden soll
      * @throws RemoteException
      * @throws PlayerNotExistInGameException
      */

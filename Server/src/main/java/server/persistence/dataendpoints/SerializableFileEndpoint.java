@@ -60,14 +60,10 @@ public class SerializableFileEndpoint<T> extends AbstractFileEndpoint<T> {
             }catch (ClassNotFoundException | ClassCastException e){
                 throw new RuntimeException(e);
             }
-            catch (EOFException e){
+            catch (EOFException | InvalidClassException e){
                 //File ist leer
 
-            }
-            catch (InvalidClassException e){
-
-            }
-            catch (FileNotFoundException e){
+            } catch (FileNotFoundException e){
                 this.writeFile(); // File erstellen, wenn nicht vorhanden
             }
             catch (IOException e){

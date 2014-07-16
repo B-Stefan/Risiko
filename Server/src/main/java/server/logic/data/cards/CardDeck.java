@@ -30,10 +30,10 @@
 
 package server.logic.data.cards;
 
-import exceptions.PlayerNotExistInGameException;
-import exceptions.RemoteExceptionPlayerNotFound;
-import interfaces.data.IPlayer;
-import interfaces.data.cards.ICardDeck;
+import commons.exceptions.PlayerNotExistInGameException;
+import commons.exceptions.RemoteExceptionPlayerNotFound;
+import commons.interfaces.data.IPlayer;
+import commons.interfaces.data.cards.ICardDeck;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -42,7 +42,7 @@ import java.util.*;
 import server.logic.Game;
 import server.logic.data.Country;
 import server.logic.data.Player;
-import exceptions.NotEnoughCardsToExchangeException;
+import commons.exceptions.NotEnoughCardsToExchangeException;
 
 public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 	/**
@@ -77,11 +77,11 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 		for(Country c : cos){
 			if(globalDeck.isEmpty()){
 				this.globalDeck.add(new Card(c, "Kanone"));
-			}else if(this.globalDeck.lastElement().getType() == "Kanone"){
+			}else if(this.globalDeck.lastElement().getType().equals("Kanone")){
 				this.globalDeck.add(new Card(c, "Soldat"));
-			}else if(this.globalDeck.lastElement().getType() == "Soldat"){
+			}else if(this.globalDeck.lastElement().getType().equals("Soldat")){
 				this.globalDeck.add(new Card(c, "Reiter"));
-			}else if(this.globalDeck.lastElement().getType() == "Reiter"){
+			}else if(this.globalDeck.lastElement().getType().equals("Reiter")){
 				this.globalDeck.add(new Card(c, "Kanone"));
 			}
 		}
@@ -98,7 +98,7 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 	}
 	/**
 	 * Der nächste Bonus wird ausgegeben
-	 * @return
+	 * @return Gibt den nächsten Bonus aus
 	 * @throws RemoteException
 	 */
 	public int calculateBonus() throws RemoteException{
@@ -137,16 +137,16 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 		Stack<Card> soldaten    = new Stack<Card>();
 		Stack<Card> joker       = new Stack<Card>();
 		while(i>=0){
-			if(pl.getCards().get(i).getType() == "Kanone"){
+			if(pl.getCards().get(i).getType().equals("Kanone")){
 				kanonen.push(pl.getCardsReal().get(i));
 			}
-			if(pl.getCards().get(i).getType() == "Reiter"){
+			if(pl.getCards().get(i).getType().equals("Reiter")){
 				reiter.push(pl.getCardsReal().get(i));
 			}
-			if(pl.getCards().get(i).getType() == "Soldat"){
+			if(pl.getCards().get(i).getType().equals("Soldat")){
 				soldaten.push(pl.getCardsReal().get(i));
 			}
-			if(pl.getCards().get(i).getType() == "Joker"){
+			if(pl.getCards().get(i).getType().equals("Joker")){
 				joker.push(pl.getCardsReal().get(i));
 			}
 			i--;
@@ -213,10 +213,10 @@ public class CardDeck extends UnicastRemoteObject implements ICardDeck {
 
 	/**
 	 * legt die jeweilligen Karten zurück ins Deck
-	 * @param card1
-	 * @param card2
-	 * @param card3
-	 * @param pl
+	 * @param card1 Erste Karte die zurückgelegt wird
+	 * @param card2 Zwiete Karte
+	 * @param card3 Dirtte Karte
+	 * @param pl Spieler der die Karten zurückgibt
 	 * @throws RemoteException
 	 */
 	public void returnCards(Card card1, Card card2, Card card3, Player pl) throws RemoteException{

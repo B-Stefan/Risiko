@@ -27,7 +27,7 @@
  */
 
 package server.persistence.objects;
-import exceptions.PersistenceEndpointIOException;
+import commons.exceptions.PersistenceEndpointIOException;
 import server.logic.data.Country;
 import server.logic.data.Map;
 import server.persistence.PersistenceManager;
@@ -45,6 +45,7 @@ import java.util.*;
  *
  * @see server.persistence.objects.PersitenceObject
  */
+@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class PersistenceMap extends PersitenceObject<Map> {
 
     public final List<String> players = new ArrayList<String>();

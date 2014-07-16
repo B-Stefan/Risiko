@@ -28,7 +28,7 @@
 
 package server.logic.data;
 
-import interfaces.data.*;
+import commons.interfaces.data.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -50,7 +50,6 @@ public class Continent extends UnicastRemoteObject implements IContinent{
 
 	/**
 	 * Eine ArrayLsit mit den Ländern, die sich auf dem Kontinent befinden Länder
-     * @return Gibt die Liste der Länder zurück, die disem Kontinent zugeordnet wurden
 	 */
 	private final HashMap<UUID,Country> countrys = new HashMap<UUID, Country>();
 
@@ -119,7 +118,7 @@ public class Continent extends UnicastRemoteObject implements IContinent{
     /**
      * Löscht aus dem Kontinent ein Land
      * @param countryToDelete Land das gelöscht werden soll
-     * @return
+     * @return True wenn gelöscht
      */
     public boolean removeCountry (Country countryToDelete) throws RemoteException{
         if(countrys.containsKey(countryToDelete.getId())){
@@ -148,7 +147,7 @@ public class Continent extends UnicastRemoteObject implements IContinent{
 
     /**
      * ToString methode, die Remote aufgerufen werden kann
-     * @return
+     * @return Klasse als String
      * @throws RemoteException
      */
     public String toStringRemote() throws RemoteException{

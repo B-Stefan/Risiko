@@ -31,8 +31,8 @@ package server.logic.data;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import interfaces.data.*;
-import exceptions.CountriesNotConnectedException;
+import commons.interfaces.data.*;
+import commons.exceptions.CountriesNotConnectedException;
 
 /**
  * @author Jennifer Theloy,  Stefan Bieliauskas
@@ -69,7 +69,7 @@ public class Army extends UnicastRemoteObject implements IArmy{
      * Dies erhöht die Datenintegrität
 	 * @param country Übergiebt die (neue) Position der Armee
 	 *
-     * @see Country#(Army)
+     * @see server.logic.data.Country
      */
 	public void setPosition(final Country country)  throws CountriesNotConnectedException, RemoteException{
 

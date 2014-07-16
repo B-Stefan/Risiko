@@ -27,17 +27,17 @@
  */
 
 package server.logic;
-import interfaces.IClient;
-import interfaces.IRound;
-import interfaces.data.IPlayer;
+import commons.interfaces.IClient;
+import commons.interfaces.IRound;
+import commons.interfaces.data.IPlayer;
 import server.ClientManager;
 import server.logic.data.*;
 import server.logic.data.Map;
 import server.logic.data.cards.CardDeck;
-import exceptions.NotYourTurnException;
-import exceptions.RoundCompleteException;
-import exceptions.ToManyNewArmysException;
-import exceptions.TurnNotCompleteException;
+import commons.exceptions.NotYourTurnException;
+import commons.exceptions.RoundCompleteException;
+import commons.exceptions.ToManyNewArmysException;
+import commons.exceptions.TurnNotCompleteException;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -65,7 +65,7 @@ public class Round extends UnicastRemoteObject implements IRound {
      */
     private final CardDeck deck;
     /**
-     * Möglichkeit Rückmeldung an den Client zu geben
+     * Möglichkeit Rückmeldung an den client zu geben
      */
     private final ClientManager clientManager;
 

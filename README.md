@@ -17,7 +17,14 @@ A port of the popular board game "Risiko" in Java
     git add .
     git commit -m '<your comment>'
     git push
+
     ```
+
+#Client
+ Um den Client zu starten muss die Client/src/main/java/client/Client.java ausgeführt werden
+
+#Server
+ Um den Client zu starten muss die Server/src/main/java/server/Server.java ausgeführt werden
 
 #Todos
 
@@ -29,7 +36,11 @@ Um die JavaDoc zu erstellen bitte folgenden Command verwenden:
     javadoc -private -splitindex -encoding UTF-8 -charset UTF-8 -docencoding UTF-8  -d ./gh-pages/javadoc -sourcepath ./client/src -subpackages main
  ```
 
- Javadoc ist auch zu finden unter: https://b-stefan.github.io/Risiko/javadoc/
+Javadoc ist auch zu finden unter: https://b-stefan.github.io/Risiko/javadoc/
+
+Klassendiagramme sind unter /gh-pages/UML-Klassendiagramme/ 
+
+Oder im Projektordner /gh-pages/
 
 
 #Struktur

@@ -28,7 +28,7 @@
 
 package server;
 
-import configuration.ServerConfiguration;
+import commons.configuration.ServerConfiguration;
 import server.persistence.PersistenceManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
