@@ -28,7 +28,6 @@
 
 package server.persistence;
 
-import com.sun.jdi.ClassNotPreparedException;
 import interfaces.IGame;
 import interfaces.data.IMap;
 import interfaces.data.IPlayer;
