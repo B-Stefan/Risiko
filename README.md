@@ -7,23 +7,30 @@ Eine Portierung des Brettspiels "Risiko" in Java.
 #Client
  Um den Client zu starten muss die Client/src/main/java/client/Client.java ausgeführt werden
 
- ##UML-Diagramm-Client-CUI
- ![Alt text](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Client-CUI.svg "Klassendiagramm Client")
+##UML-Diagramm-Client-CUI
+![Klassendiagramm Client](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Client-CUI.svg "Klassendiagramm Client")
 
- ##UML-Diagramm-Client-GUI
-  ![Alt text](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Client-GUI.svg "Klassendiagramm Client")
+##UML-Diagramm-Client-GUI
+![Klassendiagramm Client](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Clinet-GUI.svg "Klassendiagramm Client")
 
 #Server
  Um den Client zu starten muss die Server/src/main/java/server/Server.java ausgeführt werden
+
+##UML-Diagramm-Logik
+![Klassendiagramm Logik](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Server-Logic.svg "Klassendiagramm Logik")
+
+##UML-Diagramm-Orders
+![Klassendiagramm Orders](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Server-Orders.svg "Klassendiagramm Orders")
+
+##UML-Diagramm-Persistence
+![Klassendiagramm Persistence](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Server-Persistence.svg "Klassendiagramm Persistence")
+
 
 #Todos
 
 Verschoben nach: https://github.com/B-Stefan/Risiko/issues
 
 Javadoc ist auch zu finden unter: https://b-stefan.github.io/Risiko/javadoc/
-
-
-Klassendiagramme sind unter /gh-pages/UML-Klassendiagramme/ 
 
 
 
