@@ -6,7 +6,12 @@ Eine Portierung des Brettspiels "Risiko" in Java.
 
 #Client
  Um den Client zu starten muss die Client/src/main/java/client/Client.java ausgeführt werden
- ![Alt text](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Client-CUI.svg "Optional title")
+
+ ##UML-Diagramm-Client-CUI
+ ![Alt text](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Client-CUI.svg "Klassendiagramm Client")
+
+ ##UML-Diagramm-Client-GUI
+  ![Alt text](http://b-stefan.github.io/Risiko/UML-Klassendiagramme/Client-GUI.svg "Klassendiagramm Client")
 
 #Server
  Um den Client zu starten muss die Server/src/main/java/server/Server.java ausgeführt werden
