@@ -16,6 +16,7 @@ hs_err_pid*
 /classes
 /data
 
+/docs
 /gh-pages
 
 .DS_Store
