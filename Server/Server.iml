@@ -20,7 +20,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="Commons" />
+    <orderEntry type="module" module-name="Commons" exported="" />
   </component>
 </module>
 
